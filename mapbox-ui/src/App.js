@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import { useEffect, useRef, useState } from 'react';
+
+import mapboxGl from 'mapbox-gl';
+import { mapboxAccessToken } from './Constants';
+
 import './App.css';
 
-function App() {
+const App = () => {
+
+  mapboxGl.accessToken = mapboxAccessToken;
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+
+  const [long, setLong] = useState(-70.9);
+  const [lat, setLat] = useState(42.35);
+  const [zoom, setZoom] = useState(9);
+
+  useEffect(() => {
+    map.current = new mapboxGl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [long, lat],
+      zoom
+    });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      Backyard Friends
+      <div ref={mapContainer} className="map-container" />
     </div>
   );
-}
+};
 
 export default App;
