@@ -1,0 +1,66 @@
+.display-card {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    height: calc(100vh - 60px);
+    width: calc(50vw - 20px);
+    background-color: #FFF;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.display-card.closing, .display-card.opening {
+    height: 50px;
+    width: 50px;
+    opacity: 0;
+}
+
+.display-header {
+    height: 50px;
+    width: 100%;
+    left: 0;
+    border-bottom: 2px solid #000;
+    display: flex;
+}
+
+.display-header-spacer {
+    flex: 1;
+}
+
+.display-back-button {
+    border: none;
+    border-left: 2px solid #000;
+    width: 50px;
+    height: 50px;
+    outline: none;
+    background-color: #FFF;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    justify-content: center;
+}
+
+.display-back-button svg {
+    padding-right: 5px;
+    transition: all 0.2s ease-in-out;
+}
+
+.display-card.open .display-back-button svg {
+    transform: rotate(-180deg);
+}
+
+.display-card.closing .display-back-button svg {
+    transform: rotate(0deg);
+}
+
+.display-back-button:hover {
+    background-color: #EEE;
+}
+
+.display-content {
+    flex: 1;
+}

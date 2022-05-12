@@ -4,11 +4,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { CardStateProvider } from './Providers/cardStateProvider';
+
+const ProvidersWrapper = () => {
+  return (
+    <CardStateProvider>
+      <App />
+    </CardStateProvider>
+  )
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ProvidersWrapper />
   </React.StrictMode>
 );
 
