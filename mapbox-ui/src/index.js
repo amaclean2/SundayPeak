@@ -5,12 +5,15 @@ import reportWebVitals from './reportWebVitals';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { CardStateProvider } from './Providers/cardStateProvider';
+import { LineEditProvider } from './Providers/lineEditProvider';
 
 const ProvidersWrapper = () => {
   return (
-    <CardStateProvider>
-      <App />
-    </CardStateProvider>
+    <LineEditProvider>
+      <CardStateProvider>
+        <App />
+      </CardStateProvider>
+    </LineEditProvider>
   )
 }
 

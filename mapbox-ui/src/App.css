@@ -2,6 +2,11 @@
 
 .app-container {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
 }
 
 .map-container {
@@ -20,4 +25,24 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.button {
+  background-color: #000;
+  color: #EEE;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 15px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: #444;
+}
+
+.button:disabled {
+  background-color: #AAA;
 }

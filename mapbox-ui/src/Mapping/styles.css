@@ -1,0 +1,7 @@
+.marker {
+    border: none;
+    cursor: pointer;
+    height: 56px;
+    width: 56px;
+    background-image: url(Skier.svg);
+}

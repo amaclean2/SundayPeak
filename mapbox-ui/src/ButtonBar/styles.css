@@ -9,6 +9,7 @@
     background-color: #FFF;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .button-bar-button:hover {
@@ -17,4 +18,6 @@
 
 .button-bar {
     position: fixed;
+    top: 10px;
+    left: 10px;
 }

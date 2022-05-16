@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import mapboxGl from 'mapbox-gl';
 
-import { mapboxAccessToken } from './Constants';
-import { climbs } from './Stores';
+import { mapboxAccessToken } from '../Constants';
+import { climbs } from '../Lines';
 
-import './App.css';
+import '../App.css';
 
 const Map = () => {
 
@@ -15,6 +15,10 @@ const Map = () => {
   const [long, setLong] = useState(-120.2);
   const [lat, setLat] = useState(39.3);
   const [zoom, setZoom] = useState(10);
+
+  useEffect(() => {
+    console.log("Hello!");
+  }, [climbs.featues]);
 
   useEffect(() => {
     map.current = new mapboxGl.Map({
@@ -35,15 +39,35 @@ const Map = () => {
     });
 
     map.current.on('load', () => {
-      map.current.addLayer({
-        id: 'locations',
-        type: 'circle',
-        source: {
-          type: 'geojson',
-          data: climbs
-        }
+      const addMarkers = () => {
+        climbs.features.forEach((climb, idx) => {
+          const el = document.createElement('div');
+          el.id = `marker-${climb.properties.id}`;
+          el.className= 'marker';
+
+          new mapboxGl.Marker(el, { offset: [0, -23] })
+            .setLngLat(climb.geometry.coordinates)
+            .addTo(map.current);
+        })
+      };
+
+      // map.current.addLayer({
+      //   id: 'locations',
+      //   type: 'circle',
+      //   source: {
+      //     type: 'geojson',
+      //     data: climbs
+      //   }
+      // });
+
+      map.current.addSource('places', {
+        type: 'geojson',
+        data: climbs
       });
 
+      addMarkers();
+
+      // adding a point
       map.current.addSource('mapbox-dem', {
         'type': 'raster-dem',
         'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
@@ -64,6 +88,24 @@ const Map = () => {
           'sky-atmosphere-sun-intensity': 15
         }
       });
+      // end adding a point
+
+      // clicking the map
+      map.current.on('click', (e) => {
+        climbs.features.push({
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              e.lngLat.lng,
+              e.lngLat.lat
+            ]
+          },
+          "properties": {}
+        });
+
+        console.log("CLIMBS", climbs);
+      })
     });
 
     return () => map.current.remove()

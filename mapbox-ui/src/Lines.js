@@ -15,3 +15,15 @@ export const climbs = {
 		}
 	]
 };
+
+export const Lines = [
+	{
+		name: 'home',
+		geometry: {
+			coordinates: [
+				-120.2427,
+				39.3604
+			]
+		}
+	}
+]

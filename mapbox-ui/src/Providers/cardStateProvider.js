@@ -29,11 +29,13 @@ const changeCardState = (cardState) => {
 };
 
 export const CardStateProvider = ({ children }) => {
-	const [displayCardOpenState, setDisplayCardOpenState] = useState('open');
-	const [displayCardBoolState, setDisplayCardBoolState] = useState(true);
+	const [displayCardOpenState, setDisplayCardOpenState] = useState('closed');
+	const [displayCardBoolState, setDisplayCardBoolState] = useState(false);
+	const [workingCard, setWorkingCard] = useState('');
 
-	const openCard = () => {
+	const openCard = (newWorkingCard) => {
 		setDisplayCardOpenState(changeCardState('closed'));
+		setWorkingCard(newWorkingCard);
 
 		setTimeout(() => {
 			setDisplayCardOpenState(changeCardState('opening'));
@@ -45,7 +47,9 @@ export const CardStateProvider = ({ children }) => {
 
 		setTimeout(() => {
 			setDisplayCardOpenState(changeCardState('closing'));
+			setWorkingCard('');
 		}, 300);
+
 	};
 
 	useEffect(() => {
@@ -61,6 +65,7 @@ export const CardStateProvider = ({ children }) => {
 			value={{
 				displayCardOpenState,
 				displayCardBoolState,
+				workingCard,
 				notFullyOpen: ['closing', 'closed', 'opening'].includes(displayCardOpenState),
 				setDisplayCardOpenState,
 				openCard,
