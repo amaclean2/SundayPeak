@@ -1,23 +1,39 @@
 .button-bar-button {
     width: 50px;
     height: 50px;
-    background-color: #FFF;
+    background-color: var(--default-background-color);
     border-radius: 8px;
     border: none;
     outline: none;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-    background-color: #FFF;
+    box-shadow: 0 5px 10px var(--box-shadow-opacity);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     margin-right: 10px;
 }
 
 .button-bar-button:hover {
-    background-color: #EEE;
+    background-color: var(--default-background-color-hover);
 }
 
 .button-bar {
     position: fixed;
     top: 10px;
     left: 10px;
+}
+
+.signup-button, .login-button {
+    width: auto;
+    border-radius: 15px;
+    height: 30px;
+    padding: 0 20px;
+    background-color: var(--primary-accent-color);
+    font-size: 15px;
+}
+
+.signup-button:hover {
+    background-color: var(--primary-accent-color-opacity);
+}
+
+.login-button {
+    background-color: var(--default-background-color);
 }

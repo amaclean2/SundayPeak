@@ -4,7 +4,6 @@
     left: 10px;
     height: calc(100vh - 60px);
     width: calc(50vw - 20px);
-    background-color: #FFF;
     max-width: 500px;
     border-radius: 8px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.3);
@@ -26,6 +25,7 @@
     left: 0;
     border-bottom: 2px solid #000;
     display: flex;
+    background-color: var(--default-background-color);
 }
 
 .display-header-spacer {
@@ -63,5 +63,4 @@
 
 .display-content {
     flex: 1;
-    background-color: #dedede;
 }

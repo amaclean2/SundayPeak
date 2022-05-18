@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { Lines } from "../SampleData/Lines";
 
 const LineEditContext = createContext();
 
@@ -13,16 +14,22 @@ export const useLineEditContext = () => {
 };
 
 export const LineEditProvider = ({ children }) => {
-	const [lineEditState, setLineEditState] = useState(false);
+	const [allLines, setAllLines] = useState(Lines);
+	const [lineAddState, setLineAddState] = useState(false);
 	const [currentLine, setCurrentLine] = useState(null);
+	const [isEditable, setIsEditable] = useState(false);
 
 	return (
 		<LineEditContext.Provider
 			value={{
-				lineEditState,
+				lineAddState,
 				currentLine,
-				setLineEditState,
-				setCurrentLine
+				isEditable,
+				allLines,
+				setLineAddState,
+				setCurrentLine,
+				setIsEditable,
+				setAllLines
 			}}
 		>
 			{children}

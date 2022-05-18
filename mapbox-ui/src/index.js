@@ -1,21 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { CardStateProvider } from './Providers/cardStateProvider';
 import { LineEditProvider } from './Providers/lineEditProvider';
+import { UserStateProvider } from './Providers/userStateProvider';
+import { TickListProvider } from './Providers/tickListProvider';
+
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const ProvidersWrapper = () => {
   return (
-    <LineEditProvider>
-      <CardStateProvider>
-        <App />
-      </CardStateProvider>
-    </LineEditProvider>
-  )
-}
+    <UserStateProvider>
+      <LineEditProvider>
+        <CardStateProvider>
+          <TickListProvider>
+            <App />
+          </TickListProvider>
+        </CardStateProvider>
+      </LineEditProvider>
+    </UserStateProvider>
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

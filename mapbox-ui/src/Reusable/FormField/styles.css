@@ -1,0 +1,49 @@
+.form-field-container {
+    min-width: 200px;
+    flex: 1;
+}
+
+.form-field, .form-field-static {
+    display: block;
+}
+
+.form-field-static {
+    margin-bottom: 10px;
+}
+
+.label-field {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.form-field.text, .form-field.password {
+    background-color: var(--input-background-color);
+    border: 1px solid #666;
+    border-radius: 3px;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: block;
+    width: calc(100% - 40px);
+    padding: 10px 16px;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+}
+
+.form-field.text:focus, .form-field.password:focus {
+    box-shadow: 0 0 5px var(--half-opacity-accent-color);
+    border: 1px solid var(--secondary-accent-color);
+}
+
+.form-field-static.card-header {
+    font-size: 20px;
+    margin: 10px;
+    display: block;
+}
+
+.form-field.card-header {
+    font-size: 15px;
+    margin: 10px;
+    display: block;
+    max-width: calc(100% - 60px);
+}

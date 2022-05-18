@@ -1,13 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
-import Map, { Layer, Marker, NavigationControl, Popup, Source } from 'react-map-gl';
+import Map, { Layer, Marker, NavigationControl, Source } from 'react-map-gl';
 
 import { mapboxAccessToken } from '../Constants';
-import { Lines } from '../Lines';
 
 import '../App.css';
 import SkierIcon from '../Images/SkierIcon';
 import { useLineEditContext } from '../Providers/lineEditProvider';
 import { useCardStateContext } from '../Providers/cardStateProvider';
+import MapPopup from './MapPopup';
 
 const skyLayer = {
 	id: 'sky',
@@ -25,46 +25,43 @@ const ReactMap = () => {
 		latitude: 39.3,
 		zoom: 10
 	};
-
-	const [lineData, setLineData] = useState(Lines);
 	const [popupInfo, setPopupInfo] = useState(null);
 
 	const { openCard } = useCardStateContext();
-	const { lineEditState, setLineEditState, setCurrentLine } = useLineEditContext();
+	const { lineAddState, setLineAddState, setCurrentLine, allLines, setAllLines } = useLineEditContext();
 
 	const onDblClick = (e) => {
 		e.preventDefault();
 
-		console.log(lineEditState);
-
-		if (!lineEditState) {
+		if (!lineAddState) {
 			return;
 		}
 
-		setLineData((currLineData) => {
+		setAllLines((currLineData) => {
 			const newLineData = [...currLineData];
 			newLineData.push({
 				name: "abc",
+				id: allLines.length,
 				geometry: {
 					coordinates: [e.lngLat.lng, e.lngLat.lat]
-				}
+				},
+				properties: {}
 			});
 
 			return newLineData;
 		});
 
-		setLineEditState(false);
-
+		setLineAddState(false);
 	};
 
 	const viewMore = () => {
-		setCurrentLine(popupInfo.name);
+		setCurrentLine(popupInfo);
 		setPopupInfo(null);
 		openCard('lines');
 	}
 
 	const pins = useMemo(() => {
-		return lineData.map((line, idx) => (
+		return allLines.map((line, idx) => (
 			<Marker
 				key={`marker-${idx}`}
 				longitude={line.geometry.coordinates[0]}
@@ -78,7 +75,7 @@ const ReactMap = () => {
 				<SkierIcon size={20} />
 			</Marker>
 		))
-	}, [lineData]);
+	}, [allLines]);
 
 	return <Map
 		reuseMaps
@@ -103,21 +100,7 @@ const ReactMap = () => {
 		{pins}
 
 		{popupInfo && (
-			<Popup
-				className="line-pop-up"
-				anchor="top"
-				longitude={Number(popupInfo.geometry.coordinates[0])}
-				latitude={Number(popupInfo.geometry.coordinates[1])}
-				onClose={() => setPopupInfo(null)}
-			>
-				Hi, this is some popup info about {popupInfo.name}
-				<button
-					className="button popup-view-more-button"
-					onClick={viewMore}
-				>
-					View More
-				</button>
-			</Popup>
+			<MapPopup popupInfo={popupInfo} viewMore={viewMore} setPopupInfo={setPopupInfo} />
 		)}
 	</Map>
 };

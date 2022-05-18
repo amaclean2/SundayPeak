@@ -1,4 +1,8 @@
 import DisplayCard from "../DisplayCard";
+import { useCardStateContext } from "../Providers/cardStateProvider";
+import { useTickListContext } from "../Providers/tickListProvider";
+import { useUserStateContext } from "../Providers/userStateProvider";
+import FormField from "../Reusable/FormField";
 import './styles.css';
 
 const GalleryPlaceholder = ({ width }) => (
@@ -15,54 +19,100 @@ const GalleryScroller = () => {
 	)
 };
 
-const StatTemplate = ({ statLabel = '', statValue = '' }) => (
-	<div className="stat-container flex-box">
-		<span className="stat-label">{statLabel}</span>
-		<span className="stat-value">{statValue}</span>
-	</div>
+const StatTemplate = ({ statLabel = '', statValue = '', statName = '' }) => (
+	<FormField
+		name={statName}
+		label={statLabel}
+		isEditable={false}
+		value={statValue}
+		className="stat-field"
+		onChange={() => { }}
+	/>
 );
 
 const Location = ({ value = '' }) => (
-	<div className="stat-container flex-box location-container">
-		<span className="stat-label">Location</span>
-		<span className="location-value">{value}</span>
-	</div> 
+	<FormField
+		name="city"
+		label="Location"
+		isEditable={false}
+		value={value}
+		className="location-field"
+		onChange={() => { }}
+	/>
 );
 
 const Tick = ({ tickName }) => (
 	<span className="tick">{tickName}</span>
 );
 
-const TickList = () => (
-	<div className="tick-list flex-box">
-		<Tick tickName={"Matterhorn, East Buttress"} />
-		<Tick tickName={"Mt Tallac"} />
-		<Tick tickName={"Mt Tom"} />
-		<Tick tickName={"The Patriarch"} />
-		<Tick tickName={"Mt Shasta"} />
-	</div>
-);
+const TickList = () => {
+	const { allTicks } = useTickListContext();
+
+	return (
+		<div className="tick-list flex-box">
+			<Tick tickName={"Matterhorn, East Buttress"} />
+			<Tick tickName={"Mt Tallac"} />
+			<Tick tickName={"Mt Tom"} />
+			<Tick tickName={"The Patriarch"} />
+			<Tick tickName={"Mt Shasta"} />
+		</div>
+	);
+};
 
 const UserProfile = () => {
+	const { handleLogout, workingUser } = useUserStateContext();
+	const { closeCard } = useCardStateContext();
+
+	const logout = () => {
+		handleLogout().then((resp) => {
+			console.log(resp);
+			closeCard();
+		});
+	};
+
+	const editUser = () => {
+
+	};
+
 	return (
 		<DisplayCard>
 			<div className="profile-header">
-				<h1>Andrew Maclean</h1>
+				<FormField
+					value={`${workingUser.firstName} ${workingUser.lastName}`}
+					isEditable={false}
+					className="card-header"
+				/>
 				<div className="profile-photo" />
 			</div>
-			<div className="gallery-box">
-				<GalleryScroller />
-			</div>
-			<div className="stats flex-box">
-				<StatTemplate statLabel={"Activities"} statValue={35} />
-				<StatTemplate statLabel={"Followers"} statValue={23} />
-				<StatTemplate statLabel={"Following"} statValue={16} />
-				<div className="flex-spacer" />
-				<Location value="Truckee, California" />
-			</div>
-			<div className="tick-list-container">
-				<h3 className="tick-list-header">Tick List</h3>
-				<TickList />
+			<div className="profile-content">
+				<div className="gallery-box">
+					<GalleryScroller />
+				</div>
+				<div className="stats flex-box">
+					<StatTemplate statLabel={"Activities"} statValue={35} />
+					<StatTemplate statLabel={"Followers"} statValue={23} />
+					<StatTemplate statLabel={"Following"} statValue={16} />
+					<div className="flex-spacer" />
+					<Location value={workingUser.city} />
+				</div>
+				<div className="tick-list-container">
+					<h3 className="tick-list-header">Tick List</h3>
+					<TickList />
+				</div>
+				<div className="action-buttons">
+					<button
+						onClick={logout}
+						className="button line-add-button"
+					>
+						Logout
+					</button>
+					<button
+						onClick={editUser}
+						className="button line-add-button"
+					>
+						Edit
+					</button>
+				</div>
 			</div>
 		</DisplayCard>
 	);
