@@ -1,0 +1,29 @@
+[
+    {
+        "id": 0,
+        "name": "Donner Summit",
+        "approach": 2.3,
+        "season": "Winter, Spring",
+        "avg_angle": 25,
+        "max_angle": 45,
+        "elevation": 7500,
+        "gain": 1500,
+        "bio": "Something about Donner Summit",
+        "city": "Truckee, California",
+        "creator": 0,
+        "editors": []
+    }, {
+        "id": 1,
+        "name": "Castle Peak",
+        "approach": 3.5,
+        "season": "Fall, Winter, Spring",
+        "avg_angle": 25,
+        "max_angle": 45,
+        "elevation": 7500,
+        "gain": 2000,
+        "bio": "Something about Castle Peak",
+        "city": "Truckee, California",
+        "creator": 0,
+        "editors": []
+    }
+]

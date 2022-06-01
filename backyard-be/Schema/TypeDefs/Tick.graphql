@@ -1,0 +1,21 @@
+type Tick {
+    id: Int!
+    line_id: Int!
+    user_id: Int!
+}
+
+# Queries
+
+type Query {
+    getAllTicksForLine(line_id: Int!): [Tick!]!
+}
+
+type Query {
+    getAllTicksForUser(user_id: Int!): [Tick!]!
+}
+
+# Mutations
+
+type Mutation {
+    createTick(line_id: Int!, user_id: Int!): Tick!
+}

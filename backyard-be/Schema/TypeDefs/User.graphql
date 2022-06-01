@@ -1,0 +1,36 @@
+schema {
+    query: Query
+}
+
+type User {
+    id: Int!
+    first_name: String!
+    last_name: String!
+    email: String!
+    city: String!
+    bio: String!
+}
+
+# Queries
+
+type Query {
+    loginUser(email: String!, password: String!): User!
+}
+
+type Query {
+    getOtherUser(id: Int!): User!
+}
+
+# Mutations
+
+type Mutation {
+    createUser(first_name: String!, last_name: String!, email: String!, city: String!, bio: String!): User!
+}
+
+type Mutation {
+    editUser(first_name: String!, last_name: String!, email: String!, city: String!, bio: String!): User!
+}
+
+type Mutation {
+    deleteUser(id: Int!): User!
+}

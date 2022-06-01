@@ -1,25 +1,32 @@
 const express = require('express');
-const userRouter = require('./routes/user');
-const lineRouter = require('./routes/line');
-const tickRouter = require('./routes/tick');
-const activityRouter = require('./routes/activity');
+const { ApolloServer} = require('apollo-server-express');
+const { loadSchema } = require('@graphql-tools/load');
+const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
+
+const resolvers = require('./Schema/Resolvers');
 
 const app = express();
-const PORT = 5000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+const startApplication = async () => {
+    const typeDefs = await loadSchema('./Schema/TypeDefs/*.graphql', {
+        loaders: [new GraphQLFileLoader()]
+    });
 
-app.use((req, res, next) => {
-    console.log(`${req.method}: ${req.url}`);
-    next();
-});
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+        csrfPrevention: true
+    });
 
-app.use('/api/user', userRouter);
-app.use('/api/line', lineRouter);
-app.use('/api/tick', tickRouter);
-app.use('/api/activity', activityRouter);
+    await server.start();
 
-app.listen(PORT, () => {
-    console.log(`Backyard running on http://localhost:${PORT}`);
+    server.applyMiddleware({
+        app
+    });
+};
+
+startApplication();
+
+app.listen({ port: 5000}, () => {
+    console.log(`Backyard friends running on http://localhost:5000`);
 });

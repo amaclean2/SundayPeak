@@ -1,0 +1,21 @@
+type Activity {
+    id: Int!
+    line_id: Int!
+    user_id: Int!
+}
+
+# Queries
+
+type Query {
+    getAllActivitiesForLine(line_id: Int!): [Activity!]!
+}
+
+type Query {
+    getAllActivitiesForUser(user_id: Int!): [Activity!]!
+}
+
+# Mutations
+
+type Mutation {
+    createActivity(line_id: Int!, user_id: Int!): Activity!
+}

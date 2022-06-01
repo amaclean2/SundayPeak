@@ -1,0 +1,17 @@
+[
+    {
+        "id": 0,
+        "first_name": "Andrew",
+        "last_name": "Maclean",
+        "email": "andrew.n.maclean@gmail.com",
+        "city": "Truckee, California",
+        "bio": "Something about me"
+    }, {
+        "id": 1,
+        "first_name": "Brian",
+        "last_name": "Maclean",
+        "email": "brian.maclean@verizon.net",
+        "city": "Irvine, California",
+        "bio": "Something about you"
+    }
+]
