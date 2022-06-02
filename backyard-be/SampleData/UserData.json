@@ -4,6 +4,7 @@
         "first_name": "Andrew",
         "last_name": "Maclean",
         "email": "andrew.n.maclean@gmail.com",
+        "password": "12345",
         "city": "Truckee, California",
         "bio": "Something about me"
     }, {
@@ -11,6 +12,7 @@
         "first_name": "Brian",
         "last_name": "Maclean",
         "email": "brian.maclean@verizon.net",
+        "password": "67890",
         "city": "Irvine, California",
         "bio": "Something about you"
     }

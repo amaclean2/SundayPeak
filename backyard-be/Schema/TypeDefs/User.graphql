@@ -1,6 +1,4 @@
-schema {
-    query: Query
-}
+# import Token from "Token.graphql"
 
 type User {
     id: Int!
@@ -12,21 +10,18 @@ type User {
     bio: String!
 }
 
-# Queries
-
-type Query {
-    loginUser(email: String!, password: String!): User!
+type UserInitResponse {
+    user: User!
+    token: Token!
 }
+
+# Queries
 
 type Query {
     getOtherUser(id: Int!): User!
 }
 
 # Mutations
-
-type Mutation {
-    createUser(first_name: String!, last_name: String!, email: String!, password: String!, city: String!, bio: String!): User!
-}
 
 type Mutation {
     editUser(first_name: String!, last_name: String!, email: String!, password: String!, city: String!, bio: String!): User!

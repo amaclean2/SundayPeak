@@ -5,16 +5,16 @@ const { tickResolvers } = require('./Tick');
 
 const resolvers = {
     Query: {
-        ...userResolvers.Query,
-        ...lineResolvers.Query,
-        ...activityResolvers.Query,
-        ...tickResolvers.Query
+        ...userResolvers?.Query,
+        ...lineResolvers?.Query,
+        ...activityResolvers?.Query,
+        ...tickResolvers?.Query
     },
     Mutation: {
-        ...userResolvers.Mutation,
-        ...lineResolvers.Mutation,
-        ...activityResolvers.Mutation,
-        ...tickResolvers.Mutation
+        ...userResolvers?.Mutation,
+        ...lineResolvers?.Mutation,
+        ...activityResolvers?.Mutation,
+        ...tickResolvers?.Mutation
     }
 };
 

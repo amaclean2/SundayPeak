@@ -6,11 +6,14 @@ const { loadSchema } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
 
 const resolvers = require('./Schema/Resolvers');
+const authService = require('./Services/auth.sevice');
+const router = require('./ExternalRoutes');
+
 const app = express();
 
 // used for external apis
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // security middleware
 app.use(cors());
@@ -50,6 +53,12 @@ const startApplication = async () => {
         }
     });
 };
+
+// public routes
+app.use('/api', router);
+
+// private routes
+app.post('/graphql', authService.validate);
 
 startApplication();
 
