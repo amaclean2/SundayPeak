@@ -2,13 +2,22 @@ import './App.css';
 import './variables.css';
 import ButtonBar from "./ButtonBar";
 import ReactMap from "./Mapping/ReactMap";
+import { useUserStateContext } from './Providers/userStateProvider';
+import LandingPage from './LandingPage';
 
 const App = () => {
+  const { isLandingPage } = useUserStateContext();
 
   return (
     <div className="app-container">
-      <ReactMap />
-      <ButtonBar />
+      {!isLandingPage && (
+        <>
+          <ReactMap />
+          <ButtonBar />
+        </>
+      )
+      }
+      {isLandingPage && <LandingPage />}
     </div>
   );
 };

@@ -78,7 +78,7 @@ const UserProfile = () => {
 		<DisplayCard>
 			<div className="profile-header">
 				<FormField
-					value={`${workingUser.firstName} ${workingUser.lastName}`}
+					value={`${workingUser.first_name} ${workingUser.last_name}`}
 					isEditable={false}
 					className="card-header"
 				/>

@@ -2,11 +2,11 @@ const Lines = require('../../SampleData/LineData.json');
 
 const lineResolvers = {
     Query: {
-        getAllLines(parent, args) {
+        getAllLines: (parent, args) => {
             const { lat, long } = args;
             return Lines;
         },
-        getLineDetails(parent, args) {
+        getLineDetails: (parent, args) => {
             const { id } = args;
             console.log("ID", id);
             return Lines.find((line) => line.id === id);
@@ -14,14 +14,14 @@ const lineResolvers = {
     },
 
     Mutation: {
-        createLine(parent, args) {
+        createLine: (parent, args) => {
             const newLine = args;
             Lines.push(newLine);
 
             return newLine;
         },
 
-        editLine(parent, args) {
+        editLine: (parent, args) => {
             const { id, name, approach, season, avg_angle, max_angle, elevation, gain, bio, city, last_editor_id } = args;
             const editableLineIdx = Lines.findIndex((line) => line.id === id);
 
@@ -44,7 +44,7 @@ const lineResolvers = {
             return newLineData;
         },
 
-        deleteLine(parent, args) {
+        deleteLine: (parent, args) => {
             const { id } = args;
             const lineIdx = Lines.findIndex((line) => line.id === id);
 

@@ -2,18 +2,18 @@ const Ticks = require('../../SampleData/TickData.json');
 
 const tickResolvers = {
     Query: {
-        getAllTicksForLine(parent, args) {
+        getAllTicksForLine: (parent, args) => {
             const { line_id } = args;
             return Ticks;
         },
-        getAllTicksForUser(parent, args) {
+        getAllTicksForUser: (parent, args) => {
             const { user_id } = args;
             return Ticks;
         }
     },
 
     Mutation: {
-        createTick(parent, args) {
+        createTick: (parent, args) => {
             const newTick = args;
             Ticks.push(newTick);
 

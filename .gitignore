@@ -1,4 +1,6 @@
 mapbox-ui/node_modules
 mapbox-ui/src/Constants.js
+mapboxui/package-lock.json
 
 backyard-be/node_modules
+backyard-be/package-lock.json

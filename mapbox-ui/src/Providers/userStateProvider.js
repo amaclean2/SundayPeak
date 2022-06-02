@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { User } from '../SampleData/Users';
+import { useLogin } from './apiCalls';
 
 const UserStateContext = createContext();
 
@@ -15,33 +15,54 @@ export const useUserStateContext = () => {
 };
 
 export const UserStateProvider = ({ children }) => {
+	const { loginUser } = useLogin();
+
 	const [workingUser, setWorkingUser] = useState({});
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userFields, setUserFields] = useState({});
 	const [loginFields, setLoginFields] = useState({});
+	const [isLandingPage, setIsLandingPage] = useState(true);
 
 	useEffect(() => {
 		const loggedUser = localStorage.getItem('user');
 		if (loggedUser) {
 			const parsedUser = JSON.parse(loggedUser);
+			console.log("PARSED_USER", parsedUser);
 			setWorkingUser(parsedUser);
 			setIsLoggedIn(true);
+			setIsLandingPage(false);
 		}
 	}, []);
 
 	const attemptLogin = async () => {
-		const email = loginFields.email;
+		const {email, password} = loginFields;
 
 		if (email) {
-			setWorkingUser(User);
-			setIsLoggedIn(true);
-			setLoginFields({});
-			localStorage.setItem('user', JSON.stringify(workingUser));
-			return 'USER_LOGGED_IN';
+
+			try {
+				const loggedInUser = await loginUser({ email, password });
+
+				if (loggedInUser) {
+					setWorkingUser(loggedInUser);
+					setIsLoggedIn(true);
+					setIsLandingPage(false);
+					setLoginFields({});
+					localStorage.setItem('user', JSON.stringify(loggedInUser));
+					return 'USER_LOGGED_IN';
+				}
+
+			} catch (error) {
+				throw new Error(error);
+			}
+
 		} else {
 			throw new Error('EMAIL_FIELD_REQUIRED');
 		}
 	};
+
+	const clickLogin = () => {
+		setIsLandingPage(false);
+	}
 
 	const handleLogout = async () => {
 		setWorkingUser({});
@@ -57,10 +78,12 @@ export const UserStateProvider = ({ children }) => {
 				userFields,
 				loginFields,
 				workingUser,
+				isLandingPage,
 				setUserFields,
 				setLoginFields,
 				attemptLogin,
-				handleLogout
+				handleLogout,
+				clickLogin
 			}}
 		>
 			{children}

@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const { ApolloServer} = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const { loadSchema } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
 
@@ -34,12 +34,25 @@ const startApplication = async () => {
     await server.start();
 
     server.applyMiddleware({
-        app
+        app,
+        cors: {
+            origin: true,
+            credentials: true,
+            methods: ['POST'],
+            allowedHeaders: [
+                'X-Requested-With',
+                'X-HTTP-Method-Override',
+                'Content-Type',
+                'Accept',
+                'Authorization',
+                'Access-Control-Allow-Origin'
+            ]
+        }
     });
 };
 
 startApplication();
 
-app.listen({ port: 5000}, () => {
+app.listen({ port: 5000 }, () => {
     console.log(`Backyard friends running on http://localhost:5000`);
 });
