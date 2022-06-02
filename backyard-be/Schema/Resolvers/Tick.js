@@ -13,7 +13,7 @@ const tickResolvers = {
     },
 
     Mutation: {
-        createATick(parent, args) {
+        createTick(parent, args) {
             const newTick = args;
             Ticks.push(newTick);
 

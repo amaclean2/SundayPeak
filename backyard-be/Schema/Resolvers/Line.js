@@ -8,6 +8,7 @@ const lineResolvers = {
         },
         getLineDetails(parent, args) {
             const { id } = args;
+            console.log("ID", id);
             return Lines.find((line) => line.id === id);
         }
     },
