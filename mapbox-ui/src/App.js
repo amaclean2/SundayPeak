@@ -1,3 +1,5 @@
+import React from 'react';
+
 import './App.css';
 import './variables.css';
 import ButtonBar from "./ButtonBar";

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import CarretIcon from '../Images/CarretIcon';
 import { useCardStateContext } from '../Providers/cardStateProvider';
 

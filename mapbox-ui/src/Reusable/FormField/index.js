@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useLineEditContext } from '../../Providers/lineEditProvider';
+import React, { useState } from 'react';
+import { useAdventureEditContext } from '../../Providers/adventureEditProvider';
 
 import './styles.css';
 

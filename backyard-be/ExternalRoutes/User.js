@@ -1,78 +1,60 @@
-const { Router } = require("express");
+const { Router } = require('express');
 
-const { validateLoginUser, validateCreateUser } = require("../Validators/UserValidators");
-const Users = require('../SampleData/UserData.json');
-const authService = require("../Services/auth.sevice");
+const { validateLoginUser, validateCreateUser } = require('../Validators/UserValidators');
+const authService = require('../Services/auth.sevice');
+const { addUser: addUserDB, getUser: getUserDB } = require('../DB');
+const { hashPassword, comparePassword } = require('../Crypto');
+const { NOT_FOUND, ACCEPTED, NOT_ACCEPTABLE, SERVER_ERROR, CREATED } = require('../statuses');
+const { returnError } = require('../ErrorHandling');
+
 
 const userRouter = Router();
 
-const login = async (req, res, next) => {
-    const credentials = req.body;
-
+userRouter.post('/login', validateLoginUser, async (req, res) => {
     try {
-        await validateLoginUser(credentials);
-        next();
-    } catch(error) {
-        res.status(400).json({
-            message: 'Could not authenticate user',
-            error: error.toString()
-        });
-    }
-};
+        const { email, password } = req.body;
+        // queries for the email address
+        const user = await getUserDB(email);
+        if (!user) {
+            returnError({ req, res, status: NOT_FOUND, message: 'noAccountExists' });
+        }
 
-const register = async (req, res, next) => {
-    const credentials = req.body;
+        if (comparePassword(password, user.password)) {
+            delete user.password;
+            const token = authService.issue({ id: user.id });
 
-    try {
-        await validateCreateUser(credentials);
-        next();
-    } catch(error) {
-        res.status(400).json({
-            message: 'Could not create user',
-            error: error.toString()
-        });
-    }
-    console.log("REGISTRATION");
-    next();
-};
+            console.log({ message: 'USER_LOGGED_IN', user, token });
+            res.status(ACCEPTED).json({ user, status: ACCEPTED, token });
 
-userRouter.post('/login', login, (req, res) => {
-    try {
-        const { email } = req.body;
-        const selectedUser = Users.find((user) => user.email === email);
-        const token = authService.issue({ id: selectedUser.id });
+        } else {
+            returnError({ req, res, status: NOT_ACCEPTABLE, message: 'invalidPassword' });
+        }
 
-        res.status(200).json({
-            user: selectedUser,
-            token
-        });
     } catch (error) {
-        res.status(400).json({
-            message: 'Could not authenticate user',
-            credentials: req.body,
-            error: error.toString()
-        });
+        returnError({ req, res, status: SERVER_ERROR, message: 'serverLoginUser', error });
     }
 });
 
-userRouter.post('/signup', register, (req, res) => {
+userRouter.post('/signup', validateCreateUser, async (req, res) => {
     try {
-        const newUser = req.body;
-        newUser.id = Users.length;
+        const newUser = {
+            ...req.body,
+            password: hashPassword(req.body.password)
+        };
 
-        Users.push(newUser);
-        const token = authService.issue({ id: newUser.id });
+        const { id } = await addUserDB(newUser);
+        const token = authService.issue({ id });
+        delete newUser.password;
 
-        res.status(200).json({
+        console.log({ message: 'USER_CREATED', newUser, token });
+        res.status(CREATED).json({
             user: newUser,
+            status: CREATED,
             token
         });
+
     } catch (error) {
-        res.status(400).json({
-            message: 'Could not authenticate user',
-            credentials: req.body,
-            error: error.toString()
-        });
+        returnError({ req, res, status: SERVER_ERROR, message: 'serverCreateUser', error });
     }
 });
 

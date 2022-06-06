@@ -6,6 +6,7 @@ type Line {
     avg_angle: Int!
     max_angle: Int!
     elevation: Int!
+    dificulty: Int!
     gain: Int!
     bio: String!,
     city: String!,
@@ -26,11 +27,11 @@ type Query {
 # Mutations
 
 type Mutation {
-    createLine(name: String!, approach: Float!, season: String!, avg_angle: Float!, max_angle: Float!, elevation: Int!, gain: Int!, bio: String!, city: String!, creator_id: Int!): Line!
+    createLine(name: String!, approach: Float!, season: String!, avg_angle: Float!, max_angle: Float!, dificulty: Int!, elevation: Int!, gain: Int!, bio: String!, city: String!, creator_id: Int!): Line!
 }
 
 type Mutation {
-    editLine(name: String!, approach: Float!, season: String!, avg_angle: Float!, max_angle: Float!, elevation: Int!, gain: Int!, bio: String!, city: String!, last_editor_id: Int!): Line!
+    editLine(name: String!, approach: Float!, season: String!, avg_angle: Float!, max_angle: Float!, dificulty: Int!, elevation: Int!, gain: Int!, bio: String!, city: String!, last_editor_id: Int!): Line!
 }
 
 type Mutation {

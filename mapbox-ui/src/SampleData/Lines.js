@@ -15,7 +15,7 @@ export const Lines = [
 			gain: '1,500\'',
 			avgSlope: '25 degrees',
 			maxSlope: '35 degrees',
-			bio: 'Something about this line'
+			bio: 'Something about this adventure'
 		}
 	}
 ];

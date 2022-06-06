@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const secret = 'secret';
 
 const authService = {
-    issue: (payload) => jwt.sign(payload, secret, { expiresIn: 10000}),
+    issue: (payload) => jwt.sign(payload, secret, { expiresIn: 8640}),
     validate: async (req, res, next) => {
         const bearerHeader = req.headers['authorization'];
         if (typeof bearerHeader !== 'undefined') {
@@ -12,7 +12,9 @@ const authService = {
             await jwt.verify(bearerToken, secret, {}, (error) => {
                 if (error) {
                     return res.status(403).json({
-                        message: 'Invalid token'
+                        message: 'Invalid token',
+                        status: 403,
+                        error
                     });
                 }
             })
@@ -20,7 +22,8 @@ const authService = {
             next();
         } else {
             res.status(403).json({
-                message: 'Invalid request'
+                message: 'Invalid request',
+                status: 403,
             });
         }
     }

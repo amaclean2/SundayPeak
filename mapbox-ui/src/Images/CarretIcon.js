@@ -1,3 +1,5 @@
+import React from 'react';
+
 const CarretIcon = () => (
 	<svg xmlns="http://www.w3.org/2000/svg" width="21.213" height="21.213" viewBox="0 0 21.213 21.213">
 		<g id="Carret" transform="translate(10.607) rotate(45)">

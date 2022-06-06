@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Map, { Layer, Marker, NavigationControl, Source } from 'react-map-gl';
 
 import { mapboxAccessToken } from '../Constants';
 
 import '../App.css';
 import SkierIcon from '../Images/SkierIcon';
-import { useLineEditContext } from '../Providers/lineEditProvider';
+import { useAdventureEditContext } from '../Providers/adventureEditProvider';
 import { useCardStateContext } from '../Providers/cardStateProvider';
 import MapPopup from './MapPopup';
 
@@ -28,54 +28,54 @@ const ReactMap = () => {
 	const [popupInfo, setPopupInfo] = useState(null);
 
 	const { openCard } = useCardStateContext();
-	const { lineAddState, setLineAddState, setCurrentLine, allLines, setAllLines } = useLineEditContext();
+	const { adventureAddState, setAdventureAddState, setCurrentAdventure, allAdventures, setAllAdventures } = useAdventureEditContext();
 
 	const onDblClick = (e) => {
 		e.preventDefault();
 
-		if (!lineAddState) {
+		if (!adventureAddState) {
 			return;
 		}
 
-		setAllLines((currLineData) => {
-			const newLineData = [...currLineData];
-			newLineData.push({
+		setAllAdventures((currAdventureData) => {
+			const newAdventureData = [...currAdventureData];
+			newAdventureData.push({
 				name: "abc",
-				id: allLines.length,
+				id: allAdventures.length,
 				geometry: {
 					coordinates: [e.lngLat.lng, e.lngLat.lat]
 				},
 				properties: {}
 			});
 
-			return newLineData;
+			return newAdventureData;
 		});
 
-		setLineAddState(false);
+		setAdventureAddState(false);
 	};
 
 	const viewMore = () => {
-		setCurrentLine(popupInfo);
+		setCurrentAdventure(popupInfo);
 		setPopupInfo(null);
-		openCard('lines');
+		openCard('adventures');
 	}
 
 	const pins = useMemo(() => {
-		return allLines.map((line, idx) => (
+		return allAdventures.map((adventure, idx) => (
 			<Marker
 				key={`marker-${idx}`}
-				longitude={line.geometry.coordinates[0]}
-				latitude={line.geometry.coordinates[1]}
+				longitude={adventure.geometry.coordinates[0]}
+				latitude={adventure.geometry.coordinates[1]}
 				anchor="bottom"
 				onClick={(e) => {
 					e.originalEvent.stopPropagation();
-					setPopupInfo(line);
+					setPopupInfo(adventure);
 				}}
 			>
 				<SkierIcon size={20} />
 			</Marker>
 		))
-	}, [allLines]);
+	}, [allAdventures]);
 
 	return <Map
 		reuseMaps

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import DisplayCard from "../DisplayCard";
 import { useUserStateContext } from "../Providers/userStateProvider";
 import FormField from "../Reusable/FormField";
@@ -26,7 +28,7 @@ const SignupFlow = () => {
 				/>
 			</div>
 			<div className="profile-content">
-				<div className="line-info flex-box">
+				<div className="adventure-info flex-box">
 					<FormField
 						name="firstName"
 						label="First Name"
@@ -64,7 +66,7 @@ const SignupFlow = () => {
 					/>
 				</div>
 				<div className="action-buttons">
-					<button onClick={saveUser} className="button line-edit-button">
+					<button onClick={saveUser} className="button adventure-edit-button">
 						Save
 					</button>
 				</div>

@@ -1,6 +1,8 @@
+import React from 'react';
+
 import Profile from '../Images/Profile';
 import Skier from '../Images/Skier';
-import LineEditor from '../LineEditor';
+import AdventureEditor from '../AdventureEditor';
 import UserProfile from '../UserProfile';
 import { useCardStateContext } from '../Providers/cardStateProvider';
 import { useUserStateContext } from '../Providers/userStateProvider';
@@ -57,7 +59,7 @@ const ActivitiesButton = () => {
 
 	return (
 		<ButtonBarButton
-			action={() => openCard('lines')}>
+			action={() => openCard('adventures')}>
 			<Skier />
 		</ButtonBarButton>
 	);
@@ -78,7 +80,7 @@ const ButtonBar = () => {
 				</div>
 			)}
 			{displayCardBoolState && workingCard === 'profile' && <UserProfile />}
-			{displayCardBoolState && workingCard === 'lines' && <LineEditor />}
+			{displayCardBoolState && workingCard === 'adventures' && <AdventureEditor />}
 			{displayCardBoolState && workingCard === 'signup' && <SignupFlow />}
 			{displayCardBoolState && workingCard === 'login' && <LoginFlow />}
 		</>

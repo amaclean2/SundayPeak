@@ -1,25 +1,27 @@
+import React from 'react';
 import { Popup } from 'react-map-gl';
+
 import { useCardStateContext } from '../../Providers/cardStateProvider';
-import { useLineEditContext } from '../../Providers/lineEditProvider';
+import { useAdventureEditContext } from '../../Providers/adventureEditProvider';
 import { useTickListContext } from '../../Providers/tickListProvider';
 import FormField from '../../Reusable/FormField';
 
 import './styles.css';
 
 const MapPopup = ({ popupInfo, setPopupInfo }) => {
-	const {setCurrentLine} = useLineEditContext();
+	const {setCurrentAdventure} = useAdventureEditContext();
 	const {openCard} = useCardStateContext();
 	const {addToTickList} = useTickListContext();
 
 	const viewMore = () => {
-		setCurrentLine(popupInfo);
+		setCurrentAdventure(popupInfo);
 		setPopupInfo(null);
-		openCard('lines');
+		openCard('adventures');
 	};
 
 	return (
 		<Popup
-			className="line-pop-up"
+			className="adventure-pop-up"
 			anchor="top"
 			longitude={Number(popupInfo.geometry.coordinates[0])}
 			latitude={Number(popupInfo.geometry.coordinates[1])}

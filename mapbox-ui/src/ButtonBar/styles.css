@@ -4,7 +4,7 @@
     background-color: var(--default-background-color);
     border-radius: 8px;
     border: none;
-    outline: none;
+    outadventure: none;
     box-shadow: 0 5px 10px var(--box-shadow-opacity);
     transition: all 0.3s ease-in-out;
     cursor: pointer;

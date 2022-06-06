@@ -2,12 +2,17 @@
 
 type User {
     id: Int!
-    first_name: String!
-    last_name: String!
-    email: String!
-    password: String!
-    city: String!
-    bio: String!
+    first_name: String!,
+    last_name: String!,
+    email: String!,
+    is_premium: Boolean!,
+    sex: Int!,
+    user_site: String!,
+    password: String!,
+    city: String!,
+    bio: String!,
+    date_created: Int!,
+    last_updated: Int!,
 }
 
 type UserInitResponse {
@@ -24,7 +29,19 @@ type Query {
 # Mutations
 
 type Mutation {
-    editUser(first_name: String!, last_name: String!, email: String!, password: String!, city: String!, bio: String!): User!
+    editUser(
+        first_name: String!,
+        last_name: String!,
+        email: String!,
+        is_premium: Boolean!,
+        sex: Int!,
+        user_site: String!,
+        password: String!,
+        city: String!,
+        bio: String!,
+        date_created: Int!,
+        last_updated: Int!
+    ): User!
 }
 
 type Mutation {

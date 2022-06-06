@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { useLogin } from './apiCalls';
+import { useCardStateContext } from './cardStateProvider';
 
 const UserStateContext = createContext();
 
@@ -16,15 +17,17 @@ export const useUserStateContext = () => {
 
 export const UserStateProvider = ({ children }) => {
 	const { loginUser } = useLogin();
+	const { closeCard } = useCardStateContext();
 
 	const [workingUser, setWorkingUser] = useState({});
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [userFields, setUserFields] = useState({});
 	const [loginFields, setLoginFields] = useState({});
 	const [isLandingPage, setIsLandingPage] = useState(true);
+	const [loginError, setLoginError] = useState(null);
 
 	useEffect(() => {
-		const loggedUser = localStorage.getItem('user');
+		const loggedUser = localStorage.getItem('token');
 		if (loggedUser) {
 			const parsedUser = JSON.parse(loggedUser);
 			console.log("PARSED_USER", parsedUser);
@@ -47,12 +50,14 @@ export const UserStateProvider = ({ children }) => {
 					setIsLoggedIn(true);
 					setIsLandingPage(false);
 					setLoginFields({});
-					localStorage.setItem('user', JSON.stringify(loggedInUser));
+					closeCard();
 					return 'USER_LOGGED_IN';
 				}
 
 			} catch (error) {
-				throw new Error(error);
+				console.log('User login failed');
+
+				setLoginError(error);
 			}
 
 		} else {
@@ -79,6 +84,7 @@ export const UserStateProvider = ({ children }) => {
 				loginFields,
 				workingUser,
 				isLandingPage,
+				loginError,
 				setUserFields,
 				setLoginFields,
 				attemptLogin,

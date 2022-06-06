@@ -10,6 +10,7 @@ const authService = require('./Services/auth.sevice');
 const router = require('./ExternalRoutes');
 
 const app = express();
+const port = process.env.PORT || 5000;
 
 // used for external apis
 app.use(express.urlencoded({ extended: false }));
@@ -62,6 +63,6 @@ app.post('/graphql', authService.validate);
 
 startApplication();
 
-app.listen({ port: 5000 }, () => {
+app.listen({ port }, () => {
     console.log(`Backyard friends running on http://localhost:5000`);
 });

@@ -14,7 +14,20 @@ const userResolvers = {
 
 	Mutation: {
 		editUser: (parent, args) => {
-			const { id, first_name, last_name, email, password, city, bio } = args;
+			const {
+				id,
+				first_name,
+				last_name,
+				email,
+				is_premium,
+				sex,
+				user_site,
+				password,
+				city,
+				bio,
+				date_created,
+				last_updated
+			} = args;
 			const editableUserIdx = Users.findIndex((user) => user.id === id);
 
 			const newUserData = {
@@ -22,6 +35,11 @@ const userResolvers = {
 				first_name,
 				last_name,
 				email,
+				is_premium,
+				sex,
+				user_site,
+				date_created,
+				last_updated,
 				password,
 				city,
 				bio

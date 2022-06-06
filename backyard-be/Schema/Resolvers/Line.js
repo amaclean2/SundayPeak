@@ -22,7 +22,7 @@ const lineResolvers = {
         },
 
         editLine: (parent, args) => {
-            const { id, name, approach, season, avg_angle, max_angle, elevation, gain, bio, city, last_editor_id } = args;
+            const { id, name, approach, season, avg_angle, max_angle, elevation, dificulty, gain, bio, city, last_editor_id } = args;
             const editableLineIdx = Lines.findIndex((line) => line.id === id);
 
             const newLineData = {
@@ -33,6 +33,7 @@ const lineResolvers = {
                 avg_angle,
                 max_angle,
                 elevation,
+                dificulty,
                 gain,
                 bio,
                 city,

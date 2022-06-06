@@ -2,6 +2,7 @@ type Activity {
     id: Int!
     line_id: Int!
     user_id: Int!
+    public: Boolean!
 }
 
 # Queries
@@ -17,5 +18,5 @@ type Query {
 # Mutations
 
 type Mutation {
-    createActivity(line_id: Int!, user_id: Int!): Activity!
+    createActivity(line_id: Int!, user_id: Int!, public: Boolean!): Activity!
 }

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import DisplayCard from "../DisplayCard";
 import { useCardStateContext } from "../Providers/cardStateProvider";
 import { useTickListContext } from "../Providers/tickListProvider";
@@ -102,13 +104,13 @@ const UserProfile = () => {
 				<div className="action-buttons">
 					<button
 						onClick={logout}
-						className="button line-add-button"
+						className="button adventure-add-button"
 					>
 						Logout
 					</button>
 					<button
 						onClick={editUser}
-						className="button line-add-button"
+						className="button adventure-add-button"
 					>
 						Edit
 					</button>

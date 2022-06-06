@@ -1,16 +1,17 @@
+import React from 'react';
+
 import DisplayCard from "../DisplayCard";
-import { useCardStateContext } from "../Providers/cardStateProvider";
 import { useUserStateContext } from "../Providers/userStateProvider";
+import ErrorField from '../Reusable/ErrorField';
 import FormField from "../Reusable/FormField";
 
 const LoginFlow = () => {
 	const {
 		loginFields,
 		setLoginFields,
-		attemptLogin
+		attemptLogin,
+		loginError
 	} = useUserStateContext();
-
-	const { closeCard } = useCardStateContext();
 
 	const onChange = (e) => {
 		setLoginFields((currLoginFields) => {
@@ -24,7 +25,6 @@ const LoginFlow = () => {
 	const handleLogin = () => {
 		attemptLogin().then((resp) => {
 			console.log(resp);
-			closeCard();
 		});
 	};
 
@@ -38,7 +38,8 @@ const LoginFlow = () => {
 				/>
 			</div>
 			<div className="profile-content">
-				<div className="line-info flex-box">
+				<div className="adventure-info flex-box">
+					{loginError && <ErrorField error={loginError} />}
 					<FormField
 						name="email"
 						label="Email"
@@ -56,7 +57,7 @@ const LoginFlow = () => {
 					/>
 				</div>
 				<div className="action-buttons">
-					<button onClick={handleLogin} className="button line-edit-button">
+					<button onClick={handleLogin} className="button adventure-edit-button">
 						Login
 					</button>
 				</div>

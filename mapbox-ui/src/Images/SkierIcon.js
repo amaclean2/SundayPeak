@@ -1,4 +1,4 @@
-import { memo } from "react";
+import React, { memo } from 'react';
 
 const SkierIcon = ({ size = 40 }) => (
 	<svg id="SkierIcon" xmlns="http://www.w3.org/2000/svg" height={size} viewBox="0 0 120 120">

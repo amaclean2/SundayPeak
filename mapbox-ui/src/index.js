@@ -4,23 +4,26 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { CardStateProvider } from './Providers/cardStateProvider';
-import { LineEditProvider } from './Providers/lineEditProvider';
+import { AdventureEditProvider } from './Providers/adventureEditProvider';
 import { UserStateProvider } from './Providers/userStateProvider';
 import { TickListProvider } from './Providers/tickListProvider';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { GQLProvider } from './Providers/gqlProvider';
 
 const ProvidersWrapper = () => {
   return (
-    <UserStateProvider>
-      <LineEditProvider>
-        <CardStateProvider>
-          <TickListProvider>
-            <App />
-          </TickListProvider>
-        </CardStateProvider>
-      </LineEditProvider>
-    </UserStateProvider>
+    <CardStateProvider>
+      <GQLProvider>
+        <UserStateProvider>
+          <AdventureEditProvider>
+            <TickListProvider>
+              <App />
+            </TickListProvider>
+          </AdventureEditProvider>
+        </UserStateProvider>
+      </GQLProvider>
+    </CardStateProvider>
   );
 };
 
