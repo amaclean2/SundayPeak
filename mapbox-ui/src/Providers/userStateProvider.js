@@ -59,7 +59,7 @@ export const UserStateProvider = ({ children }) => {
 			}
 
 		} else {
-			setLoginError('Email field required');
+			setLoginError('Email and Password fields are required. Please try again.');
 		}
 	};
 

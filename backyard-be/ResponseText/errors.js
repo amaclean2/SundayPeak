@@ -10,7 +10,7 @@ const errorTexts = {
     serverValidateUser: 'Server Error: Could not validate user',
     serverLoginUser: 'Server Error: Could not login user',
     serverLoginUser: 'Server Error: Could not create user',
-    noAccountExits: 'This email cannot be found'
+    noAccountExists: 'This email cannot be found'
 };
 
 module.exports = errorTexts;

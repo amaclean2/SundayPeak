@@ -3,6 +3,16 @@
     flex: 1;
 }
 
+.form-field-container.wide {
+    flex-basis: 100%;
+}
+
+.form-field-container.small {
+    min-width: 0;
+    flex: 0 1 auto;
+    font-weight: 600;
+}
+
 .form-field, .form-field-static {
     display: block;
 }
@@ -21,13 +31,13 @@
     border: 1px solid #666;
     border-radius: 3px;
     font-size: 15px;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    margin: 5px 0;
     display: block;
-    width: calc(100% - 40px);
+    /* subtract the padding from the form field and the border*/
+    width: calc(100% - 34px);
     padding: 10px 16px;
     transition: all 0.2s ease-in-out;
-    outadventure: none;
+    outline: none;
 }
 
 .form-field.text:focus, .form-field.password:focus {
@@ -38,7 +48,6 @@
 .form-field-static.card-header {
     font-size: 20px;
     margin: 10px;
-    display: block;
 }
 
 .form-field.card-header {

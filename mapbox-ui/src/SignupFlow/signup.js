@@ -1,6 +1,7 @@
 import React from 'react';
 
 import DisplayCard from "../DisplayCard";
+import ProfileHeader from '../DisplayCard/ProfileHeader';
 import { useUserStateContext } from "../Providers/userStateProvider";
 import FormField from "../Reusable/FormField";
 
@@ -19,14 +20,8 @@ const SignupFlow = () => {
 	const saveUser = (e) => { };
 
 	return (
-		<DisplayCard position={"center"}>
-			<div className="profile-header">
-				<FormField
-					value={'Create a New Account'}
-					isEditable={false}
-					className="card-header"
-				/>
-			</div>
+		<DisplayCard configuration={"center"}>
+			<ProfileHeader textContents={'Create a New Account'} configuration={'centered'} />
 			<div className="profile-content">
 				<div className="adventure-info flex-box">
 					<FormField

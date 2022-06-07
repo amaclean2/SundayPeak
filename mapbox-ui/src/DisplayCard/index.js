@@ -5,7 +5,7 @@ import { useCardStateContext } from '../Providers/cardStateProvider';
 
 import './styles.css';
 
-const DisplayCard = ({ children, onClose = () => { }, position = 'left' }) => {
+const DisplayCard = ({ children, onClose = () => { }, configuration = 'left' }) => {
 	const { displayCardBoolState, displayCardOpenState, closeCard } = useCardStateContext();
 
 	if (!displayCardBoolState) {
@@ -18,7 +18,7 @@ const DisplayCard = ({ children, onClose = () => { }, position = 'left' }) => {
 	}
 
 	return (
-		<div className={`display-card-container flex-box ${position}`}>
+		<div className={`display-card-container flex-box ${configuration}`}>
 			<div className={`display-card ${displayCardOpenState}`}>
 				<div className="display-header">
 					<div className="display-header-spacer" />

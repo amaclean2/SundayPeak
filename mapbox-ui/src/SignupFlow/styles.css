@@ -1,0 +1,22 @@
+.login-cta {
+    width: 200px;
+    margin: 5px auto;
+    box-shadow: 0 2px 3px var(--box-shadow-opacity);
+}
+
+.forgot-button {
+    flex-basis: 100%;
+}
+
+.create-account-cta {
+    flex-basis: 100%;
+    margin-top: 10px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.new-account-button {
+    font-size: 12px;
+    padding: 5px;
+    text-decoration: underline;
+}

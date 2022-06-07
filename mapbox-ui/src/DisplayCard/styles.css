@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .display-card-container {
@@ -54,10 +54,10 @@
     border-left: 2px solid #000;
     width: 50px;
     height: 50px;
-    outadventure: none;
+    outline: none;
     background-color: #FFF;
     cursor: pointer;
-    transition: all 0.1s ease-in-out;
+    transition: all 0.2s ease-in-out;
     justify-content: center;
 }
 
@@ -80,4 +80,34 @@
 
 .display-content {
     flex: 1;
+}
+
+.action-buttons {
+    padding: 10px;
+}
+
+.cta-buttons {
+    flex-wrap: wrap;
+    padding-top: 5px;
+}
+
+.profile-content {
+    height: 100%;
+    background-color: var(--secondary-background-color);
+    backdrop-filter: blur(8px);
+    padding-bottom: 10px;
+}
+
+.profile-header {
+    width: 100%;
+    height: 80px;
+    background-color: var(--primary-accent-color-opacity);
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+}
+
+.profile-header.centered {
+    justify-content: center;
+    align-items: center;
 }

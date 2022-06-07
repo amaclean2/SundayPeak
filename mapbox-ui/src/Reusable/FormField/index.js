@@ -12,7 +12,8 @@ const FormField = ({
 	className = '',
 	hideLabel = false,
 	autoComplete = 'off',
-	onChange = () => {}
+	fullWidth = false,
+	onChange = () => { }
 }) => {
 	const [workingValue, setWorkingValue] = useState(value);
 
@@ -22,11 +23,11 @@ const FormField = ({
 	};
 
 	return (
-		<div className="form-field-container">
+		<div className={`form-field-container ${(fullWidth) ? 'wide' : ''} ${(!isEditable) ? 'small' : ''}`}>
 			{!hideLabel && <label htmlFor={name} className={`${type} ${className} label-field`}>{label}</label>}
 			{isEditable && (
 				<input
-					className={`${type} ${className} form-field`}
+					className={`${type} form-field`}
 					type={type}
 					name={name}
 					autoComplete={autoComplete}

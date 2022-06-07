@@ -3,19 +3,3 @@
     padding-top: 20px;
     flex-wrap: wrap;
 }
-
-.action-buttons {
-    padding: 10px;
-}
-
-.action-buttons .button {
-    background-color: var(--secondary-accent-color);
-}
-
-.action-buttons .button:hover {
-    background-color: var(--secondary-hover-color);
-}
-
-.action-buttons .button:disabled {
-    background-color: var(--secondary-disabled-color);
-}

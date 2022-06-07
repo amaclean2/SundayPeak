@@ -37,7 +37,7 @@
   font-size: 15px;
   margin: 5px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .button:hover {
@@ -46,4 +46,16 @@
 
 .button:disabled {
   background-color: var(--secondary-disabled-color);
+}
+
+.secondary-button {
+  background-color: transparent;
+  box-shadow: none;
+  color: var(--secondary-accent-color);
+  font-weight: 600;
+}
+
+.secondary-button:hover {
+  background-color: transparent;
+  color: var(--main-text-color);
 }

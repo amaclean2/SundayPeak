@@ -7,4 +7,11 @@
     border-radius: 5px;
     font-size: 14px;
     box-shadow: 0 2px 2px var(--box-shadow-opacity);
+    transition: all 0.2s ease-in-out;
+}
+
+.error-field.collapsed {
+    height: 0;
+    margin: 0;
+    padding: 0 10px;
 }

@@ -1,18 +1,3 @@
-.profile-header {
-    width: 100%;
-    height: 80px;
-    background-color: var(--primary-accent-color-opacity);
-    display: flex;
-    justify-content: space-between;
-    backdrop-filter: blur(8px);
-}
-
-.profile-content {
-    height: 100%;
-    background-color: var(--secondary-background-color);
-    backdrop-filter: blur(8px);
-}
-
 h1 {
     margin: 0;
     padding: 10px 12px;
