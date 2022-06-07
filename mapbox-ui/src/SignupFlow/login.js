@@ -10,7 +10,8 @@ const LoginFlow = () => {
 		loginFields,
 		setLoginFields,
 		attemptLogin,
-		loginError
+		loginError,
+		setLoginError
 	} = useUserStateContext();
 
 	const onChange = (e) => {
@@ -22,17 +23,16 @@ const LoginFlow = () => {
 		});
 	};
 
-	const handleLogin = () => {
-		attemptLogin().then((resp) => {
-			console.log(resp);
-		});
+	const handleOnClose = () => {
+		setLoginError(null);
+		setLoginFields({});
 	};
 
 	return (
-		<DisplayCard>
+		<DisplayCard onClose={handleOnClose} position={"center"}>
 			<div className="profile-header">
 				<FormField
-					value={'Login'}
+					value={'Log In'}
 					isEditable={false}
 					className="card-header"
 				/>
@@ -44,6 +44,7 @@ const LoginFlow = () => {
 						name="email"
 						label="Email"
 						isEditable={true}
+						autoComplete={'on'}
 						value={loginFields.email}
 						onChange={onChange}
 					/>
@@ -52,13 +53,14 @@ const LoginFlow = () => {
 						label="Password"
 						type="password"
 						isEditable={true}
+						autoComplete={'on'}
 						value={loginFields.password}
 						onChange={onChange}
 					/>
 				</div>
 				<div className="action-buttons">
-					<button onClick={handleLogin} className="button adventure-edit-button">
-						Login
+					<button onClick={attemptLogin} className="button adventure-edit-button">
+						Log In
 					</button>
 				</div>
 			</div>

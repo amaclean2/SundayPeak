@@ -10,18 +10,16 @@ export const useLogin = () => {
                     email, password
                 })
             }).then(resp => resp.json())
-                .then((data) => {
-                    if (data.status !== 200) {
-                        throw new Error('User login failed', data.message);
-                    }
+            .then((data) => {
+                if (data.status !== 202) {
+                    throw data;
+                }
 
-                    console.log("LOGIN_SUCCESSFUL", data);
-                    localStorage.setItem('token', JSON.stringify(data.token));
+                console.log("LOGIN_SUCCESSFUL", data);
+                localStorage.setItem('token', JSON.stringify(data.token));
 
-                    return data.user;
-                }).catch((err) => {
-                    throw new Error(err);
-                })
+                return data.user;
+            });
         }
     };
 };

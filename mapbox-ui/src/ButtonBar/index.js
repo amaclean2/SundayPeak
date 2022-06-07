@@ -26,7 +26,7 @@ const LoginButton = () => {
 		<ButtonBarButton
 			className="login-button"
 			action={() => openCard('login')}>
-			Login
+			Log In
 		</ButtonBarButton>
 	);
 };

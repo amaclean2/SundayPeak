@@ -5,7 +5,7 @@ import { useCardStateContext } from '../Providers/cardStateProvider';
 
 import './styles.css';
 
-const DisplayCard = ({ children, onClose = () => {} }) => {
+const DisplayCard = ({ children, onClose = () => { }, position = 'left' }) => {
 	const { displayCardBoolState, displayCardOpenState, closeCard } = useCardStateContext();
 
 	if (!displayCardBoolState) {
@@ -18,18 +18,20 @@ const DisplayCard = ({ children, onClose = () => {} }) => {
 	}
 
 	return (
-		<div className={`display-card ${displayCardOpenState}`}>
-			<div className="display-header">
-				<div className="display-header-spacer" />
-				<button className="display-back-button flex-box" onClick={localOnClose}>
-					<CarretIcon />
-				</button>
-			</div>
-			<div className="display-content">
-				{children}
+		<div className={`display-card-container flex-box ${position}`}>
+			<div className={`display-card ${displayCardOpenState}`}>
+				<div className="display-header">
+					<div className="display-header-spacer" />
+					<button className="display-back-button flex-box" onClick={localOnClose}>
+						<CarretIcon />
+					</button>
+				</div>
+				<div className="display-content">
+					{children}
+				</div>
 			</div>
 		</div>
-	)
+	);
 };
 
 export default DisplayCard;

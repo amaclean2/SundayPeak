@@ -19,7 +19,7 @@ const SignupFlow = () => {
 	const saveUser = (e) => { };
 
 	return (
-		<DisplayCard>
+		<DisplayCard position={"center"}>
 			<div className="profile-header">
 				<FormField
 					value={'Create a New Account'}
@@ -67,7 +67,7 @@ const SignupFlow = () => {
 				</div>
 				<div className="action-buttons">
 					<button onClick={saveUser} className="button adventure-edit-button">
-						Save
+						Sign Up
 					</button>
 				</div>
 			</div>

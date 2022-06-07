@@ -18,7 +18,7 @@ const LandingPageHeader = () => {
             <div className="flex-spacer" />
             <div className="action-buttons">
                 <button className="button" onClick={handleOpenLogin}>
-                    Login
+                    Log In
                 </button>
                 <button className="button">
                     Create an Account

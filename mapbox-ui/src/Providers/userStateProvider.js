@@ -30,7 +30,6 @@ export const UserStateProvider = ({ children }) => {
 		const loggedUser = localStorage.getItem('token');
 		if (loggedUser) {
 			const parsedUser = JSON.parse(loggedUser);
-			console.log("PARSED_USER", parsedUser);
 			setWorkingUser(parsedUser);
 			setIsLoggedIn(true);
 			setIsLandingPage(false);
@@ -40,7 +39,7 @@ export const UserStateProvider = ({ children }) => {
 	const attemptLogin = async () => {
 		const {email, password} = loginFields;
 
-		if (email) {
+		if (email && password) {
 
 			try {
 				const loggedInUser = await loginUser({ email, password });
@@ -55,13 +54,12 @@ export const UserStateProvider = ({ children }) => {
 				}
 
 			} catch (error) {
-				console.log('User login failed');
-
-				setLoginError(error);
+				console.log('User login failed', error);
+				setLoginError(error.message);
 			}
 
 		} else {
-			throw new Error('EMAIL_FIELD_REQUIRED');
+			setLoginError('Email field required');
 		}
 	};
 
@@ -85,6 +83,7 @@ export const UserStateProvider = ({ children }) => {
 				workingUser,
 				isLandingPage,
 				loginError,
+				setLoginError,
 				setUserFields,
 				setLoginFields,
 				attemptLogin,

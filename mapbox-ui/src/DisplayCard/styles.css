@@ -1,7 +1,5 @@
 .display-card {
-    position: fixed;
-    top: 10px;
-    left: 10px;
+    margin: 10px;
     height: calc(100vh - 60px);
     width: calc(50vw - 20px);
     max-width: 500px;
@@ -11,6 +9,25 @@
     flex-direction: column;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
+}
+
+.display-card-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    align-items: flex-start;
+}
+
+.display-card-container.center {
+    justify-content: center;
+    align-items: center;
+}
+
+.display-card-container.center .display-card {
+    height: auto;
+    margin-bottom: 500px;
 }
 
 .display-card.closing, .display-card.opening {

@@ -1,9 +1,10 @@
 import React from 'react';
 
+import './styles.css';
+
 const ErrorField = ({ error }) => {
-    console.log("ERROR_FIELD", error);
     return (
-        <div className="error-field">Error!</div>
+        <span className="error-field">{error}</span>
     );
 };
 
