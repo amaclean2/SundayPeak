@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { useLogin } from './apiCalls';
+import { useLogin } from './hooks/externalCalls';
 import { useCardStateContext } from './cardStateProvider';
 
 const UserStateContext = createContext();
@@ -16,13 +16,12 @@ export const useUserStateContext = () => {
 };
 
 export const UserStateProvider = ({ children }) => {
-	const { loginUser } = useLogin();
+	const { loginUser, createUser } = useLogin();
 	const { closeCard } = useCardStateContext();
 
 	const [workingUser, setWorkingUser] = useState({});
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [userFields, setUserFields] = useState({});
-	const [loginFields, setLoginFields] = useState({});
+	const [formFields, setFormFields] = useState({});
 	const [isLandingPage, setIsLandingPage] = useState(true);
 	const [loginError, setLoginError] = useState(null);
 
@@ -37,7 +36,7 @@ export const UserStateProvider = ({ children }) => {
 	}, []);
 
 	const attemptLogin = async () => {
-		const {email, password} = loginFields;
+		const {email, password} = formFields;
 
 		if (email && password) {
 
@@ -48,7 +47,7 @@ export const UserStateProvider = ({ children }) => {
 					setWorkingUser(loggedInUser);
 					setIsLoggedIn(true);
 					setIsLandingPage(false);
-					setLoginFields({});
+					setFormFields({});
 					closeCard();
 					return 'USER_LOGGED_IN';
 				}
@@ -57,13 +56,37 @@ export const UserStateProvider = ({ children }) => {
 				console.log('User login failed', error);
 				setLoginError(error.message);
 			}
-
 		} else {
 			setLoginError('Email and Password fields are required. Please try again.');
 		}
 	};
 
-	const clickLogin = () => {
+	const attemptSignup = async () => {
+		const { email, password, firstName, lastName, password2 } = formFields;
+
+		if (email && password && password2 && firstName && lastName) {
+			try {
+				const createdUser = await createUser({ email, password, first_name: firstName, last_name: lastName, password2});
+
+				if (createdUser) {
+					setWorkingUser(createdUser);
+					setIsLoggedIn(true);
+					setIsLandingPage(false);
+					setFormFields({});
+					closeCard();
+					return 'USER_CREATED';
+				}
+			} catch (error) {
+				console.log('User creation failed', error);
+				setLoginError(error.message);
+			}
+		} else {
+			console.log({email, password, firstName, lastName, password2});
+			setLoginError('Email, Password, Confirm Password, First Name, and Last Name fields are required. Please try again.');
+		}
+	}
+
+	const clickOffLanding = () => {
 		setIsLandingPage(false);
 	}
 
@@ -78,17 +101,16 @@ export const UserStateProvider = ({ children }) => {
 		<UserStateContext.Provider
 			value={{
 				isLoggedIn,
-				userFields,
-				loginFields,
+				formFields,
 				workingUser,
 				isLandingPage,
 				loginError,
 				setLoginError,
-				setUserFields,
-				setLoginFields,
+				setFormFields,
 				attemptLogin,
+				attemptSignup,
 				handleLogout,
-				clickLogin
+				clickOffLanding
 			}}
 		>
 			{children}

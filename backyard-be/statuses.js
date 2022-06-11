@@ -6,6 +6,7 @@ const statuses = {
     UNAUTHORIZED: 401,
     NOT_FOUND: 404,
     NOT_ACCEPTABLE: 406,
+    FORBIDDEN: 403,
     SERVER_ERROR: 500
 };
 

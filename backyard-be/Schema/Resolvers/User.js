@@ -1,6 +1,3 @@
-const { UserInputError } = require('apollo-server-express');
-
-const { validateCreateUser } = require('../../Validators/UserValidators');
 const Users = require('../../SampleData/UserData.json');
 const authService = require('../../Services/auth.sevice');
 

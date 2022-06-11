@@ -1,0 +1,117 @@
+.display-card {
+    margin: 10px;
+    height: calc(100vh - 60px);
+    width: calc(50vw - 20px);
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all var(--card-opening-speed) ease-in-out;
+    pointer-events: auto;
+}
+
+.display-card-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    align-items: flex-start;
+    pointer-events: none;
+}
+
+.display-card-container.center {
+    justify-content: center;
+    align-items: center;
+}
+
+.display-card-container.center .display-card {
+    height: auto;
+    margin-bottom: 500px;
+}
+
+.display-card.closing, .display-card.opening {
+    height: 50px;
+    width: 50px;
+    opacity: 0;
+}
+
+.display-header {
+    height: 50px;
+    width: 100%;
+    left: 0;
+    border-bottom: 2px solid #000;
+    display: flex;
+    background-color: var(--default-background-color);
+}
+
+.display-header-spacer {
+    flex: 1;
+}
+
+.display-back-button {
+    border: none;
+    border-left: 2px solid #000;
+    width: 50px;
+    height: 50px;
+    outline: none;
+    background-color: #FFF;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    justify-content: center;
+}
+
+.display-back-button svg {
+    padding-right: 5px;
+    transition: all 0.2s ease-in-out;
+}
+
+.display-card.open .display-back-button svg {
+    transform: rotate(-180deg);
+}
+
+.display-card.closing .display-back-button svg {
+    transform: rotate(0deg);
+}
+
+.display-back-button:hover {
+    background-color: #EEE;
+}
+
+.display-content {
+    flex: 1;
+}
+
+.action-buttons {
+    padding: 10px;
+}
+
+.cta-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 5px;
+}
+
+.profile-content {
+    height: 100%;
+    background-color: var(--secondary-background-color);
+    backdrop-filter: blur(8px);
+    padding-bottom: 10px;
+}
+
+.profile-header {
+    width: 100%;
+    height: 80px;
+    background-color: var(--primary-accent-color);
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    align-items: center;
+    color: var(--text-on-dark-background);
+}
+
+.profile-header.centered {
+    justify-content: center;
+}

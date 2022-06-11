@@ -2,10 +2,10 @@ import React from 'react';
 
 import './App.css';
 import './variables.css';
-import ButtonBar from "./ButtonBar";
-import ReactMap from "./Mapping/ReactMap";
 import { useUserStateContext } from './Providers/userStateProvider';
 import LandingPage from './LandingPage';
+import ButtonBar from './Components/ButtonBar';
+import ReactMap from './Components/Mapping/ReactMap';
 
 const App = () => {
   const { isLandingPage } = useUserStateContext();

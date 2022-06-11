@@ -1,0 +1,47 @@
+type Coordinates {
+    lat: Float!
+    lng: Float!
+}
+
+type Adventure {
+    id: Int!
+    adventure_type: String!
+    adventure_name: String!
+    approach_distance: Float!
+    season: String!
+    avg_angle: Int!
+    max_angle: Int!
+    elevation: Int!
+    difficulty: Int!
+    gear: String!
+    gain: Int!
+    bio: String!
+    nearest_city: String!
+    creator_id: Int!
+    coordinates: Coordinates!
+    editor_ids: [Int]
+}
+
+# Queries
+
+type Query {
+    getAllAdventures(coordinates: String!, type: String!, zoom: Int!): [Adventure!]!
+}
+
+type Query {
+    getAdventureDetails(id: Int!): Adventure!
+}
+
+# Mutations
+
+type Mutation {
+    createAdventure(adventure_type: String!, adventure_name: String!, approach_distance: Float!, season: String!, avg_angle: Float!, max_angle: Float!, difficulty: Int!, elevation: Int!, gear: String!, gain: Int!, bio: String!, nearest_city: String!, coordinates: String!, creator_id: Int!): Adventure!
+}
+
+type Mutation {
+    editAdventure(adventure_type: String!, adventure_name: String!, approach_distance: Float!, season: String!, avg_angle: Float!, max_angle: Float!, difficulty: Int!, elevation: Int!, gear: String!, gain: Int!, bio: String!, nearest_city: String!, coordinates: String!, last_editor_id: Int!): Adventure!
+}
+
+type Mutation {
+    deleteAdventure(id: Int!): Adventure!
+}

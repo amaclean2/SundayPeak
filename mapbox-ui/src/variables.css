@@ -1,6 +1,13 @@
 :root {
-    --primary-accent-color: #A8EEFC;
-    --primary-accent-color-opacity: #A8EEFCAA;
+    /* OPTIONS */
+    /* --primary-accent-color: #b038a9;
+    --primary-accent-color-opacity: #b038a9aa; */
+
+    /* --primary-accent-color: #A8EEFC;
+    --primary-accent-color-opacity: #A8EEFCAA; */
+
+    --primary-accent-color: #007F98;
+    --primary-accent-color-opacity: #007F98AA;
     --secondary-accent-color: #007F98;
     --secondary-hover-color: #58A3B2;
     --secondary-disabled-color: #9BB4B9;
@@ -13,7 +20,13 @@
 
     --default-background-color: #FFF;
     --default-background-color-hover: #DDD;
-    --secondary-background-color: #DEDEDE99;
+    /* --secondary-background-color: #DEDEDE99; */
+    --secondary-background-color: #FFFFFF;
 
     --box-shadow-opacity: rgba(0,0,0,0.3);
+
+    --card-opening-speed: 0.3s;
 }
+
+/* 9300df */
+/* b038a9 */

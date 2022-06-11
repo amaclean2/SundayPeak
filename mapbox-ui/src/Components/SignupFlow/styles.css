@@ -1,0 +1,21 @@
+.login-cta {
+    width: 200px;
+    margin: 5px 0;
+}
+
+.forgot-button {
+    padding: 0;
+}
+
+.create-account-cta {
+    flex-basis: 100%;
+    margin-top: 10px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.new-account-button {
+    font-size: 12px;
+    padding: 5px;
+    text-decoration: underline;
+}

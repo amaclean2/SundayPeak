@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@500;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@500;700&display=swap'); */
+@import url("https://use.typekit.net/yeo7sxx.css");
 @import "./variables.css";
 
 .app-container {
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: 'futura-pt', Arial, Helvetica, sans-serif;
   position: fixed;
   top: 0;
   left: 0;
@@ -26,36 +27,4 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-}
-
-.button {
-  background-color: var(--secondary-accent-color);
-  color: var(--text-on-dark-background);
-  border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 15px;
-  margin: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.button:hover {
-  background-color: var(--secondary-hover-color);
-}
-
-.button:disabled {
-  background-color: var(--secondary-disabled-color);
-}
-
-.secondary-button {
-  background-color: transparent;
-  box-shadow: none;
-  color: var(--secondary-accent-color);
-  font-weight: 600;
-}
-
-.secondary-button:hover {
-  background-color: transparent;
-  color: var(--main-text-color);
 }

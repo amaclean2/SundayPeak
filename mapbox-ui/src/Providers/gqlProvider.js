@@ -4,7 +4,8 @@ import {
     InMemoryCache,
     ApolloProvider,
     HttpLink,
-    from
+    from,
+    ApolloLink
 } from "@apollo/client";
 import { onError } from '@apollo/client/link/error';
 
@@ -14,8 +15,24 @@ const errorLink = onError(({ graphqlErrors, networkErrors }) => {
             console.log(`GraphQL error ${message}`);
         });
     }
-})
+});
+
+const authLink = new ApolloLink((operation, forward) => {
+    const token = localStorage.getItem('token');
+
+    console.log("AUTHORIZING_GQL", token);
+
+    operation.setContext({
+        headers: {
+            authorization: token ? `Bearer ${token}` : ''
+        }
+    });
+
+    return forward(operation);
+});
+
 const link = from([
+    authLink,
     errorLink,
     new HttpLink({ uri: "http://localhost:5000/graphql" })
 ]);

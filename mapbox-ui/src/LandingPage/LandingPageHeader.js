@@ -1,15 +1,19 @@
 import React from 'react';
 
-import { useCardStateContext } from "../Providers/cardStateProvider";
-import { useUserStateContext } from "../Providers/userStateProvider";
+import { CARD_STATES, useCardStateContext, useUserStateContext } from "../Providers";
 
 const LandingPageHeader = () => {
-    const { clickLogin } = useUserStateContext();
+    const { clickOffLanding } = useUserStateContext();
     const { openCard } = useCardStateContext();
 
     const handleOpenLogin = () => {
-        clickLogin();
-        openCard('login');
+        clickOffLanding();
+        openCard(CARD_STATES.login);
+    };
+
+    const handleOpenSignUp = () => {
+        clickOffLanding();
+        openCard(CARD_STATES.signup);
     };
 
     return (
@@ -20,7 +24,7 @@ const LandingPageHeader = () => {
                 <button className="button" onClick={handleOpenLogin}>
                     Log In
                 </button>
-                <button className="button">
+                <button className="button" onClick={handleOpenSignUp}>
                     Create an Account
                 </button>
             </div>

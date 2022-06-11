@@ -22,9 +22,9 @@ const returnError = ({ req, res, status, message, error }) => {
         errorBody.error = error.toString();
     }
 
+    console.error({ message: `ERROR_HANDLING: ${messageText}`, ...error});
+    
     res.status(!!status ? status : SERVER_ERROR).json(errorBody);
-
-    console.error(error);
 };
 
 module.exports = {

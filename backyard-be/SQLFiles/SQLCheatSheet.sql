@@ -22,18 +22,21 @@
 
 -- CREATE TABLE adventures(
 --     id INT AUTO_INCREMENT,
---     adventure_name VARCHAR(255),
---     approach FLOAT(5),
---     season VARCHAR(255),
---     avg_angle INT(2),
---     max_angle INT(2),
---     dificulty INT(2),
---     elevation INT,
---     gear VARCHAR(255),
+--     adventure_type VARCHAR(100),
+--     adventure_name VARCHAR(100),
+--     approach_distance FLOAT,
+--     season VARCHAR(50),
+--     avg_angle INT,
+--     max_angle INT,
+--     difficulty VARCHAR(50),
+--     elevation FLOAT,
+--     gear VARCHAR(100),
 --     gain INT,
 --     bio TEXT,
---     city VARCHAR(255),
+--     nearest_city VARCHAR(255),
 --     creator_id INT,
+--     coordinates_lat FLOAT,
+--     coordinates_lng FLOAT,
 --     PRIMARY KEY(id),
 --     FOREIGN KEY(creator_id) REFERENCES users(id)
 -- );
@@ -89,3 +92,21 @@
 -- SELECT UCASE(first_name), LCASE(last_name) FROM users;
 -- SELECT city, COUNT(city) FROM users GROUP BY city;
 -- SELECT city, COUNT(city) FROM users WHERE city = 'Reno' GROUP BY city;
+
+-- CREATE TABLE adventures(
+--     id
+--     type
+--     adventure_name,
+--     approach_distance,
+--     season,
+--     avg_angle,
+--     max_angle,
+--     difficulty,
+--     elevation,
+--     gear,
+--     gain,
+--     bio,
+--     nearest_city,
+--     creator_id,
+--     coordinates_lat
+--     coordinates_lng

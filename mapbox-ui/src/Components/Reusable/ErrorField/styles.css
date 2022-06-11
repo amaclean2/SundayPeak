@@ -1,0 +1,16 @@
+.error-field {
+    background-color: var(--alert-text-color);
+    color: var(--text-on-dark-background);
+    width: 100%;
+    padding: 15px 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+}
+
+.error-field.collapsed {
+    height: 0;
+    margin: 0;
+    padding: 0 10px;
+}

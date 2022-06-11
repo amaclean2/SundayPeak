@@ -1,30 +1,40 @@
 const jwt = require('jsonwebtoken');
+const { returnError } = require('../ErrorHandling');
+const statuses = require('../statuses');
 
 const secret = 'secret';
 
 const authService = {
-    issue: (payload) => jwt.sign(payload, secret, { expiresIn: 8640}),
+    issue: (payload) => jwt.sign(payload, secret, { expiresIn: 17280}),
     validate: async (req, res, next) => {
         const bearerHeader = req.headers['authorization'];
         if (typeof bearerHeader !== 'undefined') {
-            const bearerToken = bearerHeader.split(' ')[1];
+            let bearerToken = bearerHeader.split(' ')[1];
+
+            while (bearerToken.includes('\"')) {
+                bearerToken = bearerToken.replace('\"', '');
+            }
 
             await jwt.verify(bearerToken, secret, {}, (error) => {
                 if (error) {
-                    return res.status(403).json({
+                    return returnError({ 
+                        req,
+                        res,
+                        status: statuses.FORBIDDEN,
                         message: 'Invalid token',
-                        status: 403,
                         error
                     });
+                } else {
+                    next();
                 }
             })
-
-            next();
         } else {
-            res.status(403).json({
-                message: 'Invalid request',
-                status: 403,
-            });
+            return returnError({
+                req,
+                res,
+                status: statuses.FORBIDDEN,
+                message: 'Invalid request'
+            })
         }
     }
 };

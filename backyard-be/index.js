@@ -59,7 +59,7 @@ const startApplication = async () => {
 app.use('/api', router);
 
 // private routes
-app.post('/graphql', authService.validate);
+app.use('/', authService.validate);
 
 startApplication();
 

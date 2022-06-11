@@ -1,5 +1,7 @@
-const userActions = require("./User");
+const userActions = require('./User');
+const adventureActions = require('./Adventure');
 
 module.exports = {
-    ...userActions
+    ...userActions,
+    ...adventureActions
 };

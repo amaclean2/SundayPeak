@@ -28,6 +28,13 @@ const changeCardState = (cardState) => {
 	}
 };
 
+export const CARD_STATES = {
+	adventures: 'adenvetures',
+	profile: 'profile',
+	signup: 'signup',
+	login: 'login'
+};
+
 export const CardStateProvider = ({ children }) => {
 	const [displayCardOpenState, setDisplayCardOpenState] = useState('closed');
 	const [displayCardBoolState, setDisplayCardBoolState] = useState(false);

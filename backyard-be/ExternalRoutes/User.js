@@ -16,7 +16,7 @@ userRouter.post('/login', validateLoginUser, async (req, res) => {
         // queries for the email address
         const user = await getUserDB(email);
         if (!user) {
-            returnError({ req, res, status: NOT_FOUND, message: 'noAccountExists' });
+            return returnError({ req, res, status: NOT_FOUND, message: 'noAccountExists' });
         }
 
         if (comparePassword(password, user.password)) {
@@ -27,11 +27,11 @@ userRouter.post('/login', validateLoginUser, async (req, res) => {
             res.status(ACCEPTED).json({ user, status: ACCEPTED, token });
 
         } else {
-            returnError({ req, res, status: NOT_ACCEPTABLE, message: 'invalidPassword' });
+            return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'invalidPassword' });
         }
 
     } catch (error) {
-        returnError({ req, res, status: SERVER_ERROR, message: 'serverLoginUser', error });
+        return returnError({ req, res, status: SERVER_ERROR, message: 'serverLoginUser', error });
     }
 });
 
@@ -54,7 +54,7 @@ userRouter.post('/signup', validateCreateUser, async (req, res) => {
         });
 
     } catch (error) {
-        returnError({ req, res, status: SERVER_ERROR, message: 'serverCreateUser', error });
+        return returnError({ req, res, status: SERVER_ERROR, message: 'serverCreateUser', error });
     }
 });
 

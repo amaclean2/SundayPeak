@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import React from 'react';
 
-const SkierIcon = ({ size = 40 }) => (
+export const SkierIcon = ({ size = 40 }) => (
 	<svg id="SkierIcon" xmlns="http://www.w3.org/2000/svg" height={size} viewBox="0 0 120 120">
 		<g id="Ellipse_4" data-name="Ellipse 4" fill="#fff" stroke="#000" strokeWidth="1">
 			<circle cx="60" cy="60" r="60" stroke="none" />
@@ -12,5 +12,3 @@ const SkierIcon = ({ size = 40 }) => (
 		<circle id="Ellipse_3" data-name="Ellipse 3" cx="6" cy="6" r="6" transform="translate(77 18)" />
 	</svg>
 );
-
-export default memo(SkierIcon);
