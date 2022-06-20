@@ -1,7 +1,7 @@
-import { useQuery } from '@apollo/client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Lines } from "../SampleData/Lines";
-import { GET_ALL_ADVENTURES } from './hooks/typeDefs';
+import { useLazyQuery, useQuery } from '@apollo/client';
+
+import { GET_ADVENTURE, GET_ALL_ADVENTURES } from './typeDefs';
 
 const AdventureEditContext = createContext();
 
@@ -20,10 +20,16 @@ export const AdventureEditProvider = ({ children }) => {
 	const [adventureAddState, setAdventureAddState] = useState(false);
 	const [currentAdventure, setCurrentAdventure] = useState(null);
 	const [isEditable, setIsEditable] = useState(false);
+	const [adventureError, setAdventureError] = useState(null);
 
 	const defaultStartPosition = { lat: 39.347, lng: -120.194, zoom: 10 };
 
-	const { loading, error, data } = useQuery(GET_ALL_ADVENTURES, {
+	const {
+		loading: adventureQueryLoading,
+		error: adventureQueryError,
+		data: adventureQueryData,
+		refetch
+	} = useQuery(GET_ALL_ADVENTURES, {
 		variables: {
 			coordinates: JSON.stringify(defaultStartPosition),
 			type: 'line',
@@ -31,11 +37,27 @@ export const AdventureEditProvider = ({ children }) => {
 		}
 	});
 
+	const [ getAdventure, { data: getAdventureData }] = useLazyQuery(GET_ADVENTURE);
+
+	const refetchAdventures = () => refetch({
+		coordinates: JSON.stringify(defaultStartPosition),
+		type: 'line',
+		zoom: 10
+	}).then((response) => {
+		setAllAdventures(response.data.getAllAdventures);
+	});
+
 	useEffect(() => {
-		if (data) {
-			setAllAdventures(data.getAllAdventures);
+		if (adventureQueryData) {
+			setAllAdventures(adventureQueryData.getAllAdventures);
 		}
-	}, [data, loading, error]);
+	}, [adventureQueryData, adventureQueryLoading, adventureQueryError]);
+
+	useEffect(() => {
+		if (getAdventureData) {
+			setCurrentAdventure(getAdventureData.getAdventureDetails);
+		}
+	}, [getAdventureData]);
 
 	return (
 		<AdventureEditContext.Provider
@@ -45,10 +67,14 @@ export const AdventureEditProvider = ({ children }) => {
 				isEditable,
 				allAdventures,
 				defaultStartPosition,
+				adventureError,
+				refetchAdventures,
 				setAdventureAddState,
 				setCurrentAdventure,
 				setIsEditable,
-				setAllAdventures
+				setAllAdventures,
+				setAdventureError,
+				getAdventure
 			}}
 		>
 			{children}

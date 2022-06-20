@@ -30,13 +30,28 @@ const getUser = async (email) => {
 
             return results[0];
         }).catch((error) => {
-            console.log("ERROR_WITH_DB", error);
+            console.log("DATABASE_ERROR", error);
             throw new Error('Database query failed', error);
         });
 };
 
+const getUserById = async (id) => {
+    return db.promise().query(`SELECT * FROM users WHERE id = '${id}';`)
+        .then(([results, ...extras]) => {
+            if (!results.length) {
+                return null;
+            }
+
+            return results[0];
+        }).catch((error) => {
+            console.log("DATABASE_ERROR", error);
+            throw new Error('Database query failed', error);
+        });
+}
+
 module.exports = {
     addUser,
     checkForUser,
-    getUser
+    getUser,
+    getUserById
 };

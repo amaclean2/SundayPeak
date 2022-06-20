@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { useAdventureEditContext } from '../../Providers';
-import { DisplayCard, FormField } from '../Reusable';
+import { useAdventureEditContext, useCardStateContext } from '../../Providers';
+import { Button, DisplayCard, ErrorField, FormField, ProfileHeader } from '../Reusable';
+import { useSaveAdventure } from './hooks';
+import { gearOptions, rangeValues, seasonOptions } from './utils';
 
 import './styles.css';
 
@@ -13,13 +15,20 @@ const AdventureEditor = () => {
 		setCurrentAdventure,
 		isEditable,
 		setIsEditable,
-		setAllAdventures
+		refetchAdventures
 	} = useAdventureEditContext();
 
+	const { saveNewAdventure, newAdventureData } = useSaveAdventure();
+
+	const { closeCard } = useCardStateContext();
+
+	console.log("CURRENT_ADVENTURE", currentAdventure);
+
 	const onChange = (e) => {
+		
 		setCurrentAdventure((workingAdventure) => {
-			const newAdventure = {...workingAdventure};
-			newAdventure.properties[e.target.name] = e.target.value;
+			const newAdventure = { ...workingAdventure };
+			newAdventure[e.target.name] = e.target.value;
 
 			return newAdventure;
 		});
@@ -32,117 +41,153 @@ const AdventureEditor = () => {
 	};
 
 	const saveAdventure = () => {
-		setIsEditable(false);
-		setAllAdventures((currentAdventures) => {
-			const workingAdventureIdx = currentAdventures.findIndex(({ id }) => id === currentAdventure.id);
-			const newAdventures = [...currentAdventures];
-			newAdventures[workingAdventureIdx].properties = currentAdventure.properties;
+		// setIsEditable(false);
+		saveNewAdventure();
+	};
 
-			return newAdventures;
-		});
+	const cancelSave = () => {
+		refetchAdventures();
+		closeCard();
 	};
 
 	return (
 		<DisplayCard onClose={handleClose}>
-			<div className="profile-header">
-				{
-					(currentAdventure) ? (
-						<FormField
-							value={currentAdventure.properties.name}
-							hideLabel
-							name="name"
-							className="card-header"
-							isEditable={isEditable}
-							onChange={onChange}
-						/>
-					) : (
-						<FormField
-							value={'Adventure Editor'}
-							isEditable={false}
-							className="card-header"
-						/>
-					)
-				}
-			</div>
+			{currentAdventure && (
+				<ProfileHeader
+					textContents={currentAdventure.adventure_name}
+					editFields={{
+						isEditable: isEditable,
+						propName: 'adventure_name',
+						onChange
+					}}
+				/>
+			)}
 			<div className="profile-content">
 				{currentAdventure && (
 					<div className="adventure-info flex-box">
+						<ErrorField form={'adventure'} />
+						<FormField
+							name="bio"
+							label="Bio"
+							type="textarea"
+							isEditable={isEditable}
+							fullWidth
+							value={currentAdventure.bio}
+							onChange={onChange}
+						/>
 						<FormField
 							name="approach"
 							label="Approach Distance"
 							isEditable={isEditable}
-							value={currentAdventure.properties.approach}
+							fullWidth
+							value={currentAdventure.approach}
 							onChange={onChange}
 						/>
 						<FormField
 							name="elevation"
 							label="Elevation"
 							isEditable={isEditable}
-							value={currentAdventure.properties.elevation}
+							fullWidth
+							value={currentAdventure.elevation}
 							onChange={onChange}
 						/>
 						<FormField
 							name="season"
 							label="Best Season"
+							type="selectMany"
+							selectMany={{ options: seasonOptions}}
 							isEditable={isEditable}
-							value={currentAdventure.properties.season}
+							fullWidth
+							value={currentAdventure.season}
+							onChange={onChange}
+						/>
+						<FormField
+							name="gear"
+							label="Gear Required"
+							type="selectMany"
+							selectMany={{ options: gearOptions }}
+							isEditable={isEditable}
+							fullWidth
+							value={currentAdventure.gear}
 							onChange={onChange}
 						/>
 						<FormField
 							name="gain"
 							label="Elevation Gain"
 							isEditable={isEditable}
-							value={currentAdventure.properties.gain}
+							fullWidth
+							value={currentAdventure.gain}
 							onChange={onChange}
 						/>
 						<FormField
 							name="avgSlope"
-							label="Average Sope Angle"
+							label="Average Slope Angle"
 							isEditable={isEditable}
-							value={currentAdventure.properties.avgSlope}
+							fullWidth
+							value={currentAdventure.avgSlope}
 							onChange={onChange}
 						/>
 						<FormField
 							name="maxSlope"
 							label="Max Slope Angle"
 							isEditable={isEditable}
-							value={currentAdventure.properties.maxSlope}
+							fullWidth
+							value={currentAdventure.maxSlope}
 							onChange={onChange}
 						/>
 						<FormField
-							name="bio"
-							label="Bio"
+							name="difficulty"
+							label="Difficulty"
+							type="range"
+							range={rangeValues}
 							isEditable={isEditable}
-							value={currentAdventure.properties.bio}
+							fullWidth
+							value={currentAdventure.difficulty}
+							onChange={onChange}
+						/>
+						<FormField
+							name="nearest_city"
+							label="Nearest City"
+							isEditable={isEditable}
+							fullWidth
+							value={currentAdventure.nearest_city}
 							onChange={onChange}
 						/>
 					</div>
 				)}
 				<div className="action-buttons">
 					{!currentAdventure && (
-						<button
+						<Button
 							onClick={() => setAdventureAddState(true)}
 							disabled={adventureAddState}
 							className="button adventure-add-button"
 						>
 							Add New Adventure
-						</button>
+						</Button>
 					)}
 					{currentAdventure && !isEditable && (
-						<button
+						<Button
 							onClick={() => setIsEditable(true)}
 							className="button adventure-edit-button"
 						>
 							Edit Adventure
-						</button>
+						</Button>
 					)}
 					{currentAdventure && isEditable && (
-						<button
-							onClick={saveAdventure}
-							className="button adventure-edit-button"
-						>
-							Save
-						</button>
+						<>
+							<Button
+								onClick={saveAdventure}
+								className="button adventure-edit-button"
+							>
+								Save
+							</Button>
+							<Button
+								onClick={cancelSave}
+								className="button adventure-edit-button"
+							>
+								Cancel
+							</Button>
+						</>
 					)}
 				</div>
 			</div>

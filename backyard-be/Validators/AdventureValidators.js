@@ -2,6 +2,25 @@ const { UserInputError } = require("apollo-server-express");
 const errorTexts = require("../ResponseText/errors");
 
 const validateCreateAdventure = async (adventure) => {
+
+    if (adventure.input) {
+        adventure = {
+            ...adventure,
+            ...adventure.input
+        };
+
+        delete adventure.input;
+    }
+
+    // escaping single quotes
+    for (key in adventure) {
+        if (typeof adventure[key] === 'string' && adventure[key].includes('\'')) {
+            adventure[key] = adventure[key].replace(/'/g, "\\'");
+        }
+    }
+
+    console.log("ADVENTURE_VALIDATOR", adventure);
+
     const {
         adventure_type,
         adventure_name,
@@ -9,7 +28,10 @@ const validateCreateAdventure = async (adventure) => {
         coordinates,
     } = adventure;
 
+    console.log("COORDINATES", coordinates);
     const parsedCoordinates = JSON.parse(coordinates);
+
+    console.log("PARSED_COORDINATES", parsedCoordinates);
 
     if (!adventure_type) {
         throw new UserInputError(errorTexts.adventureType);

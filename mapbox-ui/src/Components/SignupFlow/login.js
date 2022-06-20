@@ -56,19 +56,19 @@ export const LoginFlow = () => {
 					/>
 				</div>
 				<div className="action-buttons flex-box cta-buttons">
-					<Button secondaryButton className='forgot-button' id='forgot-password-button'>
+					<Button secondaryButton className='forgot-button secondary-button' id='forgot-password-button'>
 						Forgot my password?
 					</Button>
-					<button onClick={attemptLogin} className="button adventure-edit-button login-cta">
+					<Button onClick={attemptLogin} className="button adventure-edit-button login-cta">
 						Log In
-					</button>
+					</Button>
 					<div className='create-account-cta'>
 						<span>
 							Not already signed up?
 						</span>
-						<button className="button secondary-button new-account-button">
+						<Button className="button secondary-button new-account-button">
 							Create a new account
-						</button>
+						</Button>
 					</div>
 				</div>
 			</div>

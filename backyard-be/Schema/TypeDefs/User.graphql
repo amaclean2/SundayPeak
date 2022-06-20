@@ -24,6 +24,7 @@ type UserInitResponse {
 
 type Query {
     getOtherUser(id: Int!): User!
+    getUserFromToken: User!
 }
 
 # Mutations
@@ -42,8 +43,6 @@ type Mutation {
         date_created: Int!,
         last_updated: Int!
     ): User!
-}
 
-type Mutation {
     deleteUser(id: Int!): User!
 }

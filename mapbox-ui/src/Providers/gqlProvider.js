@@ -11,7 +11,7 @@ import { onError } from '@apollo/client/link/error';
 
 const errorLink = onError(({ graphqlErrors, networkErrors }) => {
     if (graphqlErrors) {
-        graphqlErrors.map(({ message, location, path}) => {
+        graphqlErrors.forEach(({ message, location, path}) => {
             console.log(`GraphQL error ${message}`);
         });
     }
@@ -19,8 +19,6 @@ const errorLink = onError(({ graphqlErrors, networkErrors }) => {
 
 const authLink = new ApolloLink((operation, forward) => {
     const token = localStorage.getItem('token');
-
-    console.log("AUTHORIZING_GQL", token);
 
     operation.setContext({
         headers: {

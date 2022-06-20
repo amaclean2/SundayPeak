@@ -2,6 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { useLogin } from './hooks/externalCalls';
 import { useCardStateContext } from './cardStateProvider';
+import { useLazyQuery } from '@apollo/client';
+import { GET_SIGNED_IN_USER } from './typeDefs';
 
 const UserStateContext = createContext();
 
@@ -25,15 +27,23 @@ export const UserStateProvider = ({ children }) => {
 	const [isLandingPage, setIsLandingPage] = useState(true);
 	const [loginError, setLoginError] = useState(null);
 
+	const [getLoggedInUser, { data: loggedInUserData, error: loggedInUserError }] = useLazyQuery(GET_SIGNED_IN_USER);
+
 	useEffect(() => {
-		const loggedUser = localStorage.getItem('token');
-		if (loggedUser) {
-			const parsedUser = JSON.parse(loggedUser);
-			setWorkingUser(parsedUser);
+		const loggedToken = localStorage.getItem('token');
+		if (loggedToken) {
+			getLoggedInUser();
+		}
+	}, []);
+
+	useEffect(() => {
+		if (loggedInUserData) {
+			console.log("LOGGED_USER", loggedInUserData);
+			setWorkingUser(loggedInUserData.getUserFromToken);
 			setIsLoggedIn(true);
 			setIsLandingPage(false);
 		}
-	}, []);
+	}, [loggedInUserData, loggedInUserError])
 
 	const attemptLogin = async () => {
 		const {email, password} = formFields;
@@ -44,6 +54,8 @@ export const UserStateProvider = ({ children }) => {
 				const loggedInUser = await loginUser({ email, password });
 
 				if (loggedInUser) {
+					console.log("LOGGED_IN_USER", loggedInUser);
+
 					setWorkingUser(loggedInUser);
 					setIsLoggedIn(true);
 					setIsLandingPage(false);

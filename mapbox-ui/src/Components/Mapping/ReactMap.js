@@ -26,10 +26,11 @@ const ReactMap = () => {
 	const {
 		adventureAddState,
 		setAdventureAddState,
-		setCurrentAdventure, 
+		setCurrentAdventure,
 		allAdventures,
 		setAllAdventures,
-		defaultStartPosition
+		defaultStartPosition,
+		setIsEditable
 	} = useAdventureEditContext();
 
 	const initialViewState = {
@@ -45,21 +46,22 @@ const ReactMap = () => {
 			return;
 		}
 
-		setAllAdventures((currAdventureData) => {
-			console.log({ lat: e.lngLat.lat, lng: e.lngLat.lng });
-			const newAdventureData = [...currAdventureData];
-			newAdventureData.push({
-				name: "abc",
-				id: allAdventures.length,
-				geometry: {
-					coordinates: [e.lngLat.lng, e.lngLat.lat]
-				},
-				properties: {}
-			});
+		const newAdventure = {
+			adventure_name: 'New Adventure',
+			coordinates: {
+				lng: e.lngLat.lng,
+				lat: e.lngLat.lat
+			}
+		};
 
-			return newAdventureData;
+		setAllAdventures((currentAdventures) => {
+			return [...currentAdventures, newAdventure];
 		});
 
+		setCurrentAdventure(newAdventure);
+
+		openCard(CARD_STATES.adventures);
+		setIsEditable(true);
 		setAdventureAddState(false);
 	};
 
@@ -97,7 +99,7 @@ const ReactMap = () => {
 		mapStyle="mapbox://styles/mapbox/satellite-v9"
 		initialViewState={initialViewState}
 		maxPitch={85}
-		onClick={onDblClick}
+		onDblClick={onDblClick}
 		terrain={{ source: 'mapbox-dem', exaggeration: 1 }}
 	>
 		<NavigationControl showCompass />

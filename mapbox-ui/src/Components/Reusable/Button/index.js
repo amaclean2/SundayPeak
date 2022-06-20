@@ -7,8 +7,10 @@ export const Button = ({
     onClick = () => {},
     className,
     children,
+    disabled,
     id = 'basic-button',
-    secondaryButton = ''
+    secondaryButton = '',
+    small = false
 }) => {
 
     const handleClick = (e) => {
@@ -17,7 +19,11 @@ export const Button = ({
     };
 
     return (
-        <button id={id} onClick={handleClick} className={cx('button', className, (secondaryButton && 'secondary-button'))} >
+        <button id={id}
+            disabled={disabled}
+            onClick={handleClick}
+            className={cx('button', 'flex-box', className, (secondaryButton && 'secondary-button'), (small && 'small'))}
+        >
             {children}
         </button>
     );

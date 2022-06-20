@@ -28,8 +28,25 @@ const addAdventure = async (adventure) => {
 
     } catch (error) {
         console.log("DATABASE_INSERTION_FAILED", error);
-        throw new Error('DATABASE_INSERTION_FAILED', error);
+        throw error;
     };
+};
+
+const getAdventure = async (id) => {
+    const queryString = `SELECT * FROM adventures WHERE id = ${id}`;
+
+    try {
+        return db.promise().query(queryString)
+            .then(([results, ...extras]) => {
+                return results[0];
+            }).catch((error) => {
+                console.log("DATABASE_ERROR", error);
+                throw new Error("DATABASE_ERROR", error);
+            })
+    } catch (error) {
+        console.log("DATABASE_RETRIEVAL_FAILED", error);
+        throw error;
+    }
 };
 
 const getAdventures = async (coordinates, type, zoom) => {
@@ -68,11 +85,12 @@ const getAdventures = async (coordinates, type, zoom) => {
             });
     } catch (error) {
         console.log("DATABASE_INSERTION_FAILED", error);
-        throw new Error('Database insertion failed');
+        throw error;
     };
 };
 
 module.exports = {
     addAdventure,
-    getAdventures
+    getAdventures,
+    getAdventure
 };

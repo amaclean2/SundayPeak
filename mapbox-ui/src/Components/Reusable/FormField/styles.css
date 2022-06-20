@@ -6,16 +6,16 @@ input {
     min-width: 200px;
     flex: 1;
     padding-right: 8px;
+    margin-bottom: 10px;
 }
 
 .form-field-container.wide {
     flex-basis: 100%;
 }
 
-.form-field-container.small {
-    min-width: 0;
-    flex: 0 1 auto;
-    font-weight: 600;
+.form-field-container.static {
+    display: flex;
+    flex-direction: column;
 }
 
 .form-field-container.block {
@@ -28,19 +28,22 @@ input {
 }
 
 .form-field-static {
+    font-size: 18px;
     margin-bottom: 10px;
 }
 
 .label-field {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: block;
 }
 
-.form-field.text {
+.form-field.text, .form-field.text-area {
     background-color: var(--input-background-color);
-    border: 1px solid #AAA;
+    border: 1px solid var(--input-border-color);
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 16px;
     margin: 5px 0;
     display: block;
     height: 40px;
@@ -54,9 +57,9 @@ input {
 
 .form-field.password {
     background-color: var(--input-background-color);
-    border: 1px solid #AAA;
+    border: 1px solid var(--input-border-color);
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 16px;
     margin: 5px 0;
     /* subtract the padding from the form field and the border*/
     width: calc(100% - 34px);
@@ -64,6 +67,14 @@ input {
     padding: 0 16px;
     transition: all 0.2s ease-in-out;
     justify-content: space-between;
+}
+
+.password-input-field {
+    font-size: inherit;
+}
+
+.password .password-switch-field {
+    font-size: inherit;
 }
 
 .form-field.password.focus {
@@ -96,29 +107,67 @@ input {
 }
 
 .form-field-static.card-header {
-    font-size: 20px;
+    font-size: 25px;
     margin: 10px;
+    font-weight: 500;
 }
 
 .form-field.card-header {
-    font-size: 15px;
+    font-size: 16px;
     margin: 10px;
     display: block;
     max-width: calc(100% - 60px);
 }
 
-.form-field .hidden-checkbox {
-    height: 0;
-    opacity: 0;
-    width: 0;
-    margin: 0;
+.label-field.checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
 }
 
-.form-field.checkbox {
-    display: inline-block;
-    margin-left: 10px;
+.hidden-checkbox {
+    display: none;
 }
 
-.form-field.checkbox:checked {
-    background-image: './CheckboxChecked.svg';
+.checkbox .checkbox-illus, .select-many .select-many-illus {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--input-border-color);
+    margin-right: 8px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hidden-checkbox:checked + .checkbox-illus, .hidden-checkbox:checked + .select-many-illus {
+    background-color: var(--secondary-accent-color);
+    border: 2px solid var(--default-background-color);
+    outline: none;
+}
+
+.select-many-option {
+    margin-bottom: 5px;
+}
+
+.select-many {
+    margin: 8px 0 15px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 200px;
+    flex-wrap: wrap;
+}
+
+.slider {
+    width: 100%;
+}
+
+.form-field.text-area {
+    height: 100px;
+    font-family: inherit;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    resize: none;
 }

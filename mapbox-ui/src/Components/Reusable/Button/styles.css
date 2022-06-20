@@ -6,12 +6,16 @@ button {
     background-color: var(--secondary-accent-color);
     color: var(--text-on-dark-background);
     border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
+    border-radius: 22px;
+    height: 35px;
+    font-weight: 500;
+    padding: 0 20px;
     font-size: 15px;
     margin: 5px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    justify-content: center;
+    align-items: center;
   }
   
   .button:hover {
@@ -27,9 +31,16 @@ button {
     box-shadow: none;
     color: var(--secondary-accent-color);
     font-weight: 600;
+    display: inline-flex;
   }
   
   .secondary-button:hover {
     background-color: transparent;
     color: var(--main-text-color);
+  }
+
+  .button.small {
+    font-size: 13px;
+    padding: 5px 16px;
+    margin: 3px;
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useUserStateContext } from '../../Providers/userStateProvider';
-import { FormField, DisplayCard, ProfileHeader, ErrorField } from '../Reusable';
+import { FormField, DisplayCard, ProfileHeader, ErrorField, Button } from '../Reusable';
 
 export const SignupFlow = () => {
 	const { formFields, setFormFields, attemptSignup } = useUserStateContext();
@@ -24,8 +24,8 @@ export const SignupFlow = () => {
 					<FormField
 						name="firstName"
 						label="First Name"
-						block
 						hideLabel
+						block
 						isEditable
 						value={formFields.firstName}
 						onChange={onChange}
@@ -33,8 +33,8 @@ export const SignupFlow = () => {
 					<FormField
 						name="lastName"
 						label="Last Name"
-						block
 						hideLabel
+						block
 						isEditable
 						value={formFields.lastName}
 						onChange={onChange}
@@ -42,8 +42,8 @@ export const SignupFlow = () => {
 					<FormField
 						name="email"
 						label="Email"
-						block
 						hideLabel
+						block
 						isEditable
 						value={formFields.email}
 						onChange={onChange}
@@ -52,35 +52,43 @@ export const SignupFlow = () => {
 						name="password"
 						label="Password"
 						type="password"
-						block
 						hideLabel
+						block
 						isEditable
-						value={formFields.city}
+						value={formFields.password}
 						onChange={onChange}
 					/>
 					<FormField
 						name="password2"
 						label="Confirm Password"
 						type="password"
-						block
 						hideLabel
+						block
 						isEditable
-						value={formFields.bio}
+						value={formFields.password2}
 						onChange={onChange}
 					/>
-					{/* <FormField
+					<FormField
 						type='checkbox'
 						name='Legal'
 						value='legal'
-						label={'I agree with Backyard Friends\' Privacy Policy'}
+						label={'I agree with the Backyard Friends Privacy Policy'}
 						isEditable
 						onChange={onChange}
-					/> */}
+					/>
 				</div>
 				<div className="action-buttons">
-					<button onClick={attemptSignup} className="button adventure-edit-button">
+					<Button onClick={attemptSignup} className="button adventure-edit-button">
 						Continue
-					</button>
+					</Button>
+					<div className='create-account-cta'>
+						<span>
+							Already have an account?
+						</span>
+						<Button className="button secondary-button new-account-button">
+							Log in to Backyard Friends
+						</Button>
+					</div>
 				</div>
 			</div>
 		</DisplayCard>

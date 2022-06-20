@@ -32,7 +32,10 @@ const startApplication = async () => {
     const server = new ApolloServer({
         typeDefs,
         resolvers,
-        csrfPrevention: true
+        csrfPrevention: true,
+        context: (requestObject) => ({
+            user_id: requestObject.req.body.id
+        })
     });
 
     await server.start();

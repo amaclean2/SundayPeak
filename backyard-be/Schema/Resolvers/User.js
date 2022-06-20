@@ -1,3 +1,5 @@
+const { ApolloError } = require('apollo-server-express');
+const { getUserById } = require('../../DB');
 const Users = require('../../SampleData/UserData.json');
 const authService = require('../../Services/auth.sevice');
 
@@ -6,6 +8,15 @@ const userResolvers = {
 		getOtherUser: (parent, args) => {
 			const { id } = args;
 			return Users.find((user) => user.id === id);
+		},
+		getUserFromToken: async (parent, args, context) => {
+			const { user_id } = context;
+
+			if (user_id) {
+				return await getUserById(user_id);
+			} else {
+				throw new ApolloError('User is not logged in');
+			}
 		}
 	},
 

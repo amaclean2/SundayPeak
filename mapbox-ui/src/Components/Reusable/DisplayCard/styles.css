@@ -82,10 +82,15 @@
 
 .display-content {
     flex: 1;
+    overflow: hidden;
 }
 
 .action-buttons {
     padding: 10px;
+}
+
+.action-buttons .button {
+    display: inline-flex;
 }
 
 .cta-buttons {
@@ -95,10 +100,12 @@
 }
 
 .profile-content {
-    height: 100%;
+    height: calc(100% - 90px);
     background-color: var(--secondary-background-color);
     backdrop-filter: blur(8px);
     padding-bottom: 10px;
+    overflow: auto;
+    overscroll-behavior: none;
 }
 
 .profile-header {

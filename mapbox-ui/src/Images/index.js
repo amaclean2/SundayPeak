@@ -1,3 +1,5 @@
+import './styles.css';
+
 export * from './CarretIcon';
 export * from './Profile';
 export * from './Skier';

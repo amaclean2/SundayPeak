@@ -1,30 +1,24 @@
 import React from 'react';
+import cx from 'classnames';
 
 import { Skier, Profile } from '../../Images';
 import AdventureEditor from '../AdventureEditor';
 import UserProfile from '../UserProfile';
 import { LoginFlow, SignupFlow } from '../SignupFlow';
 import { CARD_STATES, useCardStateContext, useUserStateContext } from '../../Providers';
+import { Button } from '../Reusable';
 
 import './styles.css';
-
-const ButtonBarButton = ({ children, action, className = '' }) => {
-	return (
-		<button className={`button-bar-button ${className}`} onClick={(e) => action(e)}>
-			{children}
-		</button>
-	);
-};
 
 const LoginButton = () => {
 	const { openCard } = useCardStateContext();
 
 	return (
-		<ButtonBarButton
-			className="login-button"
-			action={() => openCard(CARD_STATES.login)}>
+		<Button
+			className={cx('button-bar-button', 'login-button')}
+			onClick={() => openCard(CARD_STATES.login)}>
 			Log In
-		</ButtonBarButton>
+		</Button>
 	);
 };
 
@@ -32,11 +26,11 @@ const SignUpButton = () => {
 	const { openCard } = useCardStateContext();
 
 	return (
-		<ButtonBarButton
-			className="signup-button"
-			action={() => openCard(CARD_STATES.signup)}>
+		<Button
+			className={cx('button-bar-button', 'signup-button')}
+			onClick={() => openCard(CARD_STATES.signup)}>
 			Create an Account
-		</ButtonBarButton>
+		</Button>
 	);
 };
 
@@ -44,10 +38,11 @@ const UserProfileButton = () => {
 	const { openCard } = useCardStateContext();
 
 	return (
-		<ButtonBarButton
-			action={() => openCard(CARD_STATES.profile)}>
+		<Button
+			className="button-bar-button"
+			onClick={() => openCard(CARD_STATES.profile)}>
 			<Profile />
-		</ButtonBarButton>
+		</Button>
 	);
 };
 
@@ -55,10 +50,11 @@ const ActivitiesButton = () => {
 	const { openCard } = useCardStateContext();
 
 	return (
-		<ButtonBarButton
-			action={() => openCard(CARD_STATES.adventures)}>
+		<Button
+			className="button-bar-button"
+			onClick={() => openCard(CARD_STATES.adventures)}>
 			<Skier />
-		</ButtonBarButton>
+		</Button>
 	);
 };
 

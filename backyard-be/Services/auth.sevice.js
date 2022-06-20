@@ -11,11 +11,11 @@ const authService = {
         if (typeof bearerHeader !== 'undefined') {
             let bearerToken = bearerHeader.split(' ')[1];
 
-            while (bearerToken.includes('\"')) {
+            while (bearerToken?.includes('\"')) {
                 bearerToken = bearerToken.replace('\"', '');
             }
 
-            await jwt.verify(bearerToken, secret, {}, (error) => {
+            await jwt.verify(bearerToken, secret, {}, (error, decoded) => {
                 if (error) {
                     return returnError({ 
                         req,
@@ -25,6 +25,7 @@ const authService = {
                         error
                     });
                 } else {
+                    req.body.id = decoded.id;
                     next();
                 }
             })

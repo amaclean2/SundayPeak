@@ -1,31 +1,42 @@
 const { UserInputError, ApolloError } = require('apollo-server-express');
-const { getAdventures, addAdventure } = require('../../DB');
+const { getAdventures, addAdventure, getAdventure } = require('../../DB');
 const Lines = require('../../SampleData/LineData.json');
 const statuses = require('../../statuses');
 const { validateCreateAdventure } = require('../../Validators/AdventureValidators');
 
 const adventureResolvers = {
     Query: {
-        getAllAdventures: async (parent, args) => {
+        getAllAdventures: async (parent, args, context) => {
             try {
                 const { coordinates, type, zoom } = args;
                 const parsedCoordinates = JSON.parse(coordinates);
                 return await getAdventures(parsedCoordinates, 'line', 10);
             } catch (error) {
                 console.log("SERVER_ERROR", error);
-                throw new ApolloError('SERVER_ERROR', statuses.SERVER_ERROR, error);
+                throw error;
             }
         },
-        getAdventureDetails: (parent, args) => {
-            const { id } = args;
-            console.log("ID", id);
-            return Lines.find((line) => line.id === id);
+        getAdventureDetails: async (parent, args) => {
+            try {
+                const { id } = args;
+                
+                if (id) {
+                    return await getAdventure(id);
+                } else {
+                    throw new ApolloError('ID_FIELD_REQUIRED', statuses.NOT_ACCEPTABLE);
+                }
+            } catch (error) {
+                console.log("SERVER_ERROR", error);
+                throw error;
+            }
         }
     },
 
     Mutation: {
-        createAdventure: async (parent, args) => {
+        createAdventure: async (parent, args, context) => {
             try {
+                args.creator_id = context.user_id;
+                
                 const validationResponse = await validateCreateAdventure(args);
 
                 const resultId = await addAdventure(validationResponse);
