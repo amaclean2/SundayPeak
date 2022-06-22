@@ -47,12 +47,15 @@ const AdventureEditor = () => {
 		menuRef.current.scrollTop = 0
 	}, [adventureError]);
 
-	const saveAdventure = () => {
+	const saveAdventure = async () => {
 
 		if (saveState === 0) {
-			console.log("CURRENT_ADVENTURE", currentAdventure);
-			startAdventureSaveProcess();
-			setSaveState(1);
+			const { error: saveAdventureError } = await startAdventureSaveProcess();
+			
+			if (!saveAdventureError) {
+				setSaveState(1);
+			}
+
 		} else if (saveState === 1) {
 			saveNewAdventure();
 			setSaveState(0);

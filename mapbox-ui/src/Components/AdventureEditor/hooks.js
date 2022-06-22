@@ -19,7 +19,7 @@ export const useSaveAdventure = () => {
 		{ data: adventureMutationData }
 	] = useMutation(CREATE_ADVENTURE);
 
-    const saveNewAdventure = () => {
+    const saveNewAdventure = async () => {
         try {
 			console.log("CREATING_ADVENTURE...", currentAdventure);
 
@@ -30,14 +30,17 @@ export const useSaveAdventure = () => {
 		}
     };
 
-    const startAdventureSaveProcess = () => {
+    const startAdventureSaveProcess = async () => {
         try {
             const validatedAdventure = validateAdventure(currentAdventure, setAdventureError);
             setCurrentAdventure(validatedAdventure);
             setIsEditable(false);
+
+            return validatedAdventure;
         } catch (error) {
             console.log("ADVENTURE_SAVE_ERROR", error);
             setAdventureError(error.toString().replace('Error: ', ''));
+            return { error };
         }
 
     };
