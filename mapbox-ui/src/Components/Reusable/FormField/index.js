@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
 import { Button } from '../Button';
+import PasswordInputField from './PasswordInputField';
 
 import './styles.css';
+import CheckboxField from './CheckboxField';
+import SelectManyField from './SelectManyField';
+import RangeInputField from './RangeInputField';
+import TextareaField from './TextareaField';
+import StaticField from './StaticField';
 
 export const FormField = ({
 	type = 'text',
@@ -15,13 +21,10 @@ export const FormField = ({
 	autoComplete = 'off',
 	fullWidth = false,
 	block = false,
-	selectMany = {},
-	range = {},
+	options = {},
 	onChange = () => { }
 }) => {
 	const [workingValue, setWorkingValue] = useState(value);
-	const [passwordShown, setPasswordShown] = useState(false);
-	const [passwordFocus, setPasswordFocus] = useState(false);
 	const [checkboxState, setCheckboxState] = useState(false);
 	const [selectManyState, setSelectManyState] = useState([]);
 	const [componentLoaded, setComponentLoaded] = useState(false);
@@ -64,86 +67,48 @@ export const FormField = ({
 	const inputBox = () => {
 		switch (type) {
 			case 'password':
-				return (
-					<div
-						className={cx(type, 'form-field', 'flex-box', passwordFocus && 'focus')}
-						onFocus={() => setPasswordFocus(true)}
-						onBlur={() => setPasswordFocus(false)}
-					>
-						<input
-							className={'password-input-field'}
-							type={passwordShown ? 'text' : 'password'}
-							name={name}
-							id={name}
-							autoComplete={autoComplete}
-							placeholder={hideLabel ? label : ''}
-							value={workingValue}
-							onChange={handleChange}
-						/>
-						<Button
-							className="password-switch-field"
-							onClick={() => setPasswordShown(!passwordShown)}
-						>
-							{passwordShown ? 'Hide' : 'Show'}
-						</Button>
-					</div>
-				);
+				return <PasswordInputField
+					className={className}
+					name={name}
+					label={label}
+					hideLabel={hideLabel}
+					value={workingValue}
+					onChange={handleChange}
+				/>;
 			case 'checkbox':
 				return (
-					<div className={cx('form-field', 'checkbox', className)}>
-						<input
-							className={'hidden-checkbox'}
-							type='checkbox'
-							id={name}
-							name={name}
-							value={value}
-							onChange={handleCheckboxState}
-						/>
-						<div className="checkbox-illus" />
-					</div>
+					<CheckboxField
+						className={className}
+						name={name}
+						value={workingValue}
+						onChange={handleChange}
+					/>
 				);
 			case 'selectMany':
 				return (
-					<div className={cx('form-field', 'select-many', 'flex-box', className)}>
-						{
-							selectMany.options.map((option, key) => (
-								<label htmlFor={option.name} className={cx('select-many-option', 'flex-box')} key={`select_many_option_${key}`}>
-									<input
-										type='checkbox'
-										name={option.name}
-										id={option.name}
-										value={option.value}
-										className={'hidden-checkbox'}
-										onChange={handleSelectManyState}
-									/>
-									<div className="select-many-illus" />
-									{option.name}
-								</label>
-							))
-						}
-					</div>
+					<SelectManyField
+						className={className}
+						options={options}
+						onChange={handleSelectManyState}
+					/>
 				);
 			case 'range':
 				return (
-					<input
-						type="range"
-						className={cx('slider', 'form-field', className)}
+					<RangeInputField
+						className={className}
 						name={name}
-						id={name}
 						value={workingValue}
-						min={range.min}
-						max={range.max}
-						step={range.step}
+						options={options}
 						onChange={handleChange}
 					/>
 				);
 			case 'textarea':
 				return (
-					<textarea
-						className={cx('text-area', 'form-field', className)}
-						placeholder={hideLabel ? label : ''}
+					<TextareaField
+						className={className}
+						hideLabel={hideLabel}
+						label={label}
 						name={name}
-						id={name}
 						onChange={handleChange}
 						value={workingValue}
 					/>
@@ -171,7 +136,15 @@ export const FormField = ({
 				{label}
 			</label>}
 			{isEditable && type !== 'checkbox' && inputBox()}
-			{!isEditable && <span className={cx(type, className, 'form-field-static')}>{workingValue}</span>}
+			{!isEditable && (
+				<StaticField
+					value={workingValue}
+					type={type}
+					className={className}
+					options={options}
+					name={name}
+				/>
+			)}
 		</div>
 	)
 };

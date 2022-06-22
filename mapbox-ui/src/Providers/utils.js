@@ -15,29 +15,29 @@ export const validateAdventure = (currentAdventure, setAdventureError) => {
         throw new Error('Adventure Name must be a string');
     }
 
-    if (isNaN(parseInt(currentAdventure.approach)) && currentAdventure.approach !== '') {
+    if (isNaN(parseInt(currentAdventure.approach_distance)) && currentAdventure.approach_distance !== '') {
         setAdventureError('Appraoch Distance must contain a number');
         throw new Error('Approach Distance must contain a number');
     } else {
-        approachDistance = parseInt(currentAdventure.approach);
+        approachDistance = parseInt(currentAdventure.approach_distance);
     }
 
     if (currentAdventure.season?.length) {
         season = JSON.stringify(currentAdventure.season.sort((a, b) => Number(a) - Number(b)));
     }
 
-    if (isNaN(parseInt(currentAdventure.avgSlope)) && currentAdventure.avgSlope !== '') {
+    if (isNaN(parseInt(currentAdventure.avg_angle)) && currentAdventure.avg_angle !== '') {
         setAdventureError('Average Angle must contain a number');
         throw new Error('Average angle must contain a number');
     } else {
-        avgAngle = parseInt(currentAdventure.avgSlope);
+        avgAngle = parseInt(currentAdventure.avg_angle);
     }
 
-    if (isNaN(parseInt(currentAdventure.maxSlope)) && currentAdventure.maxSlope !== '') {
+    if (isNaN(parseInt(currentAdventure.max_angle)) && currentAdventure.max_angle !== '') {
         setAdventureError('Max Angle must contain a number');
         throw new Error('Max angle must contain a number');
     } else {
-        maxAngle = parseInt(currentAdventure.maxSlope);
+        maxAngle = parseInt(currentAdventure.max_angle);
     }
 
     if (isNaN(parseInt(currentAdventure.elevation)) && currentAdventure.elevation !== '') {

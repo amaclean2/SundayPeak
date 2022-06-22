@@ -1,10 +1,11 @@
 import React from 'react';
+import { useCardStateContext, useUserStateContext } from '../../Providers';
 
-import { useUserStateContext } from '../../Providers/userStateProvider';
 import { FormField, DisplayCard, ProfileHeader, ErrorField, Button } from '../Reusable';
 
 export const SignupFlow = () => {
 	const { formFields, setFormFields, attemptSignup } = useUserStateContext();
+	const { switchCard } = useCardStateContext();
 
 	const onChange = (e) => {
 		setFormFields((currFormFields) => {
@@ -85,8 +86,8 @@ export const SignupFlow = () => {
 						<span>
 							Already have an account?
 						</span>
-						<Button className="button secondary-button new-account-button">
-							Log in to Backyard Friends
+						<Button className="button secondary-button new-account-button" onClick={() => switchCard('login')}>
+							Login to Backyard Friends
 						</Button>
 					</div>
 				</div>

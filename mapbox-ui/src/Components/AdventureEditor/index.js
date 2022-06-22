@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useAdventureEditContext, useCardStateContext } from '../../Providers';
 import { Button, DisplayCard, ErrorField, FormField, ProfileHeader } from '../Reusable';
@@ -15,17 +15,19 @@ const AdventureEditor = () => {
 		setCurrentAdventure,
 		isEditable,
 		setIsEditable,
-		refetchAdventures
+		refetchAdventures,
+		adventureError
 	} = useAdventureEditContext();
 
-	const { saveNewAdventure, newAdventureData } = useSaveAdventure();
+	const menuRef = useRef();
 
+	const { saveNewAdventure, startAdventureSaveProcess } = useSaveAdventure();
 	const { closeCard } = useCardStateContext();
 
-	console.log("CURRENT_ADVENTURE", currentAdventure);
+	const [saveState, setSaveState] = useState(0);
 
 	const onChange = (e) => {
-		
+
 		setCurrentAdventure((workingAdventure) => {
 			const newAdventure = { ...workingAdventure };
 			newAdventure[e.target.name] = e.target.value;
@@ -40,9 +42,21 @@ const AdventureEditor = () => {
 		setIsEditable(false);
 	};
 
+	// scrolls back to the top when there is a new error
+	useEffect(() => {
+		menuRef.current.scrollTop = 0
+	}, [adventureError]);
+
 	const saveAdventure = () => {
-		// setIsEditable(false);
-		saveNewAdventure();
+
+		if (saveState === 0) {
+			console.log("CURRENT_ADVENTURE", currentAdventure);
+			startAdventureSaveProcess();
+			setSaveState(1);
+		} else if (saveState === 1) {
+			saveNewAdventure();
+			setSaveState(0);
+		}
 	};
 
 	const cancelSave = () => {
@@ -62,7 +76,7 @@ const AdventureEditor = () => {
 					}}
 				/>
 			)}
-			<div className="profile-content">
+			<div className="profile-content" ref={menuRef}>
 				{currentAdventure && (
 					<div className="adventure-info flex-box">
 						<ErrorField form={'adventure'} />
@@ -76,11 +90,12 @@ const AdventureEditor = () => {
 							onChange={onChange}
 						/>
 						<FormField
-							name="approach"
+							name="approach_distance"
 							label="Approach Distance"
 							isEditable={isEditable}
 							fullWidth
-							value={currentAdventure.approach}
+							options={{ suffix: 'miles' }}
+							value={currentAdventure.approach_distance}
 							onChange={onChange}
 						/>
 						<FormField
@@ -88,6 +103,7 @@ const AdventureEditor = () => {
 							label="Elevation"
 							isEditable={isEditable}
 							fullWidth
+							options={{ suffix: 'feet' }}
 							value={currentAdventure.elevation}
 							onChange={onChange}
 						/>
@@ -95,7 +111,7 @@ const AdventureEditor = () => {
 							name="season"
 							label="Best Season"
 							type="selectMany"
-							selectMany={{ options: seasonOptions}}
+							options={{ selectMany: seasonOptions }}
 							isEditable={isEditable}
 							fullWidth
 							value={currentAdventure.season}
@@ -105,7 +121,7 @@ const AdventureEditor = () => {
 							name="gear"
 							label="Gear Required"
 							type="selectMany"
-							selectMany={{ options: gearOptions }}
+							options={{ selectMany: gearOptions }}
 							isEditable={isEditable}
 							fullWidth
 							value={currentAdventure.gear}
@@ -117,29 +133,32 @@ const AdventureEditor = () => {
 							isEditable={isEditable}
 							fullWidth
 							value={currentAdventure.gain}
+							options={{ suffix: 'feet' }}
 							onChange={onChange}
 						/>
 						<FormField
-							name="avgSlope"
+							name="avg_angle"
 							label="Average Slope Angle"
 							isEditable={isEditable}
 							fullWidth
-							value={currentAdventure.avgSlope}
+							value={currentAdventure.avg_angle}
+							options={{ suffix: 'degrees' }}
 							onChange={onChange}
 						/>
 						<FormField
-							name="maxSlope"
+							name="max_angle"
 							label="Max Slope Angle"
 							isEditable={isEditable}
 							fullWidth
-							value={currentAdventure.maxSlope}
+							value={currentAdventure.max_angle}
+							options={{ suffix: 'degrees' }}
 							onChange={onChange}
 						/>
 						<FormField
 							name="difficulty"
 							label="Difficulty"
 							type="range"
-							range={rangeValues}
+							options={{ range: rangeValues }}
 							isEditable={isEditable}
 							fullWidth
 							value={currentAdventure.difficulty}
@@ -160,30 +179,30 @@ const AdventureEditor = () => {
 						<Button
 							onClick={() => setAdventureAddState(true)}
 							disabled={adventureAddState}
-							className="button adventure-add-button"
+							className="adventure-add-button"
 						>
 							Add New Adventure
 						</Button>
 					)}
-					{currentAdventure && !isEditable && (
+					{currentAdventure && !isEditable && saveState === 0 && (
 						<Button
 							onClick={() => setIsEditable(true)}
-							className="button adventure-edit-button"
+							className="adventure-edit-button"
 						>
 							Edit Adventure
 						</Button>
 					)}
-					{currentAdventure && isEditable && (
+					{currentAdventure && (isEditable || saveState === 1) && (
 						<>
 							<Button
 								onClick={saveAdventure}
-								className="button adventure-edit-button"
+								className="adventure-edit-button"
 							>
-								Save
+								{(saveState === 0) ? 'Preview Save' : 'Finish Saving'}
 							</Button>
 							<Button
 								onClick={cancelSave}
-								className="button adventure-edit-button"
+								className="adventure-edit-button"
 							>
 								Cancel
 							</Button>

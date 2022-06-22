@@ -83,6 +83,7 @@
 .display-content {
     flex: 1;
     overflow: hidden;
+    transition: all 0.3s ease-in-out;
 }
 
 .action-buttons {

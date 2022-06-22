@@ -1,4 +1,5 @@
 import React from 'react';
+import { useCardStateContext } from '../../Providers';
 
 import { useUserStateContext } from "../../Providers/userStateProvider";
 import { ErrorField, DisplayCard, ProfileHeader, FormField, Button } from '../Reusable';
@@ -12,6 +13,8 @@ export const LoginFlow = () => {
 		attemptLogin,
 		setLoginError
 	} = useUserStateContext();
+
+	const { switchCard } = useCardStateContext();
 
 	const onChange = (e) => {
 		setFormFields((currFormFields) => {
@@ -63,10 +66,11 @@ export const LoginFlow = () => {
 						Log In
 					</Button>
 					<div className='create-account-cta'>
-						<span>
-							Not already signed up?
-						</span>
-						<Button className="button secondary-button new-account-button">
+						<span>Not already signed up?</span>
+						<Button
+							className="button secondary-button new-account-button"
+							onClick={() => switchCard('signup')}
+						>
 							Create a new account
 						</Button>
 					</div>

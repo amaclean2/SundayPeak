@@ -40,23 +40,26 @@ export const CardStateProvider = ({ children }) => {
 	const [displayCardBoolState, setDisplayCardBoolState] = useState(false);
 	const [workingCard, setWorkingCard] = useState('');
 
-	const openCard = (newWorkingCard) => {
+	const openCard = async (newWorkingCard) => {
 		setDisplayCardOpenState(changeCardState('closed'));
 		setWorkingCard(newWorkingCard);
 
-		setTimeout(() => {
+		return setTimeout(() => {
 			setDisplayCardOpenState(changeCardState('opening'));
 		}, 50);
 	};
 
-	const closeCard = () => {
+	const switchCard = async (newWorkingCard) => {
+		setWorkingCard(newWorkingCard);
+	};
+
+	const closeCard = async () => {
 		setDisplayCardOpenState(changeCardState('open'));
 
-		setTimeout(() => {
+		return setTimeout(() => {
 			setDisplayCardOpenState(changeCardState('closing'));
 			setWorkingCard('');
 		}, 300);
-
 	};
 
 	useEffect(() => {
@@ -77,6 +80,7 @@ export const CardStateProvider = ({ children }) => {
 				setDisplayCardOpenState,
 				openCard,
 				closeCard,
+				switchCard
 			}}
 		>
 			{children}
