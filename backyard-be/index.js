@@ -6,11 +6,11 @@ const { loadSchema } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
 
 const resolvers = require('./Schema/Resolvers');
-const authService = require('./Services/auth.sevice');
+const authService = require('./Services/auth.service');
 const router = require('./ExternalRoutes');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 80;
 
 // used for external apis
 app.use(express.urlencoded({ extended: false }));
@@ -67,5 +67,5 @@ app.use('/', authService.validate);
 startApplication();
 
 app.listen({ port }, () => {
-    console.log(`Backyard friends running on http://localhost:5000`);
+    console.log(`Backyard friends running on http://localhost:${port}`);
 });

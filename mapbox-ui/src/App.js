@@ -1,26 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from 'react-router-dom';
+
+import Discover from './Router/Discover';
+import Landing from './Router/Landing';
+import { useGetAdventures, useGetUser } from './Providers';
 
 import './App.css';
 import './variables.css';
-import { useUserStateContext } from './Providers/userStateProvider';
-import LandingPage from './LandingPage';
-import ButtonBar from './Components/ButtonBar';
-import ReactMap from './Components/Mapping/ReactMap';
 
 const App = () => {
-  const { isLandingPage } = useUserStateContext();
+  const { startUserAuthProcess } = useGetUser();
+  const { queryAdventures } = useGetAdventures();
+
+  useEffect(() => {
+    startUserAuthProcess();
+    queryAdventures();
+  }, []);
 
   return (
-    <div className="app-container">
-      {!isLandingPage && (
-        <>
-          <ReactMap />
-          <ButtonBar />
-        </>
-      )
-      }
-      {isLandingPage && <LandingPage />}
-    </div>
+    <Router>
+      <div className="app-container">
+        <Routes>
+          <Route path="/discover" element={<Discover />} />
+          <Route path="/" element={<Landing />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

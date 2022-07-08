@@ -4,8 +4,9 @@
   "description": "",
   "main": "node index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "PORT=5000 nodemon index.js"
+    "start": "NODE_ENV=\"dev\" node index.js",
+    "dev": "NODE_ENV=\"dev\" nodemon index.js",
+    "stage": "NODE_ENV=\"stage\" node index.js"
   },
   "author": "Andrew Maclean",
   "license": "ISC",

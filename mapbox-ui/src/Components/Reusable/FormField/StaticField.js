@@ -12,6 +12,7 @@ const StaticField = ({
         : '';
 
     if (options?.selectMany) {
+        console.log("VALUE", value, "NAME", name);
         const parsedSelection = (typeof value === "string") ? JSON.parse(value) : value;
         return (
             <div className={cx(type, className, 'form-field-static')}>

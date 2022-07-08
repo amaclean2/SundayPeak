@@ -1,6 +1,7 @@
 .login-cta {
     width: 200px;
     margin: 5px 0;
+    justify-content: center;
 }
 
 .forgot-button {

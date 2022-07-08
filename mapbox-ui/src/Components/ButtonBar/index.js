@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import cx from 'classnames';
 
 import { Skier, Profile } from '../../Images';
 import AdventureEditor from '../AdventureEditor';
 import UserProfile from '../UserProfile';
 import { LoginFlow, SignupFlow } from '../SignupFlow';
-import { CARD_STATES, useCardStateContext, useUserStateContext } from '../../Providers';
+import { CARD_STATES, useCardStateContext, useGetUser, useUserStateContext } from '../../Providers';
 import { Button } from '../Reusable';
+import { useLoginUser } from '../../Providers/hooks';
 
 import './styles.css';
 
@@ -61,6 +62,10 @@ const ActivitiesButton = () => {
 const ButtonBar = () => {
 	const { notFullyOpen, displayCardBoolState, workingCard } = useCardStateContext();
 	const { isLoggedIn } = useUserStateContext();
+
+	if (isLoggedIn === undefined) {
+		return null;
+	}
 
 	return (
 		<>

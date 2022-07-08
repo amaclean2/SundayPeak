@@ -1,22 +1,23 @@
 import React from 'react';
 import { Popup } from 'react-map-gl';
 
-import { useCardStateContext, useAdventureEditContext, useTickListContext, CARD_STATES } from '../../../Providers';
+import {
+	useCardStateContext,
+	useTickListContext,
+	CARD_STATES,
+	useGetAdventure
+} from '../../../Providers';
 import { Button, FormField } from '../../Reusable';
 
 import './styles.css';
 
 const MapPopup = ({ popupInfo, setPopupInfo }) => {
-	const { getAdventure } = useAdventureEditContext();
+	const { start: getAdventure } = useGetAdventure();
 	const { openCard } = useCardStateContext();
 	const { addToTickList } = useTickListContext();
 
 	const viewMore = () => {
-		return getAdventure({
-			variables: {
-				id: popupInfo.id
-			}
-		}).then((resp) => {
+		return getAdventure(popupInfo.id).then(() => {
 			setPopupInfo(null);
 			openCard(CARD_STATES.adventures);
 		});

@@ -1,11 +1,12 @@
 import React from 'react';
-import { useCardStateContext, useUserStateContext } from '../../Providers';
+import { useCardStateContext, useSignupUser, useUserStateContext } from '../../Providers';
 
 import { FormField, DisplayCard, ProfileHeader, ErrorField, Button } from '../Reusable';
 
 export const SignupFlow = () => {
-	const { formFields, setFormFields, attemptSignup } = useUserStateContext();
+	const { formFields, setFormFields} = useUserStateContext();
 	const { switchCard } = useCardStateContext();
+	const { attemptSignup } = useSignupUser();
 
 	const onChange = (e) => {
 		setFormFields((currFormFields) => {
@@ -71,8 +72,8 @@ export const SignupFlow = () => {
 					/>
 					<FormField
 						type='checkbox'
-						name='Legal'
-						value='legal'
+						name='legal'
+						value={false}
 						label={'I agree with the Backyard Friends Privacy Policy'}
 						isEditable
 						onChange={onChange}

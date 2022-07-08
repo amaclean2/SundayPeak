@@ -76,6 +76,7 @@ export const CardStateProvider = ({ children }) => {
 				displayCardOpenState,
 				displayCardBoolState,
 				workingCard,
+				// notFullyOpen describes the intermediate loading states of animations
 				notFullyOpen: ['closing', 'closed', 'opening'].includes(displayCardOpenState),
 				setDisplayCardOpenState,
 				openCard,

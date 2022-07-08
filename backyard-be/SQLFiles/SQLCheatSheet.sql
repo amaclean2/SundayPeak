@@ -110,3 +110,13 @@
 --     creator_id,
 --     coordinates_lat
 --     coordinates_lng
+
+CREATE TABLE ticks(
+    id INT AUTO_INCREMENT,
+    user_id INT,
+    adventure_id INT,
+    date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(adventure_id) REFERENCES adventures(id)
+);

@@ -4,7 +4,7 @@ const { returnError } = require('../ErrorHandling');
 const { NOT_ACCEPTABLE, SERVER_ERROR } = require('../statuses');
 
 const validateCreateUser = async (req, res, next) => {
-	const { email, password, password2 } = req.body;
+	const { email, password, password2 } = req?.body?.variables?.input;
 
 	try {
 		if (!email || !password || !password2) {
@@ -37,7 +37,7 @@ const validateCreateUser = async (req, res, next) => {
 };
 
 const validateLoginUser = async (req, res, next) => {
-	const { email, password } = req.body;
+	const { email, password } = req?.body?.variables;
 
 	try {
 		if (!email || !password) {

@@ -2,27 +2,37 @@
 
 type User {
     id: Int!
-    first_name: String!,
-    last_name: String!,
-    email: String!,
-    is_premium: Boolean!,
-    sex: Int!,
-    user_site: String!,
-    password: String!,
-    city: String!,
-    bio: String!,
-    date_created: Int!,
-    last_updated: Int!,
+    first_name: String!
+    last_name: String!
+    email: String!
+    is_premium: Boolean!
+    sex: Int!
+    user_site: String!
+    password: String!
+    city: String!
+    bio: String!
+    date_created: String!
+    last_updated: String!
 }
 
 type UserInitResponse {
     user: User!
-    token: Token!
+    token: String!
+}
+
+input CreateUserInput {
+    email: String!
+    password: String!
+    password2: String!
+    first_name: String
+    last_name: String
+    legal: Boolean!
 }
 
 # Queries
 
 type Query {
+    login(email: String!, password: String!): UserInitResponse!
     getOtherUser(id: Int!): User!
     getUserFromToken: User!
 }
@@ -30,6 +40,7 @@ type Query {
 # Mutations
 
 type Mutation {
+    createUser(input: CreateUserInput!): UserInitResponse!
     editUser(
         first_name: String!,
         last_name: String!,

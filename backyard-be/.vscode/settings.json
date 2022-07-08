@@ -25,6 +25,20 @@
             "name": "friends",
             "database": "friends",
             "username": "byf"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "backyard-stage-db-do-user-6012695-0.b.db.ondigitalocean.com",
+            "port": 25060,
+            "driver": "MySQL",
+            "name": "stagedb",
+            "database": "friends",
+            "username": "byf",
+            "password": "AVNS_lM25mnEfowo3P0b7CEb",
+            "connectString": "mysql://doadmin:AVNS_Q-nFjkkcsY82qmRqx-C@backyard-stage-db-do-user-6012695-0.b.db.ondigitalocean.com:25060/defaultdb?ssl-mode=REQUIRED"
         }
     ]
 }

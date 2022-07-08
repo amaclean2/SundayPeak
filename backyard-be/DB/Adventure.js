@@ -1,4 +1,5 @@
 const db = require('../Config/db');
+const { createNewAdventureStatement, selectAdventureByIdStatement, selectAdventuresInRangeStatement } = require('./Statements');
 
 const addAdventure = async (adventure) => {
     const {
@@ -7,15 +8,24 @@ const addAdventure = async (adventure) => {
         coordinates_lng
     } = adventure;
 
-    const queryString = `INSERT INTO adventures (
-        adventure_type, adventure_name, approach_distance, season, avg_angle, max_angle,
-        difficulty, elevation, gear, gain, bio, nearest_city, creator_id, coordinates_lat, coordinates_lng) VALUES (
-        '${adventure_type}', '${adventure_name}', ${approach_distance || 0}, '${season || ''}', ${avg_angle || 0}, ${max_angle || 0}, ${difficulty || 0},
-        ${elevation || 0}, '${gear || ''}', ${gain || 0}, '${bio || ''}', '${nearest_city || ''}', ${creator_id}, ${coordinates_lat}, ${coordinates_lng}
-        );`;
-
     try {
-        return db.promise().query(queryString)
+        return db.promise().execute(createNewAdventureStatement, [
+            adventure_type,
+            adventure_name,
+            approach_distance || 0,
+            season || '',
+            avg_angle || 0,
+            max_angle || 0,
+            difficulty || 0,
+            elevation || 0,
+            gear || '',
+            gain || 0,
+            bio || '',
+            nearest_city || '',
+            creator_id,
+            coordinates_lat,
+            coordinates_lng
+        ])
             .then(([results, ...extras]) => {
                 const { insertId, ...everythingElse } = results;
 
@@ -33,16 +43,14 @@ const addAdventure = async (adventure) => {
 };
 
 const getAdventure = async (id) => {
-    const queryString = `SELECT * FROM adventures WHERE id = ${id}`;
-
     try {
-        return db.promise().query(queryString)
+        return db.promise().execute(selectAdventureByIdStatement, [id])
             .then(([results, ...extras]) => {
                 return results[0];
             }).catch((error) => {
                 console.log("DATABASE_ERROR", error);
                 throw new Error("DATABASE_ERROR", error);
-            })
+            });
     } catch (error) {
         console.log("DATABASE_RETRIEVAL_FAILED", error);
         throw error;
@@ -58,13 +66,14 @@ const getAdventures = async (coordinates, type, zoom) => {
         maxLng: coordinates.lng + 2
     };
 
-    const queryString = `SELECT * FROM adventures WHERE
-        coordinates_lat <= ${extremes.maxLat} AND coordinates_lat >= ${extremes.minLat}
-        AND coordinates_lng >= ${extremes.minLng} and coordinates_lng <= ${extremes.maxLng}
-        AND adventure_type = '${type}';`;
-
     try {
-        return db.promise().query(queryString)
+        return db.promise().execute(selectAdventuresInRangeStatement, [
+            extremes.maxLat,
+            extremes.minLat,
+            extremes.minLng,
+            extremes.maxLng,
+            type
+        ])
             .then(([results, ...extras]) => {
                 return results.map((result) => {
                     const newResult = {

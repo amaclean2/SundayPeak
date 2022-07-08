@@ -84,4 +84,8 @@ export const validateAdventure = (currentAdventure, setAdventureError) => {
     console.log("ADVENUTRE_OBJ", adventureObj);
 
     return adventureObj;
-}
+};
+
+export const validateUser = (newUser, setUserError) => {
+
+};

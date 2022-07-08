@@ -1,10 +1,16 @@
+const { getTicksByAdventure } = require('../../DB');
 const Ticks = require('../../SampleData/TickData.json');
 
 const tickResolvers = {
     Query: {
-        getAllTicksForLine: (parent, args) => {
-            const { line_id } = args;
-            return Ticks;
+        getAllTicksByAdventure: async (parent, args) => {
+            try {
+                const { adventure_id } = args;
+                return await getTicksByAdventure({ adventure_id });
+            } catch (error) {
+                console.log("SERVER_ERROR", error);
+                throw error;
+            }
         },
         getAllTicksForUser: (parent, args) => {
             const { user_id } = args;

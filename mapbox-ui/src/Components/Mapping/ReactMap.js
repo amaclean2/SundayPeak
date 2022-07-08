@@ -4,7 +4,7 @@ import Map, { Layer, Marker, NavigationControl, Source } from 'react-map-gl';
 import { mapboxAccessToken } from '../../Constants';
 
 import { SkierIcon } from '../../Images';
-import { CARD_STATES, useAdventureEditContext, useCardStateContext } from '../../Providers';
+import { CARD_STATES, useAdventureEditContext, useCardStateContext, useGetAdventures } from '../../Providers';
 import MapPopup from './MapPopup';
 
 import '../../App.css';
@@ -29,9 +29,9 @@ const ReactMap = () => {
 		setCurrentAdventure,
 		allAdventures,
 		setAllAdventures,
-		defaultStartPosition,
 		setIsEditable
 	} = useAdventureEditContext();
+	const { defaultStartPosition } = useGetAdventures();
 
 	const initialViewState = {
 		longitude: defaultStartPosition.lng,

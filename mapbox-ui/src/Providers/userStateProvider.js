@@ -2,8 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { useLogin } from './hooks/externalCalls';
 import { useCardStateContext } from './cardStateProvider';
-import { useLazyQuery } from '@apollo/client';
-import { GET_SIGNED_IN_USER } from './typeDefs';
 
 const UserStateContext = createContext();
 
@@ -18,85 +16,12 @@ export const useUserStateContext = () => {
 };
 
 export const UserStateProvider = ({ children }) => {
-	const { loginUser, createUser } = useLogin();
-	const { closeCard } = useCardStateContext();
 
 	const [workingUser, setWorkingUser] = useState({});
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(undefined);
 	const [formFields, setFormFields] = useState({});
 	const [isLandingPage, setIsLandingPage] = useState(true);
 	const [loginError, setLoginError] = useState(null);
-
-	const [getLoggedInUser, { data: loggedInUserData, error: loggedInUserError }] = useLazyQuery(GET_SIGNED_IN_USER);
-
-	useEffect(() => {
-		const loggedToken = localStorage.getItem('token');
-		if (loggedToken) {
-			getLoggedInUser();
-		}
-	}, []);
-
-	useEffect(() => {
-		if (loggedInUserData) {
-			console.log("LOGGED_USER", loggedInUserData);
-			setWorkingUser(loggedInUserData.getUserFromToken);
-			setIsLoggedIn(true);
-			setIsLandingPage(false);
-		}
-	}, [loggedInUserData, loggedInUserError])
-
-	const attemptLogin = async () => {
-		const {email, password} = formFields;
-
-		if (email && password) {
-
-			try {
-				const loggedInUser = await loginUser({ email, password });
-
-				if (loggedInUser) {
-					console.log("LOGGED_IN_USER", loggedInUser);
-
-					setWorkingUser(loggedInUser);
-					setIsLoggedIn(true);
-					setIsLandingPage(false);
-					setFormFields({});
-					closeCard();
-					return 'USER_LOGGED_IN';
-				}
-
-			} catch (error) {
-				console.log('User login failed', error);
-				setLoginError(error.message);
-			}
-		} else {
-			setLoginError('Email and Password fields are required. Please try again.');
-		}
-	};
-
-	const attemptSignup = async () => {
-		const { email, password, firstName, lastName, password2 } = formFields;
-
-		if (email && password && password2 && firstName && lastName) {
-			try {
-				const createdUser = await createUser({ email, password, first_name: firstName, last_name: lastName, password2});
-
-				if (createdUser) {
-					setWorkingUser(createdUser);
-					setIsLoggedIn(true);
-					setIsLandingPage(false);
-					setFormFields({});
-					closeCard();
-					return 'USER_CREATED';
-				}
-			} catch (error) {
-				console.log('User creation failed', error);
-				setLoginError(error.message);
-			}
-		} else {
-			console.log({email, password, firstName, lastName, password2});
-			setLoginError('Email, Password, Confirm Password, First Name, and Last Name fields are required. Please try again.');
-		}
-	}
 
 	const clickOffLanding = () => {
 		setIsLandingPage(false);
@@ -119,10 +44,12 @@ export const UserStateProvider = ({ children }) => {
 				loginError,
 				setLoginError,
 				setFormFields,
-				attemptLogin,
-				attemptSignup,
 				handleLogout,
-				clickOffLanding
+				clickOffLanding,
+				setWorkingUser,
+				setIsLoggedIn,
+				setIsLandingPage,
+				setFormFields
 			}}
 		>
 			{children}

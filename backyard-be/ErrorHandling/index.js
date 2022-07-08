@@ -1,30 +1,46 @@
+const { AuthenticationError, ValidationError, UserInputError, ApolloError } = require("apollo-server-express");
 const errorTexts = require("../ResponseText/errors");
 const { SERVER_ERROR } = require("../statuses");
 
-const returnError = ({ req, res, status, message, error }) => {
+const returnError = ({ req, res, status: statusCode, message, error, gql }) => {
     messageText = errorTexts[message] || message;
+
+    if (gql) {
+        console.log(messageText, error);
+        if (statusCode === 401) {
+            return new AuthenticationError(messageText, error);
+        } else if (statusCode === 406) {
+            return new ValidationError(messageText, error);
+        }
+        else if (statusCode % 400 < 100) {
+            return new UserInputError(messageText, error);
+        } else {
+            return new ApolloError(messageText, error);
+        }
+    }
 
     const errorBody = {
         message: messageText
     };
 
     if (req?.body) {
-        errorBody.credentials = req.body;
+        errorBody.body = req.body;
     }
 
-    if (status) {
-        errorBody.status = status;
+    if (statusCode) {
+        errorBody.status = statusCode;
     } else {
         errorBody.status = SERVER_ERROR;
     }
 
     if (error) {
-        errorBody.error = error.toString();
+        errorBody.error = error;
     }
 
-    console.error({ message: `ERROR_HANDLING: ${messageText}`, ...error});
+    console.error("\x1b[31m%s\x1b[0m", messageText);
+    console.log(error);
     
-    res.status(!!status ? status : SERVER_ERROR).json(errorBody);
+    res.status(!!statusCode ? statusCode : SERVER_ERROR).json(errorBody);
 };
 
 module.exports = {

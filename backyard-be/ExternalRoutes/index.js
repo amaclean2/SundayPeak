@@ -1,8 +1,12 @@
-const { Router } = require("express");
-const userRouter = require("./User");
+const { Router } = require('express');
+const { NOT_FOUND } = require('../statuses');
 
 const router = Router();
 
-router.use('/user', userRouter);
+router.use('/', (req, res) => {
+    res.status(NOT_FOUND).json({
+        message: "No external routes are currently set up."
+    });
+});
 
 module.exports = router;

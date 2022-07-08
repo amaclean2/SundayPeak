@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCardStateContext } from '../../Providers';
+import { useCardStateContext, useLoginUser } from '../../Providers';
 
 import { useUserStateContext } from "../../Providers/userStateProvider";
 import { ErrorField, DisplayCard, ProfileHeader, FormField, Button } from '../Reusable';
@@ -10,10 +10,10 @@ export const LoginFlow = () => {
 	const {
 		formFields,
 		setFormFields,
-		attemptLogin,
 		setLoginError
 	} = useUserStateContext();
 
+	const { attemptLogin } = useLoginUser();
 	const { switchCard } = useCardStateContext();
 
 	const onChange = (e) => {
@@ -58,7 +58,7 @@ export const LoginFlow = () => {
 						onChange={onChange}
 					/>
 				</div>
-				<div className="action-buttons flex-box cta-buttons">
+				<div className="action-buttons cta-buttons flex-box">
 					<Button secondaryButton className='forgot-button secondary-button' id='forgot-password-button'>
 						Forgot my password?
 					</Button>

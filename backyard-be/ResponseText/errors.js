@@ -1,5 +1,6 @@
 const errorTexts = {
-    missingFieldsCreateUser: 'Email, Password, and Confirm Password fields are required',
+    missingFieldsCreateUser: 'Email, Password, and Confirm Password fields are required. Please try again.',
+    missingLegal: 'User must agree to the terms and conditions before creating an account',
     missingFieldsLogin: 'Email and Password fields are required. Please try again.',
     invalidEmail: 'The email or password you provided is invalid. Please try again.',
     invalidPassword: 'The email or password you provided is invalid. Please try again.',

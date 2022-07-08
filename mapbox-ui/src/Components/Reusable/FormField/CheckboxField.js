@@ -6,6 +6,16 @@ const CheckboxField = ({
     value,
     onChange
 }) => {
+
+    const handleChange = (e) => {
+        return onChange({
+            target: {
+                value: e.target.checked,
+                name: e.target.name
+            }
+        });
+    };
+
     return (
         <div className={cx('form-field', 'checkbox', className)}>
             <input
@@ -13,8 +23,8 @@ const CheckboxField = ({
                 type='checkbox'
                 id={name}
                 name={name}
-                value={value}
-                onChange={onChange}
+                checked={value}
+                onChange={handleChange}
             />
             <div className="checkbox-illus" />
         </div>
