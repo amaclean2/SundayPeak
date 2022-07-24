@@ -57,13 +57,12 @@ const activityResolvers = {
                 }
 
                 if (user_id) {
-                    const insertId = await createActivity({ user_id, adventure_id, public });
+                    await createActivity({ user_id, adventure_id, public });
 
                     const activityResponse = {
                         user_id,
                         adventure_id,
-                        public,
-                        id: insertId
+                        public
                     };
 
                     console.log("ACTIVITY_ADDED", activityResponse);

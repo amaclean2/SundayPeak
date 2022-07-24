@@ -49,13 +49,12 @@ const tickResolvers = {
                 }
 
                 if (user_id) {
-                    const insertId = await createTick({ user_id, adventure_id, public });
+                    await createTick({ user_id, adventure_id, public });
 
                     const tickResponse = {
                         user_id,
                         adventure_id,
-                        public,
-                        id: insertId
+                        public
                     }
 
                     console.log("TICK_ADDED", tickResponse);

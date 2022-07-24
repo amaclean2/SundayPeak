@@ -1,12 +1,10 @@
 type Activity {
-    id: Int!
     adventure_id: Int!
     user_id: Int!
     public: Boolean!
 }
 
 type ActivityByAdventure {
-    id: Int!
     user_id: Int!
     first_name: String!
     last_name: String!
@@ -14,7 +12,6 @@ type ActivityByAdventure {
 }
 
 type ActivityByUser {
-    id: Int!
     user_id: Int!
     adventure_name: String!
     adventure_type: String!

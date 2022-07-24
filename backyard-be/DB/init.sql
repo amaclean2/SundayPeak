@@ -1,5 +1,3 @@
-USE friends;
-
 CREATE TABLE users(
     id INT AUTO_INCREMENT,
     first_name VARCHAR(100),
@@ -17,12 +15,11 @@ CREATE TABLE users(
 );
 
 CREATE TABLE followers(
-    id INT AUTO_INCREMENT,
     follower_id INT,
     leader_id INT,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
-    PRIMARY KEY(id),
+    PRIMARY KEY(follower_id, leader_id),
     FOREIGN KEY(follower_id) REFERENCES users(id),
     FOREIGN KEY(leader_id) REFERENCES users(id)
 );
@@ -31,6 +28,9 @@ CREATE TABLE adventures(
     id INT AUTO_INCREMENT,
     adventure_type VARCHAR(100),
     adventure_name VARCHAR(100),
+    aspect VARCHAR(50),
+    approach_time VARCHAR(50),
+    exposure VARCHAR(50),
     approach_distance VARCHAR(50),
     season VARCHAR(50),
     avg_angle VARCHAR(50),
@@ -51,41 +51,46 @@ CREATE TABLE adventures(
 );
 
 CREATE TABLE adventure_editors(
-    id INT AUTO_INCREMENT,
     editor_id INT,
     adventure_id INT,
     date_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY(id),
+    PRIMARY KEY(editor_id, date_updated),
     FOREIGN KEY(editor_id) REFERENCES users(id),
     FOREIGN KEY(adventure_id) REFERENCES adventures(id)
 );
 
 CREATE TABLE ticks(
-    id INT AUTO_INCREMENT,
     creator_id INT,
     adventure_id INT,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
-    PRIMARY KEY(id),
+    PRIMARY KEY(creator_id, adventure_id),
     FOREIGN KEY(creator_id) REFERENCES users(id),
     FOREIGN KEY(adventure_id) REFERENCES adventures(id)
 );
 
 CREATE TABLE activities(
-    id INT AUTO_INCREMENT,
     creator_id INT,
     adventure_id INT,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    efforts INT,
     public TINYINT,
-    PRIMARY KEY(id),
+    PRIMARY KEY(creator_id, adventure_id),
     FOREIGN KEY(creator_id) REFERENCES users(id),
     FOREIGN KEY(adventure_id) REFERENCES adventures(id)
 );
 
 CREATE TABLE password_reset_tokens(
-    id INT AUTO_INCREMENT,
     email VARCHAR(100),
     reset_token VARCHAR(255),
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY(id)
+    PRIMARY KEY(reset_token)
 );
+
+-- DROP TABLE activities;
+-- DROP TABLE ticks;
+-- DROP TABLE followers;
+-- DROP TABLE adventure_editors;
+-- DROP TABLE adventures;
+-- DROP TABLE users;
+-- DROP TABLE password_reset_tokens;
