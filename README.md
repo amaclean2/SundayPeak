@@ -7,6 +7,7 @@
 ### Run DEV - Docker
 ```console
     git clone git@github.com:amaclean2/BackyardFriends.git
+    cd ./BackyardFrieds
     docker-compose build
     docker-compose up
 ```
