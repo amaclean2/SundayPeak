@@ -6,7 +6,7 @@
 
 ### Instalation Instructions - FE
 
-```
+```console
     git clone git@github.com:amaclean2/BackyardFriends.git
     cd BackyardFriends/mapbox-ui
     npm install
@@ -15,9 +15,15 @@
 
 ### Instalation Instructions - BE
 
-```
+```console
     git clone git@github.com:amaclean2/BackyardFriends.git
     cd BackyardFriends/backyard-be
     npm install
     npm run dev
 ```
+
+### Run In Staging - FE 
+https://friends-dot-backyardfriends.wl.r.appspot.com/discover
+
+### Run In Staging - BE
+https://backyardfriends.wl.r.appspot.com/
