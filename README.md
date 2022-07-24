@@ -4,7 +4,14 @@
 - See who else has the same objectives as you
 - Scope them out and get after it
 
-### Instalation Instructions - FE
+### Run DEV - Docker
+```console
+    git clone git@github.com:amaclean2/BackyardFriends.git
+    docker-compose build
+    docker-compose up
+```
+
+### Instalation Instructions - FE (Deprecated)
 
 ```console
     git clone git@github.com:amaclean2/BackyardFriends.git
@@ -13,7 +20,7 @@
     npm start
 ```
 
-### Instalation Instructions - BE
+### Instalation Instructions - BE (Deprecated)
 
 ```console
     git clone git@github.com:amaclean2/BackyardFriends.git
