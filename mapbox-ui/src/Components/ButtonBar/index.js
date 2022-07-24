@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
 
 import { Skier, Profile } from '../../Images';
 import AdventureEditor from '../AdventureEditor';
 import UserProfile from '../UserProfile';
 import { LoginFlow, SignupFlow } from '../SignupFlow';
-import { CARD_STATES, useCardStateContext, useGetUser, useUserStateContext } from '../../Providers';
+import { CARD_STATES, useCardStateContext, useUserStateContext } from '../../Providers';
 import { Button } from '../Reusable';
-import { useLoginUser } from '../../Providers/hooks';
 
 import './styles.css';
 
@@ -37,11 +36,26 @@ const SignUpButton = () => {
 
 const UserProfileButton = () => {
 	const { openCard } = useCardStateContext();
+	const { setWorkingUser, loggedInUser, workingUser } = useUserStateContext();
+	const [buttonClicked, setButtonClicked] = useState(false);
+
+	const handleProfileButton = () => {
+		setButtonClicked(true);
+		setWorkingUser(loggedInUser);
+	};
+
+	useEffect(() => {
+		if (workingUser?.id === loggedInUser?.id && buttonClicked) {
+			openCard(CARD_STATES.profile);
+			setButtonClicked(false);
+		}
+	}, [workingUser, buttonClicked]);
 
 	return (
 		<Button
 			className="button-bar-button"
-			onClick={() => openCard(CARD_STATES.profile)}>
+			onClick={() => handleProfileButton()}
+		>
 			<Profile />
 		</Button>
 	);

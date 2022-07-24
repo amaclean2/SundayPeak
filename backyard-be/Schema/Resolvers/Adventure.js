@@ -1,19 +1,25 @@
 const { UserInputError, ApolloError } = require('apollo-server-express');
 const { getAdventures, addAdventure, getAdventure } = require('../../DB');
+const { catchBlock, returnError } = require('../../ErrorHandling');
+const { getMapboxAccessToken } = require('../../Config/connections');
 const Lines = require('../../SampleData/LineData.json');
-const statuses = require('../../statuses');
 const { validateCreateAdventure } = require('../../Validators/AdventureValidators');
 
 const adventureResolvers = {
     Query: {
-        getAllAdventures: async (parent, args, context) => {
+        getAllAdventures: async (parent, args) => {
             try {
                 const { coordinates, type, zoom } = args;
                 const parsedCoordinates = JSON.parse(coordinates);
-                return await getAdventures(parsedCoordinates, 'line', 10);
+                const adventures = await getAdventures(parsedCoordinates, 'line', 10);
+                const mapboxToken = getMapboxAccessToken();
+
+                return {
+                    adventures,
+                    mapboxToken
+                };
             } catch (error) {
-                console.log("SERVER_ERROR", error);
-                throw error;
+                throw catchBlock({ error, message: 'serverGetAdventures' });
             }
         },
         getAdventureDetails: async (parent, args) => {
@@ -22,12 +28,12 @@ const adventureResolvers = {
                 
                 if (id) {
                     return await getAdventure(id);
-                } else {
-                    throw new ApolloError('ID_FIELD_REQUIRED', statuses.NOT_ACCEPTABLE);
                 }
+
+                return returnError({ message: 'adventureIdFieldRequired' });
+
             } catch (error) {
-                console.log("SERVER_ERROR", error);
-                throw error;
+                throw catchBlock({ message: 'serverGetAdventureDetails', error });
             }
         }
     },
@@ -38,18 +44,15 @@ const adventureResolvers = {
                 args.creator_id = context.user_id;
                 
                 const validationResponse = await validateCreateAdventure(args);
-
                 const resultId = await addAdventure(validationResponse);
 
                 console.log("ADVENTURE_CREATED", resultId, validationResponse);
 
                 validationResponse.id = resultId;
-
                 return validationResponse;
 
-            } catch (finalErrors) {
-                console.log("ADVENTURE_CREATION_ERROR", finalErrors);
-                throw new ApolloError('SERVER_ERROR', statuses.SERVER_ERROR, finalErrors);
+            } catch (error) {
+                throw catchBlock({ message: 'serverCreateAdventure', error });
             }
         },
 

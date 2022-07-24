@@ -1,4 +1,14 @@
 # import Token from "Token.graphql"
+# import TickByUser from "Tick.graphql"
+# import ActivityCount from "Activity.graphql"
+
+type FollowerCount {
+    count: Int!
+}
+
+type FollowingCount {
+    count: Int!
+}
 
 type User {
     id: Int!
@@ -13,6 +23,10 @@ type User {
     bio: String!
     date_created: String!
     last_updated: String!
+    ticks: [TickByUser!]!
+    activityCount: ActivityCount!
+    followerCount: FollowerCount!
+    followingCount: FollowingCount!
 }
 
 type UserInitResponse {
@@ -29,18 +43,28 @@ input CreateUserInput {
     legal: Boolean!
 }
 
+type ResetPasswordEmailResponse {
+    email: String!
+}
+
+type FollowUserResponse {
+    user_id: Int!
+}
+
 # Queries
 
 type Query {
     login(email: String!, password: String!): UserInitResponse!
     getOtherUser(id: Int!): User!
     getUserFromToken: User!
+    resetPasswordEmail(email: String!): ResetPasswordEmailResponse!
 }
 
 # Mutations
 
 type Mutation {
     createUser(input: CreateUserInput!): UserInitResponse!
+    savePasswordReset(new_password: String!, new_password_2: String!, signature: String!): ResetPasswordEmailResponse!
     editUser(
         first_name: String!,
         last_name: String!,
@@ -54,6 +78,6 @@ type Mutation {
         date_created: Int!,
         last_updated: Int!
     ): User!
-
     deleteUser(id: Int!): User!
+    followUser(leader_id: Int!): FollowUserResponse!
 }

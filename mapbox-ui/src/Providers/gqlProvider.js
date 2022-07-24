@@ -8,6 +8,7 @@ import {
     ApolloLink
 } from "@apollo/client";
 import { onError } from '@apollo/client/link/error';
+import { getBackendUri } from '../Constants';
 
 const errorLink = onError(({ graphqlErrors, networkErrors }) => {
     if (graphqlErrors) {
@@ -32,7 +33,7 @@ const authLink = new ApolloLink((operation, forward) => {
 const link = from([
     authLink,
     errorLink,
-    new HttpLink({ uri: "http://localhost:5000/graphql" })
+    new HttpLink({ uri: getBackendUri() })
 ]);
 
 const client = new ApolloClient({

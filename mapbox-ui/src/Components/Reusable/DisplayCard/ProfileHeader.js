@@ -1,12 +1,25 @@
 import React from 'react';
-import cx from 'classnames';
 
 import { FormField } from '../FormField';
+import { Field } from '../FieldOrganizer';
 
-export const ProfileHeader = ({ textContents, configuration = 'left', textClassName, editFields: {isEditable, propName, onChange} = {} }) => {
+export const HeaderSubtext = ({ children }) => (
+    <span className="header-subtext">{children}</span>
+);
+
+export const ProfileHeader = ({
+    textContents,
+    configuration = 'left',
+    editFields: {
+        isEditable,
+        propName,
+        onChange
+    } = {},
+    children
+}) => {
     return (
         <div className={`profile-header ${configuration}`}>
-            {(!!onChange)
+            {(isEditable)
                 ? (
                     <FormField
                         value={textContents}
@@ -17,11 +30,9 @@ export const ProfileHeader = ({ textContents, configuration = 'left', textClassN
                         onChange={onChange}
                     />
                 ) : (
-                    <FormField
-                        value={textContents}
-                        isEditable={false}
-                        className={cx('card-header', textClassName)}
-                    />
+                    <Field>
+                        {children}
+                    </Field>
                 )
             }
         </div>

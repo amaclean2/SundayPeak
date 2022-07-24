@@ -9,6 +9,7 @@
     transition: all 0.2s ease-in-out;
     cursor: pointer;
     margin-right: 10px;
+    padding: 0;
 }
 
 .button-bar-button:hover {

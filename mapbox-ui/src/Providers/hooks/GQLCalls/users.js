@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 
 import { useCardStateContext } from '../../cardStateProvider';
-import { CREATE_USER, GET_SIGNED_IN_USER, LOGIN_USER } from '../../typeDefs';
 import { useUserStateContext } from '../../userStateProvider';
+import { CREATE_USER, FOLLOW_USER, GET_OTHER_USER, GET_SIGNED_IN_USER, LOGIN_USER } from '../TypeDefs';
 
 export const useGetUser = () => {
 
     // handle get a logged in user
-    const [start, { data, error, loading }] = useLazyQuery(GET_SIGNED_IN_USER);
+    const [start, { data, error, loading, refetch }] = useLazyQuery(GET_SIGNED_IN_USER);
 
     const {
-        setWorkingUser,
+        setLoggedInUser,
         setIsLoggedIn,
         setIsLandingPage
     } = useUserStateContext();
@@ -19,7 +19,7 @@ export const useGetUser = () => {
     useEffect(() => {
         if (data) {
             console.log("LOGGED_USER", data);
-            setWorkingUser(data.getUserFromToken);
+            setLoggedInUser(data.getUserFromToken);
             setIsLoggedIn(true);
             setIsLandingPage(false);
         } else if (error) {
@@ -42,9 +42,28 @@ export const useGetUser = () => {
 
     return {
         startUserAuthProcess,
+        refetch,
         data,
         error,
         loading
+    };
+};
+
+export const useGetOtherUser = () => {
+    const [start, { data, error, loading }] = useLazyQuery(GET_OTHER_USER);
+    const { setWorkingUser } = useUserStateContext();
+
+    const getOtherUser = async (id) => start({ variables: { id }});
+
+    useEffect(() => {
+        if (data?.getOtherUser) {
+            setWorkingUser(data.getOtherUser);
+        }
+    }, [data, error, loading]);
+
+    return {
+        getOtherUser,
+        data
     };
 };
 
@@ -52,7 +71,7 @@ export const useLoginUser = () => {
     // handle logging in a user
     const [getUser, { data, error, loading }] = useLazyQuery(LOGIN_USER);
     const {
-        setWorkingUser,
+        setLoggedInUser,
         setIsLoggedIn,
         setIsLandingPage,
         setFormFields,
@@ -85,7 +104,7 @@ export const useLoginUser = () => {
 
             localStorage.setItem('token', JSON.stringify(loggedInUser.token));
 
-            setWorkingUser(loggedInUser.user);
+            setLoggedInUser(loggedInUser.user);
             setIsLoggedIn(true);
             setIsLandingPage(false);
             setFormFields({});
@@ -117,7 +136,7 @@ export const useSignupUser = () => {
     const {
         formFields,
         setLoginError,
-        setWorkingUser,
+        setLoggedInUser,
         setIsLoggedIn,
         setIsLandingPage,
         setFormFields
@@ -165,7 +184,7 @@ export const useSignupUser = () => {
             console.log("USER_CREATED", data);
 
             const { createUser: { user: newUser }} = data;
-            setWorkingUser(newUser);
+            setLoggedInUser(newUser);
             setIsLoggedIn(true);
             setIsLandingPage(false);
             setFormFields({});
@@ -176,4 +195,15 @@ export const useSignupUser = () => {
     return {
         attemptSignup
     };
-}
+};
+
+export const useFollowUser = () => {
+    const [start, {data, error, loading}] = useMutation(FOLLOW_USER);
+
+    const followUser = ({ leaderId }) => start({ variables: { leaderId }});
+
+    return {
+        followUser,
+        data
+    };
+};

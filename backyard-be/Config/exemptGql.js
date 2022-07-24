@@ -1,6 +1,8 @@
 const exemptQueries = [
     'getAllAdventures',
-    'IntrospectionQuery'
+    'IntrospectionQuery',
+    'savePasswordReset',
+    'resetPasswordEmail'
 ];
 
 const isOperation = (body, query) => {
@@ -13,7 +15,18 @@ const isOperation = (body, query) => {
     }
 };
 
+const isExempt = (body) => {
+    if (body.operationName && exemptQueries.includes(body.operationName)) {
+        return true;
+    } else if (body.query) {
+        return exemptQueries.find((query) => body.query.includes(query));
+    } else {
+        return false;
+    }
+};
+
 module.exports = {
     exemptQueries,
-    isOperation
+    isOperation,
+    isExempt
 };

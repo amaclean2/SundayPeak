@@ -11,6 +11,7 @@ import TextareaField from './TextareaField';
 import StaticField from './StaticField';
 
 export const FormField = ({
+	id,
 	type = 'text',
 	name = '',
 	label = '',
@@ -25,44 +26,11 @@ export const FormField = ({
 	onChange = () => { }
 }) => {
 	const [workingValue, setWorkingValue] = useState(value);
-	const [checkboxState, setCheckboxState] = useState(false);
-	const [selectManyState, setSelectManyState] = useState([]);
-	const [componentLoaded, setComponentLoaded] = useState(false);
 
 	const handleChange = (e) => {
 		onChange(e);
 		setWorkingValue(e.target.value);
 	};
-
-	const handleCheckboxState = (e) => {
-		setCheckboxState(!checkboxState);
-		handleChange(e);
-	}
-
-	const handleSelectManyState = (e) => {
-		if (selectManyState.includes(e.target.value)) {
-			const index = selectManyState.indexOf(e.target.value);
-
-			setSelectManyState((currArray) => {
-				return [...currArray.slice(0, index), ...currArray.slice(index + 1)];
-			});
-		} else {
-			setSelectManyState([...selectManyState, e.target.value]);
-		}
-	};
-
-	useEffect(() => {
-		if (componentLoaded) {
-			handleChange({
-				target: {
-					name,
-					value: selectManyState
-				}
-			});
-		} else {
-			setComponentLoaded(true);
-		}
-	}, [selectManyState]);
 
 	const inputBox = () => {
 		switch (type) {
@@ -75,21 +43,14 @@ export const FormField = ({
 					value={workingValue}
 					onChange={handleChange}
 				/>;
-			case 'checkbox':
-				return (
-					<CheckboxField
-						className={className}
-						name={name}
-						value={workingValue}
-						onChange={handleChange}
-					/>
-				);
 			case 'selectMany':
 				return (
 					<SelectManyField
 						className={className}
 						options={options}
-						onChange={handleSelectManyState}
+						onChange={handleChange}
+						name={name}
+						value={value}
 					/>
 				);
 			case 'range':
@@ -129,13 +90,28 @@ export const FormField = ({
 		}
 	};
 
-	return (
-		<div className={cx('form-field-container', (fullWidth && 'wide'), (block && 'block'), (!isEditable && 'static'))} >
+	const nonCheckboxField = () => (
+		<>
 			{!hideLabel && <label htmlFor={name} className={cx(type, className, 'label-field')}>
-				{isEditable && type === 'checkbox' && inputBox()}
 				{label}
 			</label>}
-			{isEditable && type !== 'checkbox' && inputBox()}
+			{isEditable && inputBox()}
+		</>
+	);
+
+	return (
+		<div
+			id={id || name}
+			className={cx('form-field-container', (fullWidth && 'wide'), (block && 'block'), (!isEditable && 'static'))}
+		>
+			{(isEditable && type === 'checkbox') ? (
+				<CheckboxField
+					className={className}
+					name={name}
+					value={workingValue}
+					onChange={handleChange}
+					label={label}
+				/>) : nonCheckboxField()}
 			{!isEditable && (
 				<StaticField
 					value={workingValue}

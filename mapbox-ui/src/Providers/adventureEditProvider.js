@@ -20,6 +20,7 @@ export const AdventureEditProvider = ({ children }) => {
 	const [currentAdventure, setCurrentAdventure] = useState(null);
 	const [isEditable, setIsEditable] = useState(false);
 	const [adventureError, setAdventureError] = useState(null);
+	const [mapboxToken, setMapboxToken] = useState(null);
 
 	return (
 		<AdventureEditContext.Provider
@@ -29,11 +30,13 @@ export const AdventureEditProvider = ({ children }) => {
 				isEditable,
 				allAdventures,
 				adventureError,
+				mapboxToken,
 				setAdventureAddState,
 				setCurrentAdventure,
 				setIsEditable,
 				setAllAdventures,
-				setAdventureError
+				setAdventureError,
+				setMapboxToken
 			}}
 		>
 			{children}

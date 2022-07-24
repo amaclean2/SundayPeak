@@ -1,3 +1,13 @@
 # [START app_yaml]
 runtime: nodejs14
+
+env_variables:
+  PORT: 8080
+  NODE_ENV: stage
+  DB_HOST: backyard-stage-db-do-user-6012695-0.b.db.ondigitalocean.com
+  DB_USER: byf
+  DB_PASS: AVNS_lM25mnEfowo3P0b7CEb
+  DB_NAME: friends
+  DB_PORT: 25060
+  JWT_SECRET: secret
 # [END app_yaml]

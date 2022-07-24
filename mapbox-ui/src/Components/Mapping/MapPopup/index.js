@@ -3,20 +3,21 @@ import { Popup } from 'react-map-gl';
 
 import {
 	useCardStateContext,
-	useTickListContext,
 	CARD_STATES,
 	useGetAdventure
 } from '../../../Providers';
+import { useSaveTick } from '../../../Providers/hooks/GQLCalls/ticks';
 import { Button, FormField } from '../../Reusable';
 
 import './styles.css';
 
 const MapPopup = ({ popupInfo, setPopupInfo }) => {
-	const { start: getAdventure } = useGetAdventure();
+	const { getAdventure } = useGetAdventure();
 	const { openCard } = useCardStateContext();
-	const { addToTickList } = useTickListContext();
+	const { saveTick } = useSaveTick();
 
 	const viewMore = () => {
+		console.log("ID", popupInfo.id);
 		return getAdventure(popupInfo.id).then(() => {
 			setPopupInfo(null);
 			openCard(CARD_STATES.adventures);
@@ -49,7 +50,7 @@ const MapPopup = ({ popupInfo, setPopupInfo }) => {
 				small
 				id={'add-to-tick-list-button'}
 				className="button popup-add-to-ticklist-button"
-				onClick={() => addToTickList(popupInfo.id)}
+				onClick={() => saveTick({ adventureId: popupInfo.id })}
 			>
 				Add To Tick List
 			</Button>

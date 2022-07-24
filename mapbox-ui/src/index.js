@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { CardStateProvider } from './Providers/cardStateProvider';
 import { AdventureEditProvider } from './Providers/adventureEditProvider';
 import { UserStateProvider } from './Providers/userStateProvider';
-import { TickListProvider } from './Providers/tickListProvider';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { GQLProvider } from './Providers/gqlProvider';
@@ -17,9 +16,7 @@ const ProvidersWrapper = () => {
       <GQLProvider>
         <UserStateProvider>
           <AdventureEditProvider>
-            <TickListProvider>
-              <App />
-            </TickListProvider>
+            <App />
           </AdventureEditProvider>
         </UserStateProvider>
       </GQLProvider>

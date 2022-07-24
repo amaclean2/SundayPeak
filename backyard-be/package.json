@@ -26,6 +26,8 @@
     "helmet": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "path": "^0.12.7"
+    "nodemailer": "^6.7.7",
+    "path": "^0.12.7",
+    "string-hash": "^1.1.3"
   }
 }

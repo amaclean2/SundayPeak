@@ -1,7 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-import { useLogin } from './hooks/externalCalls';
-import { useCardStateContext } from './cardStateProvider';
+import React, { createContext, useContext, useState } from 'react';
 
 const UserStateContext = createContext();
 
@@ -18,6 +15,7 @@ export const useUserStateContext = () => {
 export const UserStateProvider = ({ children }) => {
 
 	const [workingUser, setWorkingUser] = useState({});
+	const [loggedInUser, loginUser] = useState({});
 	const [isLoggedIn, setIsLoggedIn] = useState(undefined);
 	const [formFields, setFormFields] = useState({});
 	const [isLandingPage, setIsLandingPage] = useState(true);
@@ -27,8 +25,13 @@ export const UserStateProvider = ({ children }) => {
 		setIsLandingPage(false);
 	}
 
+	const setLoggedInUser = (user) => {
+		loginUser(user);
+		setWorkingUser(user);
+	}
+
 	const handleLogout = async () => {
-		setWorkingUser({});
+		setLoggedInUser({});
 		setIsLoggedIn(false);
 		localStorage.clear();
 		return 'SUCCESSFULLY_LOGGED_OUT';
@@ -42,6 +45,7 @@ export const UserStateProvider = ({ children }) => {
 				workingUser,
 				isLandingPage,
 				loginError,
+				loggedInUser,
 				setLoginError,
 				setFormFields,
 				handleLogout,
@@ -49,7 +53,8 @@ export const UserStateProvider = ({ children }) => {
 				setWorkingUser,
 				setIsLoggedIn,
 				setIsLandingPage,
-				setFormFields
+				setFormFields,
+				setLoggedInUser
 			}}
 		>
 			{children}

@@ -1,0 +1,31 @@
+.field-page {
+    width: 100%;
+    flex-direction: column;
+}
+
+.field.flex-box {
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    padding: 0 10px;
+}
+
+.field-row.flex-box {
+    width: 100%;
+    padding: 15px 0;
+}
+
+.field-row.border-bottom {
+    border-bottom: 2px solid var(--seperator-color);
+}
+
+.field.border-right {
+    border-right: 2px solid var(--seperator-color);
+}
+
+.field-header {
+    font-size: 20px;
+    margin: 0;
+    margin-bottom: 10px;
+    font-weight: 600;
+}

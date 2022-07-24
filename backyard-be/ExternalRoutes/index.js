@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { NOT_FOUND } = require('../statuses');
+const { NOT_FOUND } = require('../ErrorHandling/statuses');
 
 const router = Router();
 

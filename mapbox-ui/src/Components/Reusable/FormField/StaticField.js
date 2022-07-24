@@ -12,10 +12,10 @@ const StaticField = ({
         : '';
 
     if (options?.selectMany) {
-        console.log("VALUE", value, "NAME", name);
         const parsedSelection = (typeof value === "string") ? JSON.parse(value) : value;
+
         return (
-            <div className={cx(type, className, 'form-field-static')}>
+            <div className={cx(type, className, 'form-field-static')} id={name}>
                 {parsedSelection.map((value, key) => (
                     <span
                         key={`selection_value_${key}`}
@@ -29,7 +29,7 @@ const StaticField = ({
     }
 
     return (
-        <span className={cx(type, className, 'form-field-static')}>{`${value}${formattedSuffix}`}</span>
+        <span className={cx(type, className, 'form-field-static')} >{`${value}${formattedSuffix}`}</span>
     );
 };
 

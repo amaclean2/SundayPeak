@@ -1,16 +1,17 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { useEffect } from 'react';
+
 import { useAdventureEditContext } from '../../adventureEditProvider';
 import { useCardStateContext } from '../../cardStateProvider';
-import { CREATE_ADVENTURE, GET_ADVENTURE, GET_ALL_ADVENTURES } from '../../typeDefs';
 import { validateAdventure } from '../../utils';
+import { CREATE_ADVENTURE, GET_ADVENTURE, GET_ALL_ADVENTURES } from '../TypeDefs';
 
 export const useGetAdventure = () => {
     // handle fetching an adventure
-    const [ getAdventure, { data, error, loading }] = useLazyQuery(GET_ADVENTURE);
+    const [ start, { data, error, loading }] = useLazyQuery(GET_ADVENTURE);
     const { setCurrentAdventure } = useAdventureEditContext();
 
-    const start = (id) => getAdventure({ variables: { id }});
+    const getAdventure = (id) => start({ variables: { id }});
 
     useEffect(() => {
         if (data) {
@@ -19,7 +20,7 @@ export const useGetAdventure = () => {
     }, [data]);
 
     return {
-        start,
+        getAdventure,
         data,
         error, 
         loading
@@ -28,12 +29,13 @@ export const useGetAdventure = () => {
 
 export const useGetAdventures = () => {
     const defaultStartPosition = { lat: 39.347, lng: -120.194, zoom: 10 };
-    const { setAllAdventures } = useAdventureEditContext();
+    const { setAllAdventures, setMapboxToken } = useAdventureEditContext();
 
     const [start, {
 		loading,
 		error,
 		data,
+        refetch: refetchAdventures
 	}] = useLazyQuery(GET_ALL_ADVENTURES, {
 		variables: {
 			coordinates: JSON.stringify(defaultStartPosition),
@@ -52,7 +54,8 @@ export const useGetAdventures = () => {
 
     useEffect(() => {
         if (data) {
-            setAllAdventures(data.getAllAdventures);
+            setAllAdventures(data.getAllAdventures.adventures);
+            setMapboxToken(data.getAllAdventures.mapboxToken);
         }
     }, [data]);
 
@@ -61,7 +64,8 @@ export const useGetAdventures = () => {
         error,
         loading,
         defaultStartPosition,
-        queryAdventures
+        queryAdventures,
+        refetchAdventures
     }
 };
 
@@ -87,10 +91,11 @@ export const useSaveAdventure = () => {
         try {
 			console.log("CREATING_ADVENTURE...", currentAdventure);
 
-			createAdventure({ variables: { input: currentAdventure }})
+			return createAdventure({ variables: { input: currentAdventure }})
             .then(() => closeCard());
 		} catch (error) {
             setAdventureError(error.toString().replace('Error: ', ''));
+            throw error;
 		}
     };
 

@@ -1,24 +1,29 @@
 const { AuthenticationError, ValidationError, UserInputError, ApolloError } = require("apollo-server-express");
-const errorTexts = require("../ResponseText/errors");
-const { SERVER_ERROR } = require("../statuses");
+const errorTexts = require('./ResponseText/errors');
+const { SERVER_ERROR } = require("./statuses");
 
-const returnError = ({ req, res, status: statusCode, message, error, gql }) => {
-    messageText = errorTexts[message] || message;
+const returnError = ({ req, res, status: statusCode, message, error, gql = true }) => {
+    const errorData = errorTexts[message];
 
+    const messageText = errorData?.messageText || message;
+    const messageCode = errorData?.status || statusCode;
+
+    // handle gql calls
     if (gql) {
-        console.log(messageText, error);
-        if (statusCode === 401) {
-            return new AuthenticationError(messageText, error);
-        } else if (statusCode === 406) {
-            return new ValidationError(messageText, error);
+        console.log(messageText, error, messageCode % 400);
+        if (messageCode === 401) {
+            throw new AuthenticationError(messageText, error);
+        } else if (messageCode === 406) {
+            throw new ValidationError(messageText, error);
         }
-        else if (statusCode % 400 < 100) {
-            return new UserInputError(messageText, error);
+        else if (messageCode % 400 < 100) {
+            throw new UserInputError(messageText, error);
         } else {
-            return new ApolloError(messageText, error);
+            throw new ApolloError(messageText, error);
         }
     }
 
+    // handle all other calls
     const errorBody = {
         message: messageText
     };
@@ -27,8 +32,8 @@ const returnError = ({ req, res, status: statusCode, message, error, gql }) => {
         errorBody.body = req.body;
     }
 
-    if (statusCode) {
-        errorBody.status = statusCode;
+    if (messageCode) {
+        errorBody.status = messageCode;
     } else {
         errorBody.status = SERVER_ERROR;
     }
@@ -40,9 +45,18 @@ const returnError = ({ req, res, status: statusCode, message, error, gql }) => {
     console.error("\x1b[31m%s\x1b[0m", messageText);
     console.log(error);
     
-    res.status(!!statusCode ? statusCode : SERVER_ERROR).json(errorBody);
+    res.status(!!messageCode ? messageCode : SERVER_ERROR).json(errorBody);
+};
+
+const catchBlock = ({ error, message, gql }) => {
+    if (error) {
+        throw error;
+    } else {
+        throw returnError({ gql, message, error });
+    }
 };
 
 module.exports = {
-    returnError
+    returnError,
+    catchBlock
 };

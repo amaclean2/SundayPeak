@@ -1,1 +1,3 @@
-export const mapboxAccessToken = 'pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg';
+export const getBackendUri = () => {
+    return process.env.REACT_APP_API_URL || 'http://localhost:5000/graphql'
+};

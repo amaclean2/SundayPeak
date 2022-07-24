@@ -1,52 +1,46 @@
 const { checkForUser: checkForUserDB } = require('../DB');
-const { returnError } = require('../ErrorHandling');
-
-const { NOT_ACCEPTABLE, SERVER_ERROR } = require('../statuses');
+const { returnError, catchBlock } = require('../ErrorHandling');
 
 const validateCreateUser = async (req, res, next) => {
 	const { email, password, password2 } = req?.body?.variables?.input;
 
 	try {
 		if (!email || !password || !password2) {
-			return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'missingFieldsCreateUser' });
+			throw returnError({ gql: false, req, res, message: 'missingFieldsCreateUser' });
 		} else if (!email.includes('@')) {
-			return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'invalidEmail' });
+			throw returnError({ gql: false, req, res, message: 'invalidEmail' });
 		} else {
 			const emailSuffix = email.split('@')[1];
 
 			if (!emailSuffix.includes('.')) {
-				return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'invalidEmail' });
+				throw returnError({ gql: false, req, res, message: 'invalidEmail' });
 			} else {
 				const idExists = await checkForUserDB(email);
 				if (idExists) {
-					return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'preexistingUser' });
+					throw returnError({ gql: false, req, res, message: 'preexistingUser' });
 				} else if (password.length < 5) {
-					return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'tooShortPassword' });
+					throw returnError({ gql: false, req, res, message: 'tooShortPassword' });
 				} else if (password.length > 30) {
-					return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'tooLongPassword' });
+					throw returnError({ gql: false, req, res, message: 'tooLongPassword' });
 				} else if (password !== password2) {
-					return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'nonMatchingPasswords' });
+					throw returnError({ gql: false, req, res, message: 'nonMatchingPasswords' });
 				} else {
 					next();
 				}
 			}
 		}
 	} catch (error) {
-		return returnError({ req, res, status: SERVER_ERROR, message: 'serverValidateUser', error });
+		throw catchBlock({ gql: false, req, res, message: 'serverValidateUser', error });
 	}
 };
 
 const validateLoginUser = async (req, res, next) => {
 	const { email, password } = req?.body?.variables;
 
-	try {
-		if (!email || !password) {
-			return returnError({ req, res, status: NOT_ACCEPTABLE, message: 'missingFieldsLogin' });
-		} else {
-			next();
-		}
-	} catch (error) {
-		return returnError({ req, res, status: SERVER_ERROR, message: 'serverValidateUser', error });
+	if (!email || !password) {
+		throw returnError({ gql: false, req, res, message: 'missingFieldsLogin' });
+	} else {
+		next();
 	}
 }
 

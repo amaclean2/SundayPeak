@@ -1,33 +1,46 @@
+import { useEffect, useState } from "react";
 import cx from 'classnames';
 
 const CheckboxField = ({
     className,
     name,
     value,
-    onChange
+    onChange,
+    label
 }) => {
+    const [toggleState, setToggleState] = useState(!!value);
 
     const handleChange = (e) => {
-        return onChange({
-            target: {
-                value: e.target.checked,
-                name: e.target.name
-            }
-        });
+        setToggleState(!toggleState);
     };
 
+    const handleLabelClick = (e) => {
+        e.stopPropagation();
+        setToggleState(!toggleState);
+    };
+
+    useEffect(() => {
+        onChange({
+            target: {
+                value: toggleState,
+                name
+            }
+        })
+    }, [toggleState]);
+
     return (
-        <div className={cx('form-field', 'checkbox', className)}>
+        <label htmlFor={name} className={cx('checkbox', className, 'label-field')} onClick={handleLabelClick}>
             <input
                 className={'hidden-checkbox'}
                 type='checkbox'
                 id={name}
                 name={name}
-                checked={value}
+                checked={toggleState}
                 onChange={handleChange}
             />
             <div className="checkbox-illus" />
-        </div>
+            {label}
+        </label>
     );
 };
 

@@ -39,7 +39,7 @@ input {
     display: block;
 }
 
-.form-field.text, .form-field.text-area {
+.form-field.text, .form-field.text-area, .form-field.email {
     background-color: var(--input-background-color);
     border: 1px solid var(--input-border-color);
     border-radius: 10px;
@@ -150,14 +150,16 @@ input {
 
 .select-many-option {
     margin-bottom: 5px;
+    cursor: pointer;
 }
 
-.select-many {
+.form-field.select-many {
     margin: 8px 0 15px 0;
     flex-direction: column;
     align-items: flex-start;
     max-height: 200px;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .slider {

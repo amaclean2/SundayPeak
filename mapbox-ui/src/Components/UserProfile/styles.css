@@ -33,7 +33,7 @@ h1 {
     display: inadventure-block;
 }
 
-.stats {
+.stats.flex-box {
     align-items: flex-start;
     margin-left: 10px;
     width: calc(100% - 60px);

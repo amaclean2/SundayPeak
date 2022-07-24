@@ -1,22 +1,41 @@
 type Activity {
     id: Int!
-    line_id: Int!
+    adventure_id: Int!
     user_id: Int!
     public: Boolean!
+}
+
+type ActivityByAdventure {
+    id: Int!
+    user_id: Int!
+    first_name: String!
+    last_name: String!
+    email: String!
+}
+
+type ActivityByUser {
+    id: Int!
+    user_id: Int!
+    adventure_name: String!
+    adventure_type: String!
+    difficulty: String!
+    nearest_city: String!
+}
+
+type ActivityCount {
+    count: Int!
 }
 
 # Queries
 
 type Query {
-    getAllActivitiesForLine(line_id: Int!): [Activity!]!
-}
-
-type Query {
-    getAllActivitiesForUser(user_id: Int!): [Activity!]!
+    getAllActivitiesByAdventure(adventure_id: Int!): [ActivityByAdventure!]!
+    getAllActivitiesByUser(user_id: Int!): [ActivityByUser]!
+    getAllActivityCountByUser(user_id: Int!): ActivityCount!
 }
 
 # Mutations
 
 type Mutation {
-    createActivity(line_id: Int!, user_id: Int!, public: Boolean!): Activity!
+    createActivity(adventure_id: Int!, public: Boolean!): Activity!
 }

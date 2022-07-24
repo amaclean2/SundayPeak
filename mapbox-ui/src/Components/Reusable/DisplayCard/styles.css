@@ -1,15 +1,17 @@
 .display-card {
     margin: 10px;
     height: calc(100vh - 60px);
-    width: calc(50vw - 20px);
-    max-width: 500px;
-    border-radius: 8px;
+    min-width: 500px;
+    max-width: calc(100vh - 40px);
+    border-radius: 30px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     overflow: hidden;
-    transition: all var(--card-opening-speed) ease-in-out;
+    transition: opacity var(--card-opening-speed) ease-in-out, width var(--card-opening-speed) ease-in-out;
     pointer-events: auto;
+    opacity: 1;
+    position: relative;
 }
 
 .display-card-container {
@@ -33,7 +35,7 @@
 }
 
 .display-card.closing, .display-card.opening {
-    height: 50px;
+    min-width: 0;
     width: 50px;
     opacity: 0;
 }
@@ -42,9 +44,12 @@
     height: 50px;
     width: 100%;
     left: 0;
-    border-bottom: 2px solid #000;
     display: flex;
-    background-color: var(--default-background-color);
+    background-color: #FFFFFF22;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
 .display-header-spacer {
@@ -53,19 +58,22 @@
 
 .display-back-button {
     border: none;
-    border-left: 2px solid #000;
+    padding: 0;
+    border-radius: 0;
+    color: var(--secondary-background-color);
     width: 50px;
     height: 50px;
     outline: none;
-    background-color: #FFF;
+    background-color: transparent;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    justify-content: center;
+    margin: 0;
 }
 
 .display-back-button svg {
     padding-right: 10px;
     transition: all 0.2s ease-in-out;
+    color: inherit;
 }
 
 .display-card.open .display-back-button svg {
@@ -77,7 +85,7 @@
 }
 
 .display-back-button:hover {
-    background-color: #EEE;
+    background-color: #EEE2;
 }
 
 .display-content {
@@ -86,8 +94,10 @@
     transition: all 0.3s ease-in-out;
 }
 
-.action-buttons {
+.action-buttons.flex-box {
     padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .action-buttons .button {
@@ -112,7 +122,8 @@
 .profile-header {
     width: 100%;
     height: 80px;
-    background-color: var(--primary-accent-color);
+    padding-top: 50px;
+    background: var(--header-gradient);
     display: flex;
     justify-content: space-between;
     backdrop-filter: blur(8px);
@@ -122,4 +133,9 @@
 
 .profile-header.centered {
     justify-content: center;
+}
+
+h3.label-field {
+    height: 1em;
+    margin: 0;
 }

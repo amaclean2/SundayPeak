@@ -39,6 +39,7 @@ export const LoginFlow = () => {
 					<FormField
 						name="email"
 						label="Email"
+						type='email'
 						block
 						hideLabel
 						isEditable

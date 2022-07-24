@@ -42,6 +42,7 @@ export const SignupFlow = () => {
 						onChange={onChange}
 					/>
 					<FormField
+						type='email'
 						name="email"
 						label="Email"
 						hideLabel
@@ -73,7 +74,7 @@ export const SignupFlow = () => {
 					<FormField
 						type='checkbox'
 						name='legal'
-						value={false}
+						value={formFields.legal}
 						label={'I agree with the Backyard Friends Privacy Policy'}
 						isEditable
 						onChange={onChange}

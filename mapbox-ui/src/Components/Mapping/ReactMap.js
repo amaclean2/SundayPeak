@@ -1,8 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import Map, { Layer, Marker, NavigationControl, Source } from 'react-map-gl';
 
-import { mapboxAccessToken } from '../../Constants';
-
 import { SkierIcon } from '../../Images';
 import { CARD_STATES, useAdventureEditContext, useCardStateContext, useGetAdventures } from '../../Providers';
 import MapPopup from './MapPopup';
@@ -29,7 +27,8 @@ const ReactMap = () => {
 		setCurrentAdventure,
 		allAdventures,
 		setAllAdventures,
-		setIsEditable
+		setIsEditable,
+		mapboxToken
 	} = useAdventureEditContext();
 	const { defaultStartPosition } = useGetAdventures();
 
@@ -92,10 +91,14 @@ const ReactMap = () => {
 		return null;
 	}
 
+	if (!mapboxToken) {
+		return null;
+	}
+
 	return <Map
 		reuseMaps
 		className="map-container"
-		mapboxAccessToken={mapboxAccessToken}
+		mapboxAccessToken={mapboxToken}
 		mapStyle="mapbox://styles/mapbox/satellite-v9"
 		initialViewState={initialViewState}
 		maxPitch={85}

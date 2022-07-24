@@ -4,13 +4,16 @@ const helmet = require('helmet');
 const { ApolloServer } = require('apollo-server-express');
 const { loadSchema } = require('@graphql-tools/load');
 const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
+const { config } = require('dotenv');
 
 const resolvers = require('./Schema/Resolvers');
 const authService = require('./Services/auth.service');
 const router = require('./ExternalRoutes');
 
+config();
+
 const app = express();
-const port = process.env.PORT || 80;
+const PORT = process.env.PORT || 8080;
 
 // used for external apis
 app.use(express.urlencoded({ extended: false }));
@@ -33,8 +36,8 @@ const startApplication = async () => {
         typeDefs,
         resolvers,
         csrfPrevention: true,
-        context: (requestObject) => ({
-            user_id: requestObject.req.body.id
+        context: ({ req }) => ({
+            user_id: req.body.id
         })
     });
 
@@ -66,6 +69,13 @@ app.use('/', authService.validate);
 
 startApplication();
 
-app.listen({ port }, () => {
-    console.log(`Backyard friends running on http://localhost:${port}`);
+const server = app.listen(PORT, () => {
+    const host = server.address().address;
+    const workingPort = server.address().port;
+
+    console.log(`Backyard friends backend listening to http://${host}:${workingPort}`);
 });
+
+module.exports = {
+    server
+};

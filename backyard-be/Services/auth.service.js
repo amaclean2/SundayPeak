@@ -1,20 +1,19 @@
 const jwt = require('jsonwebtoken');
 
 const { getJWTSecret } = require('../Config/connections');
-const { exemptQueries, isOperation } = require('../Config/exemptGql');
+const { exemptQueries, isOperation, isExempt } = require('../Config/exemptGql');
 const { returnError } = require('../ErrorHandling');
-const statuses = require('../statuses');
+const statuses = require('../ErrorHandling/statuses');
 const { validateLoginUser, validateCreateUser } = require('../Validators/UserValidators');
 
 const authService = {
-    issue: (payload) => jwt.sign(payload, getJWTSecret(), { expiresIn: 17280}),
+    issue: (payload) => jwt.sign(payload, getJWTSecret(), { expiresIn: '48h'}),
     validate: async (req, res, next) => {
-        if (exemptQueries.includes(req.body.operationName)) {
+        if (isExempt(req.body)) {
             return next();
         }
 
-        // login and createUser still have to go through a form of 
-        // validation.
+        // validation for form inputs
         if (isOperation(req.body, 'login')) {
             return validateLoginUser(req, res, next);
         }
@@ -33,7 +32,8 @@ const authService = {
 
             await jwt.verify(bearerToken, getJWTSecret(), {}, (error, decoded) => {
                 if (error) {
-                    return returnError({ 
+                    throw returnError({ 
+                        gql: false,
                         req,
                         res,
                         status: statuses.FORBIDDEN,
@@ -46,7 +46,8 @@ const authService = {
                 }
             })
         } else {
-            return returnError({
+            throw returnError({
+                gql: false,
                 req,
                 res,
                 status: statuses.FORBIDDEN,

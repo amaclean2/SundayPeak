@@ -9,13 +9,16 @@ button {
     border-radius: 22px;
     height: 35px;
     font-weight: 500;
-    padding: 0 20px;
     font-size: 15px;
     margin: 5px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    justify-content: center;
-    align-items: center;
+    text-decoration: none;
+    padding: 0 20px;
+  }
+
+  .button svg {
+    flex: 1;
   }
   
   .button:hover {

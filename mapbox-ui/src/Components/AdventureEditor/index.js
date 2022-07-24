@@ -1,19 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import {
-	useAdventureEditContext,
-	useCardStateContext,
-	useGetAdventures,
-	useSaveAdventure
+	useAdventureEditContext
 } from '../../Providers';
-import { Button, DisplayCard, ProfileHeader } from '../Reusable';
+import { useGetAdventureTicks } from '../../Providers/hooks/GQLCalls/ticks';
+import { DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable';
+import AdventureEditorButtons from './Buttons';
 import AdventureEditorForm from './Form';
+import AdventureViewer from './Viewer';
 
 import './styles.css';
 
 const AdventureEditor = () => {
 	const {
-		adventureAddState,
 		setAdventureAddState,
 		currentAdventure,
 		setCurrentAdventure,
@@ -21,15 +20,9 @@ const AdventureEditor = () => {
 		setIsEditable,
 		adventureError
 	} = useAdventureEditContext();
-
-	const { queryAdventures: refetchAdventures } = useGetAdventures();
+	const { getAdventureTicks } = useGetAdventureTicks();
 
 	const menuRef = useRef();
-
-	const { saveNewAdventure, startAdventureSaveProcess } = useSaveAdventure();
-	const { closeCard } = useCardStateContext();
-
-	const [saveState, setSaveState] = useState(0);
 
 	const onChange = (e) => {
 
@@ -52,96 +45,53 @@ const AdventureEditor = () => {
 		menuRef.current.scrollTop = 0
 	}, [adventureError]);
 
-	const saveAdventure = async () => {
+	useEffect(() => {
+		if (currentAdventure) getAdventureTicks({ adventureId: currentAdventure.id });
+	}, []);
 
-		if (saveState === 0) {
-			const { error: saveAdventureError } = await startAdventureSaveProcess();
-
-			if (!saveAdventureError) {
-				setSaveState(1);
-				console.log('READY_ADVENTURE', currentAdventure);
-			} else {
-				console.error('ADVENTURE_ERROR', saveAdventureError);
-			}
-
-		} else if (saveState === 1) {
-			saveNewAdventure();
-			setSaveState(0);
-		}
-	};
-
-	const cancelSave = () => {
-		refetchAdventures();
-		closeCard();
-	};
-
-	return (
-		<DisplayCard onClose={handleClose}>
-			{currentAdventure && (
-				<ProfileHeader
+	const buildProfileHeader = () => {
+		if (currentAdventure) {
+			if (isEditable) {
+				return (
+					<ProfileHeader
 					textContents={currentAdventure.adventure_name}
 					editFields={{
-						isEditable: isEditable,
+						isEditable,
 						propName: 'adventure_name',
 						onChange
 					}}
 				/>
-			)}
+				)
+			} else {
+				return (
+					<ProfileHeader>
+					<FieldHeader className="page-header" text={currentAdventure.adventure_name} />
+					<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
+				</ProfileHeader>
+				)
+			}
+		} else {
+			return (
+				<ProfileHeader>
+					<FieldHeader className="page-header" text="Adventure Creator" />
+				</ProfileHeader>
+			)
+		}
+	}
+
+	return (
+		<DisplayCard onClose={handleClose}>
+			{buildProfileHeader()}
 			<div className="profile-content" ref={menuRef}>
-				{currentAdventure && (
-					<AdventureEditorForm isEditable={isEditable} onChange={onChange} />
-				)}
-				<div className="action-buttons">
-					{!currentAdventure && (
-						<Button
-							onClick={() => setAdventureAddState(true)}
-							disabled={adventureAddState}
-							className="adventure-add-button"
-						>
-							Add New Adventure
-						</Button>
+				<div className="flex-box main-adventure-content">
+					{currentAdventure && isEditable && (
+						<AdventureEditorForm onChange={onChange} />
 					)}
-					{currentAdventure && !isEditable && saveState === 0 && (
-						<>
-							<Button
-								onClick={() => setIsEditable(true)}
-								className="adventure-edit-button"
-								id="adventure-edit-button"
-							>
-								Edit Adventure
-							</Button>
-							<Button
-								className="adventure-tick-button"
-								id="adventure-tick-button"
-							>
-								Add to Ticklist
-							</Button>
-						</>
-					)}
-					{currentAdventure && (isEditable || saveState === 1) && (
-						<>
-							<Button
-								onClick={saveAdventure}
-								className="adventure-edit-button"
-							>
-								{(saveState === 0) ? 'Preview Save' : 'Finish Saving'}
-							</Button>
-							{saveState === 1 && <Button
-								onClick={() => setIsEditable(true)}
-								className="adventure-edit-button"
-								id="adventure-edit-button"
-							>
-								Edit Adventure
-							</Button>}
-							<Button
-								onClick={cancelSave}
-								className="adventure-edit-button"
-							>
-								Cancel
-							</Button>
-						</>
+					{currentAdventure && !isEditable && (
+						<AdventureViewer />
 					)}
 				</div>
+				<AdventureEditorButtons />
 			</div>
 		</DisplayCard>
 	);

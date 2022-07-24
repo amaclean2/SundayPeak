@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { CARD_STATES, useCardStateContext, useUserStateContext } from "../Providers";
 
@@ -7,12 +8,10 @@ const LandingPageHeader = () => {
     const { openCard } = useCardStateContext();
 
     const handleOpenLogin = () => {
-        clickOffLanding();
         openCard(CARD_STATES.login);
     };
 
     const handleOpenSignUp = () => {
-        clickOffLanding();
         openCard(CARD_STATES.signup);
     };
 
@@ -21,12 +20,12 @@ const LandingPageHeader = () => {
             <h1>Backyard Friends</h1>
             <div className="flex-spacer" />
             <div className="action-buttons">
-                <button className="button" onClick={handleOpenLogin}>
+                <Link to="/discover" className="button" onClick={handleOpenLogin}>
                     Log In
-                </button>
-                <button className="button" onClick={handleOpenSignUp}>
+                </Link>
+                <Link to="/discover" className="button" onClick={handleOpenSignUp}>
                     Create an Account
-                </button>
+                </Link>
             </div>
         </div>
     )

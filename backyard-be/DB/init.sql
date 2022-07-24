@@ -16,6 +16,17 @@ CREATE TABLE users(
     PRIMARY KEY(id)
 );
 
+CREATE TABLE followers(
+    id INT AUTO_INCREMENT,
+    follower_id INT,
+    leader_id INT,
+    date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    public TINYINT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(follower_id) REFERENCES users(id),
+    FOREIGN KEY(leader_id) REFERENCES users(id)
+);
+
 CREATE TABLE adventures(
     id INT AUTO_INCREMENT,
     adventure_type VARCHAR(100),
@@ -41,34 +52,40 @@ CREATE TABLE adventures(
 
 CREATE TABLE adventure_editors(
     id INT AUTO_INCREMENT,
-    user_id INT,
+    editor_id INT,
     adventure_id INT,
     date_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
-    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(editor_id) REFERENCES users(id),
     FOREIGN KEY(adventure_id) REFERENCES adventures(id)
 );
 
 CREATE TABLE ticks(
     id INT AUTO_INCREMENT,
-    user_id INT,
+    creator_id INT,
     adventure_id INT,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
     PRIMARY KEY(id),
-    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(creator_id) REFERENCES users(id),
     FOREIGN KEY(adventure_id) REFERENCES adventures(id)
 );
 
 CREATE TABLE activities(
     id INT AUTO_INCREMENT,
-    user_id INT,
+    creator_id INT,
     adventure_id INT,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
     PRIMARY KEY(id),
-    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(creator_id) REFERENCES users(id),
     FOREIGN KEY(adventure_id) REFERENCES adventures(id)
 );
 
-SELECT * FROM users;
+CREATE TABLE password_reset_tokens(
+    id INT AUTO_INCREMENT,
+    email VARCHAR(100),
+    reset_token VARCHAR(255),
+    date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(id)
+);

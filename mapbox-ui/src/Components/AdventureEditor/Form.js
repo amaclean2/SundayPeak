@@ -2,10 +2,7 @@ import { useAdventureEditContext } from "../../Providers";
 import { ErrorField, FormField } from "../Reusable";
 import { gearOptions, rangeValues, seasonOptions } from "./utils";
 
-const AdventureEditorForm = ({
-    isEditable,
-    onChange
-}) => {
+const AdventureEditorForm = ({ onChange }) => {
     const { currentAdventure } = useAdventureEditContext();
     
     return (
@@ -15,7 +12,7 @@ const AdventureEditorForm = ({
                 name="bio"
                 label="Bio"
                 type="textarea"
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 value={currentAdventure.bio}
                 onChange={onChange}
@@ -23,7 +20,7 @@ const AdventureEditorForm = ({
             <FormField
                 name="approach_distance"
                 label="Approach Distance"
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 options={{ suffix: 'miles' }}
                 value={currentAdventure.approach_distance}
@@ -32,7 +29,7 @@ const AdventureEditorForm = ({
             <FormField
                 name="elevation"
                 label="Elevation"
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 options={{ suffix: 'feet' }}
                 value={currentAdventure.elevation}
@@ -43,7 +40,7 @@ const AdventureEditorForm = ({
                 label="Best Season"
                 type="selectMany"
                 options={{ selectMany: seasonOptions }}
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 value={currentAdventure.season}
                 onChange={onChange}
@@ -53,7 +50,7 @@ const AdventureEditorForm = ({
                 label="Gear Required"
                 type="selectMany"
                 options={{ selectMany: gearOptions }}
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 value={currentAdventure.gear}
                 onChange={onChange}
@@ -61,7 +58,7 @@ const AdventureEditorForm = ({
             <FormField
                 name="gain"
                 label="Elevation Gain"
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 value={currentAdventure.gain}
                 options={{ suffix: 'feet' }}
@@ -70,7 +67,7 @@ const AdventureEditorForm = ({
             <FormField
                 name="avg_angle"
                 label="Average Slope Angle"
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 value={currentAdventure.avg_angle}
                 options={{ suffix: 'degrees' }}
@@ -79,7 +76,7 @@ const AdventureEditorForm = ({
             <FormField
                 name="max_angle"
                 label="Max Slope Angle"
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 value={currentAdventure.max_angle}
                 options={{ suffix: 'degrees' }}
@@ -90,7 +87,7 @@ const AdventureEditorForm = ({
                 label="Difficulty"
                 type="range"
                 options={{ range: rangeValues }}
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 value={currentAdventure.difficulty}
                 onChange={onChange}
@@ -98,7 +95,7 @@ const AdventureEditorForm = ({
             <FormField
                 name="nearest_city"
                 label="Nearest City"
-                isEditable={isEditable}
+                isEditable={true}
                 fullWidth
                 value={currentAdventure.nearest_city}
                 onChange={onChange}

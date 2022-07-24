@@ -2,4 +2,79 @@
     margin: 0 10px;
     padding-top: 20px;
     flex-wrap: wrap;
+    min-width: 300px;
+}
+
+.main-adventure-content.flex-box {
+    align-items: flex-start;
+    flex-direction: column;
+    min-width: 700px;
+}
+
+.adventure-tick-panel.flex-box {
+    margin: 0 10px;
+    padding-top: 20px;
+    min-width: 400px;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.adventure-gallery {
+    width: 100%;
+    height: 200px;
+    background-color: #EEE;
+    display: block;
+}
+
+.adventure-bio {
+    align-self: flex-start;
+}
+
+.adventure-viewer {
+    flex-direction: column;
+    width: calc(100% - 30px);
+    margin: 0 15px;
+}
+
+.user-image {
+    width: 25px;
+    height: 25px;
+    border-radius: 25px;
+    background-color: #DDD;
+}
+
+.mail-icon {
+    width: 25px;
+    height: 15px;
+    background-color: #DDD;
+}
+
+.tick-list {
+    width: 100%;
+    max-width: 300px;
+    border-collapse: collapse;
+}
+
+.tick-list tr {
+    transition: all 0.3s ease-in-out;
+    border-bottom: 1px solid #DDD;
+}
+
+.tick-list tr:hover {
+    background-color: #EEE;
+}
+
+.tick-list td {
+    border: none;
+    padding: 5px;
+}
+
+.field-header.page-header {
+    font-size: 26px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.header-subtext {
+    font-size: 14px;
 }

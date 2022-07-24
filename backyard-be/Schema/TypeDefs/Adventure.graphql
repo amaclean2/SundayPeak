@@ -22,6 +22,11 @@ type Adventure {
     editor_ids: [Int]
 }
 
+type GetAdventuresResponse {
+    adventures: [Adventure!]!
+    mapboxToken: String!
+}
+
 input CreateAdventureInput {
     adventure_name: String!
     adventure_type: String!
@@ -41,7 +46,7 @@ input CreateAdventureInput {
 # Queries
 
 type Query {
-    getAllAdventures(coordinates: String!, type: String!, zoom: Int!): [Adventure!]!
+    getAllAdventures(coordinates: String!, type: String!, zoom: Int!): GetAdventuresResponse!
     getAdventureDetails(id: Int!): Adventure!
 }
 

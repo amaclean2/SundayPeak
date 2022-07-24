@@ -1,21 +1,17 @@
-const { ApolloError, UserInputError } = require('apollo-server-express');
 const { comparePassword, hashPassword } = require('../../Crypto');
-const { getUserById, getUser: getUserDB, addUser: addUserDB } = require('../../DB');
-const { returnError } = require('../../ErrorHandling');
+const { addUser: addUserDB, followUser } = require('../../DB');
+const { catchBlock, returnError } = require('../../ErrorHandling');
+const { buildUserObject } = require('../../Handlers/Users');
 const Users = require('../../SampleData/UserData.json');
 const authService = require('../../Services/auth.service');
-const { NOT_FOUND, NOT_ACCEPTABLE, SERVER_ERROR } = require('../../statuses');
+const { sendEmail, validateSignatureAndSave } = require('../../Services/resetPassword.service');
 
 const userResolvers = {
 	Query: {
 		login: async (parent, args) => {
 			try {
 				const { email, password } = args;
-				const user = await getUserDB(email);
-
-				if (!user) {
-					return returnError({ gql: true, status: NOT_FOUND, message: 'noAccountExists' });
-				}
+				const user = await buildUserObject({ email });
 
 				if (comparePassword(password, user.password)) {
 					delete user.password;
@@ -24,26 +20,50 @@ const userResolvers = {
 					console.log({ message: 'USER_LOGGED_IN', user, token });
 					return { user, token };
 				} else {
-					return returnError({ gql: true, status: NOT_ACCEPTABLE, message: 'invalidPassword' });
+					throw returnError({ message: 'invalidPassword' });
 				}
 			} catch (error) {
-				console.log("SERVER_ERROR_LOGIN_USER", error);
-				return returnError({ gql: true, status: SERVER_ERROR, message: 'serverLoginUser', error });
+				throw catchBlock({ message: 'serverLoginUser', error });
 			}
 		},
-		getOtherUser: (parent, args) => {
-			const { id } = args;
-			return Users.find((user) => user.id === id);
-		},
-		getUserFromToken: async (parent, args, context) => {
-			const { user_id } = context;
 
-			if (user_id) {
-				return await getUserById(user_id);
-			} else {
-				throw new ApolloError('User is not logged in');
+		getOtherUser: async (parent, args) => {
+			const { id } = args;
+
+			try {
+				return await buildUserObject({ id });
+			} catch (error) {
+				throw catchBlock({ message: 'serverLoginUser', error });
 			}
-		}
+		},
+
+		getUserFromToken: async (parent, args, context) => {
+			try {
+				const { user_id } = context;
+
+				if (user_id) {
+					return await buildUserObject({ id: user_id });
+				} else {
+					throw returnError({ message: 'notLoggedIn' });
+				}
+			} catch (error) {
+				throw catchBlock({ message: 'serverLoginUser', error });
+			}
+		},
+
+		resetPasswordEmail: async (parent, args) => {
+			try {
+
+				const { email } = args;
+				const emailValidation = await sendEmail(email);
+
+				console.log({ emailValidation });
+				return { email };
+
+			} catch (error) {
+				throw catchBlock({ message: 'serverValidateUser', error });
+			}
+		},
 	},
 
 	Mutation: {
@@ -55,7 +75,7 @@ const userResolvers = {
 				};
 
 				if (!newUser.legal) {
-					return returnError({ gql: true, status: NOT_ACCEPTABLE, message: 'missingLegal' });
+					throw returnError({ message: 'missingLegal' });
 				}
 
 				const createdUser = await addUserDB(newUser);
@@ -66,10 +86,28 @@ const userResolvers = {
 				console.log({ message: 'USER_CREATED', createdUser, token });
 				return { user: createdUser, token };
 			} catch (error) {
-				console.log("SERVER_ERROR_CREATE_USER", error);
-				return returnError({ gql: true, status: SERVER_ERROR, message: 'serverCreateUser', error});
+				throw catchBlock({ message: 'serverCreateUser', error });
 			}
 		},
+
+		savePasswordReset: async (parent, args, context) => {
+			const { signature, new_password, new_password_2 } = args;
+
+			try {
+				if (new_password !== new_password_2) {
+					throw returnError({ message: 'nonMatchingPasswords' });
+				}
+
+				const response = await validateSignatureAndSave({ signature, new_password });
+
+				return {
+					email: response
+				};
+			} catch (error) {
+				throw catchBlock({ message: 'serverValidateUser', error });
+			}
+		},
+
 		editUser: (parent, args) => {
 			const {
 				id,
@@ -116,6 +154,19 @@ const userResolvers = {
 			Users = [...Users.slice(0, userIdx), ...Users.slice(userIdx + 1)];
 
 			return selectedUser;
+		},
+
+		followUser: async (parent, args, context) => {
+			const { user_id } = context;
+			const { leader_id } = args;
+
+			try {
+				await followUser({ follower_id: user_id, leader_id });
+
+				return { user_id: leader_id };
+			} catch (error) {
+				throw catchBlock({ message: 'serverFollowUser', error });
+			}
 		}
 	}
 };
