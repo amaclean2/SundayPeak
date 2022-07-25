@@ -9,16 +9,16 @@ import { validateLoginUser, validateCreateUser } from '../Validators/UserValidat
 const authService = {
     issue: (payload) => jwt.sign(payload, getJWTSecret(), { expiresIn: '48h'}),
     validate: async (req, res, next) => {
-        if (isExempt(req.body)) {
+        if (isExempt(req)) {
             return next();
         }
 
         // validation for form inputs
-        if (isOperation(req.body, 'login')) {
+        if (isOperation(req, 'login')) {
             return validateLoginUser(req, res, next);
         }
 
-        if (isOperation(req.body, 'createUser')) {
+        if (isOperation(req, 'createUser')) {
             return validateCreateUser(req, res, next);
         }
 
@@ -41,7 +41,7 @@ const authService = {
                         error
                     });
                 } else {
-                    req.body.id = decoded.id;
+                    req.body.id_from_token = decoded.id;
                     return next();
                 }
             })
