@@ -1,8 +1,8 @@
-const { config } = require('dotenv');
+import { config } from 'dotenv';
 
 config();
 
-const getDBConnectionObject = () => {
+export const getDBConnectionObject = () => {
 
     console.log("NODE_ENV", process.env.NODE_ENV);
 
@@ -26,7 +26,7 @@ const getDBConnectionObject = () => {
     }
 };
 
-const getJWTSecret = () => {
+export const getJWTSecret = () => {
     switch (process.env.NODE_ENV) {
         case 'stage':
             return process.env.JWT_SECRET;
@@ -35,10 +35,4 @@ const getJWTSecret = () => {
     }
 };
 
-const getMapboxAccessToken = () => 'pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg';
-
-module.exports = {
-    getDBConnectionObject,
-    getJWTSecret,
-    getMapboxAccessToken
-};
+export const getMapboxAccessToken = () => 'pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg';

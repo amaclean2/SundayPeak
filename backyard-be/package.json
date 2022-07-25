@@ -4,15 +4,16 @@
   "description": "",
   "main": "node index.js",
   "scripts": {
-    "start": "NODE_ENV=\"dev\" node index.js",
-    "dev": "NODE_ENV=\"dev\" nodemon index.js",
-    "stage": "NODE_ENV=\"stage\" node index.js"
+    "start": "NODE_ENV=\"dev\" node --experimental-specifier-resolution=node index.js",
+    "dev": "NODE_ENV=\"dev\" nodemon --experimental-specifier-resolution=node index.js",
+    "stage": "NODE_ENV=\"stage\" node --experimental-specifier-resolution=node index.js"
   },
   "author": "Andrew Maclean",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.16"
   },
+  "type": "module",
   "dependencies": {
     "@graphql-tools/graphql-file-loader": "^7.3.14",
     "@graphql-tools/load": "^7.5.13",

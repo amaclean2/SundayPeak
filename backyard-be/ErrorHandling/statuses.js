@@ -1,13 +1,9 @@
-const statuses = {
-    SUCCESS: 200,
-    CREATED: 201,
-    ACCEPTED: 202,
-    CLIENT_ERROR: 400,
-    UNAUTHORIZED: 401,
-    NOT_FOUND: 404,
-    NOT_ACCEPTABLE: 406,
-    FORBIDDEN: 403,
-    SERVER_ERROR: 500
-};
-
-module.exports = statuses;
+export const SUCCESS = 200;
+export const CREATED = 201;
+export const ACCEPTED = 202;
+export const CLIENT_ERROR = 400;
+export const UNAUTHORIZED = 401;
+export const NOT_FOUND = 404;
+export const NOT_ACCEPTABLE = 406;
+export const FORBIDDEN = 403;
+export const SERVER_ERROR = 500;

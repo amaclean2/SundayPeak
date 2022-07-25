@@ -1,11 +1,9 @@
-const { UserInputError, ApolloError } = require('apollo-server-express');
-const { getAdventures, addAdventure, getAdventure } = require('../../DB');
-const { catchBlock, returnError } = require('../../ErrorHandling');
-const { getMapboxAccessToken } = require('../../Config/connections');
-const Lines = require('../../SampleData/LineData.json');
-const { validateCreateAdventure } = require('../../Validators/AdventureValidators');
+import { getAdventures, addAdventure, getAdventure } from '../../DB';
+import { catchBlock, returnError } from '../../ErrorHandling';
+import { getMapboxAccessToken } from '../../Config/connections.js';
+import { validateCreateAdventure } from '../../Validators/AdventureValidators.js';
 
-const adventureResolvers = {
+export const adventureResolvers = {
     Query: {
         getAllAdventures: async (parent, args) => {
             try {
@@ -57,42 +55,13 @@ const adventureResolvers = {
         },
 
         editAdventure: (parent, args) => {
-            const { id, name, approach, season, avg_angle, max_angle, elevation, dificulty, gain, bio, city, last_editor_id } = args;
-            const editableLineIdx = Lines.findIndex((line) => line.id === id);
 
-            const newLineData = {
-                ...Lines[editableLineIdx],
-                name,
-                approach,
-                season,
-                avg_angle,
-                max_angle,
-                elevation,
-                dificulty,
-                gain,
-                bio,
-                city,
-                editor_ids: [...Lines[editableLineIdx].editor_ids, last_editor_id]
-            };
-
-            Lines = [...Lines.slice(0, editableLineIdx), newLineData, ...Lines.slice(editableLineIdx + 1)];
-
-            return newLineData;
+            return [];
         },
 
         deleteAdventure: (parent, args) => {
-            const { id } = args;
-            const lineIdx = Lines.findIndex((line) => line.id === id);
 
-            const seelctedLine = Lines[lineIdx];
-
-            Lines = [...Lines.slice(0, lineIdx), ...Lines.slice(lineIdx + 1)];
-
-            return seelctedLine;
+            return {};
         }
     }
-};
-
-module.exports = {
-    adventureResolvers
 };

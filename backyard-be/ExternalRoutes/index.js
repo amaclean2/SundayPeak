@@ -1,12 +1,12 @@
-const { Router } = require('express');
-const { NOT_FOUND } = require('../ErrorHandling/statuses');
+import { Router } from 'express';
+import { NOT_FOUND } from '../ErrorHandling/statuses.js';
 
 const router = Router();
 
-router.use('/', (req, res) => {
+router.use('', (req, res) => {
     res.status(NOT_FOUND).json({
         message: "No external routes are currently set up."
     });
 });
 
-module.exports = router;
+export default router;

@@ -1,12 +1,12 @@
-const db = require('../Config/db');
-const {
+import db from '../Config/db.js';
+import {
     selectActivitiesByAdventureStatement,
     selectActivitiesByUserStatement,
     createActivityStatement,
     countActivitiesStatement
-} = require('./Statements');
+} from './Statements.js';
 
-const getActivitiesByAdventure = async ({ adventure_id }) => {
+export const getActivitiesByAdventure = async ({ adventure_id }) => {
     return db.promise().execute(selectActivitiesByAdventureStatement, [adventure_id])
         .then(([results, ...extras]) => results)
         .catch((error) => {
@@ -15,7 +15,7 @@ const getActivitiesByAdventure = async ({ adventure_id }) => {
         });
 };
 
-const getActivitiesByUser = async ({ user_id }) => {
+export const getActivitiesByUser = async ({ user_id }) => {
     return db.promise().execute(selectActivitiesByUserStatement, [user_id])
         .then(([results, ...extras]) => results)
         .catch((error) => {
@@ -24,7 +24,7 @@ const getActivitiesByUser = async ({ user_id }) => {
         });
 };
 
-const getActivityCountByUser = async ({ user_id }) => {
+export const getActivityCountByUser = async ({ user_id }) => {
     return db.promise().execute(countActivitiesStatement, [user_id])
         .then(([results, ...extras]) => results[0]['COUNT(id)'])
         .catch((error) => {
@@ -33,8 +33,8 @@ const getActivityCountByUser = async ({ user_id }) => {
         });
 };
 
-const createActivity = async ({ adventure_id, user_id: creator_id, public }) => {
-    return db.promise().execute(createActivityStatement, [creator_id, adventure_id, public])
+export const createActivity = async ({ adventure_id, user_id: creator_id, public: publicField }) => {
+    return db.promise().execute(createActivityStatement, [creator_id, adventure_id, publicField])
         .then(([results, ...extras]) => {
             const { insertId } = results;
             return insertId;
@@ -42,11 +42,4 @@ const createActivity = async ({ adventure_id, user_id: creator_id, public }) => 
             console.log("DATABASE_INSERTION_FAILED", error);
             throw error;
         });
-};
-
-module.exports = {
-    getActivitiesByAdventure,
-    getActivitiesByUser,
-    getActivityCountByUser,
-    createActivity
 };

@@ -1,7 +1,7 @@
-const { getTicksByAdventure, createTick, getTicksByUser } = require('../../DB');
-const { catchBlock, returnError } = require('../../ErrorHandling');
+import { getTicksByAdventure, createTick, getTicksByUser } from '../../DB';
+import { catchBlock, returnError } from '../../ErrorHandling';
 
-const tickResolvers = {
+export const tickResolvers = {
     Query: {
         getAllTicksByAdventure: async (parent, args, context) => {
             try {
@@ -40,21 +40,21 @@ const tickResolvers = {
         createTick: async (parent, args, context) => {
             try {
                 const { user_id } = context;
-                let { adventure_id, public } = args;
+                let { adventure_id, public: publicField } = args;
 
-                if (public === true) {
-                    public = 1;
-                } else if (public === false) {
-                    public = 0;
+                if (publicField === true) {
+                    publicField = 1;
+                } else if (publicField === false) {
+                    publicField = 0;
                 }
 
                 if (user_id) {
-                    await createTick({ user_id, adventure_id, public });
+                    await createTick({ user_id, adventure_id, public: publicField });
 
                     const tickResponse = {
                         user_id,
                         adventure_id,
-                        public
+                        public: publicField
                     }
 
                     console.log("TICK_ADDED", tickResponse);
@@ -68,8 +68,4 @@ const tickResolvers = {
             }
         }
     }
-};
-
-module.exports = {
-    tickResolvers
 };

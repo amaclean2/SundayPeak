@@ -1,7 +1,7 @@
-const { checkForUser: checkForUserDB } = require('../DB');
-const { returnError, catchBlock } = require('../ErrorHandling');
+import { checkForUser } from '../DB';
+import { returnError, catchBlock } from '../ErrorHandling';
 
-const validateCreateUser = async (req, res, next) => {
+export const validateCreateUser = async (req, res, next) => {
 	const { email, password, password2 } = req?.body?.variables?.input;
 
 	try {
@@ -15,7 +15,7 @@ const validateCreateUser = async (req, res, next) => {
 			if (!emailSuffix.includes('.')) {
 				throw returnError({ gql: false, req, res, message: 'invalidEmail' });
 			} else {
-				const idExists = await checkForUserDB(email);
+				const idExists = await checkForUser(email);
 				if (idExists) {
 					throw returnError({ gql: false, req, res, message: 'preexistingUser' });
 				} else if (password.length < 5) {
@@ -34,7 +34,7 @@ const validateCreateUser = async (req, res, next) => {
 	}
 };
 
-const validateLoginUser = async (req, res, next) => {
+export const validateLoginUser = async (req, res, next) => {
 	const { email, password } = req?.body?.variables;
 
 	if (!email || !password) {
@@ -42,9 +42,4 @@ const validateLoginUser = async (req, res, next) => {
 	} else {
 		next();
 	}
-}
-
-module.exports = {
-	validateCreateUser,
-	validateLoginUser
 };

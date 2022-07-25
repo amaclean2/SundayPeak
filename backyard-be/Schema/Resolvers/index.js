@@ -1,7 +1,7 @@
-const { userResolvers } = require('./User');
-const { adventureResolvers } = require('./Adventure');
-const { activityResolvers } = require('./Activity');
-const { tickResolvers } = require('./Tick');
+import { userResolvers } from './User.js';
+import { adventureResolvers } from './Adventure.js';
+import { activityResolvers } from './Activity.js';
+import { tickResolvers } from './Tick.js';
 
 const resolvers = {
     Query: {
@@ -18,4 +18,4 @@ const resolvers = {
     }
 };
 
-module.exports = resolvers;
+export default resolvers;

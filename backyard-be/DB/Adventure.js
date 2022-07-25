@@ -1,7 +1,11 @@
-const db = require('../Config/db');
-const { createNewAdventureStatement, selectAdventureByIdStatement, selectAdventuresInRangeStatement } = require('./Statements');
+import db from '../Config/db.js';
+import {
+    createNewAdventureStatement,
+    selectAdventureByIdStatement,
+    selectAdventuresInRangeStatement
+} from './Statements.js';
 
-const addAdventure = async (adventure) => {
+export const addAdventure = async (adventure) => {
     const {
         adventure_type, adventure_name, approach_distance, season, avg_angle, max_angle,
         difficulty, elevation, gear, gain, bio, nearest_city, creator_id, coordinates_lat,
@@ -34,7 +38,7 @@ const addAdventure = async (adventure) => {
     });
 };
 
-const getAdventure = async (id) => {
+export const getAdventure = async (id) => {
     return db.promise().execute(selectAdventureByIdStatement, [id])
         .then(([results, ...extras]) => {
             return results[0];
@@ -44,7 +48,7 @@ const getAdventure = async (id) => {
         });
 };
 
-const getAdventures = async (coordinates, type, zoom) => {
+export const getAdventures = async (coordinates, type, zoom) => {
 
     const extremes = {
         minLat: coordinates.lat - 2,
@@ -77,10 +81,4 @@ const getAdventures = async (coordinates, type, zoom) => {
         console.log('DATABASE_RETRIEVAL_FAILED', error);
         throw error;
     });
-};
-
-module.exports = {
-    addAdventure,
-    getAdventures,
-    getAdventure
 };

@@ -1,7 +1,12 @@
-const { getActivitiesByAdventure, getActivitiesByUser, createActivity, getActivityCountByUser } = require('../../DB');
-const { catchBlock, returnError } = require('../../ErrorHandling');
+import {
+    getActivitiesByAdventure,
+    getActivitiesByUser,
+    createActivity,
+    getActivityCountByUser
+} from '../../DB';
+import { catchBlock, returnError } from '../../ErrorHandling';
 
-const activityResolvers = {
+export const activityResolvers = {
     Query: {
         getAllActivitiesByAdventure: async (parent, args) => {
             try {
@@ -48,21 +53,21 @@ const activityResolvers = {
         createActivity: async (parent, args, context) => {
             try {
                 const { user_id } = context;
-                let { adventure_id, public } = args;
+                let { adventure_id, public: publicField } = args;
 
-                if (public === true) {
-                    public = 1;
-                } else if (public === false) {
-                    public = 0;
+                if (publicField === true) {
+                    publicField = 1;
+                } else if (publicField === false) {
+                    publicField = 0;
                 }
 
                 if (user_id) {
-                    await createActivity({ user_id, adventure_id, public });
+                    await createActivity({ user_id, adventure_id, public: publicField });
 
                     const activityResponse = {
                         user_id,
                         adventure_id,
-                        public
+                        public: publicField
                     };
 
                     console.log("ACTIVITY_ADDED", activityResponse);
@@ -76,8 +81,4 @@ const activityResolvers = {
             }
         }
     }
-};
-
-module.exports = {
-    activityResolvers
 };

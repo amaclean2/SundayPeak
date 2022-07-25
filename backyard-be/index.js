@@ -1,14 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const { ApolloServer } = require('apollo-server-express');
-const { loadSchema } = require('@graphql-tools/load');
-const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
-const { config } = require('dotenv');
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import { ApolloServer } from 'apollo-server-express';
+import { loadSchema } from '@graphql-tools/load';
+import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
+import { config } from 'dotenv';
 
-const resolvers = require('./Schema/Resolvers');
-const authService = require('./Services/auth.service');
-const router = require('./ExternalRoutes');
+import resolvers from './Schema/Resolvers';
+import authService from './Services/auth.service.js';
+import router from './ExternalRoutes';
 
 config();
 
@@ -65,17 +65,13 @@ const startApplication = async () => {
 app.use('/api', router);
 
 // private routes
-app.use('/', authService.validate);
+app.use('', authService.validate);
 
 startApplication();
 
-const server = app.listen(PORT, () => {
+export const server = app.listen(PORT, () => {
     const host = server.address().address;
     const workingPort = server.address().port;
 
     console.log(`Backyard friends backend listening to http://${host}:${workingPort}`);
 });
-
-module.exports = {
-    server
-};
