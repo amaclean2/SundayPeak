@@ -1,11 +1,4 @@
-const userActions = require('./User');
-const adventureActions = require('./Adventure');
-const tickActions = require('./Tick');
-const activityActions = require('./Activity');
-
-module.exports = {
-    ...userActions,
-    ...adventureActions,
-    ...tickActions,
-    ...activityActions
-};
+export * from './User.js';
+export * from './Adventure.js';
+export * from './Tick.js';
+export * from './Activity.js';

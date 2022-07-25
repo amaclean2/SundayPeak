@@ -1,6 +1,5 @@
-const mysql = require('mysql2');
-
-const { getDBConnectionObject } = require('./connections');
+import mysql from 'mysql2';
+import { getDBConnectionObject } from './connections.js';
 
 // module.exports = mysql.createConnection({
 //     host: 'backyard-stage-db-do-user-6012695-0.b.db.ondigitalocean.com',
@@ -11,6 +10,5 @@ const { getDBConnectionObject } = require('./connections');
 // });
 
 const dbConnectionObject = getDBConnectionObject();
-console.log("DB_OBJECT", dbConnectionObject)
 
-module.exports = mysql.createConnection(dbConnectionObject);
+export default mysql.createConnection(dbConnectionObject);

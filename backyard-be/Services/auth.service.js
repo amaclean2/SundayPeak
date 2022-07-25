@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const { getJWTSecret } = require('../Config/connections');
-const { exemptQueries, isOperation, isExempt } = require('../Config/exemptGql');
-const { returnError } = require('../ErrorHandling');
-const statuses = require('../ErrorHandling/statuses');
-const { validateLoginUser, validateCreateUser } = require('../Validators/UserValidators');
+import { getJWTSecret } from '../Config/connections.js';
+import { isOperation, isExempt } from '../Config/exemptGql.js';
+import { returnError } from '../ErrorHandling';
+import { FORBIDDEN } from '../ErrorHandling/statuses.js';
+import { validateLoginUser, validateCreateUser } from '../Validators/UserValidators.js';
 
 const authService = {
     issue: (payload) => jwt.sign(payload, getJWTSecret(), { expiresIn: '48h'}),
@@ -36,7 +36,7 @@ const authService = {
                         gql: false,
                         req,
                         res,
-                        status: statuses.FORBIDDEN,
+                        status: FORBIDDEN,
                         message: 'Invalid token',
                         error
                     });
@@ -50,11 +50,11 @@ const authService = {
                 gql: false,
                 req,
                 res,
-                status: statuses.FORBIDDEN,
+                status: FORBIDDEN,
                 message: 'Invalid request'
             })
         }
     }
 };
 
-module.exports = authService;
+export default authService;

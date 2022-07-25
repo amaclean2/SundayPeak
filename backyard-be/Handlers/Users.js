@@ -1,14 +1,14 @@
-const {
+import {
     getUserById,
     getActivityCountByUser,
     getTicksByUser,
     getUser,
     getFollowerCountLookup,
     getFollowingCountLookup
-} = require("../DB");
-const { returnError } = require("../ErrorHandling");
+} from '../DB';
+import { returnError } from '../ErrorHandling';
 
-const buildUserObject = async ({ id, email }) => {
+export const buildUserObject = async ({ id, email }) => {
     console.log({ id, email });
 
     let userObject;
@@ -55,8 +55,4 @@ const buildUserObject = async ({ id, email }) => {
 
     console.log({ returnObj });
     return returnObj;
-};
-
-module.exports = {
-    buildUserObject
 };

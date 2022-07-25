@@ -1,4 +1,4 @@
-const { NOT_ACCEPTABLE, SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } = require("../statuses");
+import { NOT_ACCEPTABLE, SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } from '../statuses.js';
 
 const errorTexts = {
     missingFieldsCreateUser: {
@@ -117,4 +117,4 @@ const errorTexts = {
     }
 };
 
-module.exports = errorTexts;
+export default errorTexts;

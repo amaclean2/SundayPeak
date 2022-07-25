@@ -1,6 +1,6 @@
-const { catchBlock } = require("../ErrorHandling");
+import { returnError } from '../ErrorHandling';
 
-const validateCreateAdventure = async (adventure) => {
+export const validateCreateAdventure = async (adventure) => {
 
     if (adventure.input) {
         adventure = {
@@ -35,8 +35,4 @@ const validateCreateAdventure = async (adventure) => {
 
         return adventure;
     }
-};
-
-module.exports = {
-    validateCreateAdventure
 };

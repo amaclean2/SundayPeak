@@ -1,12 +1,11 @@
-const { comparePassword, hashPassword } = require('../../Crypto');
-const { addUser: addUserDB, followUser } = require('../../DB');
-const { catchBlock, returnError } = require('../../ErrorHandling');
-const { buildUserObject } = require('../../Handlers/Users');
-const Users = require('../../SampleData/UserData.json');
-const authService = require('../../Services/auth.service');
-const { sendEmail, validateSignatureAndSave } = require('../../Services/resetPassword.service');
+import { comparePassword, hashPassword } from '../../Crypto';
+import { addUser, followUser } from '../../DB';
+import { catchBlock, returnError } from '../../ErrorHandling';
+import { buildUserObject } from '../../Handlers/Users.js';
+import authService from '../../Services/auth.service.js';
+import { sendEmail, validateSignatureAndSave } from '../../Services/resetPassword.service.js';
 
-const userResolvers = {
+export const userResolvers = {
 	Query: {
 		login: async (parent, args) => {
 			try {
@@ -78,7 +77,7 @@ const userResolvers = {
 					throw returnError({ message: 'missingLegal' });
 				}
 
-				const createdUser = await addUserDB(newUser);
+				const createdUser = await addUser(newUser);
 				const { id } = createdUser;
 				const token = authService.issue({ id });
 				delete createdUser.password;
@@ -109,51 +108,13 @@ const userResolvers = {
 		},
 
 		editUser: (parent, args) => {
-			const {
-				id,
-				first_name,
-				last_name,
-				email,
-				is_premium,
-				sex,
-				user_site,
-				password,
-				city,
-				bio,
-				date_created,
-				last_updated
-			} = args;
-			const editableUserIdx = Users.findIndex((user) => user.id === id);
 
-			const newUserData = {
-				...Users[editableUserIdx],
-				first_name,
-				last_name,
-				email,
-				is_premium,
-				sex,
-				user_site,
-				date_created,
-				last_updated,
-				password,
-				city,
-				bio
-			};
-
-			Users = [...Users.slice(0, editableUserIdx), newUserData, ...Users.slice(editableUserIdx + 1)];
-
-			return newUserData;
+			return {};
 		},
 
 		deleteUser: (parent, args) => {
-			const { id } = args;
-			const userIdx = Users.findIndex((user) => user.id === id);
 
-			const selectedUser = Users[userIdx];
-
-			Users = [...Users.slice(0, userIdx), ...Users.slice(userIdx + 1)];
-
-			return selectedUser;
+			return {};
 		},
 
 		followUser: async (parent, args, context) => {
@@ -169,8 +130,4 @@ const userResolvers = {
 			}
 		}
 	}
-};
-
-module.exports = {
-	userResolvers
 };

@@ -1,15 +1,15 @@
-const { transporter } = require("../Config/mailer");
-const { generatePasswordResetToken, validatePasswordResetToken } = require("../Crypto");
-const { getUser: getUserDB, savePasswordResetToken, getPasswordResetEmail } = require("../DB");
+import { transporter } from '../Config/mailer.js';
+import { generatePasswordResetToken, validatePasswordResetToken } from '../Crypto';
+import { getUser, savePasswordResetToken, getPasswordResetEmail } from '../DB';
 
 const createPasswordResetTemplate = (options) => `
 <h1>Here's the link to reset your email</h1>
 ${options.token}
 `;
 
-const sendEmail = async (email) => {
+export const sendEmail = async (email) => {
 
-    const user = await getUserDB(email);
+    const user = await getUser(email);
 
     if (!user) {
         throw returnError({ message: 'noAccountExists' });
@@ -44,16 +44,11 @@ const sendEmail = async (email) => {
     });
 };
 
-const validateSignatureAndSave = async ({ signature, new_password }) => {
+export const validateSignatureAndSave = async ({ signature, new_password }) => {
     const { email } = await getPasswordResetEmail({ token: signature });
 
     const verified = await validatePasswordResetToken({ signature, email });
 
     console.log("VERIFIED", verified);
     return email;
-};
-
-module.exports = {
-    sendEmail,
-    validateSignatureAndSave
 };
