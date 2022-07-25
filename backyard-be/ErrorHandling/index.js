@@ -2,28 +2,12 @@ import { AuthenticationError, ValidationError, UserInputError, ApolloError } fro
 import errorTexts from './ResponseText/errors.js';
 import { SERVER_ERROR } from './statuses.js';
 
-export const returnError = ({ req, res, status: statusCode, message, error, gql = true }) => {
+export const returnError = ({ req, res, status: statusCode, message, error, gql = false }) => {
     const errorData = errorTexts[message];
 
     const messageText = errorData?.messageText || message;
     const messageCode = errorData?.status || statusCode;
 
-    // handle gql calls
-    if (gql) {
-        console.log(messageText, error, messageCode % 400);
-        if (messageCode === 401) {
-            throw new AuthenticationError(messageText, error);
-        } else if (messageCode === 406) {
-            throw new ValidationError(messageText, error);
-        }
-        else if (messageCode % 400 < 100) {
-            throw new UserInputError(messageText, error);
-        } else {
-            throw new ApolloError(messageText, error);
-        }
-    }
-
-    // handle all other calls
     const errorBody = {
         message: messageText
     };
@@ -48,10 +32,10 @@ export const returnError = ({ req, res, status: statusCode, message, error, gql 
     res.status(!!messageCode ? messageCode : SERVER_ERROR).json(errorBody);
 };
 
-export const catchBlock = ({ error, message, gql }) => {
+export const catchBlock = ({ error, message }) => {
     if (error) {
         throw error;
     } else {
-        throw returnError({ gql, message, error });
+        throw returnError({ message, error });
     }
 };

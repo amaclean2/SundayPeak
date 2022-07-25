@@ -2,7 +2,7 @@ import { checkForUser } from '../DB';
 import { returnError, catchBlock } from '../ErrorHandling';
 
 export const validateCreateUser = async (req, res, next) => {
-	const { email, password, password2 } = req?.body?.variables?.input;
+	const { email, password, password2 } = req.body;
 
 	try {
 		if (!email || !password || !password2) {

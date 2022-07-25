@@ -8,7 +8,7 @@ import { config } from 'dotenv';
 
 import resolvers from './Schema/Resolvers';
 import authService from './Services/auth.service.js';
-import router from './ExternalRoutes';
+import router from './Routing';
 
 config();
 
@@ -62,10 +62,7 @@ const startApplication = async () => {
 };
 
 // public routes
-app.use('/api', router);
-
-// private routes
-app.use('', authService.validate);
+app.use('/api', authService.validate, router);
 
 startApplication();
 
