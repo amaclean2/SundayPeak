@@ -1,7 +1,10 @@
 export const exemptQueries = [
     'allAdventures',
     'savePasswordReset',
-    'resetPassword'
+    'resetPassword',
+    'verify',
+    'users/login',
+    'users/create'
 ];
 
 export const isOperation = (req, query) => {

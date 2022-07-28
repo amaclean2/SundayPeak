@@ -3,12 +3,12 @@ import { CREATED, SUCCESS } from '../../ErrorHandling/statuses';
 import { returnError } from '../../ErrorHandling';
 import { getAdventures, addAdventure, getAdventure } from '../../DB';
 import { getMapboxAccessToken } from '../../Config/connections.js';
-import { validateCreateAdventure } from '../../Validators/AdventureValidators';
+import { adventureCreateValidator } from '../../Validators/AdventureValidators';
 
 const router = Router();
 
-router.get('/allAdventures', async (req, res) => {
-    const { coordinates, type, zoom } = req.body;
+router.get('/all', async (req, res) => {
+    const { coordinates, type, zoom } = req.query;
     const parsedCoordinates = JSON.parse(coordinates);
 
     try {
@@ -25,7 +25,7 @@ router.get('/allAdventures', async (req, res) => {
     }
 });
 
-router.get('/adventureDetails', async (req, res) => {
+router.get('/details', async (req, res) => {
     try {
         const { id } = req.query;
 
@@ -41,7 +41,7 @@ router.get('/adventureDetails', async (req, res) => {
     }
 });
 
-router.post('/createAdventure', validateCreateAdventure, async (req, res) => {
+router.post('/create', adventureCreateValidator, async (req, res) => {
     try {
         const resultId = await addAdventure(req.body);
 
@@ -54,13 +54,13 @@ router.post('/createAdventure', validateCreateAdventure, async (req, res) => {
     }
 });
 
-router.put('/editAdventure', (req, res) => {
+router.put('/edit', (req, res) => {
     res.status(NOT_FOUND).json({
         message: 'API to be created'
     });
 });
 
-router.delete('/deleteAdventure', (req, res) => {
+router.delete('/delete', (req, res) => {
     res.status(NOT_FOUND).json({
         message: 'API to be created'
     });

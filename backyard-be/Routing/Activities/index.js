@@ -2,13 +2,14 @@ import { Router } from 'express';
 import { createActivity, getActivitiesByAdventure, getActivitiesByUser } from '../../DB';
 import { returnError } from '../../ErrorHandling';
 import { CREATED, SUCCESS } from '../../ErrorHandling/statuses';
+import { activityCreateValidator, activityGetValidatorByAdventure } from '../../Validators/ActivityValidators';
 
 const router = Router();
 
-router.get('/getActivitiesByUser', async (req, res) => {
+router.get('/byUser', async (req, res) => {
     try {
-        const { id_from_token } = req.body;
-        const activities = await getActivitiesByUser({ user_id: id_from_token });
+        const { user_id } = req.body;
+        const activities = await getActivitiesByUser({ user_id });
 
         console.log("ACTIVITIES", activities);
 
@@ -23,7 +24,7 @@ router.get('/getActivitiesByUser', async (req, res) => {
     }
 });
 
-router.get('/getActivitiesByAdventure', async (req, res) => {
+router.get('/byAdventure', activityGetValidatorByAdventure, async (req, res) => {
     try {
         const { adventure_id } = req.body;
         const activities = await getActivitiesByAdventure({ adventure_id });
@@ -40,31 +41,20 @@ router.get('/getActivitiesByAdventure', async (req, res) => {
     }
 });
 
-router.post('/createActivity', async (req, res) => {
+router.post('/create', activityCreateValidator, async (req, res) => {
     try {
-        const { id_from_token, adventure_id, public: publicField } = req.body;
+        const { user_id, adventure_id, public: publicField } = req.body;
 
-        if (publicField === true) {
-            publicField = 1;
-        } else if (publicField === false) {
-            publicField = 0;
-        }
+        await createActivity({ user_id, adventure_id, public: publicField });
 
-        if (user_id) {
-            await createActivity({ user_id: id_from_token, adventure_id, public: publicField });
+        const activityResponse = {
+            user_id: id_from_token,
+            adventure_id,
+            public: publicField
+        };
 
-            const activityResponse = {
-                user_id: id_from_token,
-                adventure_id,
-                public: publicField
-            };
-
-            console.log("ACTIVITY_ADDED", activityResponse);
-            res.status(CREATED).json(activityResponse);
-
-        } else {
-            throw returnError({ req, res, message: 'notLoggedIn' });
-        }
+        console.log("ACTIVITY_ADDED", activityResponse);
+        res.status(CREATED).json(activityResponse);
 
     } catch (error) {
         throw returnError({ req, res, message: 'serverCreateActivity', error });

@@ -33,7 +33,6 @@ export const generatePasswordResetToken = async ({ email }) => {
     sign.write(email);
     sign.end();
     const signature = sign.sign(privateKey, 'hex');
-    console.log(publicKey, signature);
 
     return signature;
 };
@@ -42,8 +41,6 @@ export const validatePasswordResetToken = async ({ signature, email }) => {
     const verify = createVerify('SHA256');
     verify.write(email);
     verify.end();
-
-    console.log(publicKey, signature);
 
     return verify.verify(publicKey, signature);
 };

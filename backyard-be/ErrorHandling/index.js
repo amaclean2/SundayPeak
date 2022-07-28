@@ -1,12 +1,21 @@
-import { AuthenticationError, ValidationError, UserInputError, ApolloError } from 'apollo-server-express';
 import errorTexts from './ResponseText/errors.js';
 import { SERVER_ERROR } from './statuses.js';
 
-export const returnError = ({ req, res, status: statusCode, message, error, gql = false }) => {
-    const errorData = errorTexts[message];
+export const returnError = ({ req, res, status: statusCode, message = 'Error', error }) => {
 
-    const messageText = errorData?.messageText || message;
-    const messageCode = errorData?.status || statusCode;
+    let errorData;
+    let messageText;
+    let messageCode;
+
+    if (error?.msg) {
+        errorData = errorTexts[error.msg];
+        messageText = errorData?.messageText;
+        messageCode = errorData?.status;
+    } else {
+        errorData = errorTexts[message];
+        messageText = errorData?.messageText || message;
+        messageCode = errorData?.status || statusCode;
+    }
 
     const errorBody = {
         message: messageText
@@ -22,20 +31,12 @@ export const returnError = ({ req, res, status: statusCode, message, error, gql 
         errorBody.status = SERVER_ERROR;
     }
 
-    if (error) {
+    if (error && !error.msg) {
         errorBody.error = error;
     }
 
     console.error("\x1b[31m%s\x1b[0m", messageText);
     console.log(error);
-    
-    res.status(!!messageCode ? messageCode : SERVER_ERROR).json(errorBody);
-};
 
-export const catchBlock = ({ error, message }) => {
-    if (error) {
-        throw error;
-    } else {
-        throw returnError({ message, error });
-    }
+    res.status(!!messageCode ? messageCode : SERVER_ERROR).json(errorBody);
 };

@@ -1,25 +1,14 @@
 import jwt from 'jsonwebtoken';
 
 import { getJWTSecret } from '../Config/connections.js';
-import { isOperation, isExempt } from '../Config/exemptGql.js';
+import { isExempt } from '../Config/exemptGql.js';
 import { returnError } from '../ErrorHandling';
-import { FORBIDDEN } from '../ErrorHandling/statuses.js';
-import { validateLoginUser, validateCreateUser } from '../Validators/UserValidators.js';
 
 const authService = {
     issue: (payload) => jwt.sign(payload, getJWTSecret(), { expiresIn: '48h'}),
     validate: async (req, res, next) => {
         if (isExempt(req)) {
             return next();
-        }
-
-        // validation for form inputs
-        if (isOperation(req, 'login')) {
-            return validateLoginUser(req, res, next);
-        }
-
-        if (isOperation(req, 'createUser')) {
-            return validateCreateUser(req, res, next);
         }
 
         const bearerHeader = req.headers['authorization'];
@@ -36,22 +25,21 @@ const authService = {
                         gql: false,
                         req,
                         res,
-                        status: FORBIDDEN,
-                        message: 'Invalid token',
+                        message: 'invalidToken',
                         error
                     });
                 } else {
-                    req.body.id_from_token = decoded.id;
+                    if (!req.body) req.body = { id_from_token: decoded.id };
+                    else req.body.id_from_token = decoded.id;
+                    
                     return next();
                 }
             })
         } else {
-            throw returnError({
-                gql: false,
+            return returnError({
                 req,
                 res,
-                status: FORBIDDEN,
-                message: 'Invalid request'
+                message: 'notLoggedIn'
             })
         }
     }

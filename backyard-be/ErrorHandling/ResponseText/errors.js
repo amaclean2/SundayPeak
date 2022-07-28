@@ -1,12 +1,27 @@
-import { NOT_ACCEPTABLE, SERVER_ERROR, UNAUTHORIZED, NOT_FOUND } from '../statuses.js';
+import { NOT_ACCEPTABLE, SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, FORBIDDEN } from '../statuses.js';
 
 const errorTexts = {
+    // token errors
+    invalidToken: {
+        messageText: 'Invalid request, must include a token',
+        status: FORBIDDEN
+    },
+
+    // user errors
     missingFieldsCreateUser: {
         messageText: 'Email, Password, and Confirm Password fields are required. Please try again.',
         status: NOT_ACCEPTABLE
     },
     missingLegal: {
         messageText: 'User must agree to the terms and conditions before creating an account',
+        status: NOT_ACCEPTABLE
+    },
+    legalBool: {
+        messageText: 'legal field must be either true or false',
+        status: NOT_ACCEPTABLE
+    },
+    flNameAlpha: {
+        messageText: 'first and last names must be only letters',
         status: NOT_ACCEPTABLE
     },
     missingFieldsLogin: {
@@ -17,24 +32,20 @@ const errorTexts = {
         messageText: 'The email or password you provided is invalid. Please try again.',
         status: NOT_ACCEPTABLE
     },
-    invalidPassword: {
-        messageText: 'The email or password you provided is invalid. Please try again.',
-        status: NOT_ACCEPTABLE
-    },
     preexistingUser: {
         messageText: 'This user already exists.',
         status: NOT_ACCEPTABLE
     },
-    tooShortPassword: {
-        messageText: 'Password length must be at least 5 characters.',
-        status: NOT_ACCEPTABLE
-    },
-    tooLongPassword: {
-        messageText: 'Password length must be less than 50 characters.',
+    passwordOutOfRange: {
+        messageText: 'Password length must be between 5 and 30 characters.',
         status: NOT_ACCEPTABLE
     },
     nonMatchingPasswords: {
         messageText: 'Passwords do not match.',
+        status: NOT_ACCEPTABLE
+    },
+    missingFieldsFetchUser: {
+        messageText: 'email or id field must exist',
         status: NOT_ACCEPTABLE
     },
     serverValidateUser: {

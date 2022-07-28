@@ -9,7 +9,6 @@ import {
 import { returnError } from '../ErrorHandling';
 
 export const buildUserObject = async ({ id, email }) => {
-    console.log({ id, email });
 
     let userObject;
 
@@ -24,29 +23,25 @@ export const buildUserObject = async ({ id, email }) => {
         
         id = userObject.id;
     } else {
-        throw returnError({ message: 'Email or id fields must exist' });
+        throw returnError({ message: 'missingFieldsFetchUser' });
     }
 
     if (!userObject) {
         throw returnError({ message: 'noAccountExists' });
     }
 
-    const activityCount = await getActivityCountByUser({ user_id: id });
+    const activityCount = await getActivityCountByUser({ user_id: id }) || 0;
     const ticks = await getTicksByUser({ user_id: id });
-    const followerCount = await getFollowerCountLookup({ user_id: id });
-    const followingCount = await getFollowingCountLookup({ user_id: id });
+    const followerCount = await getFollowerCountLookup({ user_id: id }) || 0;
+    const followingCount = await getFollowingCountLookup({ user_id: id }) || 0;
+
+    delete userObject.password;
 
     const returnObj = {
         ...userObject,
-        activityCount: {
-            count: activityCount
-        },
-        followerCount: {
-            count: followerCount
-        },
-        followingCount: {
-            count: followingCount
-        },
+        activityCount,
+        followerCount,
+        followingCount,
         ticks: ticks.map((tick) => ({
             ...tick,
             user_id: tick.creator_id

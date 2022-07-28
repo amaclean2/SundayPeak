@@ -1,16 +1,24 @@
 import { Router } from 'express';
-import { validateCreateUser, validateLoginUser } from '../../Validators/UserValidators';
+import { userCreateValidator, userLoginValidator } from '../../Validators/UserValidators';
 import { CREATED, NOT_FOUND, SUCCESS } from '../../ErrorHandling/statuses';
 import { sendEmail } from '../../Services/resetPassword.service';
-import { catchBlock, returnError } from '../../ErrorHandling';
+import { returnError } from '../../ErrorHandling';
 import { buildUserObject } from '../../Handlers/Users';
 import { comparePassword, hashPassword } from '../../Crypto';
 import authService from '../../Services/auth.service';
+import { validationResult } from 'express-validator';
+import { addUser, followUser } from '../../DB';
 
 const router = Router();
 
-router.post('/login', validateLoginUser, async (req, res) => {
+router.post('/login', userLoginValidator(), async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            console.log("ERRORS", errors);
+            return returnError({ req, res, error: errors.array()[0] });
+        }
+
         const { email, password } = req.body;
         const user = await buildUserObject({ email });
 
@@ -26,15 +34,15 @@ router.post('/login', validateLoginUser, async (req, res) => {
             });
 
         } else {
-            throw returnError({ req, res, message: 'invalidPassword' });
+            return returnError({ req, res, message: 'invalidPassword' });
         }
     } catch (error) {
-        throw returnError({ req, res, message: 'serverLoginUser', error });
+        return returnError({ req, res, message: 'serverLoginUser', error });
     }
 });
 
-router.get('/userById', async (req, res) => {
-    const { id } = req.body;
+router.get('/id', async (req, res) => {
+    const { id } = req.query;
 
     try {
         const userObject = await buildUserObject({ id });
@@ -46,7 +54,7 @@ router.get('/userById', async (req, res) => {
     }
 });
 
-router.get('/loggedInUser', async (req, res) => {
+router.get('/loggedIn', async (req, res) => {
     try {
         const { id_from_token } = req.body;
 
@@ -76,16 +84,17 @@ router.post('/resetPassword', async (req, res) => {
     }
 });
 
-router.post('/createUser', validateCreateUser, async (req, res) => {
+router.post('/create', userCreateValidator(), async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return returnError({ req, res, error: errors.array()[0] });
+        }
+
         const newUser = {
             ...req.body,
             password: hashPassword(req.body.password)
         };
-
-        if (!newUser.legal) {
-            throw returnError({ req, res, message: 'missingLegal' });
-        }
 
         const createdUser = await addUser(newUser);
         const { id } = createdUser;
@@ -100,7 +109,7 @@ router.post('/createUser', validateCreateUser, async (req, res) => {
         });
 
     } catch (error) {
-        throw returnError({ req, res, message: 'serverCreateUser', error });
+        return returnError({ req, res, message: 'serverCreateUser', error });
     }
 });
 
@@ -123,33 +132,40 @@ router.post('/savePasswordReset', async (req, res) => {
     }
 });
 
-router.put('/editUser', (req, res) => {
+router.put('/edit', (req, res) => {
     res.status(NOT_FOUND).json({
         message: 'API to be created'
     });
 });
 
-router.delete('/deleteUser', (req, res) => {
+router.delete('/delete', (req, res) => {
     res.status(NOT_FOUND).json({
         message: 'API to be created'
     });
 });
 
-router.post('/followUser', async (req, res) => {
+router.get('/follow', async (req, res) => {
     const { id_from_token } = req.body;
-    const { leader_id } = req.body;
+    const { leader_id } = req.query;
 
     try {
         await followUser({ follower_id: id_from_token, leader_id });
 
         res.status(200).json({
             user_id: id_from_token,
-            leader_id
+            leader_id,
+            followed: true
         });
 
     } catch (error) {
         throw returnError({ req, res, message: 'serverFollowUser', error });
     }
+});
+
+router.use('/', (req, res) => {
+    res.status(400).json({
+        message: 'Please select a method on Users'
+    });
 });
 
 export default router;

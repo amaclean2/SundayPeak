@@ -1,45 +1,65 @@
+import { body } from 'express-validator';
+
 import { checkForUser } from '../DB';
-import { returnError, catchBlock } from '../ErrorHandling';
 
-export const validateCreateUser = async (req, res, next) => {
-	const { email, password, password2 } = req.body;
-
-	try {
-		if (!email || !password || !password2) {
-			throw returnError({ gql: false, req, res, message: 'missingFieldsCreateUser' });
-		} else if (!email.includes('@')) {
-			throw returnError({ gql: false, req, res, message: 'invalidEmail' });
-		} else {
-			const emailSuffix = email.split('@')[1];
-
-			if (!emailSuffix.includes('.')) {
-				throw returnError({ gql: false, req, res, message: 'invalidEmail' });
-			} else {
-				const idExists = await checkForUser(email);
-				if (idExists) {
-					throw returnError({ gql: false, req, res, message: 'preexistingUser' });
-				} else if (password.length < 5) {
-					throw returnError({ gql: false, req, res, message: 'tooShortPassword' });
-				} else if (password.length > 30) {
-					throw returnError({ gql: false, req, res, message: 'tooLongPassword' });
-				} else if (password !== password2) {
-					throw returnError({ gql: false, req, res, message: 'nonMatchingPasswords' });
-				} else {
-					next();
-				}
-			}
-		}
-	} catch (error) {
-		throw catchBlock({ gql: false, req, res, message: 'serverValidateUser', error });
-	}
+export const userLoginValidator = () => {
+	return [
+		body('email')
+			.not().isEmpty()
+			.withMessage('missingFieldsLogin')
+			.isEmail()
+			.withMessage('invalidEmail'),
+		body('password')
+			.not().isEmpty()
+			.withMessage('missingFieldsLogin')
+	];
 };
 
-export const validateLoginUser = async (req, res, next) => {
-	const { email, password } = req?.body?.variables;
+export const userCreateValidator = () => {
+	return [
+		body('email')
+			.not().isEmpty()
+			.withMessage('missingFieldsCreateUser')
+			.isEmail()
+			.withMessage('invalidEmail')
+			.custom(async (value) => {
+				const idExists = await checkForUser(value);
 
-	if (!email || !password) {
-		throw returnError({ gql: false, req, res, message: 'missingFieldsLogin' });
-	} else {
-		next();
-	}
+				if (idExists) throw 'preexistingUser';
+
+				return true;
+			}),
+		body('password')
+			.not().isEmpty()
+			.withMessage('missingFieldsCreateUser')
+			.isLength({ min: 5, max: 30 })
+			.withMessage('passwordOutOfRange'),
+		body('password_2')
+			.not().isEmpty()
+			.withMessage('missingFieldsCreateUser')
+			.custom((value, { req }) => {
+				if (value !== req.body.password) throw 'nonMatchingPasswords';
+
+				return true;
+			}),
+		body('first_name')
+			.optional()
+			.isAlpha()
+			.withMessage('flNameAlpha')
+			.not().isEmpty()
+			.trim(),
+		body('last_name')
+			.optional()
+			.isAlpha()
+			.withMessage('flNameAlpha')
+			.not().isEmpty()
+			.trim(),
+		body('legal')
+			.not().isEmpty()
+			.withMessage('missingLegal')
+			.isBoolean()
+			.withMessage('legalBool')
+			.equals(true)
+			.withMessage('missingLegal')
+	];
 };
