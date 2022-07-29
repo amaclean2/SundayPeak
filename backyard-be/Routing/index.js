@@ -7,7 +7,12 @@ import TicksRouter from './Ticks';
 
 const router = Router();
 
-router.use('/users', UsersRouter);
+const usersMiddleware = (req, res, next) => {
+    console.log(req.body);
+    next();
+}
+
+router.use('/users', usersMiddleware,  UsersRouter);
 router.use('/adventures', AdventuresRouter);
 router.use('/activities', ActivitiesRouter);
 router.use('/ticks', TicksRouter);

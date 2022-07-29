@@ -35,8 +35,6 @@ export const buildUserObject = async ({ id, email }) => {
     const followerCount = await getFollowerCountLookup({ user_id: id }) || 0;
     const followingCount = await getFollowingCountLookup({ user_id: id }) || 0;
 
-    delete userObject.password;
-
     const returnObj = {
         ...userObject,
         activityCount,

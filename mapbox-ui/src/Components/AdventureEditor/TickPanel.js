@@ -36,7 +36,7 @@ const AdventureTickPanel = () => {
     }, [currentAdventure]);
 
     const transitionToUsers = (user_id) => {
-        getOtherUser(user_id);
+        getOtherUser({ user_id });
     };
 
     useEffect(() => {

@@ -7,18 +7,18 @@ import {
 
 import Discover from './Router/Discover';
 import Landing from './Router/Landing';
-import { useGetAdventures, useGetUser } from './Providers';
+import { useGetAdventures, useGetLoggedInUser,  } from './Providers';
 
 import './App.css';
 import './variables.css';
 
 const App = () => {
-  const { startUserAuthProcess } = useGetUser();
-  const { queryAdventures } = useGetAdventures();
+  const { getLoggedInUser } = useGetLoggedInUser();
+  const { getAllAdventures } = useGetAdventures();
 
   useEffect(() => {
-    startUserAuthProcess();
-    queryAdventures();
+    getLoggedInUser();
+    getAllAdventures();
   }, []);
 
   return (

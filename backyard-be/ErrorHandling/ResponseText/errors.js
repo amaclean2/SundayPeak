@@ -7,6 +7,12 @@ const errorTexts = {
         status: FORBIDDEN
     },
 
+    // cors error
+    corsError: {
+        messageText: (vars = {}) => `The CORS policy for this API does not allow access from ${vars.origin}`,
+        status: FORBIDDEN
+    },
+
     // user errors
     missingFieldsCreateUser: {
         messageText: 'Email, Password, and Confirm Password fields are required. Please try again.',

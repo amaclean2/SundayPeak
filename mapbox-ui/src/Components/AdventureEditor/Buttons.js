@@ -4,10 +4,10 @@ import {
     useAdventureEditContext,
     useCardStateContext,
     useGetAdventures,
-    useSaveAdventure
+    useSaveActivity,
+    useSaveAdventure,
+    useSaveTick
 } from "../../Providers";
-import { useSaveActivity } from "../../Providers/hooks/GQLCalls/activities";
-import { useSaveTick } from "../../Providers/hooks/GQLCalls/ticks";
 import { Button, FooterButtons } from "../Reusable";
 
 const AdventureEditorButtons = () => {

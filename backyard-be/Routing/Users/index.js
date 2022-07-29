@@ -15,11 +15,12 @@ router.post('/login', userLoginValidator(), async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            console.log("ERRORS", errors);
+            console.log('ERRORS', errors);
             return returnError({ req, res, error: errors.array()[0] });
         }
 
         const { email, password } = req.body;
+
         const user = await buildUserObject({ email });
 
         if (comparePassword(password, user.password)) {
@@ -29,8 +30,10 @@ router.post('/login', userLoginValidator(), async (req, res) => {
             console.log({ message: 'USER_LOGGED_IN', user, token });
 
             res.status(SUCCESS).json({
-                user,
-                token
+                data: {
+                    user,
+                    token
+                }
             });
 
         } else {
@@ -46,8 +49,11 @@ router.get('/id', async (req, res) => {
 
     try {
         const userObject = await buildUserObject({ id });
+        delete userObject.password;
 
-        res.status(SUCCESS).json(userObject);
+        res.status(SUCCESS).json({
+            data: { user: userObject }
+        });
 
     } catch (error) {
         throw returnError({ req, res, message: 'serverLoginUser', error });
@@ -60,8 +66,11 @@ router.get('/loggedIn', async (req, res) => {
 
         if (id_from_token) {
             const userObject = await buildUserObject({ id: id_from_token });
+            delete userObject.password;
 
-            res.status(SUCCESS).json(userObject);
+            res.status(SUCCESS).json({
+                data: { user: userObject }
+            });
 
         } else {
             throw returnError({ req, res, message: 'notLoggedIn' });
@@ -77,7 +86,9 @@ router.post('/resetPassword', async (req, res) => {
         const emailValidation = await sendEmail(email);
 
         console.log({ emailValidation });
-        res.status(SUCCESS).json({ email });
+        res.status(SUCCESS).json({
+            data: { email }
+        });
 
     } catch (error) {
         throw returnError({ req, res, message: 'serverValidateUser', error });
@@ -104,8 +115,10 @@ router.post('/create', userCreateValidator(), async (req, res) => {
         console.log({ message: 'USER_CREATED', createdUser, token });
 
         res.status(CREATED).json({
-            user: createdUser,
-            token
+            data: {
+                user: createdUser,
+                token
+            }
         });
 
     } catch (error) {
@@ -124,7 +137,7 @@ router.post('/savePasswordReset', async (req, res) => {
         const response = await validateSignatureAndSave({ signature, new_password });
 
         res.status(SUCCESS).json({
-            email: response
+            data: { email: response }
         });
 
     } catch (error) {
@@ -152,9 +165,11 @@ router.get('/follow', async (req, res) => {
         await followUser({ follower_id: id_from_token, leader_id });
 
         res.status(200).json({
-            user_id: id_from_token,
-            leader_id,
-            followed: true
+            data: {
+                user_id: id_from_token,
+                leader_id,
+                followed: true
+            }
         });
 
     } catch (error) {

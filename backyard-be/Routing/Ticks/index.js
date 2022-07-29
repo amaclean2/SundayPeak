@@ -1,44 +1,33 @@
 import { Router } from 'express';
-import { getTicksByAdventure } from '../../DB';
+import { validationResult } from 'express-validator';
+import { createTick } from '../../DB';
 import { returnError } from '../../ErrorHandling';
 import { CREATED } from '../../ErrorHandling/statuses';
-import { tickCreateValidator, tickGetValidatorByAdventure } from '../../Validators/TickValidators';
+import { buildUserObject } from '../../Handlers/Users';
+import { tickCreateValidator } from '../../Validators/TickValidators';
 
 const router = Router();
 
-router.get('/byAdventure', tickGetValidatorByAdventure, async (req, res) => {
-    try {
-        const { adventure_id, user_id } = req.body;
-        const ticks = await getTicksByAdventure({ adventure_id });
-
-        console.log("TICKS", ticks);
-        return ticks.filter((tick) => {
-            return tick.creator_id !== user_id;
-        }).map((tick) => ({
-            ...tick,
-            user_id: tick.creator_id
-        }));
-
-    } catch (error) {
-        throw returnError({ req, res, message: 'serverGetTicksAdventure', error });
+router.post('/create', tickCreateValidator(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log('ERRORS', errors);
+        return returnError({ req, res, error: errors.array()[0] });
     }
-});
 
-router.post('/create', tickCreateValidator, async (req, res) => {
     try {
-        const { user_id, adventure_id, public: publicField } = req_body;
+        const { user_id, adventure_id, public: publicField } = req.body;
 
         await createTick({ user_id, adventure_id, public: publicField });
 
-        const tickResponse = {
-            user_id,
-            adventure_id,
-            public: publicField
-        }
+        const newUserObj = await buildUserObject({ id: user_id });
+        delete newUserObj.password;
 
-        console.log("TICK_ADDED", tickResponse);
-
-        res.status(CREATED).json(tickResponse);
+        res.status(CREATED).json({
+            data: {
+                user: newUserObj
+            }
+        });
 
     } catch (error) {
         throw returnError({ req, res, message: 'serverCreateTick', error });

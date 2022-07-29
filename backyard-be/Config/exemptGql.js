@@ -1,5 +1,5 @@
 export const exemptQueries = [
-    'allAdventures',
+    'adventures/all',
     'savePasswordReset',
     'resetPassword',
     'verify',

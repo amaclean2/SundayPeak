@@ -5,6 +5,7 @@ import { config } from 'dotenv';
 
 import authService from './Services/auth.service.js';
 import router from './Routing';
+import { corsHandler } from './Config/cors.js';
 
 config();
 
@@ -16,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // security middleware
-app.use(cors());
+app.use(cors({ origin: corsHandler }));
 app.use(helmet({
     dnsPrefetchControl: false,
     frameguard: false,
