@@ -3,6 +3,10 @@ import { SERVER_ERROR } from './statuses.js';
 
 export const returnError = ({ req, res, status: statusCode, message = 'Error', error }) => {
 
+    if (error?.handled) {
+        return null;
+    }
+
     let errorData;
     let messageText;
     let messageCode;
@@ -18,7 +22,8 @@ export const returnError = ({ req, res, status: statusCode, message = 'Error', e
     }
 
     const errorBody = {
-        message: messageText
+        message: messageText,
+        handled: true
     };
 
     if (req?.body) {
@@ -39,4 +44,6 @@ export const returnError = ({ req, res, status: statusCode, message = 'Error', e
     console.log(error);
 
     res.status(!!messageCode ? messageCode : SERVER_ERROR).json(errorBody);
+
+    return errorBody;
 };

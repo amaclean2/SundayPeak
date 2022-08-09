@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { validationResult } from 'express-validator';
 import { createActivity, getActivitiesByAdventure, getActivitiesByUser } from '../../DB';
 import { returnError } from '../../ErrorHandling';
-import { CREATED, SUCCESS } from '../../ErrorHandling/statuses';
+import { CREATED, NOT_FOUND, SUCCESS } from '../../ErrorHandling/statuses';
 import { buildUserObject } from '../../Handlers/Users';
 import { activityCreateValidator, activityGetValidatorByAdventure } from '../../Validators/ActivityValidators';
 
@@ -59,7 +59,7 @@ router.post('/create', activityCreateValidator, async (req, res) => {
 
         await createActivity({ user_id, adventure_id, public: publicField });
 
-        const newUserObj = await buildUserObject({ id: user_id });
+        const newUserObj = await buildUserObject({ req, res, initiation: { id: user_id }});
         delete newUserObj.password;
 
         console.log('ACTIVITY_ADDED', newUserObj);
@@ -70,6 +70,15 @@ router.post('/create', activityCreateValidator, async (req, res) => {
     } catch (error) {
         throw returnError({ req, res, message: 'serverCreateActivity', error });
     }
+});
+
+router.use('/', (req, res) => {
+    res.status(NOT_FOUND).json({
+        data: {
+            messasge: 'Please select a method on /activities',
+            status: NOT_FOUND
+        }
+    });
 });
 
 export default router;

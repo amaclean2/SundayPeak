@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import { getJWTSecret } from '../Config/connections.js';
-import { isExempt } from '../Config/exemptGql.js';
+import { isExempt, isPath } from '../Config/exemptGql.js';
 import { returnError } from '../ErrorHandling';
 
 const authService = {
@@ -20,21 +20,24 @@ const authService = {
             }
 
             await jwt.verify(bearerToken, getJWTSecret(), {}, (error, decoded) => {
+
                 if (error) {
-                    throw returnError({ 
-                        gql: false,
+                    return returnError({
                         req,
                         res,
-                        message: 'invalidToken',
+                        message: error.name,
                         error
                     });
                 } else {
+
                     if (!req.body) req.body = { id_from_token: decoded.id };
                     else req.body.id_from_token = decoded.id;
                     
                     return next();
                 }
             })
+        } else if (isPath(req, '/initial')) {
+            return next();
         } else {
             return returnError({
                 req,

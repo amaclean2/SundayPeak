@@ -9,13 +9,16 @@ import {
     getFollowersCountStatement,
     followUserStatement,
     getFollowersStatement,
-    getFollowingCountStatement
+    getFollowingCountStatement,
+    deleteUserStatement,
+    deleteTickByUserStatement,
+    deleteActivityByUserStatement,
+    updateUsersStatement
 } from './Statements.js';
 
 export const addUser = async ({ email, password, first_name, last_name }) => {
     return db.promise().execute(createUserStatement, [email, password, first_name, last_name])
-        .then((result) => db.promise().execute(getUserByIdStatement, [result[0].insertId]))
-        .then(([results, ...extras]) => results[0])
+        .then((result) => result[0].insertId)
         .catch((error) => {
             throw {
                 message: 'Database insertion failed',
@@ -105,18 +108,18 @@ export const followUser = async ({ follower_id, leader_id }) => {
         });
 };
 
-export const getFollowerCountLookup = async ({ user_id }) => {
+export const getFollowerCount = async ({ user_id }) => {
     return db.promise().execute(getFollowersCountStatement, [user_id])
-        .then(([results, ...extras]) => results[0]['COUNT(id)'])
+        .then(([results, ...extras]) => results[0]['COUNT(follower_id)'])
         .catch((error) => {
             console.log("DATABASE_RETRIEVAL_FAILED", error);
             throw error;
         });
 };
 
-export const getFollowingCountLookup = async ({ user_id }) => {
+export const getFollowingCount = async ({ user_id }) => {
     return db.promise().execute(getFollowingCountStatement, [user_id])
-        .then(([results, ...extras]) => results[0]['COUNT(id)'])
+        .then(([results, ...extras]) => results[0]['COUNT(leader_id)'])
         .catch((error) => {
             console.log("DATABASE_RETRIEVAL_FAILED", error);
             throw error;
@@ -128,6 +131,37 @@ export const getFollowersLookup = async ({ user_id }) => {
         .then(([results, ...extras]) => results)
         .catch((error) => {
             console.log("DATABASE_RETRIEVAL_FAILED", error);
+            throw error;
+        });
+};
+
+export const updateUser = async ({ fields }) => {
+    const promiseList = fields.map((field) => {
+        return new Promise((res, rej) => {
+            db.promise().execute(updateUsersStatement, [field.field_name, field.field_value, field.id])
+                .then(([result, ...extras]) => res(result))
+                .catch((error) => {
+                    console.log('UPDATE_FAILED');
+                    rej(error);
+                });
+        });
+    });
+
+    return Promise.all(promiseList)
+        .then(([results, ...extras]) => results)
+        .catch((error) => {
+            console.log('DATA_UPDATE_FAILED');
+            throw error;
+        })
+};
+
+export const deleteUser = async (userId) => {
+    return db.promise().execite(deleteTickByUserStatement, [userId])
+        .then(() => db.promise().execute(deleteActivityByUserStatement, [userId]))
+        .then(() => db.promise().execute(deleteUserStatement, [userId]))
+        .then(([result, ...extras]) => result)
+        .catch((error) => {
+            console.log('DATABASE_DELETION_FAILED');
             throw error;
         });
 };

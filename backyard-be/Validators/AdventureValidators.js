@@ -27,3 +27,15 @@ export const adventureCreateValidator = () => {
             })
     ];
 };
+
+export const adventuresGetValidator = () => {
+    return [
+        body('bounding_box')
+            .custom(value => typeof value === 'object')
+            .withMessage('boundingBoxType')
+            .custom(value => 'NE' in value)
+            .withMessage('boundingBox')
+            .custom(value => 'SW' in value)
+            .withMessage('boundingBox')
+    ]
+}

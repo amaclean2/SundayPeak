@@ -12,7 +12,7 @@ config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// used for external apis
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 

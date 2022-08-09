@@ -1,13 +1,14 @@
 export const exemptQueries = [
-    'adventures/all',
+    '/adventures/all',
+    '/adventures/details',
     'savePasswordReset',
     'resetPassword',
-    'verify',
-    'users/login',
-    'users/create'
+    '/verify',
+    '/users/login',
+    '/users/create'
 ];
 
-export const isOperation = (req, query) => {
+export const isPath = (req, query) => {
     return req.originalUrl.includes(query);
 };
 

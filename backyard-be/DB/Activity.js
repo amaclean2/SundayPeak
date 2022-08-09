@@ -26,7 +26,7 @@ export const getActivitiesByUser = async ({ user_id }) => {
 
 export const getActivityCountByUser = async ({ user_id }) => {
     return db.promise().execute(countActivitiesStatement, [user_id])
-        .then(([results, ...extras]) => results[0]['COUNT(id)'])
+        .then(([results, ...extras]) => results[0]['COUNT(adventure_id)'])
         .catch((error) => {
             console.log("DATABASE_RETRIEVAL_FAILED", error);
             throw error;

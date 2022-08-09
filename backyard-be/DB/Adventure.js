@@ -1,6 +1,9 @@
 import db from '../Config/db.js';
 import {
     createNewAdventureStatement,
+    deleteActivityByAdventureStatement,
+    deleteAdventureStatement,
+    deleteTickByAdventureStatement,
     selectAdventureByIdStatement,
     selectAdventuresInRangeStatement
 } from './Statements.js';
@@ -48,20 +51,13 @@ export const getAdventure = async (id) => {
         });
 };
 
-export const getAdventures = async (coordinates, type, zoom) => {
-
-    const extremes = {
-        minLat: coordinates.lat - 2,
-        maxLat: coordinates.lat + 2,
-        minLng: coordinates.lng - 2,
-        maxLng: coordinates.lng + 2
-    };
+export const getAdventures = async (coordinates, type) => {
 
     return db.promise().execute(selectAdventuresInRangeStatement, [
-        extremes.maxLat,
-        extremes.minLat,
-        extremes.minLng,
-        extremes.maxLng,
+        coordinates.maxLat,
+        coordinates.minLat,
+        coordinates.minLng,
+        coordinates.maxLng,
         type
     ]).then(([results, ...extras]) => {
         return results.map((result) => {
@@ -81,4 +77,15 @@ export const getAdventures = async (coordinates, type, zoom) => {
         console.log('DATABASE_RETRIEVAL_FAILED', error);
         throw error;
     });
+};
+
+export const deleteAdventure = async (adventureId) => {
+    return db.promise().execite(deleteTickByAdventureStatement, [adventureId])
+        .then(() => db.promise().execute(deleteActivityByAdventureStatement, [adventureId]))
+        .then(() => db.promise().execute(deleteAdventureStatement, [adventureId]))
+        .then(([result, ...extras]) => result)
+        .catch((error) => {
+            console.log('DATABASE_DELETION_FAILED');
+            throw error;
+        })
 };

@@ -2,6 +2,7 @@ import errorTexts from "../ErrorHandling/ResponseText/errors";
 
 export const allowedOrigins = [
     'http://localhost:5000',
+    'http://localhost:3000',
     'http://localhost',
     'https://friends-dot-backyardfriends.wl.r.appspot.com'
 ];

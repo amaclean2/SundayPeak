@@ -6,6 +6,10 @@ const errorTexts = {
         messageText: 'Invalid request, must include a token',
         status: FORBIDDEN
     },
+    TokenExpiredError: {
+        messageText: 'Your token has expired. Please log in again',
+        status: FORBIDDEN
+    },
 
     // cors error
     corsError: {
@@ -34,7 +38,7 @@ const errorTexts = {
         messageText: 'Email and Password fields are required. Please try again.',
         status: NOT_ACCEPTABLE
     },
-    invalidEmail: {
+    invalidField: {
         messageText: 'The email or password you provided is invalid. Please try again.',
         status: NOT_ACCEPTABLE
     },
@@ -104,8 +108,20 @@ const errorTexts = {
         messageText: 'Server Error: Could not create this adventure',
         status: SERVER_ERROR
     },
+    serverDeleteAdventure: {
+        messageText: 'Server Error: Could not delete this adventre',
+        status: SERVER_ERROR
+    },
     adventureIdFieldRequired: {
         messageText: 'The id field is required',
+        status: NOT_ACCEPTABLE
+    },
+    boundingBox: {
+        messageText: 'The bounding_box must have a NE component and a SW component',
+        status: NOT_ACCEPTABLE
+    },
+    boundingBoxType: {
+        messageText: 'bounding_box must be an object',
         status: NOT_ACCEPTABLE
     },
 
@@ -130,6 +146,20 @@ const errorTexts = {
     },
     serverCreateActivity: {
         messageText: 'Server Error: Could not create this activity',
+        status: SERVER_ERROR
+    },
+
+    // picture errors
+    getUserPicturesError: {
+        message: 'User id field required',
+        status: NOT_ACCEPTABLE
+    },
+    deleteUserPicturesError: {
+        message: 'file_name filed is required',
+        status: NOT_ACCEPTABLE
+    },
+    serverUploadPictures: {
+        message: 'Could not upload this picture',
         status: SERVER_ERROR
     }
 };

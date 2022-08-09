@@ -55,11 +55,12 @@ export const userCreateValidator = () => {
 			.not().isEmpty()
 			.trim(),
 		body('legal')
-			.not().isEmpty()
-			.withMessage('missingLegal')
 			.isBoolean()
 			.withMessage('legalBool')
-			.equals(true)
-			.withMessage('missingLegal')
+			.custom((value) => {
+				if (!value) throw 'missingLegal';
+
+				return true;
+			})
 	];
 };
