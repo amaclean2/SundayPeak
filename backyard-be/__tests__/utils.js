@@ -25,7 +25,9 @@ const loginUserBody = {
 const USERS_PREFIX = '/api/users';
 
 const resetDB = async (db) => {
-    return Promise.all(deleteStatements.map((statement) => db.execute(statement)))
+    for (const statement of deleteStatements) {
+        await db.execute(statement);
+    }
 };
 
 const createTestUser = async (db) => {

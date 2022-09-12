@@ -10,7 +10,13 @@ const {
 const db = require('../../../Config/db');
 const app = require('../../../app');
 const errorTexts = require('../../../ResponseHandling/ResponseText/errors');
-const { SUCCESS, CREATED, ACCEPTED } = require('../../../ResponseHandling');
+const {
+    SUCCESS,
+    CREATED,
+    ACCEPTED,
+    UNAUTHORIZED,
+    NOT_ACCEPTABLE
+} = require('../../../ResponseHandling');
 
 const route = `/id`;
 let token;
@@ -35,7 +41,7 @@ describe('GET /id', () => {
 
             expect(response?.body?.error).toBeDefined();
             expect(response.body.error.message).toBe(errorTexts.notLoggedIn.messageText);
-            expect(response.statusCode).toBe(401);
+            expect(response.statusCode).toBe(UNAUTHORIZED);
         });
 
         it('should ensure the validator ensures an id actually exists in the query parameters', async () => {
@@ -45,7 +51,7 @@ describe('GET /id', () => {
 
             expect(response?.body?.error).toBeDefined();
             expect(response.body.error.message).toBe(errorTexts.idQueryRequired.messageText);
-            expect(response.statusCode).toBe(406);
+            expect(response.statusCode).toBe(NOT_ACCEPTABLE);
         });
 
         it('should ensure only valid access tokens are authenticated', async () => {
@@ -56,7 +62,7 @@ describe('GET /id', () => {
 
             expect(response?.body?.error).toBeDefined();
             expect(response.body.error.message).toBe(errorTexts.JsonWebTokenError.messageText);
-            expect(response.statusCode).toBe(406);
+            expect(response.statusCode).toBe(UNAUTHORIZED);
         });
 
         it('should ensure a database fetch gets called with the new user id to get the user with getUserById', async () => {

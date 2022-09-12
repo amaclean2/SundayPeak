@@ -56,6 +56,7 @@ const getFollowersCountStatement = `SELECT COUNT(follower_id) FROM followers WHE
 const getFollowingStatement = `SELECT u.first_name, u.last_name, f.leader_id, u.email FROM followers AS f
 INNER JOIN users AS u ON f.leader_id = u.id WHERE f.follower_id = ?`;
 const getFollowingCountStatement = `SELECT COUNT(leader_id) FROM followers WHERE follower_id = ?`;
+const getIsFollowedStatement = `SELECT * FROM followers WHERE follower_id = ? AND leader_id = ?`;
 
 // pictures
 const createUserPictureStatement = 'INSERT INTO user_images (file_name, creator_id, public) VALUES (?, ?, 0)';
@@ -96,9 +97,10 @@ module.exports = {
     getFollowersCountStatement,
     getFollowingStatement,
     getFollowingCountStatement,
+    getIsFollowedStatement,
     createUserPictureStatement,
     createAdventurePictureStatement,
     getAdventurePicturesStatement,
     getUserPicturesStatement,
-    deletePictureStatement
+    deletePictureStatement,
 }

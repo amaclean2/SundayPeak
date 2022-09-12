@@ -1,4 +1,4 @@
-const { userCreateValidator, userLoginValidator } = require('../../Validators/UserValidators');
+const { userCreateValidator, userLoginValidator, userFollowValidator } = require('../../Validators/UserValidators');
 const { NOT_FOUND } = require('../../ResponseHandling/statuses');
 const {
     createUser,
@@ -17,7 +17,7 @@ const router = Router();
 
 router.get('/id', getUserById);
 router.get('/loggedIn', getLoggedInUser);
-router.post('/follow', followUser);
+router.post('/follow', userFollowValidator(), followUser);
 router.get('/refetch', refetchUser);
 
 router.post('/login', userLoginValidator(), loginUser);

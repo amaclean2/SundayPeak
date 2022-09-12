@@ -66,7 +66,26 @@ const userCreateValidator = () => {
 	];
 };
 
+const userFollowValidator = () => {
+	return [
+		body('leader_id')
+			.not().isEmpty().bail()
+			.withMessage('leaderRequired')
+			.custom(async (value, { req }) => {
+				const alreadyFollowed = await queries.getFollowedRelationship({
+					leader_id: value,
+					follower_id: req.body.id_from_token
+				});
+
+				if (alreadyFollowed.length) throw 'alreadyFollowed'
+
+				return true;
+			})
+	]
+}
+
 module.exports = {
 	userLoginValidator,
-	userCreateValidator
+	userCreateValidator,
+	userFollowValidator
 };

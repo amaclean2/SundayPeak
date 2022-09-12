@@ -14,7 +14,8 @@ const {
     deleteUserStatement,
     deleteTickByUserStatement,
     deleteActivityByUserStatement,
-    updateUsersStatement
+    updateUsersStatement,
+    getIsFollowedStatement
 } = require('./Statements.js');
 
 const addUser = async ({ email, password, first_name, last_name }) => {
@@ -86,13 +87,23 @@ const getPasswordResetEmail = async ({ token }) => {
 
 const followUser = async ({ follower_id, leader_id }) => {
     try {
-        const [results, ...extras] = await db.execute(followUserStatement, [followerId, leader_id, false]);
+        const [results, ...extras] = await db.execute(followUserStatement, [follower_id, leader_id, false]);
         return results.insertId;
     } catch (error) {
         logger.error("DATABASE_INSERTION_FAILED", error);
         throw error;
     }
 };
+
+const getFollowedRelationship = async ({ follower_id, leader_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(getIsFollowedStatement, [follower_id, leader_id]);
+        return results;
+    } catch (error) {
+        logger.error("DATABASE_QUERY_FAILED", error);
+        throw error;
+    }
+}
 
 const getFollowerCount = async ({ user_id }) => {
     try {
@@ -164,6 +175,7 @@ module.exports = {
     savePasswordResetToken,
     getPasswordResetEmail,
     followUser,
+    getFollowedRelationship,
     getFollowerCount,
     getFollowingCount,
     getFollowersLookup,

@@ -84,6 +84,14 @@ const errorTexts = {
     },
     JsonWebTokenError: {
         messageText: 'The authorization token you gave was not supported',
+        status: UNAUTHORIZED
+    },
+    leaderRequired: {
+        messageText: 'The "leader_id" field is required in the request body',
+        status: NOT_ACCEPTABLE
+    },
+    alreadyFollowed: {
+        messageText: 'You already follow this user',
         status: NOT_ACCEPTABLE
     },
 

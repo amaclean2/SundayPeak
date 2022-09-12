@@ -1,31 +1,27 @@
 const request = require('supertest');
-
 const {
+    USERS_PREFIX,
     resetDB,
     createTestUser,
-    loginTestUser,
-    USERS_PREFIX,
-} = require("../../../__tests__");
-const db = require('../../../Config/db');
-const logger = require("../../../Config/logger");
+    loginTestUser
+} = require('../../../__tests__');
 const app = require('../../../app');
 const errorTexts = require('../../../ResponseHandling/ResponseText/errors');
-const { SUCCESS, CREATED, ACCEPTED, NOT_ACCEPTABLE, UNAUTHORIZED } = require('../../../ResponseHandling');
+const { SUCCESS, UNAUTHORIZED } = require('../../../ResponseHandling/statuses');
+const db = require('../../../Config/db');
 
-const route = `/loggedIn`;
+const route = `/refetch`;
 let token;
 
-describe('GET /loggedIn', () => {
+describe('GET /refetch', () => {
     beforeAll(async () => {
-        await createTestUser(db);
+        await createTestUser(db)
         token = await loginTestUser(db);
     });
 
-    afterAll(async () => {
-        await resetDB(db);
-    });
+    afterAll(async () => await resetDB(db));
 
-    describe('getting data from another user', () => {
+    describe('refetching a user', () => {
 
         it('should ensure an access token in the authorization header is checked for', async () => {
             const response = await request(app)
@@ -46,16 +42,15 @@ describe('GET /loggedIn', () => {
             expect(response.statusCode).toBe(UNAUTHORIZED);
         });
 
-        it('should ensure a database fetch gets called with the user id to get the user with getUserById', async () => {
+        it('should return everything inside { data: { user: {} }, status }', async () => {
             const response = await request(app)
                 .get(`${USERS_PREFIX}${route}`)
                 .set({ authorization: `Bearer ${token}` });
 
-            expect(response?.body?.data?.user).toBeDefined();
-
-            const user = response.body.data.user;
-            expect(user.first_name).toBeDefined();
-            expect(user.password).not.toBeDefined();
+            expect(response?.body?.data).toBeDefined();
+            expect(response.body.statusCode).toBeDefined();
+            expect(response.body.data.user).toBeDefined();
+            expect(Object.keys(response.body.data.user)).toContain('first_name');
         });
 
         it('should ensure all the associated lists are returned back to the user along with the user object', async () => {
@@ -64,8 +59,8 @@ describe('GET /loggedIn', () => {
                 .set({ authorization: `Bearer ${token}` });
 
             expect(response?.body?.data?.user).toBeDefined();
-            const user = response.body.data.user;
 
+            const user = response.body.data.user;
             expect(user.activity_count).toBeDefined();
             expect(user.ticks).toBeDefined();
             expect(user.follower_count).toBeDefined();
@@ -73,17 +68,13 @@ describe('GET /loggedIn', () => {
             expect(user.images).toBeDefined();
         });
 
-        it('should return everything inside { data: { user: {} }, status }', async () => {
+        it('should ensure the password doesn\'t exist in the returned user object', async () => {
             const response = await request(app)
                 .get(`${USERS_PREFIX}${route}`)
                 .set({ authorization: `Bearer ${token}` });
 
-            logger.debug({ res: response.body });
-
-            expect(response?.body?.data).toBeDefined();
-            expect(response.body.statusCode).toBeDefined();
-            expect(response.body.data.user).toBeDefined();
-            expect(Object.keys(response.body.data.user)).toContain('first_name');
+            expect(response?.body?.data?.user).toBeDefined();
+            expect(response.body.data.user.password).not.toBeDefined();
         });
 
         it('should return errors in the format { error: { message, ...otherErrorInfo }, statusCode }', async () => {
@@ -100,7 +91,7 @@ describe('GET /loggedIn', () => {
                 .get(`${USERS_PREFIX}${route}`)
                 .set({ authorization: `Bearer ${token}` });
 
-            expect([SUCCESS, CREATED, ACCEPTED].includes(response.statusCode)).toBe(true);
+            expect(response.statusCode).toBe(SUCCESS);
             expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
         });
     });

@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const { returnError } = require('../ResponseHandling');
 const { getMapboxAccessToken } = require('../Config/connections');
-const { CREATED, NO_CONTENT, SUCCESS } = require('../ResponseHandling/statuses');
+const { CREATED, NO_CONTENT, SUCCESS, ACCEPTED } = require('../ResponseHandling/statuses');
 const cryptoHandlers = require('../Crypto');
 const authService = require('../Services/auth.service');
 const { sendEmail } = require('../Services/resetPassword.service');
@@ -59,6 +59,8 @@ const refetchUser = async (req, res) => {
     try {
         const userObject = await buildUserObject({ req, res, initiation: { id: id_from_token } });
         delete userObject.password;
+
+        return sendResponse({ req, res, data: { user: userObject }, status: SUCCESS });
 
         res.status(SUCCESS).json({
             data: { user: userObject }
@@ -152,18 +154,21 @@ const savePasswordReset = async (req, res) => {
 };
 
 const followUser = async (req, res) => {
-    const { id_from_token, leader_id } = req.body;
-
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            throw returnError({ req, res, error: errors.array()[0] });
+        }
+
+        const { id_from_token, leader_id } = req.body;
+
         await queries.followUser({ follower_id: id_from_token, leader_id });
 
-        res.status(200).json({
-            data: {
-                user_id: id_from_token,
-                leader_id,
-                followed: true
-            }
-        });
+        return sendResponse({ req, res, data: {
+            user_id: id_from_token,
+            leader_id,
+            followed: true
+        }, status: ACCEPTED });
 
     } catch (error) {
         return returnError({ req, res, message: 'serverFollowUser', error });
