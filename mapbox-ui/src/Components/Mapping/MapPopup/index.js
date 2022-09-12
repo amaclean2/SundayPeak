@@ -4,9 +4,9 @@ import { Popup } from 'react-map-gl';
 import {
 	useCardStateContext,
 	CARD_STATES,
-	useGetAdventure
+	useGetAdventure,
+	useSaveTick
 } from '../../../Providers';
-import { useSaveTick } from '../../../Providers/hooks/GQLCalls/ticks';
 import { Button, FormField } from '../../Reusable';
 
 import './styles.css';
@@ -17,8 +17,7 @@ const MapPopup = ({ popupInfo, setPopupInfo }) => {
 	const { saveTick } = useSaveTick();
 
 	const viewMore = () => {
-		console.log("ID", popupInfo.id);
-		return getAdventure(popupInfo.id).then(() => {
+		return getAdventure({ id: popupInfo.id }).then(() => {
 			setPopupInfo(null);
 			openCard(CARD_STATES.adventures);
 		});

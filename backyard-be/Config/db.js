@@ -1,14 +1,12 @@
-import mysql from 'mysql2';
-import { getDBConnectionObject } from './connections.js';
-
-// module.exports = mysql.createConnection({
-//     host: 'backyard-stage-db-do-user-6012695-0.b.db.ondigitalocean.com',
-//     port: '25060',
-//     user: 'byf',
-//     password: 'AVNS_lM25mnEfowo3P0b7CEb',
-//     database: 'friends'
-// });
+const mysql = require('mysql2/promise');
+const { getDBConnectionObject } = require('./connections.js');
 
 const dbConnectionObject = getDBConnectionObject();
+const pool = mysql.createPool({
+    ...dbConnectionObject,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
-export default mysql.createConnection(dbConnectionObject);
+module.exports = pool;

@@ -1,10 +1,11 @@
-import { config } from 'dotenv';
+const { config } = require('dotenv');
+const logger = require('./logger');
 
 config();
 
-export const getDBConnectionObject = () => {
+const getDBConnectionObject = () => {
 
-    console.log("NODE_ENV", process.env.NODE_ENV);
+    logger.info(`NODE_ENV, ${process.env.NODE_ENV}`);
 
     switch (process.env.NODE_ENV) {
         case 'stage':
@@ -16,17 +17,26 @@ export const getDBConnectionObject = () => {
                 database: process.env.DB_NAME,
                 port: process.env.DB_PORT
             };
+        case 'test':
+            return {
+                host: 'localhost',
+                user: 'byf',
+                password: 'backyard',
+                database: 'test_friends',
+                port: 3306
+            }
         default:
             return {
                 host: 'localhost',
                 user: 'root',
                 password: 'backyard',
                 database: 'friends',
+                port: 3306
             };
     }
 };
 
-export const getJWTSecret = () => {
+const getJWTSecret = () => {
     switch (process.env.NODE_ENV) {
         case 'stage':
             return process.env.JWT_SECRET;
@@ -35,4 +45,10 @@ export const getJWTSecret = () => {
     }
 };
 
-export const getMapboxAccessToken = () => 'pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg';
+const getMapboxAccessToken = () => 'pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg';
+
+module.exports = {
+    getDBConnectionObject,
+    getJWTSecret,
+    getMapboxAccessToken
+};

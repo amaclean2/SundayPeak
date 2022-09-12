@@ -1,5 +1,6 @@
-import db from '../Config/db.js';
-import {
+const db = require('../Config/db.js');
+const logger = require('../Config/logger.js');
+const {
     createUserStatement,
     selectUserIdStatement,
     getUserByIdStatement,
@@ -9,65 +10,55 @@ import {
     getFollowersCountStatement,
     followUserStatement,
     getFollowersStatement,
-    getFollowingCountStatement
-} from './Statements.js';
+    getFollowingCountStatement,
+    deleteUserStatement,
+    deleteTickByUserStatement,
+    deleteActivityByUserStatement,
+    updateUsersStatement,
+    getIsFollowedStatement
+} = require('./Statements.js');
 
-export const addUser = async ({ email, password, first_name, last_name }) => {
-    return db.promise().execute(createUserStatement, [email, password, first_name, last_name])
-        .then((result) => db.promise().execute(getUserByIdStatement, [result[0].insertId]))
-        .then(([results, ...extras]) => results[0])
-        .catch((error) => {
-            throw {
-                message: 'Database insertion failed',
-                error
-            };
-        });
+const addUser = async ({ email, password, first_name, last_name }) => {
+    try {
+        const [result] = await db.execute(createUserStatement, [email, password, first_name, last_name]);
+        return result.insertId;
+    } catch (error) {
+        logger.error('DATABASE_INSERTION_FAILED', error)
+        throw error;
+    };
 };
 
-export const checkForUser = async (email) => {
-    return db.promise().execute(selectUserIdStatement, [email])
-        .then(([results, ...extras]) => !!results.length)
-        .catch((error) => {
-            throw {
-                message: 'Database query failed',
-                error
-            };
-        });
+const checkForUser = async (email) => {
+    try {
+        const [results] = await db.execute(selectUserIdStatement, [email]);
+        return !!results.length;
+    } catch (error) {
+        logger.error('DATABASE_QUERY_FAILED', error)
+        throw error;
+    };
+}
+
+const getUser = async (email) => {
+    try {
+        const [results, ...extras] = await db.execute(getUserWithEmailStatement, [email]);
+        return (!results.length) ? null : results[0];
+    } catch (error) {
+        logger.error('DATABASE_QUERY_FAILED', error)
+        throw error;
+    }
 };
 
-export const getUser = async (email) => {
-    return db.promise().execute(getUserWithEmailStatement, [email])
-        .then(([results, ...extras]) => {
-            if (!results.length) {
-                return null;
-            }
-
-            return results[0];
-        }).catch((error) => {
-            throw {
-                message: 'Database query failed',
-                error
-            };
-        });
+const getUserById = async (id) => {
+    try {
+        const [results, ...extras] = await db.execute(getUserByIdStatement, [id]);
+        return (!results.length) ? null : results[0];
+    } catch (error) {
+        logger.error('DATABASE_QUERY_FAILED', error)
+        throw error;
+    };
 };
 
-export const getUserById = async (id) => {
-    return db.promise().execute(getUserByIdStatement, [id])
-        .then(([results, ...extras]) => {
-            if (!results.length) {
-                return null;
-            }
-
-            return results[0];
-        }).catch((error) => {
-            throw {
-                message: 'Database query failed',
-                error
-            };
-        });
-};
-
-export const savePasswordResetToken = async ({ email, token }) => {
+const savePasswordResetToken = async ({ email, token }) => {
     return db.promise().execute(savePasswordResetTokenStatement, [email, token])
         .then((result) => result[0].insertId)
         .catch((error) => {
@@ -78,7 +69,7 @@ export const savePasswordResetToken = async ({ email, token }) => {
         });
 };
 
-export const getPasswordResetEmail = async ({ token }) => {
+const getPasswordResetEmail = async ({ token }) => {
     return db.promise().execute(getPasswordResetEmailStatement, [token])
         .then(([results, ...extras]) => {
             if (!results.length) {
@@ -94,40 +85,100 @@ export const getPasswordResetEmail = async ({ token }) => {
         })
 };
 
-export const followUser = async ({ follower_id, leader_id }) => {
-    return db.promise().execute(followUserStatement, [follower_id, leader_id, false])
-        .then(([results, ...extras]) => {
-            const { insertId } = results;
-            return insertId;
-        }).catch((error) => {
-            console.log("DATABASE_INSERTION_FAILED", error);
-            throw error;
-        });
+const followUser = async ({ follower_id, leader_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(followUserStatement, [follower_id, leader_id, false]);
+        return results.insertId;
+    } catch (error) {
+        logger.error("DATABASE_INSERTION_FAILED", error);
+        throw error;
+    }
 };
 
-export const getFollowerCountLookup = async ({ user_id }) => {
-    return db.promise().execute(getFollowersCountStatement, [user_id])
-        .then(([results, ...extras]) => results[0]['COUNT(id)'])
-        .catch((error) => {
-            console.log("DATABASE_RETRIEVAL_FAILED", error);
-            throw error;
-        });
+const getFollowedRelationship = async ({ follower_id, leader_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(getIsFollowedStatement, [follower_id, leader_id]);
+        return results;
+    } catch (error) {
+        logger.error("DATABASE_QUERY_FAILED", error);
+        throw error;
+    }
+}
+
+const getFollowerCount = async ({ user_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(getFollowersCountStatement, [user_id]);
+        return results[0]['COUNT(follower_id)'];
+    } catch (error) {
+        logger.error('DATABASE_QUERY_FAILED', error)
+        throw error;
+    };
 };
 
-export const getFollowingCountLookup = async ({ user_id }) => {
-    return db.promise().execute(getFollowingCountStatement, [user_id])
-        .then(([results, ...extras]) => results[0]['COUNT(id)'])
-        .catch((error) => {
-            console.log("DATABASE_RETRIEVAL_FAILED", error);
-            throw error;
-        });
+const getFollowingCount = async ({ user_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(getFollowingCountStatement, [user_id]);
+        return results[0]['COUNT(leader_id)'];
+    } catch (error) {
+        logger.error('DATABASE_QUERY_FAILED', error)
+        throw error;
+    };
 };
 
-export const getFollowersLookup = async ({ user_id }) => {
-    return db.promise().execute(getFollowersStatement, [user_id])
+const getFollowersLookup = async ({ user_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(getFollowersStatement, [user_id]);
+        return results;
+    } catch (error) {
+        logger.error('DATABASE_QUERY_FAILED', error)
+        throw error;
+    };
+};
+
+const updateUser = async ({ fields }) => {
+
+    const promiseList = fields.map(async (field) => {
+        return new Promise((res, rej) => {
+            db.execute(updateUsersStatement, [field.field_name, field.field_value, field.id])
+                .then(([result, ...extras]) => res(result))
+                .catch((error) => {
+                    logger.error("DATABASE_UPDATE_FAILED", error);
+                    rej(error);
+                });
+        });
+    });
+
+    return Promise.all(promiseList)
         .then(([results, ...extras]) => results)
         .catch((error) => {
-            console.log("DATABASE_RETRIEVAL_FAILED", error);
+            logger.error("DATABASE_UPDATE_FAILED", error);
+            throw error;
+        })
+};
+
+const deleteUser = async (userId) => {
+    return db.execute(deleteTickByUserStatement, [userId])
+        .then(() => db.execute(deleteActivityByUserStatement, [userId]))
+        .then(() => db.execute(deleteUserStatement, [userId]))
+        .then(([result, ...extras]) => result)
+        .catch((error) => {
+            logger.error("DATABASE_DELETION_FAILED", error);
             throw error;
         });
+};
+
+module.exports = {
+    addUser,
+    checkForUser,
+    getUser,
+    getUserById,
+    savePasswordResetToken,
+    getPasswordResetEmail,
+    followUser,
+    getFollowedRelationship,
+    getFollowerCount,
+    getFollowingCount,
+    getFollowersLookup,
+    updateUser,
+    deleteUser
 };

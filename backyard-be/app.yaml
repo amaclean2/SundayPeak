@@ -10,4 +10,8 @@ env_variables:
   DB_NAME: friends
   DB_PORT: 25060
   JWT_SECRET: secret
+  S3_ENDPOINT: sfo3.digitaloceanspaces.com
+  DO_BUCKET: byf-images
+  DO_ACCESS_KEY_ID: DO00NDV9Z7BP6DURA2FF
+  DO_SECRET_ACCESS_KEY: 9FN+PGiWP53/9dYgi3L/Qxr26ahcjQhX2c4x5lWQi7s
 # [END app_yaml]

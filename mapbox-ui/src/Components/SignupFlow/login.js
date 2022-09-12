@@ -13,7 +13,7 @@ export const LoginFlow = () => {
 		setLoginError
 	} = useUserStateContext();
 
-	const { attemptLogin } = useLoginUser();
+	const { loginUser } = useLoginUser();
 	const { switchCard } = useCardStateContext();
 
 	const onChange = (e) => {
@@ -63,7 +63,7 @@ export const LoginFlow = () => {
 					<Button secondaryButton className='forgot-button secondary-button' id='forgot-password-button'>
 						Forgot my password?
 					</Button>
-					<Button onClick={attemptLogin} className="button adventure-edit-button login-cta">
+					<Button onClick={loginUser} className="button adventure-edit-button login-cta">
 						Log In
 					</Button>
 					<div className='create-account-cta'>

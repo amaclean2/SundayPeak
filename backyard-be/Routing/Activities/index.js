@@ -1,21 +1,24 @@
-import { Router } from 'express';
-import { createActivity, getActivitiesByAdventure, getActivitiesByUser } from '../../DB';
-import { returnError } from '../../ErrorHandling';
-import { CREATED, SUCCESS } from '../../ErrorHandling/statuses';
+const { Router } = require('express');
+const { validationResult } = require('express-validator');
+const queries = require('../../DB');
+const { returnError } = require('../../ResponseHandling');
+const { CREATED, NOT_FOUND, SUCCESS } = require('../../ResponseHandling/statuses');
+const { buildUserObject } = require('../../Services/user.service');
+const { activityCreateValidator, activityGetValidatorByAdventure } = require('../../Validators/ActivityValidators');
 
 const router = Router();
 
-router.get('/getActivitiesByUser', async (req, res) => {
+router.get('/byUser', async (req, res) => {
     try {
-        const { id_from_token } = req.body;
-        const activities = await getActivitiesByUser({ user_id: id_from_token });
-
-        console.log("ACTIVITIES", activities);
+        const { user_id } = req.body;
+        const activities = await queries.getActivitiesByUser({ user_id });
 
         res.status(SUCCESS).json({
             activities: activities.map((activity) => ({
-                ...activity,
-                user_id: activity.creator_id
+                data: {
+                    ...activity,
+                    user_id: activity.creator_id
+                }
             }))
         });
     } catch (error) {
@@ -23,16 +26,22 @@ router.get('/getActivitiesByUser', async (req, res) => {
     }
 });
 
-router.get('/getActivitiesByAdventure', async (req, res) => {
+router.get('/byAdventure', activityGetValidatorByAdventure(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return returnError({ req, res, error: errors.array()[0] });
+    }
+
     try {
         const { adventure_id } = req.body;
-        const activities = await getActivitiesByAdventure({ adventure_id });
+        const activities = await queries.getActivitiesByAdventure({ adventure_id });
 
-        console.log("ACTIVITIES", activities);
         res.status(SUCCESS).json({
             activities: activities.map((activity) => ({
-                ...activity,
-                user_id: activity.creator_id
+                data: {
+                    ...activity,
+                    user_id: activity.creator_id
+                }
             }))
         });
     } catch (error) {
@@ -40,35 +49,31 @@ router.get('/getActivitiesByAdventure', async (req, res) => {
     }
 });
 
-router.post('/createActivity', async (req, res) => {
+router.post('/create', activityCreateValidator, async (req, res) => {
     try {
-        const { id_from_token, adventure_id, public: publicField } = req.body;
+        const { user_id, adventure_id, public: publicField } = req.body;
 
-        if (publicField === true) {
-            publicField = 1;
-        } else if (publicField === false) {
-            publicField = 0;
-        }
+        await queries.createActivity({ user_id, adventure_id, public: publicField });
 
-        if (user_id) {
-            await createActivity({ user_id: id_from_token, adventure_id, public: publicField });
+        const newUserObj = await buildUserObject({ req, res, initiation: { id: user_id } });
+        delete newUserObj.password;
 
-            const activityResponse = {
-                user_id: id_from_token,
-                adventure_id,
-                public: publicField
-            };
-
-            console.log("ACTIVITY_ADDED", activityResponse);
-            res.status(CREATED).json(activityResponse);
-
-        } else {
-            throw returnError({ req, res, message: 'notLoggedIn' });
-        }
+        res.status(CREATED).json({
+            data: { user: newUserObj }
+        });
 
     } catch (error) {
         throw returnError({ req, res, message: 'serverCreateActivity', error });
     }
 });
 
-export default router;
+router.use('/', (req, res) => {
+    res.status(NOT_FOUND).json({
+        data: {
+            messasge: 'Please select a method on /activities',
+            status: NOT_FOUND
+        }
+    });
+});
+
+module.exports = router;

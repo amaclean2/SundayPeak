@@ -32,7 +32,7 @@ CREATE TABLE adventures(
     approach_time VARCHAR(50),
     exposure VARCHAR(50),
     approach_distance VARCHAR(50),
-    season VARCHAR(50),
+    season VARCHAR(100),
     avg_angle VARCHAR(50),
     max_angle VARCHAR(50),
     difficulty VARCHAR(50),
@@ -87,10 +87,20 @@ CREATE TABLE password_reset_tokens(
     PRIMARY KEY(reset_token)
 );
 
--- DROP TABLE activities;
--- DROP TABLE ticks;
--- DROP TABLE followers;
--- DROP TABLE adventure_editors;
--- DROP TABLE adventures;
--- DROP TABLE users;
--- DROP TABLE password_reset_tokens;
+CREATE TABLE user_images(
+    file_name VARCHAR(150),
+    creator_id INT,
+    adventure_id INT,
+    date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    public TINYINT,
+    PRIMARY KEY(file_name)
+);
+
+DROP TABLE user_images;
+DROP TABLE password_reset_tokens;
+DROP TABLE activities;
+DROP TABLE ticks;
+DROP TABLE adventure_editors;
+DROP TABLE adventures;
+DROP TABLE followers;
+DROP TABLE users;

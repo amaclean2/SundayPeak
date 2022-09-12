@@ -1,35 +1,46 @@
-import { returnError } from '../ErrorHandling';
+const { body } = require('express-validator');
 
-export const validateCreateAdventure = async (req, res, next) => {
+const adventureCreateValidator = () => {
+    return [
+        body('adventure_type')
+            .not().isEmpty()
+            .withMessage('adventureType'),
+        body('adventure_name')
+            .not().isEmpty()
+            .withMessage('adventureName'),
+        body('coordinates')
+            .not().isEmpty()
+            .withMessage('coordinates')
+            .customSanitizer((value, { req }) => {
+                const parsedCoordinates = JSON.parse(value);
 
-    const adventure = req.body;
+                req.body.coordinates_lat = parsedCoordinates.lat;
+                req.body.coordinates_lng = parsedCoordinates.lng;
+                delete req.body.coordinates;
+            }),
+        body('id_from_token')
+            .not().isEmpty()
+            .withMessage('creatorId')
+            .customSanitizer((value, { req }) => {
+                req.body.creator_id = value;
+                delete req.body.id_from_token;
+            })
+    ];
+};
 
-    const {
-        adventure_type,
-        adventure_name,
-        id_from_token,
-        coordinates,
-    } = adventure;
+const adventuresGetValidator = () => {
+    return [
+        body('bounding_box')
+            .custom(value => typeof value === 'object')
+            .withMessage('boundingBoxType')
+            .custom(value => 'NE' in value)
+            .withMessage('boundingBox')
+            .custom(value => 'SW' in value)
+            .withMessage('boundingBox')
+    ]
+};
 
-    const parsedCoordinates = JSON.parse(coordinates);
-
-    if (!adventure_type) {
-        throw returnError({ req, res, message: 'adventureType' });
-    } else if (!id_from_token) {
-        throw returnError({ req, res, message: 'creatorId' });
-    } else if (!parsedCoordinates?.lat || !parsedCoordinates?.lng) {
-        throw returnError({ req, res, message: 'coordinates' });
-    } else if (!adventure_name) {
-        throw returnError({ req, res, message: 'adventureName' });
-    } else {
-        adventure.creator_id = adventure.id_from_token;
-        delete adventure.id_from_token;
-
-        adventure.coordinates_lat = parsedCoordinates.lat;
-        adventure.coordinates_lng = parsedCoordinates.lng;
-        delete adventure.coordinates;
-
-        req.body = adventure;
-        return next();
-    }
+module.exports = {
+    adventureCreateValidator,
+    adventuresGetValidator
 };

@@ -3,7 +3,6 @@ import { useEffect, useRef } from 'react';
 import {
 	useAdventureEditContext
 } from '../../Providers';
-import { useGetAdventureTicks } from '../../Providers/hooks/GQLCalls/ticks';
 import { DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable';
 import AdventureEditorButtons from './Buttons';
 import AdventureEditorForm from './Form';
@@ -20,7 +19,6 @@ const AdventureEditor = () => {
 		setIsEditable,
 		adventureError
 	} = useAdventureEditContext();
-	const { getAdventureTicks } = useGetAdventureTicks();
 
 	const menuRef = useRef();
 
@@ -44,10 +42,6 @@ const AdventureEditor = () => {
 	useEffect(() => {
 		menuRef.current.scrollTop = 0
 	}, [adventureError]);
-
-	useEffect(() => {
-		if (currentAdventure) getAdventureTicks({ adventureId: currentAdventure.id });
-	}, []);
 
 	const buildProfileHeader = () => {
 		if (currentAdventure) {

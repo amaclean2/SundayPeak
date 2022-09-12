@@ -3,24 +3,11 @@ import React from 'react';
 import { useCardStateContext, useUserStateContext } from '../../Providers';
 import { Button, DisplayCard, FormField, FooterButtons } from '../Reusable';
 import UserProfileButtons from './Buttons';
+import UserProfileGallery from './Gallery';
+import UserTickPanel from './TickPanel';
 import Stats from './Stats';
 
 import './styles.css';
-import UserTickPanel from './TickPanel';
-
-const GalleryPlaceholder = ({ width }) => (
-	<div className="gallery-placeholder" style={{ width }} />
-);
-
-const GalleryScroller = () => {
-	return (
-		<div className="scroller-container">
-			<GalleryPlaceholder width={120} />
-			<GalleryPlaceholder width={200} />
-			<GalleryPlaceholder width={250} />
-		</div>
-	)
-};
 
 const UserProfile = () => {
 	const { workingUser } = useUserStateContext();
@@ -37,7 +24,7 @@ const UserProfile = () => {
 			</div>
 			<div className="profile-content">
 				<div className="gallery-box">
-					<GalleryScroller />
+					<UserProfileGallery />
 				</div>
 				<Stats />
 				<UserTickPanel />

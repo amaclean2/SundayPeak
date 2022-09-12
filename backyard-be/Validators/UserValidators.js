@@ -1,45 +1,91 @@
-import { checkForUser } from '../DB';
-import { returnError, catchBlock } from '../ErrorHandling';
+const { body } = require('express-validator');
 
-export const validateCreateUser = async (req, res, next) => {
-	const { email, password, password2 } = req.body;
+const queries = require('../DB');
 
-	try {
-		if (!email || !password || !password2) {
-			throw returnError({ gql: false, req, res, message: 'missingFieldsCreateUser' });
-		} else if (!email.includes('@')) {
-			throw returnError({ gql: false, req, res, message: 'invalidEmail' });
-		} else {
-			const emailSuffix = email.split('@')[1];
-
-			if (!emailSuffix.includes('.')) {
-				throw returnError({ gql: false, req, res, message: 'invalidEmail' });
-			} else {
-				const idExists = await checkForUser(email);
-				if (idExists) {
-					throw returnError({ gql: false, req, res, message: 'preexistingUser' });
-				} else if (password.length < 5) {
-					throw returnError({ gql: false, req, res, message: 'tooShortPassword' });
-				} else if (password.length > 30) {
-					throw returnError({ gql: false, req, res, message: 'tooLongPassword' });
-				} else if (password !== password2) {
-					throw returnError({ gql: false, req, res, message: 'nonMatchingPasswords' });
-				} else {
-					next();
-				}
-			}
-		}
-	} catch (error) {
-		throw catchBlock({ gql: false, req, res, message: 'serverValidateUser', error });
-	}
+const userLoginValidator = () => {
+	return [
+		body('email')
+			.not().isEmpty()
+			.withMessage('missingFieldsLogin')
+			.isEmail()
+			.withMessage('invalidField'),
+		body('password')
+			.not().isEmpty()
+			.withMessage('missingFieldsLogin')
+	];
 };
 
-export const validateLoginUser = async (req, res, next) => {
-	const { email, password } = req?.body?.variables;
+const userCreateValidator = () => {
+	return [
+		body('email')
+			.custom((value) => {
+				if (!value) throw 'missingFieldsCreateUser';
+				return true;
+			}).bail()
+			.custom(async (value) => {
+				const idExists = await queries.checkForUser(value);
 
-	if (!email || !password) {
-		throw returnError({ gql: false, req, res, message: 'missingFieldsLogin' });
-	} else {
-		next();
-	}
+				if (idExists) throw 'preexistingUser';
+				return true;
+			}).bail()
+			.isEmail().bail()
+			.withMessage('invalidField'),
+		body('password')
+			.not().isEmpty().bail()
+			.withMessage('missingFieldsCreateUser')
+			.isLength({ min: 5, max: 30 }).bail()
+			.withMessage('passwordOutOfRange'),
+		body('password_2')
+			.not().isEmpty().bail()
+			.withMessage('missingFieldsCreateUser')
+			.custom((value, { req }) => {
+				if (value !== req.body.password) throw 'nonMatchingPasswords';
+
+				return true;
+			}).bail(),
+		body('first_name')
+			.optional()
+			.isAlpha().bail()
+			.withMessage('flNameAlpha')
+			.not().isEmpty().bail()
+			.trim(),
+		body('last_name')
+			.optional()
+			.isAlpha().bail()
+			.withMessage('flNameAlpha')
+			.not().isEmpty().bail()
+			.trim().bail(),
+		body('legal')
+			.custom((value) => {
+				if (!value) throw 'missingLegal';
+
+				return true;
+			}).bail()
+			.isBoolean().bail()
+			.withMessage('legalBool')
+	];
+};
+
+const userFollowValidator = () => {
+	return [
+		body('leader_id')
+			.not().isEmpty().bail()
+			.withMessage('leaderRequired')
+			.custom(async (value, { req }) => {
+				const alreadyFollowed = await queries.getFollowedRelationship({
+					leader_id: value,
+					follower_id: req.body.id_from_token
+				});
+
+				if (alreadyFollowed.length) throw 'alreadyFollowed'
+
+				return true;
+			})
+	]
+}
+
+module.exports = {
+	userLoginValidator,
+	userCreateValidator,
+	userFollowValidator
 };

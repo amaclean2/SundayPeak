@@ -1,3 +1,5 @@
+import { getBackendUri } from "../Constants";
+
 export const validateAdventure = (currentAdventure, setAdventureError) => {
 
     const coordinates = JSON.stringify(currentAdventure.coordinates);
@@ -89,3 +91,31 @@ export const validateAdventure = (currentAdventure, setAdventureError) => {
 export const validateUser = (newUser, setUserError) => {
 
 };
+
+export const fetcher = (url, options) => {
+    const uri = getBackendUri();
+    const token = localStorage.getItem('token');
+
+    const optionsBody = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            ...options?.headers
+        },
+        ...options
+    };
+
+    if (token) {
+        optionsBody.headers.authorization = `Bearer ${token}`;
+    }
+
+    if (options?.body) {
+        const stringifiedBody = JSON.stringify(options.body);
+        optionsBody.body = stringifiedBody;
+    }
+
+    console.log('FETCHING', url);
+    return fetch(`${uri}${url}`, optionsBody)
+    .then(resp => resp.json())
+    .then(data => data);
+}

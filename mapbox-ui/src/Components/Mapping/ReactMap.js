@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { throttle } from 'throttle-debounce';
 import Map, { Layer, Marker, NavigationControl, Source } from 'react-map-gl';
 
 import { SkierIcon } from '../../Images';
@@ -28,14 +29,17 @@ const ReactMap = () => {
 		allAdventures,
 		setAllAdventures,
 		setIsEditable,
-		mapboxToken
+		mapboxToken,
+		startPosition
 	} = useAdventureEditContext();
-	const { defaultStartPosition } = useGetAdventures();
+	const { refetchAdventures } = useGetAdventures();
+
+	console.log("SP", startPosition)
 
 	const initialViewState = {
-		longitude: defaultStartPosition.lng,
-		latitude: defaultStartPosition.lat,
-		zoom: defaultStartPosition.zoom
+		longitude: startPosition.lng,
+		latitude: startPosition.lat,
+		zoom: startPosition.zoom
 	};
 
 	const onDblClick = (e) => {
@@ -62,6 +66,10 @@ const ReactMap = () => {
 		openCard(CARD_STATES.adventures);
 		setIsEditable(true);
 		setAdventureAddState(false);
+	};
+
+	const onMove = (e) => {
+		refetchAdventures({ lat: e.viewState.latitude, lng: e.viewState.longitude, zoom: e.viewState.zoom });
 	};
 
 	const viewMore = () => {
@@ -103,6 +111,7 @@ const ReactMap = () => {
 		initialViewState={initialViewState}
 		maxPitch={85}
 		onDblClick={onDblClick}
+		onMove={onMove}
 		terrain={{ source: 'mapbox-dem', exaggeration: 1 }}
 	>
 		<NavigationControl showCompass />

@@ -8,18 +8,15 @@ import { AdventureEditProvider } from './Providers/adventureEditProvider';
 import { UserStateProvider } from './Providers/userStateProvider';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { GQLProvider } from './Providers/gqlProvider';
 
 const ProvidersWrapper = () => {
   return (
     <CardStateProvider>
-      <GQLProvider>
         <UserStateProvider>
           <AdventureEditProvider>
             <App />
           </AdventureEditProvider>
         </UserStateProvider>
-      </GQLProvider>
     </CardStateProvider>
   );
 };

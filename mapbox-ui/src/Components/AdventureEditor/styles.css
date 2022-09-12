@@ -8,7 +8,7 @@
 .main-adventure-content.flex-box {
     align-items: flex-start;
     flex-direction: column;
-    min-width: 700px;
+    width: 700px;
 }
 
 .adventure-tick-panel.flex-box {

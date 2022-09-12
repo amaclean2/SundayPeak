@@ -1,57 +1,45 @@
-import { Router } from 'express';
-import { getTicksByAdventure } from '../../DB';
-import { returnError } from '../../ErrorHandling';
-import { CREATED } from '../../ErrorHandling/statuses';
+const { Router } = require('express');
+const { validationResult } = require('express-validator');
+const queries = require('../../DB');
+const { returnError } = require('../../ResponseHandling');
+const { CREATED, NOT_FOUND } = require('../../ResponseHandling/statuses');
+const { buildUserObject } = require('../../Services/user.service');
+const { tickCreateValidator } = require('../../Validators/TickValidators');
 
 const router = Router();
 
-router.get('/getTicksByAdventure', async (req, res) => {
-    try {
-        const { adventure_id, id_from_token } = req.body;
-        const ticks = await getTicksByAdventure({ adventure_id });
-
-        console.log("TICKS", ticks);
-        return ticks.filter((tick) => {
-            return tick.creator_id !== id_from_token;
-        }).map((tick) => ({
-            ...tick,
-            user_id: tick.creator_id
-        }));
-
-    } catch (error) {
-        throw returnError({ req, res, message: 'serverGetTicksAdventure', error });
+router.post('/create', tickCreateValidator(), async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return returnError({ req, res, error: errors.array()[0] });
     }
-});
 
-router.post('/createTick', async (req, res) => {
     try {
-        const { id_from_token, adventure_id, public: publicField } = req_body;
+        const { user_id, adventure_id, public: publicField } = req.body;
 
-        if (publicField === true) {
-            publicField = 1;
-        } else if (publicField === false) {
-            publicField = 0;
-        }
+        await queries.createTick({ user_id, adventure_id, public: publicField });
 
-        if (user_id) {
-            await createTick({ user_id: id_from_token, adventure_id, public: publicField });
+        const newUserObj = await buildUserObject({ req, res, initiation: { id: user_id } });
+        delete newUserObj.password;
 
-            const tickResponse = {
-                user_id: id_from_token,
-                adventure_id,
-                public: publicField
+        res.status(CREATED).json({
+            data: {
+                user: newUserObj
             }
-
-            console.log("TICK_ADDED", tickResponse);
-
-            res.status(CREATED).json(tickResponse);
-        } else {
-            throw returnError({ req, res, message: 'notLoggedIn' });
-        }
+        });
 
     } catch (error) {
         throw returnError({ req, res, message: 'serverCreateTick', error });
     }
 });
 
-export default router;
+router.use('/', (req, res) => {
+    res.status(NOT_FOUND).json({
+        data: {
+            messasge: 'Please select a method on /ticks',
+            status: NOT_FOUND
+        }
+    });
+});
+
+module.exports = router;

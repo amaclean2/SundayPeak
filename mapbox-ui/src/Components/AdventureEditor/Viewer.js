@@ -12,7 +12,7 @@ const AdventureViewer = () => {
             ? JSON.parse(currentAdventure.gear)
             : currentAdventure.gear;
 
-        return gearList.map((item, key) => (
+        return gearList?.map((item, key) => (
             <span key={`option_${key}`}>{gearOptions.find(({ value }) => value.toString() === item).name}</span>
         ));
     };

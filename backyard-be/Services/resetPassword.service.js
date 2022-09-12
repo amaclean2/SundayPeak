@@ -1,13 +1,15 @@
-import { transporter } from '../Config/mailer.js';
-import { generatePasswordResetToken, validatePasswordResetToken } from '../Crypto';
-import { getUser, savePasswordResetToken, getPasswordResetEmail } from '../DB';
+const logger = require('../Config/logger.js');
+const { transporter } = require('../Config/mailer.js');
+const queries = require('../DB');
+const cryptoHandlers = require('../Crypto');
 
 const createPasswordResetTemplate = (options) => `
 <h1>Here's the link to reset your email</h1>
 ${options.token}
 `;
 
-export const sendEmail = async (email) => {
+const sendEmail = async (email) => {
+    const { savePasswordResetToken } = queries;
 
     const user = await getUser(email);
 
@@ -15,7 +17,7 @@ export const sendEmail = async (email) => {
         throw returnError({ message: 'noAccountExists' });
     }
 
-    const token = await generatePasswordResetToken({ email });
+    const token = await cryptoHandlers.generatePasswordResetToken({ email });
 
     const mailOptions = {
         from: 'andrew.n.maclean@gamil.com',
@@ -25,18 +27,18 @@ export const sendEmail = async (email) => {
     };
 
     return new Promise((res, rej) => {
-        console.log("MAIL_SENDING", mailOptions);
+        logger.debug('MAIL_SENDING', mailOptions);
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.error('ERROR_WITH_EMAIL_CLIENT', error);
+                logger.error('ERROR_WITH_EMAIL_CLIENT', error);
                 rej(error);
             } else {
-                console.log("INFO_FROM_MAIL_CLIENT", info);
+                logger.debug('INFO_FROM_MAIL_CLIENT', info);
                 savePasswordResetToken({ email, token }).then((resp) => {
-                    console.log("RESET_TOKEN_SAVED", resp);
+                    logger.debug('RESET_TOKEN_SAVED', resp);
                     res({ info, resp });
                 }).catch((error) => {
-                    console.error('ERROR_SAVING_RESET_TOKEN', error);
+                    logger.error('ERROR_SAVING_RESET_TOKEN', error);
                     rej(error);
                 });
             }
@@ -44,11 +46,17 @@ export const sendEmail = async (email) => {
     });
 };
 
-export const validateSignatureAndSave = async ({ signature, new_password }) => {
+const validateSignatureAndSave = async ({ signature, new_password }) => {
+    const { getPasswordResetEmail } = queries;
+
     const { email } = await getPasswordResetEmail({ token: signature });
 
     const verified = await validatePasswordResetToken({ signature, email });
 
-    console.log("VERIFIED", verified);
     return email;
+};
+
+module.exports = {
+    sendEmail,
+    validateSignatureAndSave
 };
