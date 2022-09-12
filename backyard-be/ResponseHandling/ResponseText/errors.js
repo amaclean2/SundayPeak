@@ -1,4 +1,4 @@
-import { NOT_ACCEPTABLE, SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, FORBIDDEN } from '../statuses.js';
+const { NOT_ACCEPTABLE, SERVER_ERROR, UNAUTHORIZED, NOT_FOUND, FORBIDDEN } = require('../statuses.js');
 
 const errorTexts = {
     // token errors
@@ -13,7 +13,7 @@ const errorTexts = {
 
     // cors error
     corsError: {
-        messageText: (vars = {}) => `The CORS policy for this API does not allow access from ${vars.origin}`,
+        messageText: (vars = {}) => `The CORS policy for this API does not allow access = require(${vars.origin}`,
         status: FORBIDDEN
     },
 
@@ -71,12 +71,20 @@ const errorTexts = {
         status: SERVER_ERROR
     },
     noAccountExists: {
-        messageText: 'This email cannot be found. Please try again.',
+        messageText: 'This account cannot be found. Please try again.',
         status: NOT_FOUND
     },
     notLoggedIn: {
         messageText: 'User is not logged in',
         status: UNAUTHORIZED
+    },
+    idQueryRequired: {
+        messageText: 'The id query parameter is required to select a user',
+        status: NOT_ACCEPTABLE
+    },
+    JsonWebTokenError: {
+        messageText: 'The authorization token you gave was not supported',
+        status: NOT_ACCEPTABLE
     },
 
     // adventure errors
@@ -164,4 +172,4 @@ const errorTexts = {
     }
 };
 
-export default errorTexts;
+module.exports = errorTexts;

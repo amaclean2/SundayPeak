@@ -1,6 +1,6 @@
-import { body } from "express-validator";
+const { body } = require("express-validator");
 
-export const activityCreateValidator = () => {
+const activityCreateValidator = () => {
     return [
         body('id_from_token')
             .not().isEmpty()
@@ -18,14 +18,14 @@ export const activityCreateValidator = () => {
     ];
 };
 
-export const activityGetValidatorByAdventure = () => {
+const activityGetValidatorByAdventure = () => {
     return [
         body('adventure_id')
             .not().isEmpty()
     ];
-}
+};
 
-export const activityGetValidatorByUser = () => {
+const activityGetValidatorByUser = () => {
     return [
         body('id_from_token')
             .not().isEmpty()
@@ -34,4 +34,10 @@ export const activityGetValidatorByUser = () => {
                 req.body.user_id = value;
             })
     ]
-}
+};
+
+module.exports = {
+    activityCreateValidator,
+    activityGetValidatorByAdventure,
+    activityGetValidatorByUser
+};

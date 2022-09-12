@@ -1,11 +1,10 @@
-import { Router } from 'express';
-
-import { NOT_FOUND } from '../../ErrorHandling/statuses';
-import {
+const { Router } = require('express');
+const { NOT_FOUND } = require('../../ResponseHandling/statuses');
+const {
     deletePictures,
     uploadAdventurePictures,
     uploadPictures
-} from '../../Handlers/Pictures';
+} = require('../../Handlers/Pictures');
 
 const router = Router();
 
@@ -22,4 +21,4 @@ router.use('/', (req, res) => {
     })
 })
 
-export default router;
+module.exports = router;

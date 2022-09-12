@@ -1,66 +1,72 @@
-import { body } from 'express-validator';
+const { body } = require('express-validator');
 
-import { checkForUser } from '../DB';
+const queries = require('../DB');
 
-export const userLoginValidator = () => {
+const userLoginValidator = () => {
 	return [
 		body('email')
 			.not().isEmpty()
 			.withMessage('missingFieldsLogin')
 			.isEmail()
-			.withMessage('invalidEmail'),
+			.withMessage('invalidField'),
 		body('password')
 			.not().isEmpty()
 			.withMessage('missingFieldsLogin')
 	];
 };
 
-export const userCreateValidator = () => {
+const userCreateValidator = () => {
 	return [
 		body('email')
-			.not().isEmpty()
-			.withMessage('missingFieldsCreateUser')
-			.isEmail()
-			.withMessage('invalidEmail')
+			.custom((value) => {
+				if (!value) throw 'missingFieldsCreateUser';
+				return true;
+			}).bail()
 			.custom(async (value) => {
-				const idExists = await checkForUser(value);
+				const idExists = await queries.checkForUser(value);
 
 				if (idExists) throw 'preexistingUser';
-
 				return true;
-			}),
+			}).bail()
+			.isEmail().bail()
+			.withMessage('invalidField'),
 		body('password')
-			.not().isEmpty()
+			.not().isEmpty().bail()
 			.withMessage('missingFieldsCreateUser')
-			.isLength({ min: 5, max: 30 })
+			.isLength({ min: 5, max: 30 }).bail()
 			.withMessage('passwordOutOfRange'),
 		body('password_2')
-			.not().isEmpty()
+			.not().isEmpty().bail()
 			.withMessage('missingFieldsCreateUser')
 			.custom((value, { req }) => {
 				if (value !== req.body.password) throw 'nonMatchingPasswords';
 
 				return true;
-			}),
+			}).bail(),
 		body('first_name')
 			.optional()
-			.isAlpha()
+			.isAlpha().bail()
 			.withMessage('flNameAlpha')
-			.not().isEmpty()
+			.not().isEmpty().bail()
 			.trim(),
 		body('last_name')
 			.optional()
-			.isAlpha()
+			.isAlpha().bail()
 			.withMessage('flNameAlpha')
-			.not().isEmpty()
-			.trim(),
+			.not().isEmpty().bail()
+			.trim().bail(),
 		body('legal')
-			.isBoolean()
-			.withMessage('legalBool')
 			.custom((value) => {
 				if (!value) throw 'missingLegal';
 
 				return true;
-			})
+			}).bail()
+			.isBoolean().bail()
+			.withMessage('legalBool')
 	];
+};
+
+module.exports = {
+	userLoginValidator,
+	userCreateValidator
 };

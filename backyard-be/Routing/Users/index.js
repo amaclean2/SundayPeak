@@ -1,7 +1,6 @@
-import { Router } from 'express';
-import { userCreateValidator, userLoginValidator } from '../../Validators/UserValidators';
-import { NOT_FOUND } from '../../ErrorHandling/statuses';
-import {
+const { userCreateValidator, userLoginValidator } = require('../../Validators/UserValidators');
+const { NOT_FOUND } = require('../../ResponseHandling/statuses');
+const {
     createUser,
     deleteUser,
     followUser,
@@ -11,13 +10,14 @@ import {
     resetPassword,
     savePasswordReset,
     refetchUser
-} from '../../Handlers/Users';
+} = require('../../Handlers/Users');
+const { Router } = require('express');
 
 const router = Router();
 
 router.get('/id', getUserById);
 router.get('/loggedIn', getLoggedInUser);
-router.get('/follow', followUser);
+router.post('/follow', followUser);
 router.get('/refetch', refetchUser);
 
 router.post('/login', userLoginValidator(), loginUser);
@@ -40,4 +40,4 @@ router.use('/', (req, res) => {
     });
 });
 
-export default router;
+module.exports = router;

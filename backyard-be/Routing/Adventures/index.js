@@ -1,7 +1,8 @@
-import { Router } from 'express';
-import { adventureCreateValidator, adventuresGetValidator } from '../../Validators/AdventureValidators';
-import { createNewAdventure, deleteAdventure, getAdventureDetails, getAllAdventures } from '../../Handlers/Adventures';
-import { NOT_FOUND } from '../../ErrorHandling/statuses';
+const { Router } = require('express');
+
+const { adventureCreateValidator, adventuresGetValidator } = require('../../Validators/AdventureValidators');
+const { createNewAdventure, deleteAdventure, getAdventureDetails, getAllAdventures } = require('../../Handlers/Adventures');
+const { NOT_FOUND } = require('../../ResponseHandling/statuses');
 
 const router = Router();
 
@@ -25,4 +26,4 @@ router.use('/', (req, res) => {
     })
 })
 
-export default router;
+module.exports = router;

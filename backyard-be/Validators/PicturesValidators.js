@@ -1,9 +1,13 @@
-import { body } from 'express-validator'
+const { body } = require('express-validator');
 
-export const picturesDeleteValidator = () => {
+const picturesDeleteValidator = () => {
     return [
         check('file_name')
             .not().isEmpty()
             .withMessage('deletePicturesError')
     ];
+};
+
+module.exports = {
+    picturesDeleteValidator
 };

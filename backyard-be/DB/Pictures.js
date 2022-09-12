@@ -1,7 +1,13 @@
-import { createAdventurePictureStatement, createUserPictureStatement, deletePictureStatement, getAdventurePicturesStatement, getUserPicturesStatement } from './Statements';
-import db from '../Config/db.js';
+const {
+    createAdventurePictureStatement,
+    createUserPictureStatement,
+    deletePictureStatement,
+    getAdventurePicturesStatement,
+    getUserPicturesStatement
+} = require('./Statements');
+const db = require('../Config/db.js');
 
-export const addUserPicture = async ({ fileName, userId }) => {
+const addUserPicture = async ({ fileName, userId }) => {
     return db.promise().execute(createUserPictureStatement, [fileName, userId])
         .then((results) => results)
         .catch((error) => {
@@ -12,7 +18,7 @@ export const addUserPicture = async ({ fileName, userId }) => {
         });
 };
 
-export const addAdventurePicture = async ({ fileName, userId, adventureId }) => {
+const addAdventurePicture = async ({ fileName, userId, adventureId }) => {
     return db.promise().execute(createAdventurePictureStatement, [fileName, userId, adventureId])
         .then((results) => results)
         .catch((error) => {
@@ -23,18 +29,19 @@ export const addAdventurePicture = async ({ fileName, userId, adventureId }) => 
         });
 };
 
-export const getUserPictures = async ({ user_id }) => {
-    return db.promise().execute(getUserPicturesStatement, [user_id])
-        .then(([results, ...extras]) => results.map(({ file_name }) => file_name))
-        .catch((error) => {
-            throw {
-                message: 'Database retrieval failed',
-                error
-            };
-        });
+const getUserPictures = async ({ user_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(getUserPicturesStatement, [user_id]);
+        return results.map(({ file_name }) => file_name);
+    } catch (error) {
+        throw {
+            message: 'Database retrieval failed',
+            error
+        };
+    };
 };
 
-export const getAdventurePictures = async ({ adventure_id }) => {
+const getAdventurePictures = async ({ adventure_id }) => {
     return db.promise().execute(getAdventurePicturesStatement, [adventure_id])
         .then(([results, ...extras]) => results.map(({ file_name }) => file_name))
         .catch((error) => {
@@ -45,7 +52,7 @@ export const getAdventurePictures = async ({ adventure_id }) => {
         });
 }
 
-export const deleteUserPictures = async ({ file_name }) => {
+const deleteUserPictures = async ({ file_name }) => {
     return db.promise().execute(deletePictureStatement, [file_name])
         .then((results) => results)
         .catch((error) => {
@@ -54,4 +61,12 @@ export const deleteUserPictures = async ({ file_name }) => {
                 error
             };
         });
+};
+
+module.exports = {
+    addUserPicture,
+    addAdventurePicture,
+    getUserPictures,
+    getAdventurePictures,
+    deleteUserPictures
 };

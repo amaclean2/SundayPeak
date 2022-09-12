@@ -1,6 +1,6 @@
-import { body } from "express-validator";
+const { body } = require("express-validator");
 
-export const tickCreateValidator = () => {
+const tickCreateValidator = () => {
     return [
         body('id_from_token')
             .not().isEmpty()
@@ -18,7 +18,7 @@ export const tickCreateValidator = () => {
     ];
 };
 
-export const tickGetValidatorByAdventure = () => {
+const tickGetValidatorByAdventure = () => {
     return [
         body('adventure_id')
             .not().isEmpty(),
@@ -29,4 +29,9 @@ export const tickGetValidatorByAdventure = () => {
                 req.body.user_id = value;
             })
     ]
-}
+};
+
+module.exports = {
+    tickCreateValidator,
+    tickGetValidatorByAdventure
+};

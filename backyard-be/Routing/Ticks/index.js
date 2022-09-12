@@ -1,26 +1,25 @@
-import { Router } from 'express';
-import { validationResult } from 'express-validator';
-import { createTick } from '../../DB';
-import { returnError } from '../../ErrorHandling';
-import { CREATED, NOT_FOUND } from '../../ErrorHandling/statuses';
-import { buildUserObject } from '../../Handlers/Users';
-import { tickCreateValidator } from '../../Validators/TickValidators';
+const { Router } = require('express');
+const { validationResult } = require('express-validator');
+const queries = require('../../DB');
+const { returnError } = require('../../ResponseHandling');
+const { CREATED, NOT_FOUND } = require('../../ResponseHandling/statuses');
+const { buildUserObject } = require('../../Services/user.service');
+const { tickCreateValidator } = require('../../Validators/TickValidators');
 
 const router = Router();
 
 router.post('/create', tickCreateValidator(), async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log('ERRORS', errors);
         return returnError({ req, res, error: errors.array()[0] });
     }
 
     try {
         const { user_id, adventure_id, public: publicField } = req.body;
 
-        await createTick({ user_id, adventure_id, public: publicField });
+        await queries.createTick({ user_id, adventure_id, public: publicField });
 
-        const newUserObj = await buildUserObject({ req, res, initiation: { id: user_id }});
+        const newUserObj = await buildUserObject({ req, res, initiation: { id: user_id } });
         delete newUserObj.password;
 
         res.status(CREATED).json({
@@ -43,4 +42,4 @@ router.use('/', (req, res) => {
     });
 });
 
-export default router;
+module.exports = router;

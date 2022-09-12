@@ -1,35 +1,43 @@
-import db from '../Config/db.js';
-import {
+const db = require('../Config/db.js');
+const logger = require('../Config/logger.js');
+const {
     selectTicksByAdventureStatement,
     createTickStatement,
     selectTicksByUserStatement
-} from './Statements.js';
+} = require('./Statements.js');
 
-export const getTicksByAdventure = async ({ adventure_id }) => {
-    return db.promise().execute(selectTicksByAdventureStatement, [adventure_id])
-        .then(([results, ...extras]) => results)
-        .catch((error) => {
-            console.log("DATABASE_RETRIEVAL_FAILED", error);
-            throw error;
-        });
+const getTicksByAdventure = async ({ adventure_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(selectTicksByAdventureStatement, [adventure_id]);
+        return results;
+    } catch (error) {
+        logger.error("DATABASE_RETRIEVAL_FAILED", error);
+        throw error;
+    };
 };
 
-export const getTicksByUser = async ({ user_id }) => {
-    return db.promise().execute(selectTicksByUserStatement, [user_id])
-        .then(([results, ...extras]) => results)
-        .catch((error) => {
-            console.log("DATABASE_RETRIEVAL_FAILED", error);
-            throw error;
-        });
+const getTicksByUser = async ({ user_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(selectTicksByUserStatement, [user_id]);
+        return results;
+    } catch (error) {
+        logger.error("DATABASE_RETRIEVAL_FAILED", error);
+        throw error;
+    };
 };
 
-export const createTick = async ({ adventure_id, user_id: creator_id, public: publicField }) => {
-    return db.promise().execute(createTickStatement, [creator_id, adventure_id, publicField])
-        .then(([results, ...extras]) => {
-            const { insertId } = results;
-            return insertId;
-        }).catch((error) => {
-            console.log("DATABASE_INSERTION_FAILED", error);
-            throw error;
-        });
+const createTick = async ({ adventure_id, user_id: creator_id, public: publicField }) => {
+    try {
+        const [results, ...extras] = await db.execute(createTickStatement, [creator_id, adventure_id, publicField]);
+        return results.insertId;
+    } catch (error) {
+        logger.error("DATABASE_INSERTION_FAILED", error);
+        throw error;
+    };
 };
+
+module.exports = {
+    getTicksByAdventure,
+    getTicksByUser,
+    createTick
+}

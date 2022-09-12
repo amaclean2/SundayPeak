@@ -96,10 +96,11 @@ CREATE TABLE user_images(
     PRIMARY KEY(file_name)
 );
 
--- DROP TABLE activities;
--- DROP TABLE ticks;
--- DROP TABLE followers;
--- DROP TABLE adventure_editors;
--- DROP TABLE adventures;
--- DROP TABLE users;
--- DROP TABLE password_reset_tokens;
+DROP TABLE user_images;
+DROP TABLE password_reset_tokens;
+DROP TABLE activities;
+DROP TABLE ticks;
+DROP TABLE adventure_editors;
+DROP TABLE adventures;
+DROP TABLE followers;
+DROP TABLE users;

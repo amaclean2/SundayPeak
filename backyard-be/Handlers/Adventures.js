@@ -1,10 +1,16 @@
-import { validationResult } from 'express-validator';
-import { addAdventure, getAdventure, getAdventures, getTicksByAdventure } from '../DB';
-import { getAdventurePictures } from '../DB/Pictures';
-import { returnError } from '../ErrorHandling';
-import { CREATED, NO_CONTENT, SUCCESS } from '../ErrorHandling/statuses';
+const { validationResult } = require('express-validator');
+const logger = require('../Config/logger');
+const queries = require('../DB');
+const { returnError } = require('../ResponseHandling');
+const { SUCCESS, NO_CONTENT, CREATED } = require('../ResponseHandling/statuses');
 
-export const buildAdventureObject = async ({ id }) => {
+const buildAdventureObject = async ({ id }) => {
+    const {
+        getAdventure,
+        getTicksByAdventure,
+        getAdventurePictures
+    } = queries;
+
     const adventure = await getAdventure(id);
     const ticks = await getTicksByAdventure({ adventure_id: id });
     const images = await getAdventurePictures({ adventure_id: id });
@@ -19,7 +25,7 @@ export const buildAdventureObject = async ({ id }) => {
     };
 };
 
-export const parseCoordinates = ({ boundingBox }) => {
+const parseCoordinates = ({ boundingBox }) => {
     return {
         maxLat: boundingBox.NE.lat,
         minLat: boundingBox.SW.lat,
@@ -28,17 +34,16 @@ export const parseCoordinates = ({ boundingBox }) => {
     };
 };
 
-export const getAllAdventures = async (req, res) => {
+const getAllAdventures = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log('ERRORS', errors);
         return returnError({ req, res, error: errors.array()[0] });
     }
-    
+
     const { bounding_box, type } = req.body;
     try {
         const parsedCoordinates = parseCoordinates({ boundingBox: bounding_box });
-        const adventures = await getAdventures(parsedCoordinates, type, 10)
+        const adventures = await queries.getAdventures(parsedCoordinates, type, 10)
 
         res.status(SUCCESS).json({
             data: { adventures }
@@ -49,7 +54,7 @@ export const getAllAdventures = async (req, res) => {
     }
 };
 
-export const getAdventureDetails = async (req, res) => {
+const getAdventureDetails = async (req, res) => {
     try {
         const { id } = req.query;
 
@@ -65,15 +70,14 @@ export const getAdventureDetails = async (req, res) => {
     }
 };
 
-export const createNewAdventure = async (req, res) => {
+const createNewAdventure = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log('ERRORS', errors);
         return returnError({ req, res, error: errors.array()[0] });
     }
 
     try {
-        const resultId = await addAdventure(req.body);
+        const resultId = await queries.addAdventure(req.body);
         const responseBody = req.body;
 
         responseBody.id = resultId;
@@ -85,8 +89,7 @@ export const createNewAdventure = async (req, res) => {
         delete responseBody.coordinates_lat;
         delete responseBody.coordinates_lng;
 
-
-        console.log("ADVENTURE_CREATED", resultId, responseBody);
+        logger.debug('ADVNETURE_CREATED', resultId, responseBody);
         res.status(CREATED).json({ data: { adventure: responseBody } });
 
     } catch (error) {
@@ -94,16 +97,25 @@ export const createNewAdventure = async (req, res) => {
     }
 };
 
-export const deleteAdventure = async (req, res) => {
+const deleteAdventure = async (req, res) => {
     const { adventure_id } = req.query;
 
     try {
-        const deletion_resp = await deleteAdventure(adventure_id);
-        console.log("ADVENTURE_DELETED", deletion_resp);
+        const deletion_resp = await queries.deleteAdventure(adventure_id);
+        logger.debug('ADVENTURE_DELETED', deletion_resp);
 
         res.status(NO_CONTENT).json({ data: {} });
 
     } catch (error) {
         throw returnError({ req, res, message: 'serverDeleteAdventure', error });
     }
+};
+
+module.exports = {
+    buildAdventureObject,
+    parseCoordinates,
+    getAllAdventures,
+    getAdventureDetails,
+    createNewAdventure,
+    deleteAdventure
 };

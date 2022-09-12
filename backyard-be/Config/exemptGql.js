@@ -1,4 +1,4 @@
-export const exemptQueries = [
+const exemptQueries = [
     '/adventures/all',
     '/adventures/details',
     'savePasswordReset',
@@ -8,10 +8,16 @@ export const exemptQueries = [
     '/users/create'
 ];
 
-export const isPath = (req, query) => {
+const isPath = (req, query) => {
     return req.originalUrl.includes(query);
 };
 
-export const isExempt = (req) => {
+const isExempt = (req) => {
     return exemptQueries.some((query) => req.originalUrl.includes(query));
+};
+
+module.exports = {
+    exemptQueries,
+    isPath,
+    isExempt
 };

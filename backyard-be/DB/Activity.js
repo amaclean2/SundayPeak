@@ -1,45 +1,55 @@
-import db from '../Config/db.js';
-import {
+const db = require('../Config/db.js');
+const logger = require('../Config/logger.js');
+const {
     selectActivitiesByAdventureStatement,
     selectActivitiesByUserStatement,
     createActivityStatement,
     countActivitiesStatement
-} from './Statements.js';
+} = require('./Statements.js');
 
-export const getActivitiesByAdventure = async ({ adventure_id }) => {
-    return db.promise().execute(selectActivitiesByAdventureStatement, [adventure_id])
-        .then(([results, ...extras]) => results)
-        .catch((error) => {
-            console.log("DATABASE_RETRIEVAL_FAILED", error);
-            throw error;
-        });
+const getActivitiesByAdventure = async ({ adventure_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(selectActivitiesByAdventureStatement, [adventure_id]);
+        return results;
+    } catch (error) {
+        logger.error("DATABASE_QUERY_FAILED", error);
+        throw error;   
+    };
 };
 
-export const getActivitiesByUser = async ({ user_id }) => {
-    return db.promise().execute(selectActivitiesByUserStatement, [user_id])
-        .then(([results, ...extras]) => results)
-        .catch((error) => {
-            console.log("DATABASE_RETRIEVAL_FAILED", error);
-            throw error;
-        });
+const getActivitiesByUser = async ({ user_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(selectActivitiesByUserStatement, [user_id]);
+        return results;
+    } catch (error) {
+        logger.error("DATABASE_QUERY_FAILED", error);
+        throw error;   
+    };
 };
 
-export const getActivityCountByUser = async ({ user_id }) => {
-    return db.promise().execute(countActivitiesStatement, [user_id])
-        .then(([results, ...extras]) => results[0]['COUNT(adventure_id)'])
-        .catch((error) => {
-            console.log("DATABASE_RETRIEVAL_FAILED", error);
-            throw error;
-        });
+const getActivityCountByUser = async ({ user_id }) => {
+    try {
+        const [results, ...extras] = await db.execute(countActivitiesStatement, [user_id]);
+        return results[0]['COUNT(adventure_id)'];
+    } catch (error) {
+        logger.error("DATABASE_QUERY_FAILED", error);
+        throw error;   
+    };
 };
 
-export const createActivity = async ({ adventure_id, user_id: creator_id, public: publicField }) => {
-    return db.promise().execute(createActivityStatement, [creator_id, adventure_id, publicField])
-        .then(([results, ...extras]) => {
-            const { insertId } = results;
-            return insertId;
-        }).catch((error) => {
-            console.log("DATABASE_INSERTION_FAILED", error);
-            throw error;
-        });
+const createActivity = async ({ adventure_id, user_id: creator_id, public: publicField }) => {
+    try {
+        const [results, ...extras] = await db.execute(createActivityStatement, [creator_id, adventure_id, publicField]);
+        return results.insertId;
+    } catch (error) {
+        logger.error("DATABASE_INSERTION_FAILED", error);
+        throw error;   
+    }
+};
+
+module.exports = {
+    getActivitiesByAdventure,
+    getActivitiesByUser,
+    getActivityCountByUser,
+    createActivity
 };

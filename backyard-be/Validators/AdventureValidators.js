@@ -1,6 +1,6 @@
-import { body } from 'express-validator';
+const { body } = require('express-validator');
 
-export const adventureCreateValidator = () => {
+const adventureCreateValidator = () => {
     return [
         body('adventure_type')
             .not().isEmpty()
@@ -28,7 +28,7 @@ export const adventureCreateValidator = () => {
     ];
 };
 
-export const adventuresGetValidator = () => {
+const adventuresGetValidator = () => {
     return [
         body('bounding_box')
             .custom(value => typeof value === 'object')
@@ -38,4 +38,9 @@ export const adventuresGetValidator = () => {
             .custom(value => 'SW' in value)
             .withMessage('boundingBox')
     ]
-}
+};
+
+module.exports = {
+    adventureCreateValidator,
+    adventuresGetValidator
+};
