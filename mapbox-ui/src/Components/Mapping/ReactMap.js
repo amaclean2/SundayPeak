@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import Map, { Layer, Marker, NavigationControl, Source } from 'react-map-gl';
 
@@ -21,6 +21,8 @@ const skyLayer = {
 const ReactMap = () => {
 	const [popupInfo, setPopupInfo] = useState(null);
 
+	const mapRef = useRef();
+
 	const { openCard } = useCardStateContext();
 	const {
 		adventureAddState,
@@ -32,9 +34,7 @@ const ReactMap = () => {
 		mapboxToken,
 		startPosition
 	} = useAdventureEditContext();
-	const { refetchAdventures } = useGetAdventures();
-
-	console.log("SP", startPosition)
+	const { refetchAdventures, getAllAdventures } = useGetAdventures();
 
 	const initialViewState = {
 		longitude: startPosition.lng,
@@ -50,7 +50,9 @@ const ReactMap = () => {
 		}
 
 		const newAdventure = {
+			id: 'waiting',
 			adventure_name: 'New Adventure',
+			images: [],
 			coordinates: {
 				lng: e.lngLat.lng,
 				lat: e.lngLat.lat
@@ -68,9 +70,26 @@ const ReactMap = () => {
 		setAdventureAddState(false);
 	};
 
-	const onMove = (e) => {
-		refetchAdventures({ lat: e.viewState.latitude, lng: e.viewState.longitude, zoom: e.viewState.zoom });
+	const loadMap = (e) => {
+		getAllAdventures(mapRef.current.getMap().getBounds());
 	};
+
+	const onMove = (e) => {
+		refetchAdventures(
+			{
+				lat: e.viewState.latitude,
+				lng: e.viewState.longitude,
+				zoom: e.viewState.zoom
+			},
+			mapRef.current.getMap().getBounds());
+	};
+
+	/**
+	 * zoom 20 is about 200' (* 50)
+	 * zoom 15 is about 10,000' (* 50)
+	 * zoom 10 is about 300,000' (* 50)
+	 * zoom 5 is about 7,000,000' (* 50) (1 / x^2) * 100000
+	 */
 
 	const viewMore = () => {
 		setCurrentAdventure(popupInfo);
@@ -104,6 +123,7 @@ const ReactMap = () => {
 	}
 
 	return <Map
+		ref={mapRef}
 		reuseMaps
 		className="map-container"
 		mapboxAccessToken={mapboxToken}
@@ -111,6 +131,7 @@ const ReactMap = () => {
 		initialViewState={initialViewState}
 		maxPitch={85}
 		onDblClick={onDblClick}
+		onLoad={loadMap}
 		onMove={onMove}
 		terrain={{ source: 'mapbox-dem', exaggeration: 1 }}
 	>

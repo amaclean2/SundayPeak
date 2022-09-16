@@ -1,0 +1,25 @@
+.image-viewer-background.flex-box {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000055;
+    justify-content: center;
+    z-index: 2;
+}
+
+.image-view {
+    margin-top: 60px;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 60px);
+}
+
+.image-viewer-header {
+    width: 100%;
+    height: 60px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #000;
+}

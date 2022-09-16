@@ -20,6 +20,7 @@ export const UserStateProvider = ({ children }) => {
 	const [formFields, setFormFields] = useState({});
 	const [isLandingPage, setIsLandingPage] = useState(true);
 	const [loginError, setLoginError] = useState(null);
+	const [imageList, setImageList] = useState([]);
 
 	const clickOffLanding = () => {
 		setIsLandingPage(false);
@@ -33,6 +34,7 @@ export const UserStateProvider = ({ children }) => {
 	const handleLogout = async () => {
 		setLoggedInUser({});
 		setIsLoggedIn(false);
+		setWorkingUser(null);
 		localStorage.clear();
 		return 'SUCCESSFULLY_LOGGED_OUT';
 	};
@@ -46,6 +48,7 @@ export const UserStateProvider = ({ children }) => {
 				isLandingPage,
 				loginError,
 				loggedInUser,
+				imageList,
 				setLoginError,
 				setFormFields,
 				handleLogout,
@@ -54,7 +57,8 @@ export const UserStateProvider = ({ children }) => {
 				setIsLoggedIn,
 				setIsLandingPage,
 				setFormFields,
-				setLoggedInUser
+				setLoggedInUser,
+				setImageList
 			}}
 		>
 			{children}

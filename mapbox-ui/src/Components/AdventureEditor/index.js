@@ -24,7 +24,7 @@ const AdventureEditor = () => {
 
 	const onChange = (e) => {
 
-		setCurrentAdventure((workingAdventure) => {
+		return setCurrentAdventure((workingAdventure) => {
 			const newAdventure = { ...workingAdventure };
 			newAdventure[e.target.name] = e.target.value;
 

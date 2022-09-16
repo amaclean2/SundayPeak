@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCardStateContext, useLoginUser } from '../../Providers';
+import { useCardStateContext, useGetUser } from '../../Providers';
 
 import { useUserStateContext } from "../../Providers/userStateProvider";
 import { ErrorField, DisplayCard, ProfileHeader, FormField, Button } from '../Reusable';
@@ -13,7 +13,7 @@ export const LoginFlow = () => {
 		setLoginError
 	} = useUserStateContext();
 
-	const { loginUser } = useLoginUser();
+	const { loginUser } = useGetUser();
 	const { switchCard } = useCardStateContext();
 
 	const onChange = (e) => {

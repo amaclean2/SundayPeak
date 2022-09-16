@@ -37,9 +37,6 @@ const AdventureEditorButtons = () => {
 
 			if (!saveAdventureError) {
 				setSaveState(1);
-				console.log('READY_ADVENTURE', currentAdventure);
-			} else {
-				console.error('ADVENTURE_ERROR', saveAdventureError);
 			}
 
 		} else if (saveState === 1) {

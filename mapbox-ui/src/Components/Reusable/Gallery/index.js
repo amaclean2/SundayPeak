@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
-import { useCardStateContext, useSubmitPicture, useUserStateContext } from '../../Providers';
+import { useCardStateContext, useSubmitPicture, useUserStateContext } from '../../../Providers';
+import './styles.css';
 
-const UserProfileGallery = () => {
+export const PhotoGallery = ({ container }) => {
     const { submitPicture } = useSubmitPicture();
+
     const { setViewingImage } = useCardStateContext();
 
     const { workingUser, loggedInUser } = useUserStateContext();
@@ -28,15 +29,13 @@ const UserProfileGallery = () => {
                     return (
                         <label className="file-upload-container flex-box" key={`profile_image_create`}>
                             Add a new photo
-                            <input type="file" name="image" className="image-input" onChange={changeHandler} />
+                            <input type="file" name="file" className="image-input" onChange={changeHandler} />
                         </label>
                     );
                 }
 
-                return <img src={image} alt={''} key={`profile_image_${key}`} onClick={() => handleImageClick(image)} />;
+                return <img src={image} key={`profile_image_${key}`} onClick={() => handleImageClick(image)} />;
             })}
         </div>
     );
 };
-
-export default UserProfileGallery;

@@ -11,26 +11,34 @@ h1 {
     background-color: #EEE;
 }
 
-.gallery-box {
-    height: 200px;
-    width: 100%;
-    padding: 5px 0;
-    overflow: hidden;
-    display: block;
-}
-
-.scroller-container {
-    position: absolute;
+.scroller-container.flex-box {
+    position: relative;
+    display: inline-flex;
+    height: 300px;
     white-space: nowrap;
-    overflow: auto;
-    height: 200px;
+    overflow: hidden;
+    width: calc(100% - 30px);
+    margin: 10px;
 }
 
-.gallery-placeholder {
-    height: 200px;
-    background-color: #EEE;
-    margin-right: 5px;
-    display: inadventure-block;
+.scroller-container img {
+    height: 100%;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.file-upload-container.flex-box {
+    border: 2px dashed #CCC;
+    height: calc(100% - 10px);
+    margin: 6px 12px;
+    cursor: pointer;
+    width: 200px;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.file-upload-container .image-input {
+    display: none;
 }
 
 .stats.flex-box {
