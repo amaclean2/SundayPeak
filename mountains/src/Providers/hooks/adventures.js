@@ -1,8 +1,8 @@
-import { debounce } from 'throttle-debounce'
+import { debounce, throttle } from 'throttle-debounce'
 
 import { useAdventureEditContext } from '../adventureEditProvider'
 import { useCardStateContext } from '../cardStateProvider'
-import { fetcher, validateAdventure } from '../utils'
+import { fetcher, myThrottle, validateAdventure } from '../utils'
 
 export const useGetAdventure = () => {
 	const { setCurrentAdventure } = useAdventureEditContext()
@@ -21,7 +21,7 @@ export const useGetAdventure = () => {
 }
 
 export const useGetAdventures = () => {
-	const { setAllAdventures, setStartPosition } = useAdventureEditContext()
+	const { setAllAdventures } = useAdventureEditContext()
 
 	const getAllAdventures = async (boundingBox) => {
 		return fetcher('/adventures/all', {
@@ -42,8 +42,8 @@ export const useGetAdventures = () => {
 			.catch(console.error)
 	}
 
-	const refetchAdventures = debounce(1000, (newStartPosition, boundingBox) => {
-		return fetcher('/adventures/all', {
+	const refetchAdventures = debounce(500, (newStartPosition, boundingBox) => {
+		fetcher('/adventures/all', {
 			method: 'POST',
 			body: {
 				bounding_box: {
@@ -55,7 +55,6 @@ export const useGetAdventures = () => {
 		})
 			.then(({ data: { adventures } }) => {
 				setAllAdventures((currAdventures) => [...currAdventures, ...adventures])
-				setStartPosition(newStartPosition)
 
 				return adventures
 			})
