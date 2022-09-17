@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Map, { GeolocateControl, Layer, Marker, NavigationControl, Source } from 'react-map-gl'
 
 import { SkierIcon } from '../../Images'
@@ -37,8 +37,9 @@ const ReactMap = () => {
 		setAllAdventures,
 		setIsEditable,
 		mapboxToken,
-		viewState,
-		setViewState
+		startPosition,
+		flying,
+		setFlying
 	} = useAdventureEditContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 
@@ -77,7 +78,6 @@ const ReactMap = () => {
 	}
 
 	const onMove = useCallback((e) => {
-		setViewState(e.viewState)
 		refetchAdventures(
 			{
 				lat: e.viewState.latitude,
@@ -100,6 +100,18 @@ const ReactMap = () => {
 		setPopupInfo(null)
 		openCard(CARD_STATES.adventures)
 	}
+
+	useEffect(() => {
+		if (flying) {
+			mapRef?.current?.flyTo({
+				center: [flying.longitude, flying.latitude],
+				zoom: flying.zoom,
+				// pitch: flying.pitch,
+				duration: 1500
+			})
+			setFlying(false)
+		}
+	}, [flying])
 
 	const pins = useMemo(() => {
 		return (
@@ -136,7 +148,7 @@ const ReactMap = () => {
 			className='map-container'
 			mapboxAccessToken={mapboxToken}
 			mapStyle='mapbox://styles/mapbox/satellite-v9'
-			{...viewState}
+			initialViewState={startPosition}
 			maxPitch={85}
 			onDblClick={onDblClick}
 			onLoad={loadMap}

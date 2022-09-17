@@ -25,11 +25,12 @@ export const AdventureEditProvider = ({ children }) => {
 	const [isEditable, setIsEditable] = useState(false)
 	const [adventureError, setAdventureError] = useState(null)
 	const [mapboxToken, setMapboxToken] = useState(null)
-	const [viewState, setViewState] = useState(initialStartPosition)
+	const [startPosition, setStatePosition] = useState(initialStartPosition)
+	const [flying, setFlying] = useState(false)
 
 	useEffect(() => {
-		localStorage.setItem('startPos', JSON.stringify(viewState))
-	}, [viewState])
+		localStorage.setItem('startPos', JSON.stringify(startPosition))
+	}, [startPosition])
 
 	return (
 		<AdventureEditContext.Provider
@@ -40,14 +41,16 @@ export const AdventureEditProvider = ({ children }) => {
 				allAdventures,
 				adventureError,
 				mapboxToken,
-				viewState,
+				startPosition,
+				flying,
 				setAdventureAddState,
 				setCurrentAdventure,
 				setIsEditable,
 				setAllAdventures,
 				setAdventureError,
 				setMapboxToken,
-				setViewState
+				setStatePosition,
+				setFlying
 			}}
 		>
 			{children}

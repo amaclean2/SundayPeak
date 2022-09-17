@@ -16,7 +16,7 @@ const AdventureEditor = () => {
 		isEditable,
 		setIsEditable,
 		adventureError,
-		setViewState
+		setFlying
 	} = useAdventureEditContext()
 
 	const menuRef = useRef()
@@ -42,10 +42,10 @@ const AdventureEditor = () => {
 	}, [adventureError])
 
 	useEffect(() => {
-		setViewState((currViewState) => ({
-			...currViewState,
-			latitude: currentAdventure.coordinates_lat,
-			longitude: currentAdventure.coordinates_lng
+		setFlying((currViewState) => ({
+			latitude: currentAdventure.coordinates_lat - 0.001,
+			longitude: currentAdventure.coordinates_lng - 0.001,
+			zoom: 17
 		}))
 	}, [])
 
