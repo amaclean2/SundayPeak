@@ -39,6 +39,7 @@ export const CardStateProvider = ({ children }) => {
 	const [displayCardOpenState, setDisplayCardOpenState] = useState('closed');
 	const [displayCardBoolState, setDisplayCardBoolState] = useState(false);
 	const [workingCard, setWorkingCard] = useState('');
+	const [viewingImage, setViewingImage] = useState(null);
 
 	const openCard = async (newWorkingCard) => {
 		setDisplayCardOpenState(changeCardState('closed'));
@@ -76,12 +77,14 @@ export const CardStateProvider = ({ children }) => {
 				displayCardOpenState,
 				displayCardBoolState,
 				workingCard,
+				viewingImage,
 				// notFullyOpen describes the intermediate loading states of animations
 				notFullyOpen: ['closing', 'closed', 'opening'].includes(displayCardOpenState),
 				setDisplayCardOpenState,
 				openCard,
 				closeCard,
-				switchCard
+				switchCard,
+				setViewingImage
 			}}
 		>
 			{children}

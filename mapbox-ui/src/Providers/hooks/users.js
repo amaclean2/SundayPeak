@@ -1,8 +1,9 @@
 import { fetcher } from '../utils';
 import { useUserStateContext } from '../userStateProvider';
 import { useCardStateContext } from '../cardStateProvider';
+import { useAdventureEditContext } from '../adventureEditProvider';
 
-export const useLoginUser = () => {
+export const useSignupUser = () => {
     const {
         setLoginError,
         setLoggedInUser,
@@ -13,77 +14,22 @@ export const useLoginUser = () => {
     } = useUserStateContext();
     const { closeCard } = useCardStateContext();
 
-    const loginUser = () => {
-
-        const loginBody = {
-            email: formFields.email,
-            password: formFields.password
-        };
-
-        if (email && password) {
-            return fetcher('/users/login', {
-                method: 'POST',
-                body: loginBody
-            }).then(({ data }) => {
-                console.log('LOGGED_IN_USER', data.user);
-
-                localStorage.setItem('token', JSON.stringify(data.token));
-
-                setLoggedInUser(data.user);
-                setIsLoggedIn(true);
-                setIsLandingPage(false);
-                setFormFields({});
-                setLoginError('');
-                closeCard();
-
-                return data;
-            }).catch((error) => {
-                console.error(error);
-
-                let sanitizedLoginUserError = error.toString();
-                sanitizedLoginUserError = sanitizedLoginUserError.replace('Error: ', '');
-                setLoginError(sanitizedLoginUserError);
-
-                return error;
-            });
-        } else {
-            setLoginError('Email and Password fields are required. Please try again.');
-        }
-    };
-
-    return {
-        loginUser
-    };
-};
-
-export const useSignupUser = () => {
-    const {
-        setLoginError,
-        setLoggedInUser,
-        setIsLoggedIn,
-        setIsLandingPage,
-        formFields
-    } = useUserStateContext();
-    const { closeCard } = useCardStateContext();
-
     const signupUser = () => {
         const {
             email,
             password,
             firstName,
             lastName,
-            password2,
+            password_2,
             legal
         } = formFields;
 
-        console.log('FORM_FILEDS');
-
-        if (email && password && password2 && firstName && lastName) {
+        if (email && password && password_2 && firstName && lastName) {
             if (legal) {
                 const newUserObject = {
                     email,
                     password,
-                    password2,
+                    password_2,
                     first_name: firstName,
                     last_name: lastName,
                     legal
@@ -110,7 +56,11 @@ export const useSignupUser = () => {
 
                     return error;
                 });
+            } else {
+                setLoginError('You must agree to the Backyard Friends terms and conditions.');
             }
+        } else {
+            setLoginError('All fields are required. Please try again.')
         }
     }
 
@@ -119,62 +69,148 @@ export const useSignupUser = () => {
     };
 };
 
-export const useGetOtherUser = () => {
-    const { setWorkingUser } = useUserStateContext();
+export const useGetUser = () => {
+    const {
+        setLoginError,
+        setLoggedInUser,
+        setWorkingUser,
+        setIsLoggedIn,
+        setIsLandingPage,
+        formFields,
+        setFormFields
+    } = useUserStateContext();
+    const { closeCard } = useCardStateContext();
+    const { setMapboxToken } = useAdventureEditContext();
+
+    const getInitialCall = () => {
+
+        return fetcher('/initial').then(({ data }) => {
+            console.log('INITIAL_CALL', data);
+            setMapboxToken(data.mapbox_token);
+
+            if (!!data.user) {
+                setLoggedInUser(data.user);
+                setIsLoggedIn(true);
+                setIsLandingPage(false);
+            } else {
+                setLoggedInUser(null);
+                setIsLoggedIn(false);
+            }
+
+            return data;
+        }).catch((error) => {
+            console.error(error);
+            setIsLoggedIn(false);
+
+            return error;
+        });
+    };
 
     const getOtherUser = ({ user_id }) => {
-        return fetcher(`/id?id=${user_id}`).then(({ data }) => {
-            setWorkingUser(data);
+        return fetcher(`/users/id?id=${user_id}`).then(({ data }) => {
+            setWorkingUser(data.user);
 
             return data;
         }).catch(console.error);
     };
 
-    return { getOtherUser };
-};
+    const loginUser = () => {
 
-export const useGetLoggedInUser = () => {
-    const {
-        setLoggedInUser,
-        setIsLoggedIn,
-        setIsLandingPage
-    } = useUserStateContext();
+        const loginBody = {
+            email: formFields.email,
+            password: formFields.password
+        };
 
-    const getLoggedInUser = () => {
-        const loggedToken = localStorage.getItem('token');
-
-        if (loggedToken) {
-            return fetcher('/users/loggedIn').then(({ data }) => {
+        if (formFields.email && formFields.password) {
+            return fetcher('/users/login', {
+                method: 'POST',
+                body: loginBody
+            }).then(({ data }) => {
                 console.log('LOGGED_IN_USER', data.user);
-    
+
+                localStorage.setItem('token', JSON.stringify(data.token));
+
                 setLoggedInUser(data.user);
                 setIsLoggedIn(true);
                 setIsLandingPage(false);
-    
+                setFormFields({});
+                setLoginError('');
+                closeCard();
+
                 return data;
             }).catch((error) => {
                 console.error(error);
-                setIsLoggedIn(false);
+                setLoginError(error.message);
+                return error;
             });
         } else {
-            setIsLoggedIn(false);
+            setLoginError('Email and Password fields are required. Please try again.');
         }
-        
     };
 
-    return { getLoggedInUser };
+    const refetchUser = () => {
+        return fetcher('/users/refetch')
+            .then(({ data }) => {
+                setLoggedInUser(data.user);
+                return data;
+            }).catch((error) => {
+                console.error(error);
+                return error;
+            });
+    };
 
+    return {
+        getOtherUser,
+        loginUser,
+        getInitialCall,
+        refetchUser
+    };
 };
 
 export const useFollowUser = () => {
     const followUser = ({ leaderId }) => {
         return fetcher(`/users/follow?leader_id=${leaderId}`)
             .then(({ data }) => {
-                console.log('FOLLOWED', data.followed);
-
                 return data;
             }).catch(console.error);
     }
 
     return { followUser };
 };
+
+export const useSubmitPicture = () => {
+    const { refetchUser } = useGetUser();
+
+    const submitPicture = ({ data }) => {
+
+        const formData = new FormData();
+        formData.append('image', data);
+
+        return fetcher('/pictures/userUpload', {
+            method: 'POST',
+            headers: [
+                { name: 'content-type', value: 'none' },
+            ],
+            body: formData
+        }).then(() => refetchUser())
+        .catch(console.error);
+    };
+
+    return {
+        submitPicture
+    };
+};
+
+export const useDeletePicture = () => {
+
+    const deletePicture = ({ pictureRef }) => {
+        return fetcher(`/pictures/delete`, {
+            method: 'POST',
+            body: { file_name: pictureRef }
+        }).catch(console.error);
+    };
+
+    return {
+        deletePicture
+    };
+}

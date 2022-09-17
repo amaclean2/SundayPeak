@@ -6,7 +6,7 @@ import { FormField, DisplayCard, ProfileHeader, ErrorField, Button } from '../Re
 export const SignupFlow = () => {
 	const { formFields, setFormFields} = useUserStateContext();
 	const { switchCard } = useCardStateContext();
-	const { attemptSignup } = useSignupUser();
+	const { signupUser } = useSignupUser();
 
 	const onChange = (e) => {
 		setFormFields((currFormFields) => {
@@ -62,13 +62,13 @@ export const SignupFlow = () => {
 						onChange={onChange}
 					/>
 					<FormField
-						name="password2"
+						name="password_2"
 						label="Confirm Password"
 						type="password"
 						hideLabel
 						block
 						isEditable
-						value={formFields.password2}
+						value={formFields.password_2}
 						onChange={onChange}
 					/>
 					<FormField
@@ -81,7 +81,7 @@ export const SignupFlow = () => {
 					/>
 				</div>
 				<div className="action-buttons">
-					<Button onClick={attemptSignup} className="button adventure-edit-button">
+					<Button onClick={signupUser} className="button adventure-edit-button">
 						Continue
 					</Button>
 					<div className='create-account-cta'>

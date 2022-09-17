@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useCardStateContext, useUserStateContext } from '../../Providers';
-import { Button, DisplayCard, FormField, FooterButtons } from '../Reusable';
+import { useUserStateContext } from '../../Providers';
+import { DisplayCard, FormField } from '../Reusable';
 import UserProfileButtons from './Buttons';
 import UserProfileGallery from './Gallery';
 import UserTickPanel from './TickPanel';
@@ -11,6 +11,10 @@ import './styles.css';
 
 const UserProfile = () => {
 	const { workingUser } = useUserStateContext();
+
+	if (!workingUser) {
+		return null;
+	}
 
 	return (
 		<DisplayCard>
@@ -23,9 +27,7 @@ const UserProfile = () => {
 				<div className="profile-photo" />
 			</div>
 			<div className="profile-content">
-				<div className="gallery-box">
-					<UserProfileGallery />
-				</div>
+				<UserProfileGallery />
 				<Stats />
 				<UserTickPanel />
 				<UserProfileButtons />

@@ -26,6 +26,8 @@ export const validateAdventure = (currentAdventure, setAdventureError) => {
 
     if (currentAdventure.season?.length) {
         season = JSON.stringify(currentAdventure.season.sort((a, b) => Number(a) - Number(b)));
+    } else if (!currentAdventure.season) {
+        season = JSON.stringify([]);
     }
 
     if (isNaN(parseInt(currentAdventure.avg_angle)) && currentAdventure.avg_angle !== '') {
@@ -58,6 +60,8 @@ export const validateAdventure = (currentAdventure, setAdventureError) => {
 
     if (currentAdventure.gear?.length) {
         gear = JSON.stringify(currentAdventure.gear.sort((a, b) => Number(a) - Number(b)));
+    } else if (!currentAdventure.gear.length) {
+        gear = JSON.stringify([]);
     }
 
     if (isNaN(parseInt(currentAdventure.gain)) && currentAdventure.gain !== '') {
@@ -83,8 +87,6 @@ export const validateAdventure = (currentAdventure, setAdventureError) => {
         coordinates
     };
 
-    console.log("ADVENUTRE_OBJ", adventureObj);
-
     return adventureObj;
 };
 
@@ -95,27 +97,52 @@ export const validateUser = (newUser, setUserError) => {
 export const fetcher = (url, options) => {
     const uri = getBackendUri();
     const token = localStorage.getItem('token');
+    const headers = new Headers();
 
-    const optionsBody = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        },
-        ...options
-    };
+    let body = null;
+
+    options?.headers?.forEach((header) => {
+        headers.append(header.name, header.value);
+    });
 
     if (token) {
-        optionsBody.headers.authorization = `Bearer ${token}`;
+        headers.append('authorization', `Bearer ${token}`);
     }
 
-    if (options?.body) {
-        const stringifiedBody = JSON.stringify(options.body);
-        optionsBody.body = stringifiedBody;
+    if (!headers.get('content-type')) {
+        headers.append('content-type', 'application/json');
     }
 
-    console.log('FETCHING', url);
-    return fetch(`${uri}${url}`, optionsBody)
-    .then(resp => resp.json())
-    .then(data => data);
+    if (options?.body && headers.get('content-type') === 'application/json') {
+        body = JSON.stringify(options.body);
+    } else if (headers.get('content-type') !== 'application/json' && options?.body) {
+        body = options.body;
+    }
+
+    if (headers.get('content-type') === 'none') {
+        headers.delete('content-type');
+    }
+
+    const request = new Request(`${uri}${url}`, {
+        ...(!!body && { body }),
+        headers,
+        method: options?.method || 'GET'
+    });
+
+    console.log('FETCHING', url, headers);
+    return fetch(request)
+        .then(resp => {            
+            if (resp.status !== 204) {
+                return resp.json();
+            } else {
+                return resp;
+            }
+        })
+        .then(data => {
+            if (data.status - 200 >= 100) {
+                throw data;
+            }
+
+            return data;
+        });
 }

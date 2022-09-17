@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "backyardfriends",
+  "private_key_id": "7cb9998a71e063f4f3471d9abb28c6cd43164e7e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCxn1QzXIOFcIq9\n/Ewmxfg56wxAHGP+n4f3oRmmdjGyMFqausef6uZTlajjHWPku2qD+rMzLdkpLvpP\nPT94PQCCWUpKnGJXHE7xkV19jYUDiFDh0Xa9GKwn3/+VeENsJHwUcc6aUAqnQlKB\npfznaWjxa4s0vdM3bK4OJzR4j0Ze87oW1kVmax+1lo8mieuEUTn+3K+DRLQK2fj4\n6xlX4YAmN+O9JcbClAZ0vhal9nK0wKsTam7PA3ccaY16wiaIyaRk2r5YZ0EbutNS\nIOXbUlv4MOdJ24cAs5rSmCbYHAJkt7DjuobSczTxgp20vCF41JS2+M4lqgkUewaI\nzUncjP4bAgMBAAECggEAP0iCcdgsvb6ml+DLaucOtOfzEeZrk/zXrxjVMDMdKpzC\nsy0H0YiZ7j68kMpYXFaPsR0BeqMDo4IqyU+LjPXC+C4C44lLGjkqQTPm6MQil2sa\nUhJUaTPgpkZO47yY3O80y/3uO5l36jadebafX/1018rWqoBVQAJ3EvDR54A4dLxt\nB6RhWFaBVe0NJtSK1B1uAwfYhyAmJ7rh1zjljNBFwd1IwpKwRYvR6Q8kO0YCMErG\nIU0+PK63hcESyHi+b9OiylBfgVtuSo+uCdI+0GpuG4XAHI8jWFfoHMppzoQCg/hj\nQiVtdOIoR+M09c324hp/rpMMCScjAM4pkAyNdGzkqQKBgQDz23s00/wJXIJDZPpj\nJHOwC7YKcwalySanfgW76A/tJSEqjNzhD7HD/GseOjvrG8uc5H+GlPKQZ8eneTex\n8Dt+UHctU2WkC9gm3qQDTeo6QrjzILEmR8D1RzkMO/GK1N6apc6XdIRbFuev9CZz\nzzJ6dMHEWQAlQbQ1QHhtbICPuQKBgQC6d4gdgcaqG7iv0DYymknv17XFgBDqHZ46\ng+I58c7LS+qdUfMjzmm6ryzzOvmuiEEXJp6PYHIHDJmEJdjnFcAe4IA0vAVRUvDI\ncn97Xrbwf4tlijWLqDKknaXecl+vZTuOWEVqS6TjHizoiIs7tvukHJFzR8IXRCsS\nfjvhRHrecwKBgQDNvnp/IfPd+h01u3a+Oz0YZWkb+9y597MTUfKIjc0SKmeHPP4H\nLXSwhMHj6QIw5WyvXOJzrCvTxpvfIxjommW3tzA2H8z70bp3YRVEbHKY4T6mcwjD\n4Xpd98+cEN9EYUHHfOmHQ5mAOR0ViYr/3usaAnSRsv26cWsYGuMAf7EgkQKBgBlp\nHqh+vfcCjhmPc0NUGU1RBRlkCWoOHTj2Lgcdd8PmlZNYzpyLjYb+Rk7jM5FgShaA\nkc0SJJfnVKhYjAV5xlOu3mnRUZwyhFOcntjOIHoHt5Rf0Eo24qfiP+9fgMCjOAl+\n5/7DTjYRL6eErAy4M/S6W+vs1HtdM81yXHCnZ2MXAoGBALK3B7CJOkcejLjIu8AV\n4oh5qCI5ZNmgdbHzJSDVHGBQT4FQp1aUoFKNMj94msIk8nad+6HqwRDZ74dfaS+U\nFubziBfK52M+C0UC3xmWoobnVjFZlH0GNRJHd+UcdSIHSk492ysWCXuRYzY48CqO\nB4dcD0KYlRYqqg2VueULJDLd\n-----END PRIVATE KEY-----\n",
+  "client_email": "andrew@backyardfriends.iam.gserviceaccount.com",
+  "client_id": "111059521429754139309",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/andrew%40backyardfriends.iam.gserviceaccount.com"
+}

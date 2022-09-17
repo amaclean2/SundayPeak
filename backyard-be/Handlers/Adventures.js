@@ -1,121 +1,98 @@
-const { validationResult } = require('express-validator');
-const logger = require('../Config/logger');
-const queries = require('../DB');
-const { returnError } = require('../ResponseHandling');
-const { SUCCESS, NO_CONTENT, CREATED } = require('../ResponseHandling/statuses');
+const { validationResult } = require('express-validator')
 
-const buildAdventureObject = async ({ id }) => {
-    const {
-        getAdventure,
-        getTicksByAdventure,
-        getAdventurePictures
-    } = queries;
-
-    const adventure = await getAdventure(id);
-    const ticks = await getTicksByAdventure({ adventure_id: id });
-    const images = await getAdventurePictures({ adventure_id: id });
-
-    return {
-        ...adventure,
-        images,
-        ticks: ticks.map((tick) => ({
-            ...tick,
-            user_id: tick.creator_id
-        }))
-    };
-};
-
-const parseCoordinates = ({ boundingBox }) => {
-    return {
-        maxLat: boundingBox.NE.lat,
-        minLat: boundingBox.SW.lat,
-        maxLng: boundingBox.NE.lng,
-        minLng: boundingBox.SW.lng
-    };
-};
+const logger = require('../Config/logger')
+const queries = require('../DB')
+const { returnError, sendResponse } = require('../ResponseHandling')
+const {
+  SUCCESS,
+  NO_CONTENT,
+  CREATED,
+} = require('../ResponseHandling/statuses')
+const {
+  buildAdventureObject,
+  parseCoordinates,
+} = require('../Services/adventure.service')
 
 const getAllAdventures = async (req, res) => {
-    const errors = validationResult(req);
+  try {
+    const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        return returnError({ req, res, error: errors.array()[0] });
+      throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    const { bounding_box, type } = req.body;
-    try {
-        const parsedCoordinates = parseCoordinates({ boundingBox: bounding_box });
-        const adventures = await queries.getAdventures(parsedCoordinates, type, 10)
+    const { bounding_box, type } = req.body
+    const parsedCoordinates = parseCoordinates({ boundingBox: bounding_box })
+    const adventures = await queries.getAdventures(parsedCoordinates, type, 10)
 
-        res.status(SUCCESS).json({
-            data: { adventures }
-        });
+		return sendResponse({ req, res, data: { adventures }, status: SUCCESS })
 
-    } catch (error) {
-        throw returnError({ req, res, error, message: 'serverGetAdventures ' });
-    }
-};
+  } catch (error) {
+    return returnError({ req, res, error, message: 'serverGetAdventures' })
+  }
+}
 
 const getAdventureDetails = async (req, res) => {
-    try {
-        const { id } = req.query;
+  try {
+    const { id } = req.query
 
-        if (id) {
-            const adventure = await buildAdventureObject({ id });
-            return res.status(SUCCESS).json({ data: { adventure } });
-        }
-
-        throw returnError({ req, res, message: 'adventureIdFieldRequired' });
-
-    } catch (error) {
-        throw returnError({ req, res, message: 'serverGetAdventureDetails', error });
+    if (id) {
+      const adventure = await buildAdventureObject({ id })
+			return sendResponse({ req, res, data: { adventure }, status: SUCCESS})
     }
-};
+
+    throw returnError({ req, res, message: 'adventureIdFieldRequired' })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'serverGetAdventureDetails',
+      error,
+    })
+  }
+}
 
 const createNewAdventure = async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return returnError({ req, res, error: errors.array()[0] });
+  try {
+		const errors = validationResult(req)
+		if (!errors.isEmpty()) {
+			throw returnError({ req, res, error: errors.array()[0] })
+		}
+
+    const resultId = await queries.addAdventure(req.body)
+    const responseBody = req.body
+
+    responseBody.id = resultId
+    responseBody.coordinates = {
+      lat: responseBody.coordinates_lat,
+      lng: responseBody.coordinates_lng,
     }
 
-    try {
-        const resultId = await queries.addAdventure(req.body);
-        const responseBody = req.body;
+    delete responseBody.coordinates_lat
+    delete responseBody.coordinates_lng
 
-        responseBody.id = resultId;
-        responseBody.coordinates = {
-            lat: responseBody.coordinates_lat,
-            lng: responseBody.coordinates_lng
-        };
-
-        delete responseBody.coordinates_lat;
-        delete responseBody.coordinates_lng;
-
-        logger.debug('ADVNETURE_CREATED', resultId, responseBody);
-        res.status(CREATED).json({ data: { adventure: responseBody } });
-
-    } catch (error) {
-        throw returnError({ req, res, message: 'serverCreateAdventure', error });
-    }
-};
+		return sendResponse({ req, res, data: { adventure: responseBody }, status: CREATED })
+  } catch (error) {
+    return returnError({ req, res, message: 'serverCreateAdventure', error })
+  }
+}
 
 const deleteAdventure = async (req, res) => {
-    const { adventure_id } = req.query;
+  try {
+		const { adventure_id } = req.query
+    const deletion_resp = await queries.deleteAdventure(adventure_id)
+    logger.debug('ADVENTURE_DELETED', deletion_resp)
 
-    try {
-        const deletion_resp = await queries.deleteAdventure(adventure_id);
-        logger.debug('ADVENTURE_DELETED', deletion_resp);
-
-        res.status(NO_CONTENT).json({ data: {} });
-
-    } catch (error) {
-        throw returnError({ req, res, message: 'serverDeleteAdventure', error });
-    }
-};
+		return sendResponse({ req, res, data: {}, status: NO_CONTENT })
+  } catch (error) {
+    return returnError({ req, res, message: 'serverDeleteAdventure', error })
+  }
+}
 
 module.exports = {
-    buildAdventureObject,
-    parseCoordinates,
-    getAllAdventures,
-    getAdventureDetails,
-    createNewAdventure,
-    deleteAdventure
-};
+  buildAdventureObject,
+  parseCoordinates,
+  getAllAdventures,
+  getAdventureDetails,
+  createNewAdventure,
+  deleteAdventure,
+}

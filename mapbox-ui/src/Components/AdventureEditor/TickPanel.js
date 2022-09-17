@@ -3,7 +3,7 @@ import {
     CARD_STATES,
     useAdventureEditContext,
     useCardStateContext,
-    useGetOtherUser,
+    useGetUser,
     useUserStateContext
 } from '../../Providers';
 import { Field, FieldHeader, FieldRow } from '../Reusable';
@@ -19,7 +19,7 @@ const MailIcon = () => (
 const AdventureTickPanel = () => {
     const { currentAdventure } = useAdventureEditContext();
     const { switchCard } = useCardStateContext();
-    const { getOtherUser } = useGetOtherUser();
+    const { getOtherUser } = useGetUser();
     const { workingUser } = useUserStateContext();
 
     const [ticks, setTicks] = useState(null);

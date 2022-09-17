@@ -1,45 +1,42 @@
-import { useState } from 'react';
-import { Button } from '../Reusable';
-
-const GalleryPlaceholder = ({ width }) => (
-    <div className="gallery-placeholder" style={{ width }} />
-);
+import { useEffect } from 'react';
+import { useCardStateContext, useSubmitPicture, useUserStateContext } from '../../Providers';
 
 const UserProfileGallery = () => {
+    const { submitPicture } = useSubmitPicture();
+    const { setViewingImage } = useCardStateContext();
 
-    const [selectedFile, setSelectedFile] = useState();
-    const [isFilePicked, setIsFilePicked] = useState(false);
+    const { workingUser, loggedInUser } = useUserStateContext();
 
-    const changeHandler = ({ target: { files, validity }}) => {
-        console.log("FILES", files, validity);
-        setSelectedFile(files[0]);
-        setIsFilePicked(true);
+    const changeHandler = ({ target: { files } }) => {
+        submitPicture({ data: files[0] });
     };
 
-    const handleSubmission = () => {
-        console.log("SF", selectedFile);
+    const userImages = (workingUser.id === loggedInUser.id)
+        ? [...workingUser.images, 'new'] : workingUser.images;
+
+    const handleImageClick = (imageSource) => {
+        setViewingImage(imageSource);
     };
+
+    useEffect(() => {
+    }, [workingUser]);
 
     return (
-        <div className="scroller-container">
-            <input type="file" name="file" onChange={changeHandler} />
-            {isFilePicked ? (
-                <div>
-                    Filename: {selectedFile.name}
-                    Filetype: {selectedFile.type}
-                    Size: {selectedFile.size}
-                </div>
-            ) : (
-                <>Select a file to show details</>
-            )}
-            <Button
-                id="image-submit-button"
-                onClick={handleSubmission}
-            >
-                Submit
-            </Button>
+        <div className="scroller-container flex-box" >
+            {userImages.map((image, key) => {
+                if (image === 'new') {
+                    return (
+                        <label className="file-upload-container flex-box" key={`profile_image_create`}>
+                            Add a new photo
+                            <input type="file" name="image" className="image-input" onChange={changeHandler} />
+                        </label>
+                    );
+                }
+
+                return <img src={image} alt={''} key={`profile_image_${key}`} onClick={() => handleImageClick(image)} />;
+            })}
         </div>
-    )
+    );
 };
 
 export default UserProfileGallery;

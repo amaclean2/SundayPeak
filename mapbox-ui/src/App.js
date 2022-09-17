@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,18 +7,20 @@ import {
 
 import Discover from './Router/Discover';
 import Landing from './Router/Landing';
-import { useGetAdventures, useGetLoggedInUser,  } from './Providers';
+import { useGetUser } from './Providers';
 
 import './App.css';
 import './variables.css';
 
 const App = () => {
-  const { getLoggedInUser } = useGetLoggedInUser();
-  const { getAllAdventures } = useGetAdventures();
+  const { getInitialCall } = useGetUser();
+  const loadingRef = useRef(false);
 
   useEffect(() => {
-    getLoggedInUser();
-    getAllAdventures();
+    if (!loadingRef.current) {
+      loadingRef.current = true;
+      getInitialCall();
+    }
   }, []);
 
   return (

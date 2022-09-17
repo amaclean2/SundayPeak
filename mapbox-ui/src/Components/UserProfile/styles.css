@@ -1,82 +1,88 @@
 h1 {
-    margin: 0;
-    padding: 10px 12px;
-    font-size: 25px;
-    font-weight: 500;
+	margin: 0;
+	padding: 10px 12px;
+	font-size: 25px;
+	font-weight: 500;
 }
 
 .profile-photo {
-    height: 100%;
-    width: 80px;
-    background-color: #EEE;
+	height: 100%;
+	width: 80px;
+	background-color: #eee;
 }
 
-.gallery-box {
-    height: 200px;
-    width: 100%;
-    padding: 5px 0;
-    overflow: hidden;
-    display: block;
+.scroller-container.flex-box {
+	height: 300px;
+	width: calc(100%);
+	overflow: auto;
+	margin-top: 10px;
 }
 
-.scroller-container {
-    position: absolute;
-    white-space: nowrap;
-    overflow: auto;
-    height: 200px;
+.scroller-container img {
+	height: 100%;
+	cursor: pointer;
+	margin-right: 10px;
 }
 
-.gallery-placeholder {
-    height: 200px;
-    background-color: #EEE;
-    margin-right: 5px;
-    display: inadventure-block;
+.file-upload-container.flex-box {
+	border: 2px dashed #ccc;
+	height: calc(100% - 10px);
+	margin: 6px 12px;
+	cursor: pointer;
+	width: 200px;
+	min-width: 200px;
+	justify-content: center;
+	border-radius: 5px;
+}
+
+.file-upload-container .image-input {
+	display: none;
 }
 
 .stats.flex-box {
-    align-items: flex-start;
-    margin-left: 10px;
-    width: calc(100% - 60px);
+	align-items: flex-start;
+	margin-left: 10px;
+	width: calc(100% - 60px);
 }
 
 .stats .form-field-container {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: flex-end;
 }
 
 .stat-field.form-field-static {
-    font-size: 25px;
+	font-size: 25px;
 }
 
 .location-field.form-field-static {
-    font-size: 12px;
-    min-width: 150px;
-    align-self: flex-start;
+	font-size: 12px;
+	min-width: 150px;
+	align-self: flex-start;
 }
 
 .location-field.label-field {
-    align-self: flex-start;
+	align-self: flex-start;
 }
 
 .tick-list-container {
-    margin: 20px 10px;
+	margin: 20px 10px;
 }
 
 .tick-list-header {
-    margin: 0;
-    font-weight: 600;
-    font-size: 16px;
+	margin: 0;
+	font-weight: 600;
+	font-size: 16px;
 }
 
 .tick-list {
-    margin-top: 5px;
-    flex-direction: column;
-    align-items: flex-start;
+	margin-top: 5px;
+	flex-direction: column;
+	align-items: flex-start;
 }
 
 .tick {
-    font-size: 12px;
+	font-size: 12px;
 }

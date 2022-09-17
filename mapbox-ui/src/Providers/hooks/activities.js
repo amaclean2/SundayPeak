@@ -2,7 +2,7 @@ import { useUserStateContext } from "../userStateProvider";
 import { fetcher } from "../utils";
 
 export const useSaveActivity = () => {
-    const { setLoggedInUser } = useUserStateContext();
+    const { setLoggedInUser, setWorkingUser } = useUserStateContext();
 
     const saveActivity = ({ adventureId }) => {
         return fetcher(`/activities/create`, {
