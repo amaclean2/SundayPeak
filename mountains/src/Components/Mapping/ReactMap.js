@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import Map, { GeolocateControl, Layer, Marker, NavigationControl, Source } from 'react-map-gl'
 
 import { SkierIcon } from '../../Images'
@@ -23,9 +23,10 @@ const skyLayer = {
 }
 
 const ReactMap = () => {
-	const [popupInfo, setPopupInfo] = useState(null)
-
 	const mapRef = useRef()
+	const getlocateControlRef = useCallback((ref) => {
+		if (ref) ref.trigger()
+	}, [])
 
 	const { openCard } = useCardStateContext()
 	const {
@@ -36,15 +37,12 @@ const ReactMap = () => {
 		setAllAdventures,
 		setIsEditable,
 		mapboxToken,
-		startPosition
+		viewState,
+		setViewState
 	} = useAdventureEditContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 
-	const initialViewState = {
-		longitude: startPosition.lng,
-		latitude: startPosition.lat,
-		zoom: startPosition.zoom
-	}
+	const [popupInfo, setPopupInfo] = useState(null)
 
 	const onDblClick = (e) => {
 		e.preventDefault()
@@ -78,7 +76,8 @@ const ReactMap = () => {
 		getAllAdventures(mapRef.current.getMap().getBounds())
 	}
 
-	const onMove = (e) => {
+	const onMove = useCallback((e) => {
+		setViewState(e.viewState)
 		refetchAdventures(
 			{
 				lat: e.viewState.latitude,
@@ -87,7 +86,7 @@ const ReactMap = () => {
 			},
 			mapRef.current.getMap().getBounds()
 		)
-	}
+	}, [])
 
 	/**
 	 * zoom 20 is about 200' (* 50)
@@ -137,7 +136,7 @@ const ReactMap = () => {
 			className='map-container'
 			mapboxAccessToken={mapboxToken}
 			mapStyle='mapbox://styles/mapbox/satellite-v9'
-			initialViewState={initialViewState}
+			{...viewState}
 			maxPitch={85}
 			onDblClick={onDblClick}
 			onLoad={loadMap}
@@ -145,7 +144,7 @@ const ReactMap = () => {
 			terrain={{ source: 'mapbox-dem', exaggeration: 1 }}
 		>
 			<NavigationControl showCompass />
-			<GeolocateControl />
+			<GeolocateControl ref={getlocateControlRef} />
 			<Source
 				id='mapbox-dem'
 				type='raster-dem'
