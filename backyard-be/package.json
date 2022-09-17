@@ -7,20 +7,23 @@
     "start": "NODE_ENV=\"dev\" index.js",
     "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js",
     "stage": "NODE_ENV=\"stage\" node index.js",
-    "test": "NODE_ENV=\"test\" jest"
+    "test": "NODE_ENV=\"test\" jest",
+    "lint": "NODE_ENV=\"test\" eslint . --ext .js --fix"
   },
   "author": "Andrew Maclean",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
     "jest": "^29.0.2",
     "nodemon": "^2.0.16",
     "supertest": "^6.2.4"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.142.0",
+    "@google-cloud/storage": "^6.4.2",
     "aws-sdk": "^2.1187.0",
-    "byf-custom-logger": "^1.9.3",
+    "byf-custom-logger": "^1.9.5",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "env-cmd": "^10.1.0",

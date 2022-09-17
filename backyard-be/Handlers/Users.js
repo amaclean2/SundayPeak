@@ -7,6 +7,7 @@ const queries = require('../DB')
 const { buildUserObject } = require('../Services/user.service')
 const logger = require('../Config/logger')
 const { sendResponse } = require('../ResponseHandling/success')
+const { getMapboxAccessToken } = require('../Config/connections')
 
 const loginUser = async (req, res) => {
 	try {
@@ -36,9 +37,8 @@ const loginUser = async (req, res) => {
 }
 
 const getUserById = async (req, res) => {
-	const { id } = req.query
-
 	try {
+		const { id } = req.query
 		if (!id) throw returnError({ req, res, message: 'idQueryRequired' })
 
 		const userObject = await buildUserObject({ req, res, initiation: { id: Number(id) } })
@@ -52,9 +52,8 @@ const getUserById = async (req, res) => {
 }
 
 const refetchUser = async (req, res) => {
-	const { id_from_token } = req.body
-
 	try {
+		const { id_from_token } = req.body
 		const userObject = await buildUserObject({ req, res, initiation: { id: id_from_token } })
 		delete userObject.password
 
@@ -73,7 +72,15 @@ const getLoggedInUser = async (req, res) => {
 			const userObject = await buildUserObject({ req, res, initiation: { id: id_from_token } })
 			delete userObject.password
 
-			return sendResponse({ req, res, data: { user: userObject }, status: SUCCESS })
+			return sendResponse({
+				req,
+				res,
+				data: {
+					user: userObject,
+					mapbox_token: getMapboxAccessToken()
+				},
+				status: SUCCESS
+			})
 
 		} else {
 			throw returnError({ req, res, message: 'notLoggedIn' })
@@ -129,9 +136,9 @@ const createUser = async (req, res) => {
 }
 
 const savePasswordReset = async (req, res) => {
-	const { new_password, new_password_2 } = req.body
-
 	try {
+		const { new_password, new_password_2 } = req.body
+
 		if (new_password !== new_password_2) {
 			throw returnError({ req, res, message: 'nonMatchingPasswords' })
 		}
@@ -159,11 +166,14 @@ const followUser = async (req, res) => {
 		await queries.followUser({ follower_id: id_from_token, leader_id })
 
 		return sendResponse({
-			req, res, data: {
+			req,
+			res,
+			data: {
 				user_id: id_from_token,
 				leader_id,
 				followed: true
-			}, status: ACCEPTED
+			},
+			status: ACCEPTED
 		})
 
 	} catch (error) {
@@ -182,9 +192,8 @@ const editUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
-	const { id_from_token } = req.body
-
 	try {
+		const { id_from_token } = req.body
 		const deleteResponse = await queries.deleteUser(id_from_token)
 
 		logger.debug('USER_DELETED', deleteResponse)

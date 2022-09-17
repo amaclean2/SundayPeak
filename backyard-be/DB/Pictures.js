@@ -7,8 +7,8 @@ const {
 } = require('./Statements')
 const db = require('../Config/db.js')
 
-const addUserPicture = async ({ fileName, userId }) => {
-	return db.promise().execute(createUserPictureStatement, [fileName, userId])
+const addUserPicture = async ({ fileName, user_id }) => {
+	return db.execute(createUserPictureStatement, [fileName, user_id])
 		.then((results) => results)
 		.catch((error) => {
 			throw {
@@ -18,8 +18,8 @@ const addUserPicture = async ({ fileName, userId }) => {
 		})
 }
 
-const addAdventurePicture = async ({ fileName, userId, adventureId }) => {
-	return db.promise().execute(createAdventurePictureStatement, [fileName, userId, adventureId])
+const addAdventurePicture = async ({ fileName, user_id, adventure_id }) => {
+	return db.execute(createAdventurePictureStatement, [fileName, user_id, adventure_id])
 		.then((results) => results)
 		.catch((error) => {
 			throw {
@@ -42,7 +42,7 @@ const getUserPictures = async ({ user_id }) => {
 }
 
 const getAdventurePictures = async ({ adventure_id }) => {
-	return db.promise().execute(getAdventurePicturesStatement, [adventure_id])
+	return db.execute(getAdventurePicturesStatement, [adventure_id])
 		.then(([results]) => results.map(({ file_name }) => file_name))
 		.catch((error) => {
 			throw {
@@ -53,7 +53,7 @@ const getAdventurePictures = async ({ adventure_id }) => {
 }
 
 const deleteUserPictures = async ({ file_name }) => {
-	return db.promise().execute(deletePictureStatement, [file_name])
+	return db.execute(deletePictureStatement, [file_name])
 		.then((results) => results)
 		.catch((error) => {
 			throw {

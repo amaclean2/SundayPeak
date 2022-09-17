@@ -1,5 +1,5 @@
-const handlers = require('./handlers');
+const handlers = require('./handlers')
 
-const cryptoHandlers = handlers;
+const cryptoHandlers = handlers
 
-module.exports = cryptoHandlers;
+module.exports = cryptoHandlers

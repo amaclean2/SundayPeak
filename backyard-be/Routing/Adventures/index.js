@@ -1,29 +1,29 @@
-const { Router } = require('express');
+const { Router } = require('express')
 
-const { adventureCreateValidator, adventuresGetValidator } = require('../../Validators/AdventureValidators');
-const { createNewAdventure, deleteAdventure, getAdventureDetails, getAllAdventures } = require('../../Handlers/Adventures');
-const { NOT_FOUND } = require('../../ResponseHandling/statuses');
+const { adventureCreateValidator, adventuresGetValidator } = require('../../Validators/AdventureValidators')
+const { createNewAdventure, deleteAdventure, getAdventureDetails, getAllAdventures } = require('../../Handlers/Adventures')
+const { NOT_FOUND } = require('../../ResponseHandling/statuses')
 
-const router = Router();
+const router = Router()
 
-router.get('/details', getAdventureDetails);
-router.post('/all', adventuresGetValidator(), getAllAdventures);
-router.post('/create', adventureCreateValidator(), createNewAdventure);
-router.delete('/delete', deleteAdventure);
+router.get('/details', getAdventureDetails)
+router.post('/all', adventuresGetValidator(), getAllAdventures)
+router.post('/create', adventureCreateValidator(), createNewAdventure)
+router.delete('/delete', deleteAdventure)
 
 router.put('/edit', (req, res) => {
-    res.status(NOT_FOUND).json({
-        message: 'API to be created'
-    });
-});
-
-router.use('/', (req, res) => {
-    res.status(NOT_FOUND).json({
-        data: {
-            message: 'Please select a method on /adventurtes',
-            status: NOT_FOUND
-        }
-    })
+	res.status(NOT_FOUND).json({
+		message: 'API to be created'
+	})
 })
 
-module.exports = router;
+router.use('/', (req, res) => {
+	res.status(NOT_FOUND).json({
+		data: {
+			message: 'Please select a method on /adventurtes',
+			status: NOT_FOUND
+		}
+	})
+})
+
+module.exports = router

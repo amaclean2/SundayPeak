@@ -59,7 +59,7 @@ const getUserById = async (id) => {
 }
 
 const savePasswordResetToken = async ({ email, token }) => {
-	return db.promise().execute(savePasswordResetTokenStatement, [email, token])
+	return db.execute(savePasswordResetTokenStatement, [email, token])
 		.then((result) => result[0].insertId)
 		.catch((error) => {
 			throw {
@@ -70,7 +70,7 @@ const savePasswordResetToken = async ({ email, token }) => {
 }
 
 const getPasswordResetEmail = async ({ token }) => {
-	return db.promise().execute(getPasswordResetEmailStatement, [token])
+	return db.execute(getPasswordResetEmailStatement, [token])
 		.then(([results]) => {
 			if (!results.length) {
 				return null

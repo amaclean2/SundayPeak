@@ -82,9 +82,9 @@ const getAdventures = async (coordinates, type) => {
 }
 
 const deleteAdventure = async (adventureId) => {
-	return db.promise().execite(deleteTickByAdventureStatement, [adventureId])
-		.then(() => db.promise().execute(deleteActivityByAdventureStatement, [adventureId]))
-		.then(() => db.promise().execute(deleteAdventureStatement, [adventureId]))
+	return db.execite(deleteTickByAdventureStatement, [adventureId])
+		.then(() => db.execute(deleteActivityByAdventureStatement, [adventureId]))
+		.then(() => db.execute(deleteAdventureStatement, [adventureId]))
 		.then(([result]) => result)
 		.catch((error) => {
 			logger.error('DATABASE_DELETION_FAILED', error)
