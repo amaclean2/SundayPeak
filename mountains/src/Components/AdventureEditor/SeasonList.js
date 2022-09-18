@@ -6,7 +6,7 @@ const SeasonList = ({ seasons }) => {
 	const [inline, setInline] = useState(false)
 
 	useEffect(() => {
-		if (seasonList && typeof seasonList === 'object') {
+		if (seasonList) {
 			let lastValue
 			const testInline = seasonList.every((value) => {
 				if (!lastValue) {
@@ -29,7 +29,7 @@ const SeasonList = ({ seasons }) => {
 			seasonOptions[seasonList[seasonList.length - 1] - 1]
 		}`
 	} else {
-		return <>{seasonList.map((item, key) => `${seasonOptions[item - 1]}`)}</>
+		return <>{seasonList.map((item) => seasonOptions[item - 1])}</>
 	}
 }
 

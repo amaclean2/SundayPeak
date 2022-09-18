@@ -80,8 +80,8 @@ const ReactMap = () => {
 	const onMove = useCallback((e) => {
 		refetchAdventures(
 			{
-				lat: e.viewState.latitude,
-				lng: e.viewState.longitude,
+				latitude: e.viewState.latitude,
+				longitude: e.viewState.longitude,
 				zoom: e.viewState.zoom
 			},
 			mapRef.current.getMap().getBounds()
@@ -103,10 +103,11 @@ const ReactMap = () => {
 
 	useEffect(() => {
 		if (flying) {
-			mapRef?.current?.flyTo({
+			mapRef?.current?.easeTo({
 				center: [flying.longitude, flying.latitude],
 				zoom: flying.zoom,
-				// pitch: flying.pitch,
+				pitch: flying.pitch,
+				bearing: 0,
 				duration: 1500
 			})
 			setFlying(false)

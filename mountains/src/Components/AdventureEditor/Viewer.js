@@ -1,25 +1,13 @@
 import { useAdventureEditContext } from '../../Providers'
 import { Field, FieldHeader, FieldPage, FieldRow } from '../Reusable'
 import AdventureGallery from './Gallery'
+import GearList from './GearList'
 import SeasonList from './SeasonList'
 import AdventureTickPanel from './TickPanel'
 import { gearOptions } from './utils'
 
 const AdventureViewer = () => {
 	const { currentAdventure } = useAdventureEditContext()
-
-	const buildGearList = () => {
-		const gearList =
-			typeof currentAdventure.gear === 'string'
-				? JSON.parse(currentAdventure.gear)
-				: currentAdventure.gear
-
-		return gearList?.map((item, key) => (
-			<span key={`option_${key}`}>
-				{gearOptions.find(({ value }) => value.toString() === item).name}
-			</span>
-		))
-	}
 
 	return (
 		<div className='adventure-viewer flex-box'>
@@ -58,7 +46,7 @@ const AdventureViewer = () => {
 				<FieldRow borderBottom>
 					<Field>
 						<FieldHeader text='Gear' />
-						{buildGearList()}
+						<GearList gear={currentAdventure.gear} />
 					</Field>
 				</FieldRow>
 				<FieldRow borderBottom>

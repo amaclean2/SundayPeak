@@ -54,7 +54,13 @@ export const useGetAdventures = () => {
 			}
 		})
 			.then(({ data: { adventures } }) => {
-				setAllAdventures((currAdventures) => [...currAdventures, ...adventures])
+				// setAllAdventures((currAdventures) => {
+				// 	const currentIds = currAdventures.map(({ id }) => id)
+				// 	return [
+				// 		...currAdventures,
+				// 		adventures.filter(({ id }) => !(currentIds.includes(id)))
+				// 	]
+				// })
 				setStartPosition(newStartPosition)
 
 				return adventures

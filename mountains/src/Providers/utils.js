@@ -129,7 +129,6 @@ export const fetcher = (url, options) => {
 		method: options?.method || 'GET'
 	})
 
-	console.log('FETCHING', url, headers)
 	return fetch(request)
 		.then((resp) => {
 			if (resp.status !== 204) {

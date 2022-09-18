@@ -25,7 +25,7 @@ export const AdventureEditProvider = ({ children }) => {
 	const [isEditable, setIsEditable] = useState(false)
 	const [adventureError, setAdventureError] = useState(null)
 	const [mapboxToken, setMapboxToken] = useState(null)
-	const [startPosition, setStatePosition] = useState(initialStartPosition)
+	const [startPosition, setStartPosition] = useState(initialStartPosition)
 	const [flying, setFlying] = useState(false)
 
 	useEffect(() => {
@@ -49,7 +49,7 @@ export const AdventureEditProvider = ({ children }) => {
 				setAllAdventures,
 				setAdventureError,
 				setMapboxToken,
-				setStatePosition,
+				setStartPosition,
 				setFlying
 			}}
 		>
