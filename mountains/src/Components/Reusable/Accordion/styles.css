@@ -1,0 +1,26 @@
+.accordion {
+	width: 100%;
+	border: 1px solid var(--input-border-color);
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 15px 0;
+}
+
+.accordion-top {
+	background-color: var(--text-on-dark-background);
+	padding: 5px 15px;
+	margin: 0;
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.accordion-content-wrapper {
+	transition: all 0.3s ease-in-out;
+	margin-top: 15px;
+	padding: 0 15px;
+	height: 220px;
+}
+
+.accordion-closed {
+	height: 0;
+}

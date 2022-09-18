@@ -103,6 +103,8 @@
 	position: absolute;
 	bottom: 0;
 	width: calc(100% - 20px);
+	background-color: var(--secondary-background-color);
+	box-shadow: 0 0 50px 30px var(--secondary-background-color);
 }
 
 .action-buttons .button {

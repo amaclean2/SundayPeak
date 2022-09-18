@@ -42,12 +42,14 @@ const AdventureEditor = () => {
 	}, [adventureError])
 
 	useEffect(() => {
-		setFlying({
-			latitude: currentAdventure.coordinates_lat - 0.001,
-			longitude: currentAdventure.coordinates_lng - 0.004,
-			zoom: 16,
-			pitch: 60
-		})
+		if (currentAdventure) {
+			setFlying({
+				latitude: currentAdventure.coordinates_lat - 0.001,
+				longitude: currentAdventure.coordinates_lng - 0.004,
+				zoom: 16,
+				pitch: 60
+			})
+		}
 	}, [])
 
 	const buildProfileHeader = () => {

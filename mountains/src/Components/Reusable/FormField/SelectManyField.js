@@ -45,10 +45,10 @@ const SelectManyField = ({ className, options, onChange, name, value }) => {
 				>
 					<input
 						type='checkbox'
-						name={option.name}
-						id={option.name}
-						value={option.value}
-						checked={selectManyState.includes(key + 1)}
+						name={option}
+						id={option}
+						value={key + 1}
+						checked={selectManyState.includes((key + 1).toString())}
 						className={'hidden-checkbox'}
 						onChange={handleSelectManyState}
 					/>

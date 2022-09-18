@@ -4,7 +4,6 @@ import AdventureGallery from './Gallery'
 import GearList from './GearList'
 import SeasonList from './SeasonList'
 import AdventureTickPanel from './TickPanel'
-import { gearOptions } from './utils'
 
 const AdventureViewer = () => {
 	const { currentAdventure } = useAdventureEditContext()
@@ -36,11 +35,13 @@ const AdventureViewer = () => {
 				<FieldRow borderBottom>
 					<Field borderRight>
 						<FieldHeader text='Approach' />
-						{currentAdventure.approach_distance}
+						{`${currentAdventure.approach_distance} miles`}
 					</Field>
 					<Field>
 						<FieldHeader text='Elevation' />
-						{currentAdventure.elevation} - {currentAdventure.elevation + currentAdventure.gain}
+						{`${Number(currentAdventure.elevation) - Number(currentAdventure.gain)} - ${
+							currentAdventure.elevation
+						}`}
 					</Field>
 				</FieldRow>
 				<FieldRow borderBottom>

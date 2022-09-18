@@ -1,16 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import Map, { GeolocateControl, Layer, Marker, NavigationControl, Source } from 'react-map-gl'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import Map, { GeolocateControl, Layer, NavigationControl, Source } from 'react-map-gl'
 
-import { SkierIcon } from '../../Images'
-import {
-	CARD_STATES,
-	useAdventureEditContext,
-	useCardStateContext,
-	useGetAdventures
-} from '../../Providers'
+import { useAdventureEditContext, useGetAdventures } from '../../Providers'
 import MapPopup from './MapPopup'
 
 import '../../App.css'
+import AdventurePins from './AdventurePins'
+import { useCreateNewAdventure } from './utils'
 
 const skyLayer = {
 	id: 'sky',
@@ -24,84 +20,35 @@ const skyLayer = {
 
 const ReactMap = () => {
 	const mapRef = useRef()
-	const getlocateControlRef = useCallback((ref) => {
+	const getLocateControlRef = useCallback((ref) => {
 		if (ref) ref.trigger()
 	}, [])
 
-	const { openCard } = useCardStateContext()
-	const {
-		adventureAddState,
-		setAdventureAddState,
-		setCurrentAdventure,
-		allAdventures,
-		setAllAdventures,
-		setIsEditable,
-		mapboxToken,
-		startPosition,
-		flying,
-		setFlying
-	} = useAdventureEditContext()
+	const { allAdventures, mapboxToken, startPosition, flying, setFlying } = useAdventureEditContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
+	const { handleCreateNewAdventure, viewMore } = useCreateNewAdventure()
 
 	const [popupInfo, setPopupInfo] = useState(null)
 
-	const onDblClick = (e) => {
-		e.preventDefault()
-
-		if (!adventureAddState) {
-			return
-		}
-
-		const newAdventure = {
-			id: 'waiting',
-			adventure_name: 'New Adventure',
-			images: [],
-			coordinates: {
-				lng: e.lngLat.lng,
-				lat: e.lngLat.lat
-			}
-		}
-
-		setAllAdventures((currentAdventures) => {
-			return [...currentAdventures, newAdventure]
-		})
-
-		setCurrentAdventure(newAdventure)
-
-		openCard(CARD_STATES.adventures)
-		setIsEditable(true)
-		setAdventureAddState(false)
-	}
-
-	const loadMap = (e) => {
+	const onLoad = () => {
 		getAllAdventures(mapRef.current.getMap().getBounds())
 	}
 
-	const onMove = useCallback((e) => {
+	// refetchAdventures has to be wrapped in a callback so the debouncer can work
+	const onMove = useCallback((event) => {
 		refetchAdventures(
 			{
-				latitude: e.viewState.latitude,
-				longitude: e.viewState.longitude,
-				zoom: e.viewState.zoom
+				latitude: event.viewState.latitude,
+				longitude: event.viewState.longitude,
+				zoom: event.viewState.zoom
 			},
 			mapRef.current.getMap().getBounds()
 		)
 	}, [])
 
-	/**
-	 * zoom 20 is about 200' (* 50)
-	 * zoom 15 is about 10,000' (* 50)
-	 * zoom 10 is about 300,000' (* 50)
-	 * zoom 5 is about 7,000,000' (* 50) (1 / x^2) * 100000
-	 */
-
-	const viewMore = () => {
-		setCurrentAdventure(popupInfo)
-		setPopupInfo(null)
-		openCard(CARD_STATES.adventures)
-	}
-
 	useEffect(() => {
+		// flying is set by an external component
+		// if flying is set, fly to that location, then unset flying
 		if (flying) {
 			mapRef?.current?.easeTo({
 				center: [flying.longitude, flying.latitude],
@@ -114,50 +61,32 @@ const ReactMap = () => {
 		}
 	}, [flying])
 
-	const pins = useMemo(() => {
-		return (
-			allAdventures &&
-			allAdventures.map((adventure, idx) => (
-				<Marker
-					key={`marker-${idx}`}
-					longitude={adventure.coordinates.lng}
-					latitude={adventure.coordinates.lat}
-					anchor='bottom'
-					onClick={(e) => {
-						e.originalEvent.stopPropagation()
-						setPopupInfo(adventure)
-					}}
-				>
-					<SkierIcon size={20} />
-				</Marker>
-			))
-		)
-	}, [allAdventures])
-
-	if (!allAdventures) {
+	if (!(allAdventures && mapboxToken)) {
 		return null
 	}
 
-	if (!mapboxToken) {
-		return null
+	// extracted the props for the <Map /> component to here so it doesn't clutter the jsx
+	const mapProps = {
+		ref: mapRef,
+		reuseMaps: true,
+		className: 'map-container',
+		mapboxAccessToken: mapboxToken,
+		mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
+		initialViewState: startPosition,
+		maxPitch: 85,
+		onDblClick: handleCreateNewAdventure,
+		onLoad,
+		onMove,
+		terrain: {
+			source: 'mapbox-dem',
+			exaggeration: 1
+		}
 	}
 
 	return (
-		<Map
-			ref={mapRef}
-			reuseMaps
-			className='map-container'
-			mapboxAccessToken={mapboxToken}
-			mapStyle='mapbox://styles/mapbox/satellite-v9'
-			initialViewState={startPosition}
-			maxPitch={85}
-			onDblClick={onDblClick}
-			onLoad={loadMap}
-			onMove={onMove}
-			terrain={{ source: 'mapbox-dem', exaggeration: 1 }}
-		>
+		<Map {...mapProps}>
 			<NavigationControl showCompass />
-			<GeolocateControl ref={getlocateControlRef} />
+			<GeolocateControl ref={getLocateControlRef} />
 			<Source
 				id='mapbox-dem'
 				type='raster-dem'
@@ -166,12 +95,11 @@ const ReactMap = () => {
 				maxZoom={14}
 			/>
 			<Layer {...skyLayer} />
-			{pins}
-
+			<AdventurePins setPopupInfo={setPopupInfo} />
 			{popupInfo && (
 				<MapPopup
 					popupInfo={popupInfo}
-					viewMore={viewMore}
+					viewMore={() => viewMore({ popupInfo, setPopupInfo })}
 					setPopupInfo={setPopupInfo}
 				/>
 			)}

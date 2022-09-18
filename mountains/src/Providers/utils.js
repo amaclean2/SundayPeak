@@ -2,6 +2,7 @@ import { getBackendUri } from '../Constants'
 
 export const validateAdventure = (currentAdventure, setAdventureError) => {
 	const coordinates = JSON.stringify(currentAdventure.coordinates)
+	let images = currentAdventure.images
 	let approachDistance = null
 	let season = null
 	let avgAngle = null
@@ -86,7 +87,8 @@ export const validateAdventure = (currentAdventure, setAdventureError) => {
 		gain,
 		bio: currentAdventure.bio || '',
 		nearest_city: currentAdventure.nearest_city || null,
-		coordinates
+		coordinates,
+		images
 	}
 
 	return adventureObj

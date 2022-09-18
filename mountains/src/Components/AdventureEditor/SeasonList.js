@@ -3,20 +3,32 @@ import { seasonOptions } from './utils'
 
 const SeasonList = ({ seasons }) => {
 	const [seasonList, setSeasonList] = useState(null)
-	const [inline, setInline] = useState(false)
+	const [inline, setInline] = useState(null)
 
 	useEffect(() => {
 		if (seasonList) {
 			let lastValue
-			const testInline = seasonList.every((value) => {
+			const inlineList = seasonList.reduce((newList, value) => {
 				if (!lastValue) {
-					return true
-				} else {
-					return value - lastValue === 1
-				}
-			})
+					lastValue = value
+					return [seasonOptions[Number(value) - 1]]
+				} else if (value - lastValue === 1) {
+					if (newList.length > 1) {
+						newList = newList.slice(0, -1)
+						if (newList[newList.length - 1] !== 0) {
+							newList = [...newList, 0]
+						}
+					}
 
-			setInline(testInline)
+					lastValue = value
+					return [...newList, seasonOptions[Number(value) - 1]]
+				} else {
+					return [...newList, seasonOptions[Number(value) - 1]]
+				}
+			}, [])
+			const stringyList = inlineList.join(', ')
+			const formattedStr = stringyList.replace(/, 0,/g, ' -')
+			setInline(formattedStr)
 		} else {
 			setSeasonList(typeof seasons === 'string' ? JSON.parse(seasons) : seasons)
 		}
@@ -24,13 +36,7 @@ const SeasonList = ({ seasons }) => {
 
 	if (!seasonList) return null
 
-	if (inline) {
-		return `${seasonOptions[seasonList[0] - 1]} - ${
-			seasonOptions[seasonList[seasonList.length - 1] - 1]
-		}`
-	} else {
-		return <>{seasonList.map((item) => seasonOptions[item - 1])}</>
-	}
+	return inline
 }
 
 export default SeasonList

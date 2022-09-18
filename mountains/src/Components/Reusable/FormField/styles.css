@@ -1,175 +1,179 @@
 input {
-    font-family: inherit;
+	font-family: inherit;
 }
 
 .form-field-container {
-    min-width: 200px;
-    flex: 1;
-    padding-right: 8px;
-    margin-bottom: 10px;
+	min-width: 200px;
+	flex: 1;
+	padding-right: 8px;
+	margin-bottom: 10px;
 }
 
 .form-field-container.wide {
-    flex-basis: 100%;
+	flex-basis: 100%;
 }
 
 .form-field-container.static {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .form-field-container.block {
-    display: block;
-    flex-basis: 100%;
+	display: block;
+	flex-basis: 100%;
 }
 
 .form-field-container.block .form-field {
-    max-width: 250px;
+	max-width: 250px;
 }
 
 .form-field-static {
-    font-size: 18px;
-    margin-bottom: 10px;
+	font-size: 18px;
+	margin-bottom: 10px;
 }
 
 .label-field {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    display: block;
+	font-size: 16px;
+	font-weight: 700;
+	margin-bottom: 10px;
+	display: block;
 }
 
-.form-field.text, .form-field.text-area, .form-field.email {
-    background-color: var(--input-background-color);
-    border: 1px solid var(--input-border-color);
-    border-radius: 10px;
-    font-size: 16px;
-    margin: 5px 0;
-    display: block;
-    height: 40px;
+.form-field.text,
+.form-field.text-area,
+.form-field.email {
+	background-color: var(--input-background-color);
+	border: 1px solid var(--input-border-color);
+	border-radius: 10px;
+	font-size: 16px;
+	margin: 5px 0;
+	display: block;
+	height: 40px;
 
-    /* subtract the padding from the form field and the border*/
-    width: calc(100% - 34px);
-    padding: 0 16px;
-    transition: all 0.2s ease-in-out;
-    outline: none;
+	/* subtract the padding from the form field and the border*/
+	width: calc(100% - 34px);
+	padding: 0 16px;
+	transition: all 0.15s ease-in-out;
+	outline: none;
 }
 
 .form-field.password {
-    background-color: var(--input-background-color);
-    border: 1px solid var(--input-border-color);
-    border-radius: 10px;
-    font-size: 16px;
-    margin: 5px 0;
-    /* subtract the padding from the form field and the border*/
-    width: calc(100% - 34px);
-    height: 40px;
-    padding: 0 16px;
-    transition: all 0.2s ease-in-out;
-    justify-content: space-between;
+	background-color: var(--input-background-color);
+	border: 1px solid var(--input-border-color);
+	border-radius: 10px;
+	font-size: 16px;
+	margin: 5px 0;
+	/* subtract the padding from the form field and the border*/
+	width: calc(100% - 34px);
+	height: 40px;
+	padding: 0 16px;
+	transition: all 0.2s ease-in-out;
+	justify-content: space-between;
 }
 
 .password-input-field {
-    font-size: inherit;
+	font-size: inherit;
 }
 
 .password .password-switch-field {
-    font-size: inherit;
+	font-size: inherit;
 }
 
 .form-field.password.focus {
-    box-shadow: 0 0 5px var(--half-opacity-accent-color);
-    border: 1px solid var(--secondary-accent-color);
+	box-shadow: 0 0 5px var(--half-opacity-accent-color);
+	border: 1px solid var(--secondary-accent-color);
 }
 
 .form-field.password input {
-    outline: none;
-    position: relative;
-    height: 100%;
-    padding: 0;
-    border: 0;
-    flex: 1;
+	outline: none;
+	position: relative;
+	height: 100%;
+	padding: 0;
+	border: 0;
+	flex: 1;
 }
 
 .form-field.password button {
-    background-color: transparent;
-    color: var(--main-text-color);
-    padding: 0;
+	background-color: transparent;
+	color: var(--main-text-color);
+	padding: 0;
 }
 
 .form-field.form-field.password.focus button {
-    color: var(--secondary-accent-color);
+	color: var(--secondary-accent-color);
 }
 
 .form-field.text:focus {
-    box-shadow: 0 0 5px var(--half-opacity-accent-color);
-    border: 1px solid var(--secondary-accent-color);
+	box-shadow: 0 0 5px var(--half-opacity-accent-color);
+	border: 1px solid var(--secondary-accent-color);
 }
 
 .form-field-static.card-header {
-    font-size: 25px;
-    margin: 10px;
-    font-weight: 500;
+	font-size: 25px;
+	margin: 10px;
+	font-weight: 500;
 }
 
 .form-field.card-header {
-    font-size: 16px;
-    margin: 10px;
-    display: block;
-    max-width: calc(100% - 60px);
+	font-size: 16px;
+	margin: 10px;
+	display: block;
+	max-width: calc(100% - 60px);
 }
 
 .label-field.checkbox {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	font-weight: 500;
+	font-size: 14px;
 }
 
 .hidden-checkbox {
-    display: none;
+	display: none;
 }
 
-.checkbox .checkbox-illus, .select-many .select-many-illus {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--input-border-color);
-    margin-right: 8px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.checkbox .checkbox-illus,
+.select-many .select-many-illus {
+	width: 20px;
+	height: 20px;
+	border: 2px solid var(--input-border-color);
+	margin-right: 8px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-.hidden-checkbox:checked + .checkbox-illus, .hidden-checkbox:checked + .select-many-illus {
-    background-color: var(--secondary-accent-color);
-    border: 2px solid var(--default-background-color);
-    outline: none;
+.hidden-checkbox:checked + .checkbox-illus,
+.hidden-checkbox:checked + .select-many-illus {
+	background-color: var(--secondary-accent-color);
+	border: 2px solid var(--default-background-color);
+	outline: none;
 }
 
 .select-many-option {
-    margin-bottom: 5px;
-    cursor: pointer;
+	margin-bottom: 5px;
+	cursor: pointer;
 }
 
 .form-field.select-many {
-    margin: 8px 0 15px 0;
-    flex-direction: column;
-    align-items: flex-start;
-    max-height: 200px;
-    flex-wrap: wrap;
-    align-items: flex-start;
+	margin: 8px 0 15px 0;
+	flex-direction: column;
+	align-items: flex-start;
+	max-height: 200px;
+	flex-wrap: wrap;
+	align-items: flex-start;
 }
 
 .slider {
-    width: 100%;
+	width: 100%;
 }
 
 .form-field.text-area {
-    height: 100px;
-    font-family: inherit;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    resize: none;
+	height: 100px;
+	font-family: inherit;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	resize: none;
 }
