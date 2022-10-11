@@ -4,7 +4,7 @@
   "description": "",
   "main": "node index.js",
   "scripts": {
-    "start": "NODE_ENV=\"dev\" index.js",
+    "start": "NODE_ENV=\"prod\" index.js",
     "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js",
     "stage": "NODE_ENV=\"stage\" node index.js",
     "test": "NODE_ENV=\"test\" jest",

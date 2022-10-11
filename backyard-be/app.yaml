@@ -9,7 +9,7 @@ env_variables:
   DB_PASS: AVNS_lM25mnEfowo3P0b7CEb
   DB_NAME: friends
   DB_PORT: 25060
-  JWT_SECRET: secret
+  JWT_SECRET: production_secret
   S3_ENDPOINT: sfo3.digitaloceanspaces.com
   DO_BUCKET: byf-images
   DO_ACCESS_KEY_ID: DO00NDV9Z7BP6DURA2FF
