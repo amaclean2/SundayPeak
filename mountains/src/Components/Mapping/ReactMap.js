@@ -7,6 +7,7 @@ import MapPopup from './MapPopup'
 import '../../App.css'
 import AdventurePins from './AdventurePins'
 import { useCreateNewAdventure } from './utils'
+import { mapStyles } from '../../Providers/utils'
 
 const skyLayer = {
 	id: 'sky',
@@ -50,12 +51,11 @@ const ReactMap = () => {
 		// flying is set by an external component
 		// if flying is set, fly to that location, then unset flying
 		if (flying) {
-			mapRef?.current?.easeTo({
+			mapRef?.current?.flyTo({
 				center: [flying.longitude, flying.latitude],
 				zoom: flying.zoom,
 				pitch: flying.pitch,
-				bearing: 0,
-				duration: 1500
+				bearing: flying.bearing
 			})
 			setFlying(false)
 		}
@@ -71,7 +71,7 @@ const ReactMap = () => {
 		reuseMaps: true,
 		className: 'map-container',
 		mapboxAccessToken: mapboxToken,
-		mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
+		mapStyle: `${mapStyles.satelite}?optimize=true`,
 		initialViewState: startPosition,
 		maxPitch: 85,
 		onDblClick: handleCreateNewAdventure,
@@ -99,7 +99,13 @@ const ReactMap = () => {
 			{popupInfo && (
 				<MapPopup
 					popupInfo={popupInfo}
-					viewMore={() => viewMore({ popupInfo, setPopupInfo })}
+					viewMore={() =>
+						viewMore({
+							id: popupInfo.id,
+							setPopupInfo,
+							boundingBox: mapRef.current.getMap().getBounds()
+						})
+					}
 					setPopupInfo={setPopupInfo}
 				/>
 			)}

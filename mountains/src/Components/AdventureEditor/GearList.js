@@ -10,7 +10,13 @@ const GearList = ({ gear }) => {
 
 	if (!gearList) return null
 
-	return <>{gearList.map((item) => gearOptions[item - 1])}</>
+	return (
+		<>
+			{gearList.map((item, key) => (
+				<div key={`gear_item_${key}`}>{gearOptions[item - 1]}</div>
+			))}
+		</>
+	)
 }
 
 export default GearList

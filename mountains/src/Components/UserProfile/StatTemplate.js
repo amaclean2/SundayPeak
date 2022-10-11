@@ -1,13 +1,12 @@
-import { Field, FieldHeader } from "../Reusable";
+import { Field, FieldHeader, FieldValue } from '../Reusable'
 
-const StatTemplate = ({ statLabel = '', statValue = ''}) => {
+const StatTemplate = ({ statLabel = '', statValue = '' }) => {
+	return (
+		<Field className='stat-template'>
+			<FieldHeader text={statLabel} />
+			<FieldValue className={'stat-field'}>{statValue}</FieldValue>
+		</Field>
+	)
+}
 
-    return (
-        <Field className="stat-template">
-            <FieldHeader text={statLabel} />
-            {statValue}
-        </Field>
-    );
-};
-
-export default StatTemplate;
+export default StatTemplate

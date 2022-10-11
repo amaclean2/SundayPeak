@@ -1,39 +1,54 @@
-import React from 'react';
+import React from 'react'
 
-import { useUserStateContext } from '../../Providers';
-import { DisplayCard, FormField } from '../Reusable';
-import UserProfileButtons from './Buttons';
-import UserProfileGallery from './Gallery';
-import UserTickPanel from './TickPanel';
-import Stats from './Stats';
+import { useUserStateContext } from '../../Providers'
+import { DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable'
+import UserProfileButtons from './Buttons'
 
-import './styles.css';
+import './styles.css'
+import UserViewer from './Viewer'
+import UserEditor from './Editor'
 
 const UserProfile = () => {
-	const { workingUser } = useUserStateContext();
+	const { workingUser, isEditable } = useUserStateContext()
 
 	if (!workingUser) {
-		return null;
+		return null
+	}
+
+	const buildProfileHeader = () => {
+		if (workingUser) {
+			if (isEditable) {
+				return (
+					<ProfileHeader>
+						<FieldHeader
+							className='page-header'
+							text={`My Profile`}
+						/>
+					</ProfileHeader>
+				)
+			} else {
+				return (
+					<ProfileHeader image={workingUser.profile_picture_url}>
+						<FieldHeader
+							className='page-header'
+							text={`${workingUser.first_name} ${workingUser.last_name}`}
+						/>
+						<HeaderSubtext>{workingUser.city}</HeaderSubtext>
+					</ProfileHeader>
+				)
+			}
+		}
 	}
 
 	return (
 		<DisplayCard>
-			<div className="profile-header">
-				<FormField
-					value={`${workingUser.first_name} ${workingUser.last_name}`}
-					isEditable={false}
-					className="card-header"
-				/>
-				<div className="profile-photo" />
-			</div>
-			<div className="profile-content">
-				<UserProfileGallery />
-				<Stats />
-				<UserTickPanel />
+			{buildProfileHeader()}
+			<div className='profile-content'>
+				<div className='main-user-content'>{isEditable ? <UserEditor /> : <UserViewer />}</div>
 				<UserProfileButtons />
 			</div>
 		</DisplayCard>
-	);
-};
+	)
+}
 
-export default UserProfile;
+export default UserProfile

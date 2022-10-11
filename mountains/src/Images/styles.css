@@ -1,0 +1,37 @@
+.angle-icon,
+.elevation-icon,
+.distance-icon {
+	margin-right: 20px;
+}
+
+.aspect-icon.north {
+	transform: rotate(-90deg);
+}
+
+.aspect-icon.north-east {
+	transform: rotate(-45deg);
+}
+
+.aspect-icon.east {
+	transform: rotate(0deg);
+}
+
+.aspect-icon.south-east {
+	transform: rotate(45deg);
+}
+
+.aspect-icon.south {
+	transform: rotate(90deg);
+}
+
+.aspect-icon.south-west {
+	transform: rotate(135deg);
+}
+
+.aspect-icon.west {
+	transform: rotate(180deg);
+}
+
+.aspect-icon.north-west {
+	transform: rotate(-135deg);
+}

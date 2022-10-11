@@ -1,16 +1,13 @@
 const { validationResult } = require('express-validator')
 
 const logger = require('../Config/logger')
+const { updateAdventure } = require('../DB')
 const queries = require('../DB')
 const { returnError, sendResponse } = require('../ResponseHandling')
-const {
-  SUCCESS,
-  NO_CONTENT,
-  CREATED,
-} = require('../ResponseHandling/statuses')
+const { SUCCESS, NO_CONTENT, CREATED } = require('../ResponseHandling/statuses')
 const {
   buildAdventureObject,
-  parseCoordinates,
+  parseCoordinates
 } = require('../Services/adventure.service')
 
 const getAllAdventures = async (req, res) => {
@@ -24,8 +21,7 @@ const getAllAdventures = async (req, res) => {
     const parsedCoordinates = parseCoordinates({ boundingBox: bounding_box })
     const adventures = await queries.getAdventures(parsedCoordinates, type, 10)
 
-		return sendResponse({ req, res, data: { adventures }, status: SUCCESS })
-
+    return sendResponse({ req, res, data: { adventures }, status: SUCCESS })
   } catch (error) {
     return returnError({ req, res, error, message: 'serverGetAdventures' })
   }
@@ -37,7 +33,7 @@ const getAdventureDetails = async (req, res) => {
 
     if (id) {
       const adventure = await buildAdventureObject({ id })
-			return sendResponse({ req, res, data: { adventure }, status: SUCCESS})
+      return sendResponse({ req, res, data: { adventure }, status: SUCCESS })
     }
 
     throw returnError({ req, res, message: 'adventureIdFieldRequired' })
@@ -46,17 +42,17 @@ const getAdventureDetails = async (req, res) => {
       req,
       res,
       message: 'serverGetAdventureDetails',
-      error,
+      error
     })
   }
 }
 
 const createNewAdventure = async (req, res) => {
   try {
-		const errors = validationResult(req)
-		if (!errors.isEmpty()) {
-			throw returnError({ req, res, error: errors.array()[0] })
-		}
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw returnError({ req, res, error: errors.array()[0] })
+    }
 
     const resultId = await queries.addAdventure(req.body)
     const responseBody = req.body
@@ -64,25 +60,54 @@ const createNewAdventure = async (req, res) => {
     responseBody.id = resultId
     responseBody.coordinates = {
       lat: responseBody.coordinates_lat,
-      lng: responseBody.coordinates_lng,
+      lng: responseBody.coordinates_lng
     }
 
     delete responseBody.coordinates_lat
     delete responseBody.coordinates_lng
 
-		return sendResponse({ req, res, data: { adventure: responseBody }, status: CREATED })
+    return sendResponse({
+      req,
+      res,
+      data: { adventure: responseBody },
+      status: CREATED
+    })
   } catch (error) {
     return returnError({ req, res, message: 'serverCreateAdventure', error })
   }
 }
 
+const editAdventure = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw returnError({ req, res, error: errors.array()[0] })
+    }
+
+    const { fields, adventure_id } = req.body
+
+    const formattedFields = fields.map((field) => ({
+      field_name: field.name,
+      field_value: field.value,
+      adventure_id
+    }))
+
+    const updates = await updateAdventure({ fields: formattedFields })
+    updates.forEach(logger.debug)
+
+    return sendResponse({ req, res, data: {}, status: NO_CONTENT })
+  } catch (error) {
+    return returnError({ req, res, message: 'serverValidationError', error })
+  }
+}
+
 const deleteAdventure = async (req, res) => {
   try {
-		const { adventure_id } = req.query
+    const { adventure_id } = req.query
     const deletion_resp = await queries.deleteAdventure(adventure_id)
     logger.debug('ADVENTURE_DELETED', deletion_resp)
 
-		return sendResponse({ req, res, data: {}, status: NO_CONTENT })
+    return sendResponse({ req, res, data: {}, status: NO_CONTENT })
   } catch (error) {
     return returnError({ req, res, message: 'serverDeleteAdventure', error })
   }
@@ -94,5 +119,6 @@ module.exports = {
   getAllAdventures,
   getAdventureDetails,
   createNewAdventure,
-  deleteAdventure,
+  editAdventure,
+  deleteAdventure
 }

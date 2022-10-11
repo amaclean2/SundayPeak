@@ -1,60 +1,68 @@
-import React from 'react';
-import { Popup } from 'react-map-gl';
+import React from 'react'
+import { Popup } from 'react-map-gl'
 
-import {
-	useCardStateContext,
-	CARD_STATES,
-	useGetAdventure,
-	useSaveTick
-} from '../../../Providers';
-import { Button, FormField } from '../../Reusable';
+import { useSaveTick } from '../../../Providers'
+import { Button, FieldHeader, FieldRow, FooterButtons } from '../../Reusable'
+import { DescriptionField, PopupField } from './PopupField'
+import { formatSeasons } from '../../AdventureEditor/utils'
 
-import './styles.css';
+import './styles.css'
 
-const MapPopup = ({ popupInfo, setPopupInfo }) => {
-	const { getAdventure } = useGetAdventure();
-	const { openCard } = useCardStateContext();
-	const { saveTick } = useSaveTick();
+const MapPopup = ({ viewMore, popupInfo, setPopupInfo }) => {
+	const { saveTick } = useSaveTick()
+	const seasonArray =
+		typeof popupInfo.season === 'string' ? JSON.parse(popupInfo.season) : popupInfo.season
 
-	const viewMore = () => {
-		return getAdventure({ id: popupInfo.id }).then(() => {
-			setPopupInfo(null);
-			openCard(CARD_STATES.adventures);
-		});
-	};
+	if (!popupInfo) return
 
 	return (
 		<Popup
-			className="adventure-pop-up"
-			anchor="top"
+			className='adventure-pop-up'
+			anchor='top'
 			longitude={Number(popupInfo.coordinates.lng)}
 			latitude={Number(popupInfo.coordinates.lat)}
 			onClose={() => setPopupInfo(null)}
 		>
-			<FormField
-				value={popupInfo.adventure_name}
-				isEditable={false}
-				className="card-header"
-			/>
-			<FormField name="elevation" label="Elevation" isEditable={false} value={popupInfo.elevation} />
-			<Button
-				small
-				id={'view-more-button'}
-				className="button popup-view-more-button"
-				onClick={viewMore}
-			>
-				View More
-			</Button>
-			<Button
-				small
-				id={'add-to-tick-list-button'}
-				className="button popup-add-to-ticklist-button"
-				onClick={() => saveTick({ adventureId: popupInfo.id })}
-			>
-				Add To Tick List
-			</Button>
+			<FieldHeader text={popupInfo.adventure_name} />
+			<section className='popup-info'>
+				<DescriptionField>{popupInfo.bio}</DescriptionField>
+				<FieldRow>
+					<PopupField
+						name='Elevation'
+						value={popupInfo.elevation}
+						className='elevation'
+					/>
+					<PopupField
+						name='Difficulty'
+						value={popupInfo.difficulty}
+						className='difficulty'
+					/>
+				</FieldRow>
+				<PopupField
+					name='Seasons'
+					value={formatSeasons({ seasonArray })}
+				/>
+			</section>
+			<FooterButtons className='popup-buttons'>
+				<Button
+					small
+					id={'view-more-button'}
+					className='button popup-view-more-button'
+					onClick={viewMore}
+				>
+					View More
+				</Button>
+				<Button
+					small
+					id={'add-to-tick-list-button'}
+					className='button popup-add-to-ticklist-button'
+					onClick={() => saveTick({ adventureId: popupInfo.id })}
+				>
+					Add To Tick List
+				</Button>
+			</FooterButtons>
 		</Popup>
-	);
-};
+	)
+}
 
-export default MapPopup;
+export default MapPopup

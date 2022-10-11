@@ -1,4 +1,10 @@
-import { CARD_STATES, useAdventureEditContext, useCardStateContext } from '../../Providers'
+import {
+	CARD_STATES,
+	useAdventureEditContext,
+	useCardStateContext,
+	useGetAdventure
+} from '../../Providers'
+import { createNewDefaultAdventure } from '../../Providers/utils'
 
 export const useCreateNewAdventure = () => {
 	const {
@@ -6,9 +12,11 @@ export const useCreateNewAdventure = () => {
 		setAllAdventures,
 		setCurrentAdventure,
 		setIsEditable,
-		setAdventureAddState
+		setAdventureAddState,
+		setCurrentBoundingBox
 	} = useAdventureEditContext()
 	const { openCard } = useCardStateContext()
+	const { getAdventure } = useGetAdventure()
 
 	const handleCreateNewAdventure = (event) => {
 		event.preventDefault()
@@ -17,15 +25,10 @@ export const useCreateNewAdventure = () => {
 			return
 		}
 
-		const newAdventure = {
-			id: 'waiting',
-			adventure_name: 'New Adventure',
-			images: [],
-			coordinates: {
-				lng: event.lngLat.lng,
-				lat: event.lngLat.lat
-			}
-		}
+		const newAdventure = createNewDefaultAdventure({
+			longitude: event.lngLat.lng,
+			latitude: event.lngLat.lat
+		})
 
 		setAllAdventures((currentAdventures) => [...currentAdventures, newAdventure])
 		setCurrentAdventure(newAdventure)
@@ -35,10 +38,12 @@ export const useCreateNewAdventure = () => {
 		setAdventureAddState(false)
 	}
 
-	const viewMore = ({ popupInfo, setPopupInfo }) => {
-		setCurrentAdventure(popupInfo)
-		setPopupInfo(null)
-		openCard(CARD_STATES.adventures)
+	const viewMore = ({ id, setPopupInfo, boundingBox }) => {
+		setCurrentBoundingBox(boundingBox)
+		return getAdventure({ id }).then(() => {
+			setPopupInfo(null)
+			openCard(CARD_STATES.adventures)
+		})
 	}
 
 	return {

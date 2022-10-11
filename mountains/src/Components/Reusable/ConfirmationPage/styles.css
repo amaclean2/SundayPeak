@@ -1,0 +1,6 @@
+.confirmation {
+	font-size: 25px;
+	margin: 15px;
+	line-height: 1.5em;
+	width: calc(100% - 30px);
+}

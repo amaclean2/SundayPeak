@@ -32,7 +32,6 @@
 
 .display-card-container.center .display-card {
 	height: auto;
-	margin-bottom: 500px;
 }
 
 .display-card.closing,
@@ -94,6 +93,7 @@
 	flex: 1;
 	overflow: hidden;
 	transition: all 0.3s ease-in-out;
+	flex-direction: column;
 }
 
 .action-buttons.flex-box {
@@ -130,10 +130,6 @@
 	height: 80px;
 	padding-top: 50px;
 	background: var(--header-gradient);
-	display: flex;
-	justify-content: space-between;
-	backdrop-filter: blur(8px);
-	align-items: center;
 	color: var(--text-on-dark-background);
 }
 
@@ -144,4 +140,17 @@
 h3.label-field {
 	height: 1em;
 	margin: 0;
+}
+
+.image-header.flex-box {
+	flex-direction: row;
+}
+
+.image-header .field-image {
+	margin-right: 20px;
+}
+
+.header-contents.flex-box {
+	flex-direction: column;
+	align-items: flex-start;
 }

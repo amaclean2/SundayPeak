@@ -22,11 +22,15 @@ export const AdventureEditProvider = ({ children }) => {
 	const [allAdventures, setAllAdventures] = useState([])
 	const [adventureAddState, setAdventureAddState] = useState(false)
 	const [currentAdventure, setCurrentAdventure] = useState(null)
+	const [editAdventureFields, setEditAdventureFields] = useState({})
+	const [currentBoundingBox, setCurrentBoundingBox] = useState(null)
 	const [isEditable, setIsEditable] = useState(false)
 	const [adventureError, setAdventureError] = useState(null)
 	const [mapboxToken, setMapboxToken] = useState(null)
 	const [startPosition, setStartPosition] = useState(initialStartPosition)
 	const [flying, setFlying] = useState(false)
+	const [isDelete, setIsDelete] = useState(false)
+	const [saveState, setSaveState] = useState(0)
 
 	useEffect(() => {
 		localStorage.setItem('startPos', JSON.stringify(startPosition))
@@ -43,6 +47,10 @@ export const AdventureEditProvider = ({ children }) => {
 				mapboxToken,
 				startPosition,
 				flying,
+				editAdventureFields,
+				currentBoundingBox,
+				isDelete,
+				saveState,
 				setAdventureAddState,
 				setCurrentAdventure,
 				setIsEditable,
@@ -50,7 +58,11 @@ export const AdventureEditProvider = ({ children }) => {
 				setAdventureError,
 				setMapboxToken,
 				setStartPosition,
-				setFlying
+				setFlying,
+				setEditAdventureFields,
+				setCurrentBoundingBox,
+				setIsDelete,
+				setSaveState
 			}}
 		>
 			{children}

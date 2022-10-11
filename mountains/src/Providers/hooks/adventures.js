@@ -72,6 +72,8 @@ export const useSaveAdventure = () => {
 	const {
 		setAllAdventures,
 		currentAdventure,
+		editAdventureFields,
+		setEditAdventureFields,
 		setAdventureError,
 		setIsEditable,
 		setCurrentAdventure
@@ -82,7 +84,10 @@ export const useSaveAdventure = () => {
 	const saveNewAdventure = () => {
 		return fetcher(`/adventures/create`, {
 			method: 'POST',
-			body: currentAdventure
+			body: {
+				...currentAdventure,
+				adventure_type: 'line'
+			}
 		})
 			.then(({ data }) => {
 				setAllAdventures((currAdventures) => {
@@ -104,7 +109,9 @@ export const useSaveAdventure = () => {
 	const startAdventureSaveProcess = () => {
 		try {
 			const validatedAdventure = validateAdventure(currentAdventure, setAdventureError)
+			const validatedEditFields = validateAdventure(editAdventureFields)
 			setCurrentAdventure(validatedAdventure)
+			setEditAdventureFields(validatedEditFields)
 			setIsEditable(false)
 
 			return validatedAdventure
@@ -120,12 +127,36 @@ export const useSaveAdventure = () => {
 	}
 }
 
-export const useDeleteAdventure = () => {
-	const { setAllAdventures } = useAdventureEditContext()
+export const useEditAdventure = () => {
+	const { editAdventureFields, currentAdventure } = useAdventureEditContext()
 
+	const saveEditAdventure = () => {
+		const fieldKeys = Object.keys(editAdventureFields)
+		const formattedFields = fieldKeys.map((key) => ({
+			name: key,
+			value: editAdventureFields[key]
+		}))
+		return fetcher(`/adventures/edit`, {
+			method: 'PUT',
+			body: {
+				fields: formattedFields,
+				adventure_id: currentAdventure.id
+			}
+		}).then(console.log)
+	}
+
+	return {
+		saveEditAdventure
+	}
+}
+
+export const useDeleteAdventure = () => {
+	const { closeCard } = useCardStateContext()
 	const deleteAdventure = ({ adventureId }) => {
 		return fetcher(`/adventures/delete?adventure_id=${adventureId}`, { method: 'DELETE' })
-			.then(() => setAllAdventures([]))
+			.then(() => {
+				closeCard()
+			})
 			.catch(console.error)
 	}
 

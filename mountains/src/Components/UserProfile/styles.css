@@ -14,7 +14,8 @@ h1 {
 .scroller-container.flex-box {
 	height: 300px;
 	width: calc(100%);
-	overflow: auto;
+	overflow-x: auto;
+	overflow-y: hidden;
 	margin-top: 10px;
 }
 
@@ -41,8 +42,14 @@ h1 {
 
 .stats.flex-box {
 	align-items: flex-start;
-	margin-left: 10px;
-	width: calc(100% - 60px);
+	margin: 20px 5px;
+}
+
+.stat-field {
+	font-size: 40px;
+	line-height: 0.7em;
+	margin: 0;
+	color: var(--secondary-accent-color);
 }
 
 .stats .form-field-container {
@@ -51,6 +58,11 @@ h1 {
 	flex-direction: column;
 	align-items: flex-end;
 	justify-content: flex-end;
+}
+
+.stat-template.flex-box {
+	flex: none;
+	min-width: 100px;
 }
 
 .stat-field.form-field-static {
@@ -67,8 +79,22 @@ h1 {
 	align-self: flex-start;
 }
 
-.tick-list-container {
-	margin: 20px 10px;
+.user-adventure-viewer.flex-box {
+	align-items: flex-start;
+}
+
+.tick-list-container.flex-box {
+	margin: 10px;
+	flex-direction: column;
+	align-items: flex-start;
+	flex: 1;
+}
+
+.tick-list.flex-box {
+	flex-direction: column;
+	font-size: 16px;
+	align-items: flex-start;
+	margin-top: 16px;
 }
 
 .tick-list-header {
@@ -77,12 +103,68 @@ h1 {
 	font-size: 16px;
 }
 
-.tick-list {
-	margin-top: 5px;
+.tick {
+	padding: 10px;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	width: 100%;
+	border-bottom: 1px solid var(--input-border-color);
+	border-left: none;
+}
+
+.tick:hover {
+	background-color: var(--text-on-dark-background);
+}
+
+.main-user-content {
+	width: 800px;
+	padding: 0 10px;
+}
+
+.profile-image-uploader.flex-box {
+	margin-bottom: 50px;
 	flex-direction: column;
 	align-items: flex-start;
 }
 
-.tick {
-	font-size: 12px;
+.profile-photo-handlers {
+	position: relative;
+	margin: 50px 0;
+}
+
+.profile-header.image-header {
+	height: 100px;
+}
+
+.profile-image-upload.file-upload-container.flex-box,
+.profile-picture,
+.image-input-background {
+	width: 150px;
+	height: 150px;
+	background-color: #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 0;
+	min-width: 0;
+	position: absolute;
+	border: none;
+}
+
+.overlay-upload-button.flex-box {
+	border: none;
+	height: 150px;
+	width: 150px;
+	min-width: 150px;
+	position: absolute;
+	margin: 0;
+}
+
+.upload-photo-button-container.flex-box {
+	margin-left: 170px;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.user-bio {
+	margin: 10px 15px;
 }

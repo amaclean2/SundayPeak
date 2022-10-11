@@ -1,34 +1,34 @@
 :root {
-    /* OPTIONS */
-    /* --primary-accent-color: #b038a9;
+	/* OPTIONS */
+	/* --primary-accent-color: #b038a9;
     --primary-accent-color-opacity: #b038a9aa; */
 
-    /* --primary-accent-color: #A8EEFC;
+	/* --primary-accent-color: #A8EEFC;
     --primary-accent-color-opacity: #A8EEFCAA; */
 
-    --primary-accent-color: #007F98;
-    --primary-accent-color-opacity: #007F98AA;
-    --secondary-accent-color: #249275;
-    --secondary-hover-color: #58A3B2;
-    --secondary-disabled-color: #9BB4B9;
-    --half-opacity-accent-color: rgba(28, 157, 183, 0.5);
+	--primary-accent-color: #007f98;
+	--primary-accent-color-opacity: #007f98aa;
+	--secondary-accent-color: #249275;
+	--secondary-hover-color: #58a3b2;
+	--secondary-disabled-color: #9bb4b9;
+	--half-opacity-accent-color: rgba(28, 157, 183, 0.5);
 
-    --main-text-color: #000;
-    --text-on-dark-background: #EEE;
-    --input-border-color: #D7D7E8;
-    --input-background-color: #FFFFFFAA;
-    --alert-text-color: #ff5151;
-    --header-gradient: linear-gradient(45deg, #2D966D, #3C9DA5);
-    --default-background-color: #FFF;
-    --default-background-color-hover: #DDD;
-    /* --secondary-background-color: #DEDEDE99; */
-    --secondary-background-color: #FFFFFF;
+	--main-text-color: #000;
+	--text-on-dark-background: #eee;
+	--input-border-color: #d7d7e8;
+	--input-background-color: #ffffffaa;
+	--alert-text-color: #ff5151;
+	--header-gradient: linear-gradient(45deg, #2d966d, #3c9da5);
+	--default-background-color: #fff;
+	--default-background-color-hover: #ddd;
+	/* --secondary-background-color: #DEDEDE99; */
+	--secondary-background-color: #ffffff;
 
-    --box-shadow-opacity: rgba(0,0,0,0.3);
+	--box-shadow-opacity: rgba(0, 0, 0, 0.1);
 
-    --card-opening-speed: 0.3s;
+	--card-opening-speed: 0.3s;
 
-    --seperator-color: #E4E4E4;
+	--seperator-color: #e4e4e4;
 }
 
 /* 9300df */

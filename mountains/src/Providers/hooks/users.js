@@ -1,9 +1,9 @@
 import { fetcher } from '../utils'
 import { useUserStateContext } from '../userStateProvider'
-import { useCardStateContext } from '../cardStateProvider'
+import { CARD_STATES, useCardStateContext } from '../cardStateProvider'
 import { useAdventureEditContext } from '../adventureEditProvider'
 
-export const useSignupUser = () => {
+export const useCreateUser = () => {
 	const {
 		setLoginError,
 		setLoggedInUser,
@@ -15,16 +15,18 @@ export const useSignupUser = () => {
 	const { closeCard } = useCardStateContext()
 
 	const signupUser = () => {
-		const { email, password, firstName, lastName, password_2, legal } = formFields
+		const { email, first_name, last_name, password, password_2, legal } = formFields
 
-		if (email && password && password_2 && firstName && lastName) {
+		console.log(formFields)
+
+		if (email && password && password_2 && first_name && last_name) {
 			if (legal) {
 				const newUserObject = {
 					email,
 					password,
 					password_2,
-					first_name: firstName,
-					last_name: lastName,
+					first_name,
+					last_name,
 					legal
 				}
 
@@ -45,7 +47,7 @@ export const useSignupUser = () => {
 
 						return data
 					})
-					.catch((error) => {
+					.catch(({ error }) => {
 						console.error(error)
 						setLoginError(error.message)
 
@@ -74,7 +76,7 @@ export const useGetUser = () => {
 		formFields,
 		setFormFields
 	} = useUserStateContext()
-	const { closeCard } = useCardStateContext()
+	const { closeCard, switchCard } = useCardStateContext()
 	const { setMapboxToken } = useAdventureEditContext()
 
 	const getInitialCall = () => {
@@ -90,6 +92,7 @@ export const useGetUser = () => {
 				} else {
 					setLoggedInUser(null)
 					setIsLoggedIn(false)
+					localStorage.clear()
 				}
 
 				return data
@@ -103,13 +106,11 @@ export const useGetUser = () => {
 	}
 
 	const getOtherUser = ({ user_id }) => {
-		return fetcher(`/users/id?id=${user_id}`)
-			.then(({ data }) => {
-				setWorkingUser(data.user)
-
-				return data
-			})
-			.catch(console.error)
+		return fetcher(`/users/id?id=${user_id}`).then(({ data }) => {
+			setWorkingUser(data.user)
+			switchCard(CARD_STATES.profile)
+			return data
+		})
 	}
 
 	const loginUser = () => {
@@ -167,10 +168,40 @@ export const useGetUser = () => {
 	}
 }
 
+export const useEditUser = () => {
+	const { formFields } = useUserStateContext()
+
+	const handleSaveEditUser = () => {
+		const fieldKeys = Object.keys(formFields)
+		const formattedFields = fieldKeys.map((key) => ({
+			name: key,
+			value: formFields[key]
+		}))
+		return fetcher(`/users/edit`, {
+			method: 'PUT',
+			body: {
+				fields: formattedFields
+			}
+		}).then(console.log)
+	}
+
+	return {
+		handleSaveEditUser
+	}
+}
+
 export const useFollowUser = () => {
+	const { setLoggedInUser, setWorkingUser } = useUserStateContext()
 	const followUser = ({ leaderId }) => {
-		return fetcher(`/users/follow?leader_id=${leaderId}`)
+		return fetcher(`/users/follow`, {
+			method: 'POST',
+			body: {
+				leader_id: leaderId
+			}
+		})
 			.then(({ data }) => {
+				setLoggedInUser(data.user)
+				setWorkingUser(data.user)
 				return data
 			})
 			.catch(console.error)
@@ -179,8 +210,15 @@ export const useFollowUser = () => {
 	return { followUser }
 }
 
-export const useSubmitPicture = () => {
+export const usePictures = () => {
 	const { refetchUser } = useGetUser()
+
+	const deletePicture = ({ pictureRef }) => {
+		return fetcher(`/pictures/delete`, {
+			method: 'POST',
+			body: { file_name: pictureRef }
+		}).catch(console.error)
+	}
 
 	const submitPicture = ({ data }) => {
 		const formData = new FormData()
@@ -195,20 +233,22 @@ export const useSubmitPicture = () => {
 			.catch(console.error)
 	}
 
-	return {
-		submitPicture
-	}
-}
+	const updateProfilePicture = ({ data }) => {
+		const formData = new FormData()
+		formData.append('image', data)
 
-export const useDeletePicture = () => {
-	const deletePicture = ({ pictureRef }) => {
-		return fetcher(`/pictures/delete`, {
+		return fetcher('/pictures/userUpload?profile_image=true', {
 			method: 'POST',
-			body: { file_name: pictureRef }
-		}).catch(console.error)
+			headers: [{ name: 'content-type', value: 'none' }],
+			body: formData
+		})
+			.then(() => refetchUser())
+			.catch(console.error)
 	}
 
 	return {
-		deletePicture
+		submitPicture,
+		deletePicture,
+		updateProfilePicture
 	}
 }

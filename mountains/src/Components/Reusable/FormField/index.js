@@ -1,126 +1,141 @@
-import React, { useEffect, useState } from 'react';
-import cx from 'classnames';
-import { Button } from '../Button';
-import PasswordInputField from './PasswordInputField';
+import React, { useState } from 'react'
+import cx from 'classnames'
+import PasswordInputField from './PasswordInputField'
 
-import './styles.css';
-import CheckboxField from './CheckboxField';
-import SelectManyField from './SelectManyField';
-import RangeInputField from './RangeInputField';
-import TextareaField from './TextareaField';
-import StaticField from './StaticField';
+import './styles.css'
+import CheckboxField from './CheckboxField'
+import SelectManyField from './SelectManyField'
+import RangeInputField from './RangeInputField'
+import TextareaField from './TextareaField'
+import SelectField from './SelectField'
+import DefaultField from './DefaultField'
 
-export const FormField = ({
-	id,
-	type = 'text',
-	name = '',
-	label = '',
-	value = '',
-	isEditable = false,
-	className = '',
-	hideLabel = false,
-	autoComplete = 'off',
-	fullWidth = false,
-	block = false,
-	options = {},
-	onChange = () => { }
-}) => {
-	const [workingValue, setWorkingValue] = useState(value);
+const InputBox = ({ field, onChange, value }) => {
+	switch (field.type) {
+		case 'password':
+			return (
+				<PasswordInputField
+					{...field}
+					onChange={onChange}
+					value={value}
+				/>
+			)
+		case 'selectMany':
+			return (
+				<SelectManyField
+					{...field}
+					onChange={onChange}
+					value={value}
+				/>
+			)
+		case 'range':
+			return (
+				<RangeInputField
+					{...field}
+					onChange={onChange}
+					value={value}
+				/>
+			)
+		case 'textarea':
+			return (
+				<TextareaField
+					{...field}
+					onChange={onChange}
+					value={value}
+				/>
+			)
+		case 'select':
+			return (
+				<SelectField
+					{...field}
+					onChange={onChange}
+					value={value}
+				/>
+			)
+		default:
+			return (
+				<DefaultField
+					{...field}
+					onChange={onChange}
+					value={value}
+				/>
+			)
+	}
+}
+
+export const FormField = (props) => {
+	// props need to be an object because when I'm rendering an input with multiple fields
+	// I need to pass the whole props object in
+	const {
+		id,
+		type = 'text',
+		name = '',
+		label = '',
+		value = '',
+		isEditable = false,
+		className = '',
+		hideLabel = false,
+		fullWidth = false,
+		block = false,
+		onChange = () => {}
+	} = props
+
+	const [workingValue, setWorkingValue] = useState(value === null ? '' : value)
 
 	const handleChange = (e) => {
-		onChange(e);
-		setWorkingValue(e.target.value);
-	};
+		onChange(e)
+		setWorkingValue(e.target.value)
+	}
 
-	const inputBox = () => {
-		switch (type) {
-			case 'password':
-				return <PasswordInputField
-					className={className}
-					name={name}
-					label={label}
-					hideLabel={hideLabel}
-					value={workingValue}
-					onChange={handleChange}
-				/>;
-			case 'selectMany':
-				return (
-					<SelectManyField
-						className={className}
-						options={options}
-						onChange={handleChange}
-						name={name}
-						value={value}
-					/>
-				);
-			case 'range':
-				return (
-					<RangeInputField
-						className={className}
-						name={name}
-						value={workingValue}
-						options={options}
-						onChange={handleChange}
-					/>
-				);
-			case 'textarea':
-				return (
-					<TextareaField
-						className={className}
-						hideLabel={hideLabel}
-						label={label}
-						name={name}
-						onChange={handleChange}
-						value={workingValue}
-					/>
-				);
-			default:
-				return (
-					<input
-						className={cx(type, 'form-field', className)}
-						type={type}
-						name={name}
-						id={name}
-						autoComplete={autoComplete}
-						placeholder={hideLabel ? label : ''}
-						value={workingValue}
-						onChange={handleChange}
-					/>
-				);
+	const getInputValue = (workingField) => {
+		if (workingValue === undefined || workingValue === '') {
+			return workingField?.value || ''
+		} else {
+			return workingValue
 		}
-	};
+	}
 
-	const nonCheckboxField = () => (
+	const renderNonCheckbox = () => (
 		<>
-			{!hideLabel && <label htmlFor={name} className={cx(type, className, 'label-field')}>
-				{label}
-			</label>}
-			{isEditable && inputBox()}
+			{!hideLabel && (
+				<label
+					htmlFor={name}
+					className={cx(type, className, 'label-field')}
+				>
+					{label}
+				</label>
+			)}
+			{isEditable && (
+				<InputBox
+					field={props}
+					value={getInputValue(value)}
+					onChange={handleChange}
+				/>
+			)}
 		</>
-	);
+	)
 
 	return (
 		<div
 			id={id || name}
-			className={cx('form-field-container', (fullWidth && 'wide'), (block && 'block'), (!isEditable && 'static'))}
+			className={cx(
+				'form-field-container',
+				fullWidth && 'wide',
+				block && 'block',
+				!isEditable && 'static'
+			)}
 		>
-			{(isEditable && type === 'checkbox') ? (
+			{isEditable && type === 'checkbox' ? (
 				<CheckboxField
 					className={className}
 					name={name}
 					value={workingValue}
 					onChange={handleChange}
 					label={label}
-				/>) : nonCheckboxField()}
-			{!isEditable && (
-				<StaticField
-					value={workingValue}
-					type={type}
-					className={className}
-					options={options}
-					name={name}
 				/>
+			) : (
+				renderNonCheckbox()
 			)}
 		</div>
 	)
-};
+}

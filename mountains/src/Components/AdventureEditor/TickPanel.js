@@ -1,73 +1,85 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import {
-    CARD_STATES,
-    useAdventureEditContext,
-    useCardStateContext,
-    useGetUser,
-    useUserStateContext
-} from '../../Providers';
-import { Field, FieldHeader, FieldRow } from '../Reusable';
+	CARD_STATES,
+	useAdventureEditContext,
+	useCardStateContext,
+	useGetUser,
+	useUserStateContext
+} from '../../Providers'
+import { Field, FieldHeader, FieldRow } from '../Reusable'
 
-const UserImage = () => (
-    <div className="user-image" />
-);
+const UserImage = ({ url }) => (
+	<div className='user-image'>
+		<img
+			src={url}
+			alt={''}
+		/>
+	</div>
+)
 
-const MailIcon = () => (
-    <div className="mail-icon" />
-);
+const MailIcon = () => <div className='mail-icon' />
 
 const AdventureTickPanel = () => {
-    const { currentAdventure } = useAdventureEditContext();
-    const { switchCard } = useCardStateContext();
-    const { getOtherUser } = useGetUser();
-    const { workingUser } = useUserStateContext();
+	const { currentAdventure } = useAdventureEditContext()
+	const { switchCard } = useCardStateContext()
+	const { getOtherUser } = useGetUser()
+	const { workingUser } = useUserStateContext()
 
-    const [ticks, setTicks] = useState(null);
-    const [userOnLoad, setUserOnLoad] = useState();
+	const [ticks, setTicks] = useState(null)
+	const [userOnLoad, setUserOnLoad] = useState()
 
-    useEffect(() => {
-        workingUser?.id && setUserOnLoad(workingUser.id);
-    }, []);
+	useEffect(() => {
+		workingUser?.id && setUserOnLoad(workingUser.id)
+	}, [])
 
-    useEffect(() => {
-        if (currentAdventure?.ticks) {
-            setTicks(currentAdventure.ticks);
-        }
-    }, [currentAdventure]);
+	useEffect(() => {
+		if (currentAdventure?.ticks) {
+			setTicks(currentAdventure.ticks)
+		}
+	}, [currentAdventure])
 
-    const transitionToUsers = (user_id) => {
-        getOtherUser({ user_id });
-    };
+	const transitionToUsers = (user_id) => {
+		getOtherUser({ user_id })
+	}
 
-    useEffect(() => {
-        if (userOnLoad && workingUser?.id && userOnLoad !== workingUser?.id) {
-            switchCard(CARD_STATES.profile);
-        }
-    }, [workingUser]);
+	useEffect(() => {
+		if (userOnLoad && workingUser?.id && userOnLoad !== workingUser?.id) {
+			switchCard(CARD_STATES.profile)
+		}
+	}, [workingUser])
 
-    if (!ticks) {
-        return null;
-    }
+	if (!ticks || !ticks.length) {
+		return null
+	}
 
-    return (
-        <FieldRow>
-            <Field>
-                <FieldHeader text="BYF" />
-                <table className="tick-list">
-                    <tbody>
-                        {ticks.map((tick, key) => (
-                            <tr key={`user_${key}`} onClick={() => transitionToUsers(tick.user_id)}>
-                                <td><UserImage /></td>
-                                <td>{tick.first_name} {tick.last_name}</td>
-                                <td></td>
-                                <td><MailIcon /></td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </Field>
-        </FieldRow>
-    );
-};
+	return (
+		<FieldRow>
+			<Field>
+				<FieldHeader text='BYF' />
+				<table className='tick-list'>
+					<tbody>
+						{ticks.map((tick, key) => (
+							<tr
+								key={`user_${key}`}
+								onClick={() => transitionToUsers(tick.user_id)}
+							>
+								<td>
+									<UserImage url={tick.profile_picture_url} />
+								</td>
+								<td>
+									{tick.first_name} {tick.last_name}
+								</td>
+								<td></td>
+								<td>
+									<MailIcon />
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</Field>
+		</FieldRow>
+	)
+}
 
-export default AdventureTickPanel;
+export default AdventureTickPanel

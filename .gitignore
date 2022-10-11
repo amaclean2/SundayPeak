@@ -2,6 +2,8 @@ mountains/node_modules
 mountains/src/Constants.js
 mountains/package-lock.json
 mountains/build
+mountains/src/.DS_Store
+mountinas/.DS_Store
 
 backyard-be/node_modules
 backyard-be/package-lock.json

@@ -1,97 +1,122 @@
 import { getBackendUri } from '../Constants'
 
+const isDefined = (property) => typeof property !== 'undefined'
+
+export const createNewDefaultAdventure = ({ longitude, latitude }) => ({
+	id: 'waiting',
+	adventure_name: 'New Adventure',
+	aspect: 'N',
+	images: [],
+	coordinates: {
+		lng: longitude,
+		lat: latitude
+	}
+})
+
 export const validateAdventure = (currentAdventure, setAdventureError) => {
-	const coordinates = JSON.stringify(currentAdventure.coordinates)
-	let images = currentAdventure.images
+	if (!isDefined(setAdventureError)) {
+		setAdventureError = () => {}
+	}
+
 	let approachDistance = null
 	let season = null
 	let avgAngle = null
 	let maxAngle = null
 	let elevation = null
-	let difficulty = null
 	let gear = null
 	let gain = null
 
-	if (typeof currentAdventure.adventure_name !== 'string') {
-		setAdventureError('Adventure Name must be a string')
-		throw new Error('Adventure Name must be a string')
+	if (isDefined(currentAdventure.adventure_name)) {
+		if (typeof currentAdventure.adventure_name !== 'string') {
+			setAdventureError('Adventure Name must be a string')
+			throw new Error('Adventure Name must be a string')
+		}
 	}
 
-	if (
-		isNaN(parseInt(currentAdventure.approach_distance)) &&
-		currentAdventure.approach_distance !== ''
-	) {
-		setAdventureError('Appraoch Distance must contain a number')
-		throw new Error('Approach Distance must contain a number')
-	} else {
-		approachDistance = parseInt(currentAdventure.approach_distance)
+	if (isDefined(currentAdventure.approach_distance)) {
+		if (
+			isNaN(parseFloat(currentAdventure.approach_distance)) &&
+			currentAdventure.approach_distance !== ''
+		) {
+			setAdventureError('Appraoch Distance must contain a number')
+			throw new Error('Approach Distance must contain a number')
+		} else {
+			approachDistance = parseFloat(currentAdventure.approach_distance)
+		}
 	}
 
-	if (currentAdventure.season?.length) {
-		season = JSON.stringify(currentAdventure.season.sort((a, b) => Number(a) - Number(b)))
-	} else if (!currentAdventure.season) {
-		season = JSON.stringify([])
+	if (isDefined(currentAdventure.season)) {
+		if (currentAdventure.season?.length) {
+			season = JSON.stringify(currentAdventure.season.sort((a, b) => Number(a) - Number(b)))
+		} else if (!currentAdventure.season) {
+			season = JSON.stringify([])
+		}
 	}
 
-	if (isNaN(parseInt(currentAdventure.avg_angle)) && currentAdventure.avg_angle !== '') {
-		setAdventureError('Average Angle must contain a number')
-		throw new Error('Average angle must contain a number')
-	} else {
-		avgAngle = parseInt(currentAdventure.avg_angle)
+	if (isDefined(currentAdventure.avg_angle)) {
+		if (isNaN(parseFloat(currentAdventure.avg_angle)) && currentAdventure.avg_angle !== '') {
+			setAdventureError('Average Angle must contain a number')
+			throw new Error('Average angle must contain a number')
+		} else {
+			avgAngle = parseFloat(currentAdventure.avg_angle)
+		}
 	}
 
-	if (isNaN(parseInt(currentAdventure.max_angle)) && currentAdventure.max_angle !== '') {
-		setAdventureError('Max Angle must contain a number')
-		throw new Error('Max angle must contain a number')
-	} else {
-		maxAngle = parseInt(currentAdventure.max_angle)
+	if (isDefined(currentAdventure.max_angle)) {
+		if (
+			currentAdventure.max_angle &&
+			isNaN(parseFloat(currentAdventure.max_angle)) &&
+			currentAdventure.max_angle !== ''
+		) {
+			setAdventureError('Max Angle must contain a number')
+			throw new Error('Max angle must contain a number')
+		} else {
+			maxAngle = parseFloat(currentAdventure.max_angle)
+		}
 	}
 
-	if (isNaN(parseInt(currentAdventure.elevation)) && currentAdventure.elevation !== '') {
-		setAdventureError('Elevation must contain a number')
-		throw new Error('Elevation must contain a number')
-	} else {
-		elevation = parseInt(currentAdventure.elevation)
+	if (isDefined(currentAdventure.elevation)) {
+		if (isNaN(parseFloat(currentAdventure.elevation)) && currentAdventure.elevation !== '') {
+			setAdventureError('Elevation must contain a number')
+			throw new Error('Elevation must contain a number')
+		} else {
+			elevation = parseFloat(currentAdventure.elevation)
+		}
 	}
 
-	if (isNaN(parseInt(currentAdventure.difficulty)) && currentAdventure.difficulty !== '') {
-		setAdventureError('Difficulty must contain a number')
-		throw new Error('Difficulty must contain a number')
-	} else {
-		difficulty = parseInt(currentAdventure.difficulty)
+	if (isDefined(currentAdventure.gear)) {
+		if (currentAdventure.gear?.length) {
+			gear = JSON.stringify(currentAdventure.gear.sort((a, b) => Number(a) - Number(b)))
+		} else if (!currentAdventure.gear.length) {
+			gear = JSON.stringify([])
+		}
 	}
 
-	if (currentAdventure.gear?.length) {
-		gear = JSON.stringify(currentAdventure.gear.sort((a, b) => Number(a) - Number(b)))
-	} else if (!currentAdventure.gear.length) {
-		gear = JSON.stringify([])
+	if (isDefined(currentAdventure.gain)) {
+		if (isNaN(parseFloat(currentAdventure.gain)) && currentAdventure.gain !== '') {
+			setAdventureError('Elevation Gain must contain a number')
+			throw new Error('Elevation Gain must contian a number')
+		} else {
+			gain = parseFloat(currentAdventure.gain)
+		}
 	}
 
-	if (isNaN(parseInt(currentAdventure.gain)) && currentAdventure.gain !== '') {
-		setAdventureError('Elevation Gain must contain a number')
-		throw new Error('Elevation Gain must contian a number')
-	} else {
-		gain = parseInt(currentAdventure.gain)
+	return {
+		...currentAdventure,
+		...(currentAdventure.difficulty && { difficulty: parseFloat(currentAdventure.difficulty) }),
+		...(currentAdventure.approach_distance && { approach_distance: approachDistance }),
+		...(currentAdventure.season && { season }),
+		...(currentAdventure.avg_angle && { avg_angle: avgAngle }),
+		...(currentAdventure.max_angle && { max_angle: maxAngle }),
+		...(currentAdventure.elevation && { elevation }),
+		...(currentAdventure.gear && { gear }),
+		...(currentAdventure.gain && { gain }),
+		...(currentAdventure.bio && { bio: currentAdventure.bio || '' }),
+		...(currentAdventure.nearest_city && { nearest_city: currentAdventure.nearest_city || '' }),
+		...(currentAdventure.coordinates && {
+			coordinates: JSON.stringify(currentAdventure.coordinates)
+		})
 	}
-
-	const adventureObj = {
-		adventure_type: 'line',
-		adventure_name: currentAdventure.adventure_name,
-		approach_distance: approachDistance,
-		season,
-		avg_angle: avgAngle,
-		max_angle: maxAngle,
-		elevation,
-		difficulty,
-		gear,
-		gain,
-		bio: currentAdventure.bio || '',
-		nearest_city: currentAdventure.nearest_city || null,
-		coordinates,
-		images
-	}
-
-	return adventureObj
 }
 
 export const validateUser = (newUser, setUserError) => {}
@@ -140,10 +165,19 @@ export const fetcher = (url, options) => {
 			}
 		})
 		.then((data) => {
-			if (data.status - 200 >= 100) {
+			if (data.statusCode - 200 >= 100) {
 				throw data
 			}
 
 			return data
 		})
+		.catch((error) => {
+			throw error
+		})
+}
+
+export const mapStyles = {
+	satelite: 'mapbox://styles/mapbox/satellite-streets-v11',
+	topo: 'mapbox://styles/mapbox/outdoors-v11',
+	nav: 'mapbox://styles/mapbox/navigation-day-v1'
 }

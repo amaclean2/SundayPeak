@@ -1,75 +1,74 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
-const CardStateContext = createContext();
+const CardStateContext = createContext()
 
 export const useCardStateContext = () => {
-	const context = useContext(CardStateContext);
+	const context = useContext(CardStateContext)
 
 	if (context === undefined) {
-		throw new Error('useCardStateContext must be used within a CardStateProvider');
+		throw new Error('useCardStateContext must be used within a CardStateProvider')
 	}
 
-	return context;
-};
+	return context
+}
 
 const changeCardState = (cardState) => {
-
 	switch (cardState) {
 		case 'open':
-			return 'closing';
+			return 'closing'
 		case 'closing':
-			return 'closed';
+			return 'closed'
 		case 'closed':
-			return 'opening';
+			return 'opening'
 		case 'opening':
-			return 'open';
+			return 'open'
 		default:
-			return 'closed';
+			return 'closed'
 	}
-};
+}
 
 export const CARD_STATES = {
 	adventures: 'adenvetures',
 	profile: 'profile',
 	signup: 'signup',
 	login: 'login'
-};
+}
 
 export const CardStateProvider = ({ children }) => {
-	const [displayCardOpenState, setDisplayCardOpenState] = useState('closed');
-	const [displayCardBoolState, setDisplayCardBoolState] = useState(false);
-	const [workingCard, setWorkingCard] = useState('');
-	const [viewingImage, setViewingImage] = useState(null);
+	const [displayCardOpenState, setDisplayCardOpenState] = useState('closed')
+	const [displayCardBoolState, setDisplayCardBoolState] = useState(false)
+	const [workingCard, setWorkingCard] = useState('')
+	const [viewingImage, setViewingImage] = useState(null)
 
 	const openCard = async (newWorkingCard) => {
-		setDisplayCardOpenState(changeCardState('closed'));
-		setWorkingCard(newWorkingCard);
+		setDisplayCardOpenState(changeCardState('closed'))
+		setWorkingCard(newWorkingCard)
 
 		return setTimeout(() => {
-			setDisplayCardOpenState(changeCardState('opening'));
-		}, 50);
-	};
+			setDisplayCardOpenState(changeCardState('opening'))
+		}, 50)
+	}
 
-	const switchCard = async (newWorkingCard) => {
-		setWorkingCard(newWorkingCard);
-	};
+	const switchCard = (newWorkingCard) => {
+		setWorkingCard(newWorkingCard)
+	}
 
 	const closeCard = async () => {
-		setDisplayCardOpenState(changeCardState('open'));
+		setDisplayCardOpenState(changeCardState('open'))
 
 		return setTimeout(() => {
-			setDisplayCardOpenState(changeCardState('closing'));
-			setWorkingCard('');
-		}, 300);
-	};
+			setDisplayCardOpenState(changeCardState('closing'))
+			setWorkingCard('')
+		}, 300)
+	}
 
 	useEffect(() => {
 		if (['opening', 'open', 'closing'].includes(displayCardOpenState)) {
-			setDisplayCardBoolState(true);
+			setDisplayCardBoolState(true)
 		} else {
-			setDisplayCardBoolState(false);
+			setDisplayCardBoolState(false)
 		}
-	}, [displayCardOpenState]);
+	}, [displayCardOpenState])
 
 	return (
 		<CardStateContext.Provider
@@ -90,4 +89,4 @@ export const CardStateProvider = ({ children }) => {
 			{children}
 		</CardStateContext.Provider>
 	)
-};
+}

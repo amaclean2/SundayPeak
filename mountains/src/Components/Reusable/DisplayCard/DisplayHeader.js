@@ -1,27 +1,28 @@
-import cx from 'classnames';
-import { CarretIcon } from '../../../Images';
-import { useCardStateContext } from '../../../Providers';
-import { Button } from '../Button';
+import cx from 'classnames'
+import { CarretIcon } from '../../../Images'
+import { useCardStateContext } from '../../../Providers'
+import { Button } from '../Button'
 
 const DisplayHeader = ({ className, onClose }) => {
-    const { closeCard } = useCardStateContext();
+	const { closeCard } = useCardStateContext()
 
-    const localOnClose = (e) => {
-		onClose(e);
-		closeCard();
+	const localOnClose = (e) => {
+		onClose(e)
+		closeCard()
 	}
 
-    return (
-        <div className={cx(className, 'display-header')}>
-            <div className="display-header-spacer" />
-            <Button
-                id="display-back-button"
-                className="display-back-button flex-box"
-                onClick={localOnClose}>
-                <CarretIcon />
-            </Button>
-        </div>
-    );
-};
+	return (
+		<div className={cx(className, 'display-header')}>
+			<div className='display-header-spacer' />
+			<Button
+				id='display-back-button'
+				className='display-back-button flex-box'
+				onClick={localOnClose}
+			>
+				<CarretIcon color={'#FFFFFF'} />
+			</Button>
+		</div>
+	)
+}
 
-export default DisplayHeader;
+export default DisplayHeader

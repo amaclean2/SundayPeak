@@ -1,39 +1,52 @@
 import { useEffect, useRef } from 'react'
 
 import { useAdventureEditContext } from '../../Providers'
-import { DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable'
+import { Button, DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable'
 import AdventureEditorButtons from './Buttons'
 import AdventureEditorForm from './Form'
 import AdventureViewer from './Viewer'
 
 import './styles.css'
+import ConfirmationPage from '../Reusable/ConfirmationPage'
+import { Meatball } from '../../Images/Meatball'
+import Menu from '../Reusable/Menu'
+import AdventureEditorMenu from './Buttons/MenuFields'
 
 const AdventureEditor = () => {
 	const {
 		setAdventureAddState,
 		currentAdventure,
 		setCurrentAdventure,
+		setEditAdventureFields,
 		isEditable,
 		setIsEditable,
 		adventureError,
-		setFlying
+		setFlying,
+		isDelete,
+		setIsDelete
 	} = useAdventureEditContext()
 
 	const menuRef = useRef()
 
 	const onChange = (e) => {
-		return setCurrentAdventure((workingAdventure) => {
-			const newAdventure = { ...workingAdventure }
-			newAdventure[e.target.name] = e.target.value
+		if (currentAdventure.id) {
+			setEditAdventureFields((currentFields) => ({
+				...currentFields,
+				[e.target.name]: e.target.value
+			}))
+		}
 
-			return newAdventure
-		})
+		setCurrentAdventure((workingAdventure) => ({
+			...workingAdventure,
+			[e.target.name]: e.target.value
+		}))
 	}
 
 	const handleClose = () => {
 		setCurrentAdventure(null)
 		setAdventureAddState(false)
 		setIsEditable(false)
+		setIsDelete(false)
 	}
 
 	// scrolls back to the top when there is a new error
@@ -44,10 +57,11 @@ const AdventureEditor = () => {
 	useEffect(() => {
 		if (currentAdventure) {
 			setFlying({
-				latitude: currentAdventure.coordinates_lat - 0.001,
-				longitude: currentAdventure.coordinates_lng - 0.004,
+				latitude: currentAdventure.coordinates_lat,
+				longitude: currentAdventure.coordinates_lng - 0.003,
 				zoom: 16,
-				pitch: 60
+				pitch: 0,
+				bearing: 0
 			})
 		}
 	}, [])
@@ -68,10 +82,10 @@ const AdventureEditor = () => {
 			} else {
 				return (
 					<ProfileHeader>
-						<FieldHeader
-							className='page-header'
-							text={currentAdventure.adventure_name}
-						/>
+						<FieldHeader className='page-header'>
+							{currentAdventure.adventure_name}
+							<AdventureEditorMenu />
+						</FieldHeader>
 						<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
 					</ProfileHeader>
 				)
@@ -96,8 +110,17 @@ const AdventureEditor = () => {
 				ref={menuRef}
 			>
 				<div className='flex-box main-adventure-content'>
-					{currentAdventure && isEditable && <AdventureEditorForm onChange={onChange} />}
-					{currentAdventure && !isEditable && <AdventureViewer />}
+					{isDelete && (
+						<ConfirmationPage type='delete'>
+							Are you sure you want to delete this adventure?
+							<br />
+							It will be gone forever
+						</ConfirmationPage>
+					)}
+					{!isDelete && currentAdventure && isEditable && (
+						<AdventureEditorForm onChange={onChange} />
+					)}
+					{!isDelete && currentAdventure && !isEditable && <AdventureViewer />}
 				</div>
 				<AdventureEditorButtons />
 			</div>

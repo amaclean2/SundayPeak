@@ -1,25 +1,23 @@
-import React from 'react';
+import React from 'react'
 
-import { useCardStateContext } from '../../../Providers';
-import DisplayHeader from './DisplayHeader';
+import { useCardStateContext } from '../../../Providers'
+import DisplayHeader from './DisplayHeader'
 
-import './styles.css';
+import './styles.css'
 
-export const DisplayCard = ({ children, onClose = () => { }, configuration = 'left' }) => {
-	const { displayCardBoolState, displayCardOpenState } = useCardStateContext();
+export const DisplayCard = ({ children, onClose = () => {}, configuration = 'left' }) => {
+	const { displayCardBoolState, displayCardOpenState } = useCardStateContext()
 
 	if (!displayCardBoolState) {
-		return null;
+		return null
 	}
 
 	return (
 		<div className={`display-card-container flex-box ${configuration}`}>
 			<div className={`display-card ${displayCardOpenState}`}>
 				<DisplayHeader onClose={onClose} />
-				<div className="display-content">
-					{children}
-				</div>
+				<div className='display-content flex-box'>{children}</div>
 			</div>
 		</div>
-	);
-};
+	)
+}

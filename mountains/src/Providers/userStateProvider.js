@@ -1,43 +1,54 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react'
 
-const UserStateContext = createContext();
+const UserStateContext = createContext()
 
 export const useUserStateContext = () => {
-	const context = useContext(UserStateContext);
+	const context = useContext(UserStateContext)
 
 	if (context === undefined) {
-		throw new Error('userUserStateContext must be used within a UserStateProvider');
+		throw new Error('userUserStateContext must be used within a UserStateProvider')
 	}
 
-	return context;
-};
+	return context
+}
 
 export const UserStateProvider = ({ children }) => {
-
-	const [workingUser, setWorkingUser] = useState({});
-	const [loggedInUser, loginUser] = useState({});
-	const [isLoggedIn, setIsLoggedIn] = useState(undefined);
-	const [formFields, setFormFields] = useState({});
-	const [isLandingPage, setIsLandingPage] = useState(true);
-	const [loginError, setLoginError] = useState(null);
-	const [imageList, setImageList] = useState([]);
+	const [workingUser, setWorkingUser] = useState(null)
+	const [loggedInUser, loginUser] = useState({})
+	const [isLoggedIn, setIsLoggedIn] = useState(undefined)
+	const [formFields, setFormFields] = useState({})
+	const [isLandingPage, setIsLandingPage] = useState(true)
+	const [loginError, setLoginError] = useState('')
+	const [imageList, setImageList] = useState([])
+	const [isEditable, setIsEditable] = useState(false)
 
 	const clickOffLanding = () => {
-		setIsLandingPage(false);
+		setIsLandingPage(false)
 	}
 
 	const setLoggedInUser = (user) => {
-		loginUser(user);
-		setWorkingUser(user);
+		loginUser(user)
+		setWorkingUser(user)
 	}
 
 	const handleLogout = async () => {
-		setLoggedInUser({});
-		setIsLoggedIn(false);
-		setWorkingUser(null);
-		localStorage.clear();
-		return 'SUCCESSFULLY_LOGGED_OUT';
-	};
+		setLoggedInUser({})
+		setIsLoggedIn(false)
+		setWorkingUser(null)
+		localStorage.clear()
+		return 'SUCCESSFULLY_LOGGED_OUT'
+	}
+
+	const editUser = (e) => {
+		setWorkingUser({
+			...workingUser,
+			[e.target.name]: e.target.value
+		})
+		setFormFields({
+			...formFields,
+			[e.target.name]: e.target.value
+		})
+	}
 
 	return (
 		<UserStateContext.Provider
@@ -49,19 +60,21 @@ export const UserStateProvider = ({ children }) => {
 				loginError,
 				loggedInUser,
 				imageList,
+				isEditable,
 				setLoginError,
 				setFormFields,
 				handleLogout,
 				clickOffLanding,
+				editUser,
 				setWorkingUser,
 				setIsLoggedIn,
 				setIsLandingPage,
-				setFormFields,
 				setLoggedInUser,
-				setImageList
+				setImageList,
+				setIsEditable
 			}}
 		>
 			{children}
 		</UserStateContext.Provider>
 	)
-};
+}
