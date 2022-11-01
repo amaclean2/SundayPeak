@@ -7,7 +7,6 @@ import MapPopup from './MapPopup'
 import '../../App.css'
 import AdventurePins from './AdventurePins'
 import { useCreateNewAdventure } from './utils'
-import { mapStyles } from '../../Providers/utils'
 
 const skyLayer = {
 	id: 'sky',
@@ -25,7 +24,8 @@ const ReactMap = () => {
 		if (ref) ref.trigger()
 	}, [])
 
-	const { allAdventures, mapboxToken, startPosition, flying, setFlying } = useAdventureEditContext()
+	const { allAdventures, mapboxToken, startPosition, flying, setFlying, mapStyle } =
+		useAdventureEditContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 	const { handleCreateNewAdventure, viewMore } = useCreateNewAdventure()
 
@@ -61,7 +61,7 @@ const ReactMap = () => {
 		}
 	}, [flying])
 
-	if (!(allAdventures && mapboxToken)) {
+	if (!(allAdventures && mapboxToken && mapStyle)) {
 		return null
 	}
 
@@ -71,16 +71,13 @@ const ReactMap = () => {
 		reuseMaps: true,
 		className: 'map-container',
 		mapboxAccessToken: mapboxToken,
-		mapStyle: `${mapStyles.satelite}?optimize=true`,
+		mapStyle: `${mapStyle}?optimize=true`,
 		initialViewState: startPosition,
-		maxPitch: 85,
+		maxPitch: 0,
+		minZoom: 3,
 		onDblClick: handleCreateNewAdventure,
 		onLoad,
-		onMove,
-		terrain: {
-			source: 'mapbox-dem',
-			exaggeration: 1
-		}
+		onMove
 	}
 
 	return (

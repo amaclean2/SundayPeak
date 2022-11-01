@@ -15,7 +15,8 @@ const {
   resetPassword,
   savePasswordReset,
   refetchUser,
-  editUser
+  editUser,
+  getFriends
 } = require('../../Handlers/Users')
 const { Router } = require('express')
 
@@ -24,6 +25,7 @@ const router = Router()
 router.get('/id', getUserById)
 router.get('/loggedIn', getLoggedInUser)
 router.get('/refetch', refetchUser)
+router.get('/friends', getFriends)
 
 router.post('/follow', userFollowValidator(), followUser)
 router.post('/login', userLoginValidator(), loginUser)

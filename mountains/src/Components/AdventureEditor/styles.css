@@ -59,6 +59,9 @@
 	width: 100%;
 	max-width: 300px;
 	border-collapse: collapse;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
 }
 
 .tick-list tr {

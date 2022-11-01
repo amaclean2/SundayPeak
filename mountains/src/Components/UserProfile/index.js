@@ -9,7 +9,7 @@ import UserViewer from './Viewer'
 import UserEditor from './Editor'
 
 const UserProfile = () => {
-	const { workingUser, isEditable } = useUserStateContext()
+	const { workingUser, isEditable, setListState } = useUserStateContext()
 
 	if (!workingUser) {
 		return null
@@ -40,8 +40,12 @@ const UserProfile = () => {
 		}
 	}
 
+	const handleCloseUser = () => {
+		setListState(null)
+	}
+
 	return (
-		<DisplayCard>
+		<DisplayCard onClose={handleCloseUser}>
 			{buildProfileHeader()}
 			<div className='profile-content'>
 				<div className='main-user-content'>{isEditable ? <UserEditor /> : <UserViewer />}</div>

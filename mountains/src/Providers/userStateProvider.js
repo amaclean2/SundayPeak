@@ -21,6 +21,8 @@ export const UserStateProvider = ({ children }) => {
 	const [loginError, setLoginError] = useState('')
 	const [imageList, setImageList] = useState([])
 	const [isEditable, setIsEditable] = useState(false)
+	const [friends, setFriends] = useState(null)
+	const [listState, setListState] = useState('')
 
 	const clickOffLanding = () => {
 		setIsLandingPage(false)
@@ -40,6 +42,7 @@ export const UserStateProvider = ({ children }) => {
 	}
 
 	const editUser = (e) => {
+		console.log(e.target.name, e.target.value)
 		setWorkingUser({
 			...workingUser,
 			[e.target.name]: e.target.value
@@ -61,6 +64,8 @@ export const UserStateProvider = ({ children }) => {
 				loggedInUser,
 				imageList,
 				isEditable,
+				friends,
+				listState,
 				setLoginError,
 				setFormFields,
 				handleLogout,
@@ -71,7 +76,9 @@ export const UserStateProvider = ({ children }) => {
 				setIsLandingPage,
 				setLoggedInUser,
 				setImageList,
-				setIsEditable
+				setIsEditable,
+				setFriends,
+				setListState
 			}}
 		>
 			{children}

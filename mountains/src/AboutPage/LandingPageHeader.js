@@ -1,8 +1,10 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '../Components/Reusable'
+import LogoInline from '../Images/LogoInline'
 
 import { CARD_STATES, useCardStateContext } from '../Providers'
+
+import './styles.css'
 
 const LandingPageHeader = () => {
 	const { openCard } = useCardStateContext()
@@ -16,15 +18,28 @@ const LandingPageHeader = () => {
 	}
 
 	return (
-		<div className='flex-box'>
-			<h1>Backyard Friends</h1>
+		<div className='flex-box landing-header'>
+			<LogoInline
+				width={200}
+				color={'green'}
+			/>
 			<div className='flex-spacer' />
 			<div className='action-buttons'>
 				<Link to='/discover'>
-					<Button onClick={handleOpenLogin}>Login</Button>
+					<Button
+						onClick={handleOpenLogin}
+						className='secondary-button'
+					>
+						Login
+					</Button>
 				</Link>
 				<Link to='/discover'>
-					<Button onClick={handleOpenSignUp}>Create an Account</Button>
+					<Button
+						onClick={handleOpenSignUp}
+						className='secondary-button'
+					>
+						Create an Account
+					</Button>
 				</Link>
 			</div>
 		</div>

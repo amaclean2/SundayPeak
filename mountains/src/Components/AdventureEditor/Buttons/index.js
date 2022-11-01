@@ -97,7 +97,7 @@ const AdventureEditorButtons = () => {
 						id={`cancel-button-return-from-delete`}
 						onClick={() => setIsDelete(false)}
 					>
-						Return
+						Cancel
 					</Button>
 				</>
 			)}

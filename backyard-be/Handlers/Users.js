@@ -13,7 +13,7 @@ const { buildUserObject } = require('../Services/user.service')
 const logger = require('../Config/logger')
 const { sendResponse } = require('../ResponseHandling/success')
 const { getMapboxAccessToken } = require('../Config/connections')
-const { updateUser } = require('../DB')
+const { updateUser, getFriendsLookup } = require('../DB')
 const { uploadPictureToStorage } = require('../Services/multer.service')
 
 const loginUser = async (req, res) => {
@@ -202,6 +202,28 @@ const savePasswordReset = async (req, res) => {
   }
 }
 
+const getFriends = async (req, res) => {
+  try {
+    const { user_id } = req.query
+
+    const friendsList = await getFriendsLookup({ userId: user_id })
+
+    return sendResponse({
+      req,
+      res,
+      data: { friends: friendsList, id: user_id },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'friends cannot be fetched at this time',
+      error
+    })
+  }
+}
+
 const followUser = async (req, res) => {
   try {
     const errors = validationResult(req)
@@ -280,6 +302,7 @@ module.exports = {
   resetPassword,
   createUser,
   savePasswordReset,
+  getFriends,
   followUser,
   editUser,
   deleteUser

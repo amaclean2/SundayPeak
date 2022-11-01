@@ -1,10 +1,28 @@
-import { useUserStateContext } from '../../Providers'
+import { useEffect, useState } from 'react'
+
+import { useEditUser, useUserStateContext } from '../../Providers'
 import { ErrorField, FormField } from '../Reusable'
 import MultiField from '../Reusable/FormField/MultiField'
 import ProfileImageUploader from './ProfileImageUploader'
 
 const UserEditor = () => {
 	const { workingUser, editUser } = useUserStateContext()
+	const { getMapboxStyles } = useEditUser()
+	const [styles, setStyles] = useState()
+
+	useEffect(() => {
+		getMapboxStyles().then((mapboxStyles) =>
+			setStyles(
+				Object.keys(mapboxStyles).map((style, key) => ({
+					id: key,
+					value: mapboxStyles[style],
+					text: style
+				}))
+			)
+		)
+	}, [])
+
+	if (!styles) return
 
 	return (
 		<div className='adventure-info flex-box'>
@@ -95,6 +113,18 @@ const UserEditor = () => {
 				}}
 				value={workingUser.sex}
 				onChange={editUser}
+			/>
+			<FormField
+				type='select'
+				name='map_style'
+				label='Map Style'
+				isEditable
+				fullWidth
+				value={workingUser.map_style}
+				onChange={editUser}
+				options={{
+					selectOptions: styles
+				}}
 			/>
 			<FormField
 				name='bio'

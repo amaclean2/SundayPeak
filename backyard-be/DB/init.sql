@@ -11,6 +11,7 @@ CREATE TABLE users(
     city VARCHAR(100),
     bio TEXT,
     profile_picture_url VARCHAR(255),
+    map_style VARCHAR(100),
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id)

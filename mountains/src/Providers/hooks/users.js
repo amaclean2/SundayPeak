@@ -2,6 +2,7 @@ import { fetcher } from '../utils'
 import { useUserStateContext } from '../userStateProvider'
 import { CARD_STATES, useCardStateContext } from '../cardStateProvider'
 import { useAdventureEditContext } from '../adventureEditProvider'
+import { title } from '../../App'
 
 export const useCreateUser = () => {
 	const {
@@ -54,7 +55,7 @@ export const useCreateUser = () => {
 						return error
 					})
 			} else {
-				setLoginError('You must agree to the Backyard Friends terms and conditions.')
+				setLoginError(`You must agree to the ${title} terms and conditions.`)
 			}
 		} else {
 			setLoginError('All fields are required. Please try again.')
@@ -77,20 +78,21 @@ export const useGetUser = () => {
 		setFormFields
 	} = useUserStateContext()
 	const { closeCard, switchCard } = useCardStateContext()
-	const { setMapboxToken } = useAdventureEditContext()
+	const { setMapboxToken, setMapStyle } = useAdventureEditContext()
 
 	const getInitialCall = () => {
-		return fetcher('/initial')
+		return fetcher('/services/initial')
 			.then(({ data }) => {
 				console.log('INITIAL_CALL', data)
 				setMapboxToken(data.mapbox_token)
-
 				if (!!data.user) {
 					setLoggedInUser(data.user)
+					setMapStyle(data.user.map_style)
 					setIsLoggedIn(true)
 					setIsLandingPage(false)
 				} else {
 					setLoggedInUser(null)
+					setMapStyle(data.map_style)
 					setIsLoggedIn(false)
 					localStorage.clear()
 				}
@@ -105,8 +107,8 @@ export const useGetUser = () => {
 			})
 	}
 
-	const getOtherUser = ({ user_id }) => {
-		return fetcher(`/users/id?id=${user_id}`).then(({ data }) => {
+	const getOtherUser = ({ userId }) => {
+		return fetcher(`/users/id?id=${userId}`).then(({ data }) => {
 			setWorkingUser(data.user)
 			switchCard(CARD_STATES.profile)
 			return data
@@ -177,6 +179,7 @@ export const useEditUser = () => {
 			name: key,
 			value: formFields[key]
 		}))
+
 		return fetcher(`/users/edit`, {
 			method: 'PUT',
 			body: {
@@ -185,13 +188,18 @@ export const useEditUser = () => {
 		}).then(console.log)
 	}
 
+	const getMapboxStyles = () => {
+		return fetcher('/services/mapboxStyles').then(({ data: { mapbox_styles } }) => mapbox_styles)
+	}
+
 	return {
-		handleSaveEditUser
+		handleSaveEditUser,
+		getMapboxStyles
 	}
 }
 
 export const useFollowUser = () => {
-	const { setLoggedInUser, setWorkingUser } = useUserStateContext()
+	const { setLoggedInUser, setWorkingUser, setFriends } = useUserStateContext()
 	const followUser = ({ leaderId }) => {
 		return fetcher(`/users/follow`, {
 			method: 'POST',
@@ -207,7 +215,16 @@ export const useFollowUser = () => {
 			.catch(console.error)
 	}
 
-	return { followUser }
+	const getFriends = ({ userId }) => {
+		return fetcher(`/users/friends?user_id=${userId}`)
+			.then(({ data }) => {
+				setFriends(data.friends)
+				return data
+			})
+			.catch(console.error)
+	}
+
+	return { followUser, getFriends }
 }
 
 export const usePictures = () => {

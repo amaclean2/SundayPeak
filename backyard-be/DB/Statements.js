@@ -1,6 +1,7 @@
+const { mapboxStyles } = require('../Services/utils')
+
 // users
-const createUserStatement =
-  'INSERT INTO users (email, password, first_name, last_name) VALUES(?, ?, ?, ?)'
+const createUserStatement = `INSERT INTO users (email, password, first_name, last_name, map_style) VALUES(?, ?, ?, ?, "${mapboxStyles.default}")`
 const selectUserIdStatement = 'SELECT id FROM users WHERE email = ?'
 const getUserWithEmailStatement = 'SELECT * FROM users WHERE email = ?'
 const getUserByIdStatement = 'SELECT * FROM users WHERE id = ?'
@@ -21,7 +22,8 @@ const updateUserStatements = {
   city: 'UPDATE users SET city = ?, last_updated = NOW() WHERE id = ?',
   bio: 'UPDATE users SET bio = ?, last_updated = NOW() WHERE id = ?',
   profile_picture_url:
-    'UPDATE users SET profile_picture_url = ?, last_updated = NOW() WHERE id = ?'
+    'UPDATE users SET profile_picture_url = ?, last_updated = NOW() WHERE id = ?',
+  map_style: 'UPDATE users SET map_style = ?, last_updated = NOW() WHERE id = ?'
 }
 const deleteUserStatement = 'DELETE FROM users WHERE id = ?'
 
@@ -69,10 +71,10 @@ const deleteTickByAdventureStatement =
 const delteTickStatement = 'DELETE FROM ticks WHERE id = ?'
 
 // activities
-const selectActivitiesByAdventureStatement = `SELECT u.first_name, u.last_name, u.email, u.profile_picture_url, ac.creator_id FROM activities AS ac
+const selectActivitiesByAdventureStatement = `SELECT u.first_name, u.last_name, u.email, u.profile_picture_url, ac.creator_id, ac.adventure_id FROM activities AS ac
 INNER JOIN users AS u ON ac.creator_id = u.id
 INNER JOIN adventures AS a ON ac.adventure_id = a.id WHERE ac.adventure_id = ?`
-const selectActivitiesByUserStatement = `SELECT ac.creator_id, a.adventure_name, a.adventure_type, a.difficulty, a.nearest_city FROM activities AS ac
+const selectActivitiesByUserStatement = `SELECT ac.creator_id, a.adventure_name, a.adventure_type, a.difficulty, a.nearest_city, ac.adventure_id FROM activities AS ac
 INNER JOIN users AS u ON ac.creator_id = u.id
 INNER JOIN adventures AS a ON ac.adventure_id = a.id WHERE ac.creator_id = ?`
 const createActivityStatement =

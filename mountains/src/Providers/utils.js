@@ -175,9 +175,3 @@ export const fetcher = (url, options) => {
 			throw error
 		})
 }
-
-export const mapStyles = {
-	satelite: 'mapbox://styles/mapbox/satellite-streets-v11',
-	topo: 'mapbox://styles/mapbox/outdoors-v11',
-	nav: 'mapbox://styles/mapbox/navigation-day-v1'
-}

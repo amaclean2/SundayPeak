@@ -5,8 +5,13 @@
 
 .popup-field .field-header {
 	font-size: 18px;
-	color: var(--secondary-accent-color);
+	color: var(--primary-accent-color);
 	margin-bottom: 0;
+}
+
+.popup-title.field-header {
+	margin: 10px 0 25px 0;
+	font-size: 25px;
 }
 
 .popup-field .field-value {
@@ -30,9 +35,9 @@
 .popup-buttons.action-buttons {
 	box-shadow: none;
 	padding: 0;
-	right: 5px;
+	right: 10px;
 	background-color: transparent;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 
 .popup-buttons.action-buttons .button {

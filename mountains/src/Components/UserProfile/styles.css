@@ -63,6 +63,15 @@ h1 {
 .stat-template.flex-box {
 	flex: none;
 	min-width: 100px;
+	cursor: pointer;
+	padding: 15px;
+	border-radius: 10px;
+	transition: all 0.3s ease-in-out;
+	margin: 0 5px;
+}
+
+.stat-template.flex-box:hover {
+	box-shadow: 0 5px 10px var(--box-shadow-opacity);
 }
 
 .stat-field.form-field-static {
@@ -110,6 +119,10 @@ h1 {
 	width: 100%;
 	border-bottom: 1px solid var(--input-border-color);
 	border-left: none;
+}
+
+.tick.multi-field-tick {
+	justify-content: space-between;
 }
 
 .tick:hover {

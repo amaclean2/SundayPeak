@@ -107,7 +107,7 @@ const followUser = async ({ follower_id, leader_id }) => {
   }
 }
 
-const getFollowedRelationship = async ({ follower_id, leader_id }) => {
+const getRelationship = async ({ follower_id, leader_id }) => {
   try {
     const [results] = await db.execute(getIsFollowedStatement, [
       follower_id,
@@ -120,7 +120,7 @@ const getFollowedRelationship = async ({ follower_id, leader_id }) => {
   }
 }
 
-const getFollowerCount = async ({ user_id }) => {
+const getFriendCount = async ({ user_id }) => {
   try {
     const [results] = await db.execute(getFollowersCountStatement, [user_id])
     return results[0]['COUNT(follower_id)']
@@ -130,19 +130,9 @@ const getFollowerCount = async ({ user_id }) => {
   }
 }
 
-const getFollowingCount = async ({ user_id }) => {
+const getFriendsLookup = async ({ userId }) => {
   try {
-    const [results] = await db.execute(getFollowingCountStatement, [user_id])
-    return results[0]['COUNT(leader_id)']
-  } catch (error) {
-    logger.error('DATABASE_QUERY_FAILED', error)
-    throw error
-  }
-}
-
-const getFollowersLookup = async ({ user_id }) => {
-  try {
-    const [results] = await db.execute(getFollowersStatement, [user_id])
+    const [results] = await db.execute(getFollowersStatement, [userId])
     return results
   } catch (error) {
     logger.error('DATABASE_QUERY_FAILED', error)
@@ -189,10 +179,9 @@ module.exports = {
   savePasswordResetToken,
   getPasswordResetEmail,
   followUser,
-  getFollowedRelationship,
-  getFollowerCount,
-  getFollowingCount,
-  getFollowersLookup,
+  getRelationship,
+  getFriendCount,
+  getFriendsLookup,
   updateUser,
   deleteUser
 }

@@ -9,12 +9,12 @@ import {
 import { FieldHeader } from '../Reusable'
 
 const Tick = ({ tickName, onClick }) => (
-	<span
+	<li
 		onClick={onClick}
 		className='tick'
 	>
 		{tickName}
-	</span>
+	</li>
 )
 
 const UserTickPanel = ({ className }) => {
@@ -39,7 +39,7 @@ const UserTickPanel = ({ className }) => {
 	return (
 		<div className={cx(className, 'tick-list-container flex-box')}>
 			<FieldHeader className='label-field'>Todo List</FieldHeader>
-			<div className='tick-list flex-box'>
+			<ul className='tick-list flex-box'>
 				{ticks?.map((tick, key) => (
 					<Tick
 						onClick={() => openAdventure(tick.adventure_id)}
@@ -47,7 +47,7 @@ const UserTickPanel = ({ className }) => {
 						key={`user_tick_${key}`}
 					/>
 				))}
-			</div>
+			</ul>
 		</div>
 	)
 }

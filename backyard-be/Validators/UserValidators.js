@@ -120,7 +120,7 @@ const userFollowValidator = () => {
       .bail()
       .withMessage('leaderRequired')
       .custom(async (value, { req }) => {
-        const alreadyFollowed = await queries.getFollowedRelationship({
+        const alreadyFollowed = await queries.getRelationship({
           leader_id: value,
           follower_id: req.body.id_from_token
         })

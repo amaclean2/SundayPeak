@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import Discover from './Router/Discover'
-import Landing from './Router/Landing'
 import { useGetUser } from './Providers'
 
 import './App.css'
 import './variables.css'
+import AppRouter from './Router'
+
+export const title = 'Sunday Peak'
 
 const App = () => {
 	const { getInitialCall } = useGetUser()
@@ -19,22 +19,7 @@ const App = () => {
 		}
 	}, [])
 
-	return (
-		<Router>
-			<div className='app-container'>
-				<Routes>
-					<Route
-						path='/discover'
-						element={<Discover />}
-					/>
-					<Route
-						path='/'
-						element={<Landing />}
-					/>
-				</Routes>
-			</div>
-		</Router>
-	)
+	return <AppRouter />
 }
 
 export default App

@@ -12,8 +12,13 @@ export const FieldRow = ({ children, className, borderBottom }) => (
 	</div>
 )
 
-export const Field = ({ children, className, borderRight }) => (
-	<div className={cx(className, borderRight && 'border-right', 'field flex-box')}>{children}</div>
+export const Field = ({ children, className, borderRight, onClick }) => (
+	<div
+		className={cx(className, borderRight && 'border-right', 'field flex-box')}
+		onClick={onClick}
+	>
+		{children}
+	</div>
 )
 
 export const FieldImage = ({ src, className }) => (

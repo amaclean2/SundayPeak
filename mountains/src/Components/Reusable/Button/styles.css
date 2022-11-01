@@ -3,7 +3,7 @@ button {
 }
 
 .button {
-	background-color: var(--secondary-accent-color);
+	background-color: var(--primary-accent-color);
 	color: var(--text-on-dark-background);
 	border: none;
 	border-radius: 10px;
@@ -37,7 +37,7 @@ a {
 .secondary-button {
 	background-color: transparent;
 	box-shadow: none;
-	color: var(--secondary-accent-color);
+	color: var(--primary-accent-color);
 	font-weight: 600;
 	display: inline-flex;
 }
@@ -60,4 +60,14 @@ a {
 
 .delete-button.flex-box:hover {
 	background-color: var(--default-background-color-hover);
+}
+
+.about-hero-button {
+	background-color: var(--primary-accent-color);
+	font-size: 25px;
+	height: 60px;
+	border-radius: 5px;
+	font-weight: normal;
+	margin-right: 15px;
+	margin-top: 15px;
 }

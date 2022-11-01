@@ -1,6 +1,7 @@
 const { returnError } = require('../ResponseHandling')
 const queries = require('../DB')
 const { getActivitiesByUser } = require('../DB')
+const { mapboxStyles } = require('./utils')
 
 const buildUserObject = async ({ req, res, initiation: { id, email } }) => {
   const {
@@ -8,8 +9,7 @@ const buildUserObject = async ({ req, res, initiation: { id, email } }) => {
     getUser,
     getActivityCountByUser,
     getTicksByUser,
-    getFollowerCount,
-    getFollowingCount,
+    getFriendCount,
     getUserPictures
   } = queries
 
@@ -37,16 +37,15 @@ const buildUserObject = async ({ req, res, initiation: { id, email } }) => {
   const activity_count = await getActivityCountByUser({ user_id: derivedId })
   const ticks = await getTicksByUser({ user_id: derivedId })
   const activities = await getActivitiesByUser({ user_id: derivedId })
-  const follower_count = await getFollowerCount({ user_id: derivedId })
-  const following_count = await getFollowingCount({ user_id: derivedId })
+  const friend_count = await getFriendCount({ user_id: derivedId })
   const images = (await getUserPictures({ user_id: derivedId })) || []
 
   const returnObj = {
     ...userObject,
     activity_count,
-    follower_count,
-    following_count,
+    friend_count,
     images,
+    map_style: userObject.map_style || mapboxStyles.default,
     activities: activities.map((activity) => ({
       ...activity,
       user_id: activity.creator_id

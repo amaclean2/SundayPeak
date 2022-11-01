@@ -46,6 +46,7 @@ const getJWTSecret = () => {
 }
 
 const getMapboxAccessToken = () =>
+  // ? 'sk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2w5NWQ1ZmQwMmNiNDN1bWZyMnR5aDZ2aSJ9.MtfOkwvX2UxO1C2ueRcyhQ'
   'pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg'
 
 module.exports = {

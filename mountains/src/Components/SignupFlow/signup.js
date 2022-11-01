@@ -1,4 +1,5 @@
 import React from 'react'
+import { title } from '../../App'
 import {
 	CARD_STATES,
 	useCardStateContext,
@@ -44,7 +45,7 @@ export const SignupFlow = () => {
 			<ProfileHeader className='signup-header'>
 				<FieldHeader
 					className='page-header signup-header-text'
-					text={'Sign up with Backyard Friends'}
+					text={`Sign up with ${title}`}
 				/>
 			</ProfileHeader>
 			<div className='profile-content'>
@@ -108,7 +109,7 @@ export const SignupFlow = () => {
 							type='checkbox'
 							name='legal'
 							value={formFields.legal}
-							label={'I agree with the Backyard Friends Privacy Policy'}
+							label={`I agree with the ${title} Privacy Policy`}
 							isEditable
 							onChange={onChange}
 						/>
@@ -129,7 +130,7 @@ export const SignupFlow = () => {
 							id={'switch-to-login-button'}
 							onClick={() => switchCard(CARD_STATES.login)}
 						>
-							Login to Backyard Friends
+							Login to {title}
 						</Button>
 					</div>
 				</FooterButtons>

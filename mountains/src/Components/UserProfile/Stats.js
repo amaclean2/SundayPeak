@@ -1,31 +1,21 @@
 import cx from 'classnames'
 import { useUserStateContext } from '../../Providers'
-import { Field, FieldHeader } from '../Reusable'
 import StatTemplate from './StatTemplate'
 
-const Location = ({ value = '' }) => (
-	<Field className='location-field stat-template'>
-		<FieldHeader text={'Location'} />
-		{value}
-	</Field>
-)
-
 const Stats = ({ className }) => {
-	const { workingUser } = useUserStateContext()
+	const { workingUser, setListState } = useUserStateContext()
 
 	return (
 		<div className={cx('stats-container', 'stats', 'flex-box', className)}>
 			<StatTemplate
-				statLabel={'Activities'}
+				statLabel={'Completed'}
 				statValue={workingUser?.activity_count}
+				onClick={() => setListState('stats')}
 			/>
 			<StatTemplate
-				statLabel={'Followers'}
-				statValue={workingUser?.follower_count}
-			/>
-			<StatTemplate
-				statLabel={'Following'}
-				statValue={workingUser?.following_count}
+				statLabel={'Friends'}
+				statValue={workingUser?.friend_count}
+				onClick={() => setListState('friends')}
 			/>
 			<div className='flex-spacer' />
 		</div>

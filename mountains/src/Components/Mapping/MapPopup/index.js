@@ -23,7 +23,10 @@ const MapPopup = ({ viewMore, popupInfo, setPopupInfo }) => {
 			latitude={Number(popupInfo.coordinates.lat)}
 			onClose={() => setPopupInfo(null)}
 		>
-			<FieldHeader text={popupInfo.adventure_name} />
+			<FieldHeader
+				text={popupInfo.adventure_name}
+				className={'popup-title'}
+			/>
 			<section className='popup-info'>
 				<DescriptionField>{popupInfo.bio}</DescriptionField>
 				<FieldRow>

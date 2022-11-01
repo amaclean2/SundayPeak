@@ -7,23 +7,20 @@ const AdventurePins = ({ setPopupInfo }) => {
 	const { allAdventures } = useAdventureEditContext()
 
 	const pins = useMemo(() => {
-		return (
-			allAdventures &&
-			allAdventures.map((adventure, idx) => (
-				<Marker
-					key={`marker_${idx}`}
-					longitude={adventure.coordinates.lng}
-					latitude={adventure.coordinates.lat}
-					anchor={'bottom'}
-					onClick={(e) => {
-						e.originalEvent.stopPropagation()
-						setPopupInfo(adventure)
-					}}
-				>
-					<SkierIcon size={20} />
-				</Marker>
-			))
-		)
+		return allAdventures?.map((adventure, idx) => (
+			<Marker
+				key={`marker_${idx}`}
+				longitude={adventure.coordinates.lng}
+				latitude={adventure.coordinates.lat}
+				anchor={'bottom'}
+				onClick={(e) => {
+					e.originalEvent.stopPropagation()
+					setPopupInfo(adventure)
+				}}
+			>
+				<SkierIcon size={20} />
+			</Marker>
+		))
 	}, [allAdventures])
 
 	return <>{pins}</>

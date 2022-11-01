@@ -31,6 +31,7 @@ export const AdventureEditProvider = ({ children }) => {
 	const [flying, setFlying] = useState(false)
 	const [isDelete, setIsDelete] = useState(false)
 	const [saveState, setSaveState] = useState(0)
+	const [mapStyle, setMapStyle] = useState('')
 
 	useEffect(() => {
 		localStorage.setItem('startPos', JSON.stringify(startPosition))
@@ -51,6 +52,7 @@ export const AdventureEditProvider = ({ children }) => {
 				currentBoundingBox,
 				isDelete,
 				saveState,
+				mapStyle,
 				setAdventureAddState,
 				setCurrentAdventure,
 				setIsEditable,
@@ -62,7 +64,8 @@ export const AdventureEditProvider = ({ children }) => {
 				setEditAdventureFields,
 				setCurrentBoundingBox,
 				setIsDelete,
-				setSaveState
+				setSaveState,
+				setMapStyle
 			}}
 		>
 			{children}

@@ -10,12 +10,12 @@ import {
 import { FieldHeader } from '../Reusable'
 
 const Activity = ({ activityName, onClick }) => (
-	<span
+	<li
 		onClick={onClick}
 		className='tick'
 	>
 		{activityName}
-	</span>
+	</li>
 )
 
 const ActivityPanel = ({ className }) => {
@@ -40,7 +40,7 @@ const ActivityPanel = ({ className }) => {
 	return (
 		<div className={cx(className, 'tick-list-container flex-box')}>
 			<FieldHeader className='label-field'>Completed Activities</FieldHeader>
-			<div className='tick-list flex-box'>
+			<ul className='tick-list flex-box'>
 				{activities?.map((activity, key) => (
 					<Activity
 						onClick={() => openAdventure(activity.adventure_id)}
@@ -48,7 +48,7 @@ const ActivityPanel = ({ className }) => {
 						key={`user_activity_${key}`}
 					/>
 				))}
-			</div>
+			</ul>
 		</div>
 	)
 }

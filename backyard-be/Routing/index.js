@@ -5,36 +5,24 @@ const adventuresRouter = require('./Adventures')
 const activitiesRouter = require('./Activities')
 const ticksRouter = require('./Ticks')
 const picturesRouter = require('./Pictures')
-const { getLoggedInUser } = require('../Handlers/Users')
-const { getMapboxAccessToken } = require('../Config/connections')
-const { SUCCESS } = require('../ResponseHandling/statuses')
+const servicesRouter = require('./Services')
 const { requestLogger } = require('../Config/loggerMiddleware')
-const { sendResponse } = require('../ResponseHandling')
 
 const router = Router()
 
 router.use(requestLogger)
-
-router.get('/initial', (req, res) => {
-	if (req.body.id_from_token) return getLoggedInUser(req, res)
-	else {
-		return sendResponse({ req, res, data: {
-			user: false,
-			mapbox_token: getMapboxAccessToken()
-		}, status: SUCCESS})
-	}
-})
 
 router.use('/users', usersRouter)
 router.use('/adventures', adventuresRouter)
 router.use('/activities', activitiesRouter)
 router.use('/ticks', ticksRouter)
 router.use('/pictures', picturesRouter)
+router.use('/services', servicesRouter)
 
 router.get('/verify', (req, res) => {
-	res.status(200).json({
-		message: 'API up and working. Select a category to query.'
-	})
+  res.status(200).json({
+    message: 'API up and working. Select a category to query.'
+  })
 })
 
 module.exports = router

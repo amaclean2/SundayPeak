@@ -6,15 +6,18 @@ import AdventureEditor from '../AdventureEditor'
 import UserProfile from '../UserProfile'
 import { LoginFlow, SignupFlow } from '../SignupFlow'
 import { CARD_STATES, useCardStateContext, useUserStateContext } from '../../Providers'
-import { Button } from '../Reusable'
+import { Button, FlexSpacer } from '../Reusable'
 
 import './styles.css'
+import LogoInline from '../../Images/LogoInline'
+import { Link } from 'react-router-dom'
 
 const LoginButton = () => {
 	const { openCard } = useCardStateContext()
 
 	return (
 		<Button
+			id='login-button-adventures'
 			className={cx('button-bar-button', 'login-button')}
 			onClick={() => openCard(CARD_STATES.login)}
 		>
@@ -30,6 +33,7 @@ const SignUpButton = () => {
 		<Button
 			className={cx('button-bar-button', 'signup-button')}
 			onClick={() => openCard(CARD_STATES.signup)}
+			id={'signup-button-adventures'}
 		>
 			Create an Account
 		</Button>
@@ -56,6 +60,7 @@ const UserProfileButton = () => {
 	return (
 		<Button
 			className='button-bar-button'
+			id='user-profile-button'
 			onClick={() => handleProfileButton()}
 		>
 			<Profile />
@@ -69,6 +74,7 @@ const ActivitiesButton = () => {
 	return (
 		<Button
 			className='button-bar-button'
+			id='activities-button-adventures'
 			onClick={() => openCard(CARD_STATES.adventures)}
 		>
 			<Skier />
@@ -92,6 +98,17 @@ const ButtonBar = () => {
 					{!isLoggedIn && <LoginButton />}
 					{isLoggedIn && <UserProfileButton />}
 					<ActivitiesButton />
+					<FlexSpacer />
+					<Link
+						id='home-redirect'
+						className={'secondary-button'}
+						to={'/about'}
+					>
+						<LogoInline
+							width={200}
+							color={'white'}
+						/>
+					</Link>
 				</div>
 			)}
 			{displayCardBoolState && workingCard === CARD_STATES.profile && <UserProfile />}

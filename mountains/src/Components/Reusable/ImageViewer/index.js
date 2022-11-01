@@ -28,14 +28,14 @@ export const ImageViewer = () => {
 				<Button
 					onClick={() => deletePicture({ pictureRef: viewingImage })}
 					id={'image-delete-button'}
-					className='image-delete-button'
+					className='delete-button secondary-button'
 				>
 					delete
 				</Button>
 				<Button
 					onClick={closeViewer}
 					id={'image-close-button'}
-					className='image-close-button'
+					className='image-close-button secondary-button'
 				>
 					close
 				</Button>

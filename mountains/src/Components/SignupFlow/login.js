@@ -1,4 +1,5 @@
 import React from 'react'
+import { title } from '../../App'
 import { CARD_STATES, useCardStateContext, useGetUser } from '../../Providers'
 
 import { useUserStateContext } from '../../Providers/userStateProvider'
@@ -42,7 +43,7 @@ export const LoginFlow = () => {
 			<ProfileHeader className='signup-header'>
 				<FieldHeader
 					className='page-header signup-header-text'
-					text={'Login to Backyard Friends'}
+					text={`Login to ${title}`}
 				/>
 			</ProfileHeader>
 			<div className='profile-content'>

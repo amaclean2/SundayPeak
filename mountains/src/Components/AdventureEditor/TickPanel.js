@@ -6,7 +6,7 @@ import {
 	useGetUser,
 	useUserStateContext
 } from '../../Providers'
-import { Field, FieldHeader, FieldRow } from '../Reusable'
+import { Field, FieldHeader, FieldRow, FlexSpacer } from '../Reusable'
 
 const UserImage = ({ url }) => (
 	<div className='user-image'>
@@ -38,10 +38,6 @@ const AdventureTickPanel = () => {
 		}
 	}, [currentAdventure])
 
-	const transitionToUsers = (user_id) => {
-		getOtherUser({ user_id })
-	}
-
 	useEffect(() => {
 		if (userOnLoad && workingUser?.id && userOnLoad !== workingUser?.id) {
 			switchCard(CARD_STATES.profile)
@@ -56,27 +52,23 @@ const AdventureTickPanel = () => {
 		<FieldRow>
 			<Field>
 				<FieldHeader text='BYF' />
-				<table className='tick-list'>
-					<tbody>
-						{ticks.map((tick, key) => (
-							<tr
-								key={`user_${key}`}
-								onClick={() => transitionToUsers(tick.user_id)}
-							>
-								<td>
-									<UserImage url={tick.profile_picture_url} />
-								</td>
-								<td>
-									{tick.first_name} {tick.last_name}
-								</td>
-								<td></td>
-								<td>
-									<MailIcon />
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
+				<ul className='tick-list'>
+					{ticks.map((tick, key) => (
+						<li
+							key={`user_${key}`}
+							className={'tick flex-box multi-field-tick'}
+							onClick={() => getOtherUser({ userId: tick.user_id })}
+						>
+							<UserImage url={tick.profile_picture_url} />
+							<FlexSpacer />
+							{tick.first_name} {tick.last_name}
+							<FlexSpacer />
+							<FlexSpacer />
+							<FlexSpacer />
+							<MailIcon />
+						</li>
+					))}
+				</ul>
 			</Field>
 		</FieldRow>
 	)

@@ -22,12 +22,6 @@ router.post('/create', adventureCreateValidator(), createNewAdventure)
 router.put('/edit', adventureEditValidator(), editAdventure)
 router.delete('/delete', deleteAdventure)
 
-router.put('/edit', (req, res) => {
-  res.status(NOT_FOUND).json({
-    message: 'API to be created'
-  })
-})
-
 router.use('/', (req, res) => {
   res.status(NOT_FOUND).json({
     data: {
