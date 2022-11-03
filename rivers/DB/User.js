@@ -1,5 +1,6 @@
 const db = require('../Config/db.js')
 const logger = require('../Config/logger.js')
+const { mapboxStyles } = require('../Services/utils.js')
 const {
   createUserStatement,
   selectUserIdStatement,
@@ -10,7 +11,6 @@ const {
   getFollowersCountStatement,
   followUserStatement,
   getFollowersStatement,
-  getFollowingCountStatement,
   deleteUserStatement,
   deleteTickByUserStatement,
   deleteActivityByUserStatement,
@@ -24,7 +24,8 @@ const addUser = async ({ email, password, first_name, last_name }) => {
       email,
       password,
       first_name,
-      last_name
+      last_name,
+      mapboxStyles.default
     ])
     return result.insertId
   } catch (error) {

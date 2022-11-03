@@ -12,7 +12,8 @@ const DefaultField = ({
 	value,
 	options,
 	placeholder,
-	onChange
+	onChange,
+	autoFocus = false
 }) => {
 	return (
 		<input
@@ -25,6 +26,7 @@ const DefaultField = ({
 			placeholder={placeholderDefinition({ placeholder, hideLabel, label })}
 			value={value}
 			onChange={onChange}
+			autoFocus={autoFocus}
 		/>
 	)
 }

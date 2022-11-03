@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react'
 
 import { useAdventureEditContext } from '../../Providers'
-import { Button, DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable'
+import { DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable'
 import AdventureEditorButtons from './Buttons'
 import AdventureEditorForm from './Form'
 import AdventureViewer from './Viewer'
 
 import './styles.css'
 import ConfirmationPage from '../Reusable/ConfirmationPage'
-import { Meatball } from '../../Images/Meatball'
-import Menu from '../Reusable/Menu'
 import AdventureEditorMenu from './Buttons/MenuFields'
 
 const AdventureEditor = () => {
@@ -18,6 +16,7 @@ const AdventureEditor = () => {
 		currentAdventure,
 		setCurrentAdventure,
 		setEditAdventureFields,
+		adventureAddState,
 		isEditable,
 		setIsEditable,
 		adventureError,
@@ -110,8 +109,14 @@ const AdventureEditor = () => {
 				ref={menuRef}
 			>
 				<div className='flex-box main-adventure-content'>
+					{adventureAddState && (
+						<ConfirmationPage>
+							To add a new adventure, double click on any point on the map. Then fill in the details
+							in the form provided.
+						</ConfirmationPage>
+					)}
 					{isDelete && (
-						<ConfirmationPage type='delete'>
+						<ConfirmationPage>
 							Are you sure you want to delete this adventure?
 							<br />
 							It will be gone forever

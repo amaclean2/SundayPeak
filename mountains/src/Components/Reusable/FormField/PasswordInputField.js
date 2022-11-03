@@ -12,7 +12,8 @@ const PasswordInputField = ({
 	placeholder,
 	value,
 	onChange,
-	autoComplete = 'off'
+	autoComplete = 'off',
+	autoFocus = false
 }) => {
 	const [passwordFocus, setPasswordFocus] = useState(false)
 	const [passwordShown, setPasswordShown] = useState(false)
@@ -32,6 +33,7 @@ const PasswordInputField = ({
 				placeholder={placeholderDefinition({ placeholder, hideLabel, label })}
 				value={value}
 				onChange={onChange}
+				autoFocus={autoFocus}
 			/>
 			<Button
 				className='password-switch-field'

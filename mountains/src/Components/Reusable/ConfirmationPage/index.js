@@ -1,22 +1,9 @@
 import cx from 'classnames'
-import { Button } from '../Button'
 
 import './styles.css'
 
-const ConfirmationPage = ({ type, children, className }) => {
-	if (type === 'delete') {
-		return (
-			<div className={cx('confirmation', className)}>
-				<div>{children}</div>
-			</div>
-		)
-	} else {
-		return (
-			<>
-				<div>Some other confirmation</div>
-			</>
-		)
-	}
-}
+const ConfirmationPage = ({ type, children, className }) => (
+	<div className={cx('confirmation', className)}>{children}</div>
+)
 
 export default ConfirmationPage

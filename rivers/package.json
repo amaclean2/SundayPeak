@@ -1,7 +1,7 @@
 {
-  "name": "backyard-be",
+  "name": "rivers",
   "version": "1.0.0",
-  "description": "",
+  "description": "The backend for the Sunday Peak application",
   "main": "node index.js",
   "scripts": {
     "start": "NODE_ENV=\"prod\" node index.js",

@@ -1,7 +1,6 @@
-const { mapboxStyles } = require('../Services/utils')
-
 // users
-const createUserStatement = `INSERT INTO users (email, password, first_name, last_name, map_style) VALUES(?, ?, ?, ?, "${mapboxStyles.default}")`
+const createUserStatement =
+  'INSERT INTO users (email, password, first_name, last_name, map_style) VALUES(?, ?, ?, ?, ?)'
 const selectUserIdStatement = 'SELECT id FROM users WHERE email = ?'
 const getUserWithEmailStatement = 'SELECT * FROM users WHERE email = ?'
 const getUserByIdStatement = 'SELECT * FROM users WHERE id = ?'

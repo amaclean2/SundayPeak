@@ -1,6 +1,14 @@
 import cx from 'classnames'
 
-const SelectField = ({ className, options, name, placeholder, value, onChange }) => {
+const SelectField = ({
+	className,
+	options,
+	name,
+	placeholder,
+	value,
+	onChange,
+	autoFocus = false
+}) => {
 	const { selectOptions } = options
 	return (
 		<select
@@ -8,6 +16,7 @@ const SelectField = ({ className, options, name, placeholder, value, onChange })
 			name={name}
 			value={value || '0'}
 			onChange={onChange}
+			autoFocus={autoFocus}
 		>
 			{placeholder && (
 				<option

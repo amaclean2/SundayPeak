@@ -92,8 +92,11 @@ const ReactMap = () => {
 				maxZoom={14}
 			/>
 			<Layer {...skyLayer} />
-			<AdventurePins setPopupInfo={setPopupInfo} />
-			{popupInfo && (
+			<AdventurePins
+				setPopupInfo={setPopupInfo}
+				boundingBox={mapRef?.current?.getMap()?.getBounds()}
+			/>
+			{/* popupInfo && (
 				<MapPopup
 					popupInfo={popupInfo}
 					viewMore={() =>
@@ -105,7 +108,7 @@ const ReactMap = () => {
 					}
 					setPopupInfo={setPopupInfo}
 				/>
-			)}
+				)*/}
 		</Map>
 	)
 }

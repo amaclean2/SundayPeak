@@ -16,6 +16,7 @@ const AdventureEditorForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.bio}
+				autoFocus={true}
 				onChange={onChange}
 			/>
 			<FormField

@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   mysql:
     container_name: backyard-db
@@ -8,17 +8,17 @@ services:
       - MYSQL_DATABASE=friends
       - MYSQL_ROOT_PASSWORD=backyard
     ports:
-      - "3300:3306"
+      - '3300:3306'
     volumes:
       - db-data:/var/lib/mysql
-      - ./backyard-be/DB/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./rivers/DB/init.sql:/docker-entrypoint-initdb.d/init.sql
   server:
     container_name: backyard-server
     image: amacleanjs/byf_serve
     restart: on-failure
-    build: ./backyard-be
+    build: ./rivers
     volumes:
-      - ./backyard-be:/usr/src/app/server
+      - ./rivers:/usr/src/app/server
       - /usr/src/app/server/node_modules
     command: npm run dev
     environment:
@@ -30,19 +30,19 @@ services:
       DB_NAME: friends
       DB_PORT: 3306
     ports:
-      - "5000:5000"
+      - '5000:5000'
     depends_on:
       - mysql
   client:
     container_name: backyard-client
     image: amacleanjs/byf_client
     restart: always
-    build: ./mapbox-ui
+    build: ./mountains
     volumes:
-      - ./mapbox-ui:/usr/src/app/client
+      - ./mountains:/usr/src/app/client
       - /usr/src/app/client/node_modules
     ports:
-      - "80:3000"
+      - '80:3000'
     command: npm start
     environment:
       REACT_APP_ENV: dev
