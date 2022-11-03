@@ -20,6 +20,7 @@
 
 - clicking the create user button should open the new user panel
 - happy path creates a new user
+- when a new user is created an alert should appear on the page saying a new user was created
 - sad paths include
   - not filling out one of the fields
   - invalid passwords
