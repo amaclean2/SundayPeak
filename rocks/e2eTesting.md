@@ -41,7 +41,7 @@
 - edits should be saved and persist when the page is re-rendered
 - there should be a cancel button on the edit page
 - there should be 0s in **Completed** and **Friends**
-- there shouldn't be anything in **Todos** or ** Completed Activities**
+- there shouldn't be anything in **Todos** or **Completed Activities**
 - should be able to toggle from completed to friends by clicking on the buttons
 - should be able to add a new photo
 - the photo should persist on page reload
