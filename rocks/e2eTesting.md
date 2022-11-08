@@ -44,6 +44,7 @@
 - there shouldn't be anything in **Todos** or **Completed Activities**
 - should be able to toggle from completed to friends by clicking on the buttons
 - should be able to add a new photo
+- the page shouldn't need to be refreshed to see the picture
 - the photo should persist on page reload
 - in the console under **localStorage** a token should be present
 - should be able to logout of the account
