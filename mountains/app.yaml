@@ -1,5 +1,4 @@
 # [START app_yaml]
-service: friends
 runtime: nodejs14
 
 handlers:

@@ -3,9 +3,9 @@ const errorTexts = require('../ResponseHandling/ResponseText/errors')
 const allowedOrigins = [
   'http://localhost:5000',
   'http://localhost:3000',
-  'http://localhost',
   'http://sundaypeak.local:3000',
-  'https://friends-dot-backyardfriends.wl.r.appspot.com'
+  'https://backyardfriends.wl.r.appspot.com',
+  'https://sundaypeak.com'
 ]
 
 const corsHandler = (origin, cb) => {
