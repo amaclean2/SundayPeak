@@ -21,6 +21,7 @@
 - clicking the create user button should open the new user panel
 - happy path creates a new user
 - when a new user is created an alert should appear on the page saying a new user was created
+- the alert should fade out after 10 seconds
 - sad paths include
   - not filling out one of the fields
   - invalid passwords
@@ -40,9 +41,10 @@
 - edits should be saved and persist when the page is re-rendered
 - there should be a cancel button on the edit page
 - there should be 0s in **Completed** and **Friends**
-- there shouldn't be anything in **Todos** or ** Completed Activities**
+- there shouldn't be anything in **Todos** or **Completed Activities**
 - should be able to toggle from completed to friends by clicking on the buttons
 - should be able to add a new photo
+- the page shouldn't need to be refreshed to see the picture
 - the photo should persist on page reload
 - in the console under **localStorage** a token should be present
 - should be able to logout of the account
