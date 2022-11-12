@@ -29,7 +29,7 @@ export const AdventureEditProvider = ({ children }) => {
 	const [mapboxToken, setMapboxToken] = useState(null)
 	const [startPosition, setStartPosition] = useState(initialStartPosition)
 	const [flying, setFlying] = useState(false)
-	const [isDelete, setIsDelete] = useState(false)
+	const [isDeletePage, setIsDeletePage] = useState(false)
 	const [saveState, setSaveState] = useState(0)
 	const [mapStyle, setMapStyle] = useState('')
 
@@ -50,7 +50,7 @@ export const AdventureEditProvider = ({ children }) => {
 				flying,
 				editAdventureFields,
 				currentBoundingBox,
-				isDelete,
+				isDeletePage,
 				saveState,
 				mapStyle,
 				setAdventureAddState,
@@ -63,7 +63,7 @@ export const AdventureEditProvider = ({ children }) => {
 				setFlying,
 				setEditAdventureFields,
 				setCurrentBoundingBox,
-				setIsDelete,
+				setIsDeletePage,
 				setSaveState,
 				setMapStyle
 			}}

@@ -42,7 +42,6 @@ export const UserStateProvider = ({ children }) => {
 	}
 
 	const editUser = (e) => {
-		console.log(e.target.name, e.target.value)
 		setWorkingUser({
 			...workingUser,
 			[e.target.name]: e.target.value

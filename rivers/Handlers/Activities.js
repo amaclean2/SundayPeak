@@ -39,6 +39,7 @@ const createActivity = async (req, res) => {
   try {
     const { user_id, adventure_id, public: publicField } = req.body
 
+    await queries.deleteTick({ adventureId: adventure_id, userId: user_id })
     await queries.createActivity({ user_id, adventure_id, public: publicField })
 
     const newUserObj = await buildUserObject({

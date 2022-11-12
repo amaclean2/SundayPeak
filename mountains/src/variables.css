@@ -26,6 +26,9 @@
 	/* --secondary-background-color: #DEDEDE99; */
 	--secondary-background-color: #ffffff;
 
+	--alert-blue: #528cbf;
+	--alert-blue-background: #d9edff;
+
 	--box-shadow-opacity: rgba(0, 0, 0, 0.1);
 
 	--card-opening-speed: 0.3s;

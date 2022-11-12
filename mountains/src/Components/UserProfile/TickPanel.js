@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import { useEffect, useState } from 'react'
 import {
-	CARD_STATES,
+	CARD_TYPES,
 	useCardStateContext,
 	useGetAdventure,
 	useUserStateContext
@@ -32,7 +32,7 @@ const UserTickPanel = ({ className }) => {
 
 	const openAdventure = (adventureId) => {
 		return getAdventure({ id: adventureId }).then(() => {
-			switchCard(CARD_STATES.adventures)
+			switchCard(CARD_TYPES.adventures)
 		})
 	}
 

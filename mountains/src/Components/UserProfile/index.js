@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useUserStateContext } from '../../Providers'
-import { DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable'
+import { DisplayCard, FieldHeader, HeaderSubtext, ProfileContent, ProfileHeader } from '../Reusable'
 import UserProfileButtons from './Buttons'
 
 import './styles.css'
@@ -47,10 +47,10 @@ const UserProfile = () => {
 	return (
 		<DisplayCard onClose={handleCloseUser}>
 			{buildProfileHeader()}
-			<div className='profile-content'>
+			<ProfileContent>
 				<div className='main-user-content'>{isEditable ? <UserEditor /> : <UserViewer />}</div>
 				<UserProfileButtons />
-			</div>
+			</ProfileContent>
 		</DisplayCard>
 	)
 }

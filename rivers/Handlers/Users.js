@@ -13,8 +13,17 @@ const { buildUserObject } = require('../Services/user.service')
 const logger = require('../Config/logger')
 const { sendResponse } = require('../ResponseHandling/success')
 const { getMapboxAccessToken } = require('../Config/connections')
-const { updateUser, getFriendsLookup } = require('../DB')
+const {
+  updateUser,
+  getFriendsLookup,
+  updatePassword,
+  getFriendCreds
+} = require('../DB')
 const { uploadPictureToStorage } = require('../Services/multer.service')
+const {
+  sendResetPasswordMessage,
+  sendUserFollowedMessage
+} = require('../Services/email.service')
 
 const loginUser = async (req, res) => {
   try {
@@ -122,11 +131,24 @@ const getLoggedInUser = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw returnError({ req, res, error: errors.array()[0] })
+    }
     const { email } = req.body
-    // const emailValidation = await sendEmail(email)
+    const { password: resetToken } = await buildUserObject({
+      req,
+      res,
+      initiation: { email }
+    })
 
-    res.status(SUCCESS).json({
-      data: { email }
+    sendResetPasswordMessage({ email, resetToken })
+
+    return sendResponse({
+      req,
+      res,
+      data: {},
+      status: NO_CONTENT
     })
   } catch (error) {
     return returnError({ req, res, message: 'serverValidateUser', error })
@@ -186,16 +208,25 @@ const createUser = async (req, res) => {
 
 const savePasswordReset = async (req, res) => {
   try {
-    const { new_password, new_password_2 } = req.body
-
-    if (new_password !== new_password_2) {
-      throw returnError({ req, res, message: 'nonMatchingPasswords' })
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    // const response = await validateSignatureAndSave({ signature, new_password })
+    const { user_id, password } = req.body
 
-    res.status(SUCCESS).json({
-      data: { email: '' }
+    const updatePasswordResponse = await updatePassword({
+      newPassword: password,
+      userId: user_id
+    })
+
+    logger.info(updatePasswordResponse)
+
+    return sendResponse({
+      req,
+      res,
+      data: {},
+      status: NO_CONTENT
     })
   } catch (error) {
     return returnError({ req, res, message: 'serverValidateUser', error })
@@ -233,11 +264,24 @@ const followUser = async (req, res) => {
 
     const { id_from_token, leader_id } = req.body
 
-    await queries.followUser({ follower_id: id_from_token, leader_id })
+    await queries.followUser({ followerId: id_from_token, leaderId: leader_id })
     const newUserObject = await buildUserObject({
       req,
       res,
       initiation: { id: id_from_token }
+    })
+
+    // sends an email to the followed user that someone wants to be friends
+    const {
+      email: followedEmail,
+      first_name: leaderFirstName,
+      last_name: leaderLastName
+    } = await getFriendCreds({
+      followedId: leader_id
+    })
+    await sendUserFollowedMessage({
+      email: followedEmail,
+      followingUserName: `${newUserObject.first_name} ${newUserObject.last_name}`
     })
 
     return sendResponse({
@@ -246,6 +290,7 @@ const followUser = async (req, res) => {
       data: {
         user: newUserObject,
         leader_id,
+        leader_name: `${leaderFirstName} ${leaderLastName}`,
         followed: true
       },
       status: ACCEPTED

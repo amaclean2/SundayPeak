@@ -22,7 +22,7 @@ const FriendsViewer = ({ className }) => {
 
 	useEffect(() => {
 		getFriends({ userId: workingUser.id })
-	}, [friends])
+	}, [])
 
 	const handleChangeUser = (friend) => {
 		getOtherUser({ userId: friend.follower_id })

@@ -2,7 +2,9 @@ const {
   userCreateValidator,
   userLoginValidator,
   userFollowValidator,
-  userEditValidator
+  userEditValidator,
+  passwordResetValidator,
+  newPasswordValidator
 } = require('../../Validators/UserValidators')
 const { NOT_FOUND } = require('../../ResponseHandling/statuses')
 const {
@@ -29,9 +31,9 @@ router.get('/friends', getFriends)
 
 router.post('/follow', userFollowValidator(), followUser)
 router.post('/login', userLoginValidator(), loginUser)
-router.post('/resetPassword', resetPassword)
+router.post('/passwordResetLink', passwordResetValidator(), resetPassword)
 router.post('/create', userCreateValidator(), createUser)
-router.post('/savePasswordReset', savePasswordReset)
+router.post('/newPassword', newPasswordValidator(), savePasswordReset)
 router.put('/edit', userEditValidator(), editUser)
 router.delete('/delete', deleteUser)
 

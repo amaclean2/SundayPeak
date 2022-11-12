@@ -1,6 +1,6 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { title } from '../../App'
-import { CARD_STATES, useCardStateContext, useGetUser } from '../../Providers'
+import { CARD_TYPES, useCardStateContext, useGetUser } from '../../Providers'
 
 import { useUserStateContext } from '../../Providers/userStateProvider'
 import {
@@ -10,7 +10,8 @@ import {
 	FormField,
 	Button,
 	FieldHeader,
-	FooterButtons
+	FooterButtons,
+	ProfileContent
 } from '../Reusable'
 
 import './styles.css'
@@ -20,6 +21,7 @@ export const LoginFlow = () => {
 
 	const { loginUser } = useGetUser()
 	const { switchCard } = useCardStateContext()
+	const navigate = useNavigate()
 
 	const onChange = (e) => {
 		setFormFields((currFormFields) => {
@@ -33,6 +35,11 @@ export const LoginFlow = () => {
 	const handleOnClose = () => {
 		setLoginError('')
 		setFormFields({})
+		navigate('/discover')
+	}
+
+	const handleLogin = () => {
+		loginUser().then(() => navigate('/discover'))
 	}
 
 	return (
@@ -46,7 +53,7 @@ export const LoginFlow = () => {
 					text={`Login to ${title}`}
 				/>
 			</ProfileHeader>
-			<div className='profile-content'>
+			<ProfileContent>
 				<div className='main-login-content'>
 					<div className='adventure-info flex-box login-form'>
 						<ErrorField form='login' />
@@ -76,7 +83,7 @@ export const LoginFlow = () => {
 				</div>
 				<FooterButtons className='signup-buttons'>
 					<Button
-						onClick={loginUser}
+						onClick={handleLogin}
 						id={'login-button'}
 						className='cta-button'
 					>
@@ -85,6 +92,10 @@ export const LoginFlow = () => {
 					<Button
 						secondaryButton
 						className='forgot-button secondary-button'
+						onClick={() => {
+							switchCard(CARD_TYPES.password_reset)
+							navigate('/discover')
+						}}
 						id={'forgot-password-button'}
 					>
 						Forgot my password?
@@ -94,13 +105,16 @@ export const LoginFlow = () => {
 						<Button
 							className='secondary-button new-account-button'
 							id={'switch-to-create-button'}
-							onClick={() => switchCard(CARD_STATES.signup)}
+							onClick={() => {
+								switchCard(CARD_TYPES.signup)
+								navigate('/discover')
+							}}
 						>
 							Create a new account
 						</Button>
 					</div>
 				</FooterButtons>
-			</div>
+			</ProfileContent>
 		</DisplayCard>
 	)
 }

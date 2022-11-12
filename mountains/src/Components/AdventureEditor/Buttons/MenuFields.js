@@ -10,8 +10,8 @@ import Menu from '../../Reusable/Menu'
 const AdventureEditorMenu = () => {
 	const {
 		currentAdventure,
-		isDelete,
-		setIsDelete,
+		isDeletePage,
+		setIsDeletePage,
 		setAdventureAddState,
 		isEditable,
 		setIsEditable,
@@ -21,19 +21,21 @@ const AdventureEditorMenu = () => {
 	const { saveTick } = useSaveTick()
 	const { saveActivity } = useSaveActivity()
 
-	const canAddTick = !loggedInUser.ticks
+	if (!loggedInUser) return null
+
+	const canAddTick = !loggedInUser?.ticks
 		.map(({ adventure_id }) => adventure_id)
 		.includes(currentAdventure?.id)
 
 	const menuFields = []
 
-	if (!currentAdventure && !isDelete) {
+	if (!currentAdventure && !isDeletePage) {
 		menuFields.push({
 			action: () => setAdventureAddState(true),
 			id: 'adventure-add-button',
 			text: 'Add New Adventure'
 		})
-	} else if (currentAdventure && !isEditable && !isDelete && saveState === 0) {
+	} else if (currentAdventure && !isEditable && !isDeletePage && saveState === 0) {
 		menuFields.push({
 			action: () => setIsEditable(true),
 			id: 'adventure-edit-button',
@@ -54,11 +56,11 @@ const AdventureEditorMenu = () => {
 			text: 'Complete Activity'
 		})
 
-		if (!isDelete) {
+		if (!isDeletePage && currentAdventure.creator_id === loggedInUser.id) {
 			menuFields.push({
 				id: 'delete-adventure-button',
 				className: 'delete-button',
-				action: () => setIsDelete(true),
+				action: () => setIsDeletePage(true),
 				text: 'Delete Adventure'
 			})
 		}

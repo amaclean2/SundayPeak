@@ -2,14 +2,14 @@ import cx from 'classnames'
 
 const SelectField = ({
 	className,
-	options,
+	options = {},
 	name,
 	placeholder,
 	value,
 	onChange,
 	autoFocus = false
 }) => {
-	const { selectOptions } = options
+	const { selectOptions = [] } = options
 	return (
 		<select
 			className={cx('select form-field', className)}

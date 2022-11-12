@@ -21,7 +21,8 @@ export const useGetAdventure = () => {
 }
 
 export const useGetAdventures = () => {
-	const { setAllAdventures, setStartPosition } = useAdventureEditContext()
+	const { setAllAdventures, setStartPosition, currentBoundingBox, startPosition } =
+		useAdventureEditContext()
 
 	const getAllAdventures = async (boundingBox) => {
 		return fetcher('/adventures/all', {
@@ -42,7 +43,15 @@ export const useGetAdventures = () => {
 			.catch(console.error)
 	}
 
-	const refetchAdventures = debounce(100, (newStartPosition, boundingBox) => {
+	const refetchAdventures = debounce(100, ({ newStartPosition, boundingBox }) => {
+		if (!boundingBox) {
+			boundingBox = currentBoundingBox
+		}
+
+		if (!newStartPosition) {
+			newStartPosition = startPosition
+		}
+
 		fetcher('/adventures/all', {
 			method: 'POST',
 			body: {
@@ -54,10 +63,7 @@ export const useGetAdventures = () => {
 			}
 		})
 			.then(({ data: { adventures } }) => {
-				setAllAdventures((currAdventures) => {
-					const currentIds = currAdventures.map(({ id }) => id)
-					return [...currAdventures, ...adventures.filter(({ id }) => !currentIds.includes(id))]
-				})
+				setAllAdventures(adventures)
 				setStartPosition(newStartPosition)
 
 				return adventures
@@ -121,15 +127,6 @@ export const useSaveAdventure = () => {
 		}
 	}
 
-	return {
-		saveNewAdventure,
-		startAdventureSaveProcess
-	}
-}
-
-export const useEditAdventure = () => {
-	const { editAdventureFields, currentAdventure } = useAdventureEditContext()
-
 	const saveEditAdventure = () => {
 		const fieldKeys = Object.keys(editAdventureFields)
 		const formattedFields = fieldKeys.map((key) => ({
@@ -142,20 +139,32 @@ export const useEditAdventure = () => {
 				fields: formattedFields,
 				adventure_id: currentAdventure.id
 			}
-		}).then(console.log)
+		})
+			.then(console.log)
+			.catch(({ error }) => {
+				setAdventureError(error.message)
+				setIsEditable(true)
+				throw error.message
+			})
 	}
 
 	return {
+		saveNewAdventure,
+		startAdventureSaveProcess,
 		saveEditAdventure
 	}
 }
 
 export const useDeleteAdventure = () => {
 	const { closeCard } = useCardStateContext()
+	const { refetchAdventures } = useGetAdventures()
+	const { setIsDeletePage } = useAdventureEditContext()
 	const deleteAdventure = ({ adventureId }) => {
 		return fetcher(`/adventures/delete?adventure_id=${adventureId}`, { method: 'DELETE' })
 			.then(() => {
 				closeCard()
+				setIsDeletePage(false)
+				return refetchAdventures()
 			})
 			.catch(console.error)
 	}

@@ -1,12 +1,11 @@
 import { useState } from 'react'
-
+import { Navigate } from 'react-router-dom'
 import {
 	useAdventureEditContext,
 	useCardStateContext,
 	useDeleteAdventure,
-	useEditAdventure,
-	useGetAdventures,
-	useSaveAdventure
+	useSaveAdventure,
+	useGetAdventures
 } from '../../../Providers'
 import { Button, FooterButtons } from '../../Reusable'
 
@@ -20,13 +19,13 @@ const AdventureEditorButtons = () => {
 		saveState,
 		setSaveState,
 		currentBoundingBox,
-		setIsDelete,
-		isDelete
+		setIsDeletePage,
+		isDeletePage
 	} = useAdventureEditContext()
 	const { saveNewAdventure, startAdventureSaveProcess } = useSaveAdventure()
-	const { saveEditAdventure } = useEditAdventure()
+	const { saveEditAdventure } = useSaveAdventure()
 	const { getAllAdventures } = useGetAdventures()
-	const { closeCard } = useCardStateContext()
+	const { closeCard, setShowAlert, setAlertContent } = useCardStateContext()
 	const { deleteAdventure } = useDeleteAdventure()
 
 	const saveAdventure = async () => {
@@ -42,6 +41,8 @@ const AdventureEditorButtons = () => {
 					.then(() => {
 						getAllAdventures(currentBoundingBox)
 						setSaveState(0)
+						setAlertContent(`${currentAdventure.adventure_name} has been saved.`)
+						setShowAlert(true)
 					})
 					.catch(console.error)
 			} else {
@@ -49,6 +50,8 @@ const AdventureEditorButtons = () => {
 					.then(() => {
 						getAllAdventures(currentBoundingBox)
 						setSaveState(0)
+						setAlertContent(`${currentAdventure.adventure_name} has been created.`)
+						setShowAlert(true)
 					})
 					.catch(console.error)
 			}
@@ -69,13 +72,15 @@ const AdventureEditorButtons = () => {
 		setSaveState(saveState === 0 ? 1 : 0)
 	}
 
-	const handleDeleteAdventure = () => {
-		deleteAdventure({ adventureId: currentAdventure.id })
+	const handleDeleteAdventure = async () => {
+		setAlertContent(`${currentAdventure.adventure_name} has been deleted`)
+		setShowAlert(true)
+		await deleteAdventure({ adventureId: currentAdventure.id })
 	}
 
 	return (
 		<FooterButtons>
-			{!currentAdventure && !isDelete && (
+			{!currentAdventure && !isDeletePage && (
 				<Button
 					onClick={() => setAdventureAddState(true)}
 					disabled={adventureAddState}
@@ -84,7 +89,7 @@ const AdventureEditorButtons = () => {
 					Add New Adventure
 				</Button>
 			)}
-			{isDelete && (
+			{isDeletePage && (
 				<>
 					<Button
 						id={`confirm-button-delete-adventure`}
@@ -95,13 +100,13 @@ const AdventureEditorButtons = () => {
 					</Button>
 					<Button
 						id={`cancel-button-return-from-delete`}
-						onClick={() => setIsDelete(false)}
+						onClick={() => setIsDeletePage(false)}
 					>
 						Cancel
 					</Button>
 				</>
 			)}
-			{currentAdventure && !isDelete && (isEditable || saveState === 1) && (
+			{currentAdventure && !isDeletePage && (isEditable || saveState === 1) && (
 				<>
 					<Button
 						onClick={saveAdventure}

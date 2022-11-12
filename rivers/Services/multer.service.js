@@ -18,11 +18,11 @@ const storage = new Storage({ keyFilename: 'google-cloud-key.json' })
 const bucket = storage.bucket('backyard-image-storage')
 
 // max file size is 5MB
-const MAX_SIZE = 5 * 1024 * 1024
+// const MAX_SIZE = 5 * 1024 * 1024
 
 const multerConfig = Multer({
-  storage: Multer.memoryStorage(),
-  limits: { fileSize: MAX_SIZE }
+  storage: Multer.memoryStorage()
+  // limits: { fileSize: MAX_SIZE }
 }).single('image')
 
 const multerConfigPromisified = util.promisify(multerConfig)

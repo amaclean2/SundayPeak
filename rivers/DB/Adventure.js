@@ -122,7 +122,7 @@ const deleteAdventure = async (adventureId) => {
   return db
     .execute(deleteTickByAdventureStatement, [adventureId])
     .then(() => db.execute(deleteActivityByAdventureStatement, [adventureId]))
-    .then(() => getAdventurePictures({ adventure_id: adventureId }))
+    .then(() => getAdventurePictures({ adventureId }))
     .then((pictures) => {
       pictures.forEach((picture) => {
         const fileName = picture.split('thumbs/').pop()

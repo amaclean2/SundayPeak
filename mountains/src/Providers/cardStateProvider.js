@@ -27,11 +27,13 @@ const changeCardState = (cardState) => {
 	}
 }
 
-export const CARD_STATES = {
+export const CARD_TYPES = {
 	adventures: 'adenvetures',
 	profile: 'profile',
 	signup: 'signup',
-	login: 'login'
+	login: 'login',
+	password_reset: 'password_reset',
+	new_password: 'new_password'
 }
 
 export const CardStateProvider = ({ children }) => {
@@ -39,6 +41,8 @@ export const CardStateProvider = ({ children }) => {
 	const [displayCardBoolState, setDisplayCardBoolState] = useState(false)
 	const [workingCard, setWorkingCard] = useState('')
 	const [viewingImage, setViewingImage] = useState(null)
+	const [showAlert, setShowAlert] = useState(false)
+	const [alertContent, setAlertContent] = useState('')
 
 	const openCard = async (newWorkingCard) => {
 		setDisplayCardOpenState(changeCardState('closed'))
@@ -50,6 +54,7 @@ export const CardStateProvider = ({ children }) => {
 	}
 
 	const switchCard = (newWorkingCard) => {
+		console.log('switched', newWorkingCard)
 		setWorkingCard(newWorkingCard)
 	}
 
@@ -79,11 +84,15 @@ export const CardStateProvider = ({ children }) => {
 				viewingImage,
 				// notFullyOpen describes the intermediate loading states of animations
 				notFullyOpen: ['closing', 'closed', 'opening'].includes(displayCardOpenState),
+				showAlert,
+				alertContent,
 				setDisplayCardOpenState,
 				openCard,
 				closeCard,
 				switchCard,
-				setViewingImage
+				setViewingImage,
+				setShowAlert,
+				setAlertContent
 			}}
 		>
 			{children}

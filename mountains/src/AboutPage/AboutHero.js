@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Button } from '../Components/Reusable'
-import { CARD_STATES, useCardStateContext } from '../Providers'
+import { CARD_TYPES, useCardStateContext } from '../Providers'
 import './styles.css'
 
 const heroImage =
@@ -20,7 +20,7 @@ const AboutHero = () => {
 					<Button
 						id='hero-button-about-page'
 						className='about-hero-button'
-						onClick={() => openCard(CARD_STATES.signup)}
+						onClick={() => openCard(CARD_TYPES.signup)}
 					>
 						Get Started
 					</Button>

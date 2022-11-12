@@ -7,11 +7,33 @@ import '../variables.css'
 
 export const title = 'Sunday Peak'
 
+// remmeber to add the path in Router/Discover.js
+
 const AppRouter = () => {
 	return (
 		<Router>
 			<div className='app-container'>
 				<Routes>
+					<Route
+						path='/adventure/:adventureId'
+						element={<Discover />}
+					/>
+					<Route
+						path='/adventure'
+						element={<Discover />}
+					/>
+					<Route
+						path='/password'
+						element={<Discover />}
+					/>
+					<Route
+						path='/login'
+						element={<Discover />}
+					/>
+					<Route
+						path='/signup'
+						element={<Discover />}
+					/>
 					<Route
 						path='/discover'
 						element={<Discover />}

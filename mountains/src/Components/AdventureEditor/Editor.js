@@ -98,7 +98,7 @@ const AdventureEditorForm = ({ onChange }) => {
 					options={{
 						selectOptions: directionSelectOptions
 					}}
-					value={currentAdventure.aspect}
+					value={currentAdventure.aspect || 'N'}
 					onChange={onChange}
 				/>
 			</Accordion>
@@ -132,7 +132,7 @@ const AdventureEditorForm = ({ onChange }) => {
 					}}
 					isEditable
 					fullWidth
-					value={currentAdventure.exposure}
+					value={currentAdventure.exposure || 0}
 					onChange={onChange}
 				/>
 			</Accordion>
@@ -142,6 +142,15 @@ const AdventureEditorForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.nearest_city}
+				onChange={onChange}
+			/>
+			<FormField
+				name='public'
+				label='Public'
+				type={'checkbox'}
+				isEditable
+				fullWidth
+				value={currentAdventure.public || true}
 				onChange={onChange}
 			/>
 		</div>

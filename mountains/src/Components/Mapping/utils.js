@@ -1,5 +1,5 @@
 import {
-	CARD_STATES,
+	CARD_TYPES,
 	useAdventureEditContext,
 	useCardStateContext,
 	useGetAdventure
@@ -33,16 +33,15 @@ export const useCreateNewAdventure = () => {
 		setAllAdventures((currentAdventures) => [...currentAdventures, newAdventure])
 		setCurrentAdventure(newAdventure)
 
-		openCard(CARD_STATES.adventures)
+		openCard(CARD_TYPES.adventures)
 		setIsEditable(true)
 		setAdventureAddState(false)
 	}
 
-	const viewMore = ({ id, setPopupInfo, boundingBox }) => {
+	const viewMore = ({ id, boundingBox }) => {
 		setCurrentBoundingBox(boundingBox)
 		return getAdventure({ id }).then(() => {
-			setPopupInfo(null)
-			openCard(CARD_STATES.adventures)
+			openCard(CARD_TYPES.adventures)
 		})
 	}
 

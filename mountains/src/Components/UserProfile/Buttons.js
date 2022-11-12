@@ -9,7 +9,7 @@ import { Button, FooterButtons } from '../Reusable'
 const UserProfileButtons = () => {
 	const { handleLogout, workingUser, loggedInUser, setIsEditable, isEditable } =
 		useUserStateContext()
-	const { closeCard } = useCardStateContext()
+	const { closeCard, setShowAlert, setAlertContent } = useCardStateContext()
 	const { followUser } = useFollowUser()
 	const { handleSaveEditUser } = useEditUser()
 
@@ -17,11 +17,15 @@ const UserProfileButtons = () => {
 		handleLogout().then(() => closeCard())
 	}
 
-	const handleFollow = () => followUser({ leaderId: workingUser.id })
+	const handleFollow = () => followUser({ leaderId: workingUser.id, followerId: loggedInUser.id })
 
 	const handleEdit = () => {
 		if (isEditable) {
 			handleSaveEditUser()
+			setAlertContent(
+				`${workingUser.first_name} ${workingUser.last_name}'s profile has been updated`
+			)
+			setShowAlert(true)
 		}
 
 		setIsEditable(!isEditable)
@@ -34,15 +38,23 @@ const UserProfileButtons = () => {
 					<Button
 						id='edit-user-button'
 						onClick={handleEdit}
-						className='button adventure-add-button'
+						className='adventure-add-button'
 					>
 						{isEditable ? 'Save' : 'Edit'}
 					</Button>
+					{isEditable && (
+						<Button
+							id='profile-edit-cancel-button'
+							onClick={() => setIsEditable(false)}
+						>
+							Cancel
+						</Button>
+					)}
 					{!isEditable && (
 						<Button
 							id='logout-button'
 							onClick={logout}
-							className='button adventure-add-button'
+							className='adventure-add-button'
 						>
 							Logout
 						</Button>
@@ -50,17 +62,19 @@ const UserProfileButtons = () => {
 				</>
 			) : (
 				<>
-					<Button
-						id='follow-user-button'
-						onClick={handleFollow}
-						className='button adventure-add-button'
-					>
-						Follow
-					</Button>
+					{
+						<Button
+							id='follow-user-button'
+							onClick={handleFollow}
+							className='adventure-add-button'
+						>
+							Follow
+						</Button>
+					}
 					<Button
 						id='message-user-button'
 						onClick={() => {}}
-						className='button adventure-add-button'
+						className='adventure-add-button'
 					>
 						Message
 					</Button>

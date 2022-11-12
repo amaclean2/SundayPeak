@@ -4,7 +4,7 @@ import { SkierIcon } from '../../Images'
 import { useAdventureEditContext } from '../../Providers'
 import { useCreateNewAdventure } from './utils'
 
-const AdventurePins = ({ setPopupInfo, boundingBox }) => {
+const AdventurePins = ({ boundingBox }) => {
 	const { allAdventures } = useAdventureEditContext()
 	const { viewMore } = useCreateNewAdventure()
 
@@ -20,7 +20,6 @@ const AdventurePins = ({ setPopupInfo, boundingBox }) => {
 					// setPopupInfo(adventure)
 					viewMore({
 						id: adventure.id,
-						setPopupInfo,
 						boundingBox
 					})
 				}}

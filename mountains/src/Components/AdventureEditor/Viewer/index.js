@@ -1,5 +1,5 @@
 import { AngleIcon, DistanceIcon, ElevationIcon } from '../../../Images/LabelIcons'
-import { useAdventureEditContext } from '../../../Providers'
+import { useAdventureEditContext, useUserStateContext } from '../../../Providers'
 import { Degrees, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from '../../Reusable'
 import AdventureGallery from '../Gallery'
 import GearList from '../GearList'
@@ -9,6 +9,7 @@ import { Aspect, DifficultyViewer, ExposureViewer } from './Symbols'
 
 const AdventureViewer = () => {
 	const { currentAdventure } = useAdventureEditContext()
+	const { loggedInUser } = useUserStateContext()
 
 	return (
 		<div className='adventure-viewer flex-box'>
@@ -79,7 +80,7 @@ const AdventureViewer = () => {
 						</FieldValue>
 					</Field>
 				</FieldRow>
-				<AdventureTickPanel />
+				{loggedInUser && <AdventureTickPanel />}
 			</FieldPage>
 		</div>
 	)

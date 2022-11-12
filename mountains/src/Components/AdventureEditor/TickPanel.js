@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
-	CARD_STATES,
+	CARD_TYPES,
 	useAdventureEditContext,
 	useCardStateContext,
 	useGetUser,
@@ -40,7 +40,7 @@ const AdventureTickPanel = () => {
 
 	useEffect(() => {
 		if (userOnLoad && workingUser?.id && userOnLoad !== workingUser?.id) {
-			switchCard(CARD_STATES.profile)
+			switchCard(CARD_TYPES.profile)
 		}
 	}, [workingUser])
 

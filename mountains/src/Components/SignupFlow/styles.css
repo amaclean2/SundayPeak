@@ -73,17 +73,22 @@
 	max-width: 330px;
 }
 
-/* .signup-header-text.flex-box {
-	font-size: 76px;
-	width: 506px;
-	font-weight: bold;
-	transform: rotate(-90deg);
-	text-align: left;
-	line-height: 0.9em;
-	position: absolute;
-	bottom: 176px;
-	right: -193px;
-	letter-spacing: 0;
-	color: var(--primary-accent-color);
-	z-index: 2;
-} */
+.reset-form {
+	align-items: center;
+	flex-direction: column;
+}
+
+.reset-form .form-field-container {
+	max-width: 400px;
+	width: 100%;
+}
+
+.reset-buttons {
+	flex-direction: column;
+}
+
+.reset-buttons .button {
+	max-width: 400px;
+	width: 100%;
+	justify-content: center;
+}

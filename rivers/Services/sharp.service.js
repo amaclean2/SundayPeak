@@ -12,7 +12,11 @@ const createMain = async (input, fileName) => ({
   originalname: fileName || input.originalname,
   encoding: input.encoding,
   mimetype: input.mimetype,
-  buffer: await sharp(input.buffer).withMetadata().webp().toBuffer()
+  buffer: await sharp(input.buffer)
+    .resize({ width: 1500, height: 1500, fit: 'contain' })
+    .withMetadata()
+    .webp()
+    .toBuffer()
 })
 
 const createDefaultProfilePicture = async ({ userFirstName, userLastName }) => {

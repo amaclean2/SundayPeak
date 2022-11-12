@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import Map, { GeolocateControl, Layer, NavigationControl, Source } from 'react-map-gl'
 
 import { useAdventureEditContext, useGetAdventures } from '../../Providers'
-import MapPopup from './MapPopup'
 
 import '../../App.css'
 import AdventurePins from './AdventurePins'
@@ -27,24 +26,24 @@ const ReactMap = () => {
 	const { allAdventures, mapboxToken, startPosition, flying, setFlying, mapStyle } =
 		useAdventureEditContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
-	const { handleCreateNewAdventure, viewMore } = useCreateNewAdventure()
+	const { handleCreateNewAdventure } = useCreateNewAdventure()
 
-	const [popupInfo, setPopupInfo] = useState(null)
+	// const [popupInfo, setPopupInfo] = useState(null)
 
 	const onLoad = () => {
-		getAllAdventures(mapRef.current.getMap().getBounds())
+		mapRef?.current?.getMap() && getAllAdventures(mapRef.current.getMap().getBounds())
 	}
 
 	// refetchAdventures has to be wrapped in a callback so the debouncer can work
 	const onMove = useCallback((event) => {
-		refetchAdventures(
-			{
+		refetchAdventures({
+			newStartPosition: {
 				latitude: event.viewState.latitude,
 				longitude: event.viewState.longitude,
 				zoom: event.viewState.zoom
 			},
-			mapRef.current.getMap().getBounds()
-		)
+			boundingBox: mapRef.current.getMap().getBounds()
+		})
 	}, [])
 
 	useEffect(() => {
@@ -92,10 +91,7 @@ const ReactMap = () => {
 				maxZoom={14}
 			/>
 			<Layer {...skyLayer} />
-			<AdventurePins
-				setPopupInfo={setPopupInfo}
-				boundingBox={mapRef?.current?.getMap()?.getBounds()}
-			/>
+			<AdventurePins boundingBox={mapRef?.current?.getMap()?.getBounds()} />
 			{/* popupInfo && (
 				<MapPopup
 					popupInfo={popupInfo}

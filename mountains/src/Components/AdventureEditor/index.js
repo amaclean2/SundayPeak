@@ -1,14 +1,15 @@
 import { useEffect, useRef } from 'react'
 
-import { useAdventureEditContext } from '../../Providers'
-import { DisplayCard, FieldHeader, HeaderSubtext, ProfileHeader } from '../Reusable'
+import { useAdventureEditContext, useGetAdventure } from '../../Providers'
+import { DisplayCard, FieldHeader, HeaderSubtext, ProfileContent, ProfileHeader } from '../Reusable'
 import AdventureEditorButtons from './Buttons'
-import AdventureEditorForm from './Form'
+import AdventureEditorForm from './Editor'
 import AdventureViewer from './Viewer'
 
 import './styles.css'
 import ConfirmationPage from '../Reusable/ConfirmationPage'
 import AdventureEditorMenu from './Buttons/MenuFields'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const AdventureEditor = () => {
 	const {
@@ -21,9 +22,12 @@ const AdventureEditor = () => {
 		setIsEditable,
 		adventureError,
 		setFlying,
-		isDelete,
-		setIsDelete
+		isDeletePage,
+		setIsDeletePage
 	} = useAdventureEditContext()
+	const { pathname } = useLocation()
+	const { getAdventure } = useGetAdventure()
+	const navigate = useNavigate()
 
 	const menuRef = useRef()
 
@@ -45,7 +49,8 @@ const AdventureEditor = () => {
 		setCurrentAdventure(null)
 		setAdventureAddState(false)
 		setIsEditable(false)
-		setIsDelete(false)
+		setIsDeletePage(false)
+		navigate('/discover')
 	}
 
 	// scrolls back to the top when there is a new error
@@ -54,7 +59,19 @@ const AdventureEditor = () => {
 	}, [adventureError])
 
 	useEffect(() => {
-		if (currentAdventure) {
+		const urlAdventureId = pathname?.includes('/adventure') && pathname.split('/')[2]
+
+		if (urlAdventureId) {
+			getAdventure({ id: urlAdventureId }).then(({ adventure }) => {
+				setFlying({
+					latitude: adventure.coordinates_lat,
+					longitude: adventure.coordinates_lng,
+					zoom: 16,
+					pitch: 0,
+					bearing: 0
+				})
+			})
+		} else if (currentAdventure) {
 			setFlying({
 				latitude: currentAdventure.coordinates_lat,
 				longitude: currentAdventure.coordinates_lng - 0.003,
@@ -104,10 +121,7 @@ const AdventureEditor = () => {
 	return (
 		<DisplayCard onClose={handleClose}>
 			{buildProfileHeader()}
-			<div
-				className='profile-content'
-				ref={menuRef}
-			>
+			<ProfileContent ref={menuRef}>
 				<div className='flex-box main-adventure-content'>
 					{adventureAddState && (
 						<ConfirmationPage>
@@ -115,20 +129,20 @@ const AdventureEditor = () => {
 							in the form provided.
 						</ConfirmationPage>
 					)}
-					{isDelete && (
+					{isDeletePage && (
 						<ConfirmationPage>
 							Are you sure you want to delete this adventure?
 							<br />
 							It will be gone forever
 						</ConfirmationPage>
 					)}
-					{!isDelete && currentAdventure && isEditable && (
+					{!isDeletePage && currentAdventure && isEditable && (
 						<AdventureEditorForm onChange={onChange} />
 					)}
-					{!isDelete && currentAdventure && !isEditable && <AdventureViewer />}
+					{!isDeletePage && currentAdventure && !isEditable && <AdventureViewer />}
 				</div>
 				<AdventureEditorButtons />
-			</div>
+			</ProfileContent>
 		</DisplayCard>
 	)
 }

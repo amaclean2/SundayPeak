@@ -67,7 +67,8 @@ const createTickStatement =
 const deleteTickByUserStatement = 'DELETE FROM ticks WHERE creator_id = ?'
 const deleteTickByAdventureStatement =
   'DELETE FROM ticks WHERE adventure_id = ?'
-const delteTickStatement = 'DELETE FROM ticks WHERE id = ?'
+const deleteTickStatement =
+  'DELETE FROM ticks WHERE adventure_id = ? AND creator_id = ?'
 
 // activities
 const selectActivitiesByAdventureStatement = `SELECT u.first_name, u.last_name, u.email, u.profile_picture_url, ac.creator_id, ac.adventure_id FROM activities AS ac
@@ -87,23 +88,21 @@ const deleteActivityByAdventureStatement =
 const delteActivityStatement = 'DELETE FROM activities WHERE id = ?'
 
 // password_reset
-const savePasswordResetTokenStatement =
-  'INSERT INTO password_reset_tokens (email, reset_token) VALUES (?, ?)'
-const getPasswordResetEmailStatement =
-  'SELECT email FROM password_reset_tokens WHERE reset_token = ?'
+const checkPasswordResetTokenStatement =
+  'SELECT id FROM users WHERE password = ?'
+const updateNewPasswordStatement = 'UPDATE users SET password = ? WHERE id = ?'
 
 // followers
 const followUserStatement =
   'INSERT INTO followers (follower_id, leader_id, public) VALUES (?, ?, ?)'
-const getFollowersStatement = `SELECT u.first_name, u.last_name, f.follower_id, u.email FROM followers AS f
-INNER JOIN users AS u ON f.follower_id = u.id WHERE f.leader_id = ?`
-const getFollowersCountStatement =
-  'SELECT COUNT(follower_id) FROM followers WHERE leader_id = ?'
-const getFollowingStatement = `SELECT u.first_name, u.last_name, f.leader_id, u.email FROM followers AS f
-INNER JOIN users AS u ON f.leader_id = u.id WHERE f.follower_id = ?`
-const getFollowingCountStatement =
-  'SELECT COUNT(leader_id) FROM followers WHERE follower_id = ?'
-const getIsFollowedStatement =
+const getFriendCredStatement =
+  'SELECT email, first_name, last_name FROM users WHERE id = ?'
+const getFriendsStatement = `SELECT l.first_name AS leader_first_name, l.last_name AS leader_last_name, l.id AS leader_id, l.email AS leader_email,
+m.first_name AS follower_first_name, m.last_name AS follower_last_name, m.email AS follower_email, m.id AS follower_id FROM followers AS f
+INNER JOIN users AS l ON f.leader_id = l.id INNER JOIN users AS m ON f.follower_id = m.id WHERE f.leader_id = ? OR f.follower_id = ?`
+const getFriendsCountStatement =
+  'SELECT COUNT(follower_id) FROM followers WHERE leader_id = ? OR follower_id = ?'
+const getIsFriendStatement =
   'SELECT * FROM followers WHERE follower_id = ? AND leader_id = ?'
 
 // pictures
@@ -138,22 +137,21 @@ module.exports = {
   createTickStatement,
   deleteTickByUserStatement,
   deleteTickByAdventureStatement,
-  delteTickStatement,
+  deleteTickStatement,
   selectActivitiesByAdventureStatement,
   selectActivitiesByUserStatement,
   createActivityStatement,
   countActivitiesStatement,
   deleteActivityByUserStatement,
+  getFriendCredStatement,
   deleteActivityByAdventureStatement,
   delteActivityStatement,
-  savePasswordResetTokenStatement,
-  getPasswordResetEmailStatement,
+  checkPasswordResetTokenStatement,
+  updateNewPasswordStatement,
   followUserStatement,
-  getFollowersStatement,
-  getFollowersCountStatement,
-  getFollowingStatement,
-  getFollowingCountStatement,
-  getIsFollowedStatement,
+  getFriendsStatement,
+  getFriendsCountStatement,
+  getIsFriendStatement,
   createUserPictureStatement,
   createAdventurePictureStatement,
   getAdventurePicturesStatement,

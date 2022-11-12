@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 import cx from 'classnames'
-import PasswordInputField from './PasswordInputField'
 
+import PasswordInputField from './PasswordInputField'
 import './styles.css'
 import CheckboxField from './CheckboxField'
 import SelectManyField from './SelectManyField'
@@ -138,4 +139,29 @@ export const FormField = (props) => {
 			)}
 		</div>
 	)
+}
+
+FormField.propTypes = {
+	id: PropTypes.number,
+	type: PropTypes.oneOf([
+		'text',
+		'select',
+		'textarea',
+		'range',
+		'selectMany',
+		'password',
+		'checkbox',
+		'email',
+		'tel',
+		''
+	]),
+	name: PropTypes.string,
+	label: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.array, PropTypes.bool]),
+	isEditable: PropTypes.bool,
+	className: PropTypes.string,
+	hideLabel: PropTypes.bool,
+	fullWidth: PropTypes.bool,
+	block: PropTypes.bool,
+	onChange: PropTypes.func
 }

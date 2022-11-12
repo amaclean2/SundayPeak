@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
 
 import { Skier, Profile } from '../../Images'
-import AdventureEditor from '../AdventureEditor'
-import UserProfile from '../UserProfile'
-import { LoginFlow, SignupFlow } from '../SignupFlow'
-import { CARD_STATES, useCardStateContext, useUserStateContext } from '../../Providers'
+import { CARD_TYPES, useCardStateContext, useUserStateContext } from '../../Providers'
 import { Button, FlexSpacer } from '../Reusable'
 
 import './styles.css'
 import LogoInline from '../../Images/LogoInline'
 import { Link } from 'react-router-dom'
+import MenuPanels from './MenuPanels'
 
 const LoginButton = () => {
 	const { openCard } = useCardStateContext()
@@ -19,7 +17,7 @@ const LoginButton = () => {
 		<Button
 			id='login-button-adventures'
 			className={cx('button-bar-button', 'login-button')}
-			onClick={() => openCard(CARD_STATES.login)}
+			onClick={() => openCard(CARD_TYPES.login)}
 		>
 			Log In
 		</Button>
@@ -32,7 +30,7 @@ const SignUpButton = () => {
 	return (
 		<Button
 			className={cx('button-bar-button', 'signup-button')}
-			onClick={() => openCard(CARD_STATES.signup)}
+			onClick={() => openCard(CARD_TYPES.signup)}
 			id={'signup-button-adventures'}
 		>
 			Create an Account
@@ -52,7 +50,7 @@ const UserProfileButton = () => {
 
 	useEffect(() => {
 		if (workingUser?.id === loggedInUser?.id && buttonClicked) {
-			openCard(CARD_STATES.profile)
+			openCard(CARD_TYPES.profile)
 			setButtonClicked(false)
 		}
 	}, [workingUser, buttonClicked, loggedInUser?.id, openCard])
@@ -75,7 +73,7 @@ const ActivitiesButton = () => {
 		<Button
 			className='button-bar-button'
 			id='activities-button-adventures'
-			onClick={() => openCard(CARD_STATES.adventures)}
+			onClick={() => openCard(CARD_TYPES.adventures)}
 		>
 			<Skier />
 		</Button>
@@ -83,7 +81,7 @@ const ActivitiesButton = () => {
 }
 
 const ButtonBar = () => {
-	const { notFullyOpen, displayCardBoolState, workingCard } = useCardStateContext()
+	const { notFullyOpen } = useCardStateContext()
 	const { isLoggedIn } = useUserStateContext()
 
 	if (isLoggedIn === undefined) {
@@ -111,10 +109,7 @@ const ButtonBar = () => {
 					</Link>
 				</div>
 			)}
-			{displayCardBoolState && workingCard === CARD_STATES.profile && <UserProfile />}
-			{displayCardBoolState && workingCard === CARD_STATES.adventures && <AdventureEditor />}
-			{displayCardBoolState && workingCard === CARD_STATES.signup && <SignupFlow />}
-			{displayCardBoolState && workingCard === CARD_STATES.login && <LoginFlow />}
+			<MenuPanels />
 		</>
 	)
 }

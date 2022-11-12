@@ -1,21 +1,23 @@
 const db = require('../Config/db.js')
 const logger = require('../Config/logger.js')
+const cryptoHandlers = require('../Crypto/index.js')
 const { mapboxStyles } = require('../Services/utils.js')
 const {
   createUserStatement,
   selectUserIdStatement,
   getUserByIdStatement,
   getUserWithEmailStatement,
-  savePasswordResetTokenStatement,
-  getPasswordResetEmailStatement,
-  getFollowersCountStatement,
   followUserStatement,
-  getFollowersStatement,
   deleteUserStatement,
   deleteTickByUserStatement,
   deleteActivityByUserStatement,
-  getIsFollowedStatement,
-  updateUserStatements
+  updateUserStatements,
+  checkPasswordResetTokenStatement,
+  updateNewPasswordStatement,
+  getFriendCredStatement,
+  getFriendsStatement,
+  getFriendsCountStatement,
+  getIsFriendStatement
 } = require('./Statements.js')
 
 const addUser = async ({ email, password, first_name, last_name }) => {
@@ -34,7 +36,7 @@ const addUser = async ({ email, password, first_name, last_name }) => {
   }
 }
 
-const checkForUser = async (email) => {
+const checkForUser = async ({ email }) => {
   try {
     const [results] = await db.execute(selectUserIdStatement, [email])
     return !!results.length
@@ -64,10 +66,12 @@ const getUserById = async (id) => {
   }
 }
 
-const savePasswordResetToken = async ({ email, token }) => {
+const checkPasswordResetToken = async ({ token }) => {
   return db
-    .execute(savePasswordResetTokenStatement, [email, token])
-    .then((result) => result[0].insertId)
+    .execute(checkPasswordResetTokenStatement, [token])
+    .then((result) => {
+      return result[0][0]
+    })
     .catch((error) => {
       throw {
         message: 'Database insertion failed',
@@ -76,29 +80,21 @@ const savePasswordResetToken = async ({ email, token }) => {
     })
 }
 
-const getPasswordResetEmail = async ({ token }) => {
+const updatePassword = async ({ newPassword, userId }) => {
+  const password = cryptoHandlers.hashPassword(newPassword)
   return db
-    .execute(getPasswordResetEmailStatement, [token])
-    .then(([results]) => {
-      if (!results.length) {
-        return null
-      }
-
-      return results[0]
-    })
+    .execute(updateNewPasswordStatement, [password, userId])
+    .then((result) => result)
     .catch((error) => {
-      throw {
-        message: 'Database query failed',
-        error
-      }
+      throw { message: 'Database update failed', error }
     })
 }
 
-const followUser = async ({ follower_id, leader_id }) => {
+const followUser = async ({ followerId, leaderId }) => {
   try {
     const [results] = await db.execute(followUserStatement, [
-      follower_id,
-      leader_id,
+      followerId,
+      leaderId,
       false
     ])
     return results.insertId
@@ -108,9 +104,19 @@ const followUser = async ({ follower_id, leader_id }) => {
   }
 }
 
+const getFriendCreds = async ({ followedId }) => {
+  try {
+    const [results] = await db.execute(getFriendCredStatement, [followedId])
+    return results[0]
+  } catch (error) {
+    logger.error('DATABASE_RETRIEVAL_FAILED', error)
+    throw error
+  }
+}
+
 const getRelationship = async ({ follower_id, leader_id }) => {
   try {
-    const [results] = await db.execute(getIsFollowedStatement, [
+    const [results] = await db.execute(getIsFriendStatement, [
       follower_id,
       leader_id
     ])
@@ -123,7 +129,10 @@ const getRelationship = async ({ follower_id, leader_id }) => {
 
 const getFriendCount = async ({ user_id }) => {
   try {
-    const [results] = await db.execute(getFollowersCountStatement, [user_id])
+    const [results] = await db.execute(getFriendsCountStatement, [
+      user_id,
+      user_id
+    ])
     return results[0]['COUNT(follower_id)']
   } catch (error) {
     logger.error('DATABASE_QUERY_FAILED', error)
@@ -133,8 +142,22 @@ const getFriendCount = async ({ user_id }) => {
 
 const getFriendsLookup = async ({ userId }) => {
   try {
-    const [results] = await db.execute(getFollowersStatement, [userId])
-    return results
+    const [results] = await db.execute(getFriendsStatement, [userId, userId])
+    return results.map((result) =>
+      result.leader_id === Number(userId)
+        ? {
+            id: result.follower_id,
+            first_name: result.follower_first_name,
+            last_name: result.follower_last_name,
+            email: result.follower_email
+          }
+        : {
+            id: result.leader_id,
+            first_name: result.leader_first_name,
+            last_name: result.leader_last_name,
+            email: result.leader_email
+          }
+    )
   } catch (error) {
     logger.error('DATABASE_QUERY_FAILED', error)
     throw error
@@ -177,9 +200,10 @@ module.exports = {
   checkForUser,
   getUser,
   getUserById,
-  savePasswordResetToken,
-  getPasswordResetEmail,
+  checkPasswordResetToken,
+  updatePassword,
   followUser,
+  getFriendCreds,
   getRelationship,
   getFriendCount,
   getFriendsLookup,

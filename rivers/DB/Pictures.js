@@ -45,9 +45,9 @@ const getUserPictures = async ({ user_id }) => {
   }
 }
 
-const getAdventurePictures = async ({ adventure_id }) => {
+const getAdventurePictures = async ({ adventureId }) => {
   return db
-    .execute(getAdventurePicturesStatement, [adventure_id])
+    .execute(getAdventurePicturesStatement, [adventureId])
     .then(([results]) => results.map(({ file_name }) => file_name))
     .catch((error) => {
       throw {

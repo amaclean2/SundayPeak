@@ -1,5 +1,6 @@
 const { body } = require('express-validator')
 const logger = require('../Config/logger')
+const { checkPasswordResetToken } = require('../DB')
 
 const queries = require('../DB')
 
@@ -15,6 +16,37 @@ const userLoginValidator = () => {
   ]
 }
 
+const passwordResetValidator = () => {
+  return [
+    body('email').custom(async (value) => {
+      const userExists = await queries.checkForUser({ email: value })
+      if (!userExists) throw 'noAccountExists'
+      return true
+    })
+  ]
+}
+
+const newPasswordValidator = () => {
+  return [
+    body('password').custom((_, { req }) => {
+      const paramsExist = req?.body?.password && req?.body?.reset_token
+
+      if (!paramsExist) throw 'invalidPasswordResetBody'
+      return true
+    }),
+    body('reset_token').custom(async (value, { req }) => {
+      const { id } = await checkPasswordResetToken({ token: value })
+
+      if (!id) {
+        throw 'noAccountExists'
+      }
+
+      req.body.user_id = id
+      return true
+    })
+  ]
+}
+
 const userCreateValidator = () => {
   return [
     body('email')
@@ -24,7 +56,7 @@ const userCreateValidator = () => {
       })
       .bail()
       .custom(async (value) => {
-        const idExists = await queries.checkForUser(value)
+        const idExists = await queries.checkForUser({ email: value })
 
         if (idExists) throw 'preexistingUser'
         return true
@@ -136,5 +168,7 @@ module.exports = {
   userLoginValidator,
   userCreateValidator,
   userFollowValidator,
-  userEditValidator
+  userEditValidator,
+  passwordResetValidator,
+  newPasswordValidator
 }

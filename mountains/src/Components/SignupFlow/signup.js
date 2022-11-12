@@ -1,7 +1,7 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { title } from '../../App'
 import {
-	CARD_STATES,
+	CARD_TYPES,
 	useCardStateContext,
 	useCreateUser,
 	useUserStateContext
@@ -14,13 +14,15 @@ import {
 	ErrorField,
 	Button,
 	FieldHeader,
-	FooterButtons
+	FooterButtons,
+	ProfileContent
 } from '../Reusable'
 
 export const SignupFlow = () => {
 	const { formFields, setFormFields, setLoginError } = useUserStateContext()
 	const { switchCard } = useCardStateContext()
 	const { signupUser } = useCreateUser()
+	const navigate = useNavigate()
 
 	const onChange = (e) => {
 		setFormFields((currFormFields) => {
@@ -35,6 +37,11 @@ export const SignupFlow = () => {
 	const onClose = () => {
 		setFormFields({})
 		setLoginError(null)
+		navigate('/discover')
+	}
+
+	const handleSignup = () => {
+		signupUser().then(() => navigate('/discover'))
 	}
 
 	return (
@@ -48,7 +55,7 @@ export const SignupFlow = () => {
 					text={`Sign up with ${title}`}
 				/>
 			</ProfileHeader>
-			<div className='profile-content'>
+			<ProfileContent>
 				<div className='main-login-content'>
 					<div className='adventure-info flex-box signup-form'>
 						<ErrorField
@@ -117,7 +124,7 @@ export const SignupFlow = () => {
 				</div>
 				<FooterButtons className='signup-buttons'>
 					<Button
-						onClick={signupUser}
+						onClick={handleSignup}
 						id={'create-account-button'}
 						className='cta-button'
 					>
@@ -128,13 +135,16 @@ export const SignupFlow = () => {
 						<Button
 							className='secondary-button new-account-button'
 							id={'switch-to-login-button'}
-							onClick={() => switchCard(CARD_STATES.login)}
+							onClick={() => {
+								switchCard(CARD_TYPES.login)
+								navigate('/discover')
+							}}
 						>
 							Login to {title}
 						</Button>
 					</div>
 				</FooterButtons>
-			</div>
+			</ProfileContent>
 		</DisplayCard>
 	)
 }

@@ -10,7 +10,13 @@ const SeasonList = ({ seasons }) => {
 			const formattedStr = formatSeasons({ seasonArray: seasonList })
 			setInline(formattedStr)
 		} else {
-			setSeasonList(typeof seasons === 'string' ? JSON.parse(seasons) : seasons)
+			if (typeof seasons === 'string' && seasons.length) {
+				setSeasonList(JSON.parse(seasons))
+			} else if (typeof seasons === 'string' && !seasons.length) {
+				setSeasonList([])
+			} else {
+				setSeasonList(seasons)
+			}
 		}
 	}, [seasonList, seasons])
 

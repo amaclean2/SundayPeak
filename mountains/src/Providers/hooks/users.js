@@ -1,6 +1,8 @@
+import { redirect } from 'react-router-dom'
+
 import { fetcher } from '../utils'
 import { useUserStateContext } from '../userStateProvider'
-import { CARD_STATES, useCardStateContext } from '../cardStateProvider'
+import { CARD_TYPES, useCardStateContext } from '../cardStateProvider'
 import { useAdventureEditContext } from '../adventureEditProvider'
 import { title } from '../../App'
 
@@ -13,12 +15,10 @@ export const useCreateUser = () => {
 		formFields,
 		setFormFields
 	} = useUserStateContext()
-	const { closeCard } = useCardStateContext()
+	const { closeCard, setShowAlert, setAlertContent } = useCardStateContext()
 
 	const signupUser = () => {
 		const { email, first_name, last_name, password, password_2, legal } = formFields
-
-		console.log(formFields)
 
 		if (email && password && password_2 && first_name && last_name) {
 			if (legal) {
@@ -38,6 +38,10 @@ export const useCreateUser = () => {
 					.then(({ data }) => {
 						console.log('USER_CREATED', data)
 
+						setAlertContent(
+							`User ${data.user.first_name} ${data.user.last_name} created!\nGet started with a new adventure.`
+						)
+						setShowAlert(true)
 						setLoggedInUser(data.user)
 						setIsLoggedIn(true)
 						setIsLandingPage(false)
@@ -62,8 +66,30 @@ export const useCreateUser = () => {
 		}
 	}
 
+	const sendPasswordResetLink = ({ email }) => {
+		return fetcher('/users/passwordResetLink', {
+			method: 'POST',
+			body: { email }
+		}).then(({ data }) => {
+			console.log('RESET_LINK_SENT', data)
+		})
+	}
+
+	const updateNewPassword = ({ newPassword, resetToken }) => {
+		return fetcher('/users/newPassword', {
+			method: 'POST',
+			body: { password: newPassword, reset_token: resetToken }
+		})
+			.then(({ data }) => {
+				return redirect('/login')
+			})
+			.catch(console.error)
+	}
+
 	return {
-		signupUser
+		signupUser,
+		sendPasswordResetLink,
+		updateNewPassword
 	}
 }
 
@@ -110,7 +136,7 @@ export const useGetUser = () => {
 	const getOtherUser = ({ userId }) => {
 		return fetcher(`/users/id?id=${userId}`).then(({ data }) => {
 			setWorkingUser(data.user)
-			switchCard(CARD_STATES.profile)
+			switchCard(CARD_TYPES.profile)
 			return data
 		})
 	}
@@ -140,7 +166,7 @@ export const useGetUser = () => {
 
 					return data
 				})
-				.catch((error) => {
+				.catch(({ error }) => {
 					console.error(error)
 					setLoginError(error.message)
 					return error
@@ -199,19 +225,21 @@ export const useEditUser = () => {
 }
 
 export const useFollowUser = () => {
-	const { setLoggedInUser, setWorkingUser, setFriends } = useUserStateContext()
-	const followUser = ({ leaderId }) => {
+	const { setFriends } = useUserStateContext()
+	const { setAlertContent, setShowAlert } = useCardStateContext()
+
+	const followUser = ({ leaderId, followerId }) => {
 		return fetcher(`/users/follow`, {
 			method: 'POST',
 			body: {
 				leader_id: leaderId
 			}
 		})
-			.then(({ data }) => {
-				setLoggedInUser(data.user)
-				setWorkingUser(data.user)
-				return data
+			.then(async ({ data }) => {
+				setAlertContent(`You have followed ${data.leader_name}.`)
+				setShowAlert(true)
 			})
+			.then(() => getFriends({ userId: followerId }))
 			.catch(console.error)
 	}
 
