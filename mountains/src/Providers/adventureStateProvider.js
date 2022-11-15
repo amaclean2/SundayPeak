@@ -19,19 +19,19 @@ export const AdventureEditProvider = ({ children }) => {
 		zoom: 10
 	}
 
-	const [allAdventures, setAllAdventures] = useState([])
-	const [adventureAddState, setAdventureAddState] = useState(false)
-	const [currentAdventure, setCurrentAdventure] = useState(null)
-	const [editAdventureFields, setEditAdventureFields] = useState({})
-	const [currentBoundingBox, setCurrentBoundingBox] = useState(null)
-	const [isEditable, setIsEditable] = useState(false)
-	const [adventureError, setAdventureError] = useState(null)
-	const [mapboxToken, setMapboxToken] = useState(null)
-	const [startPosition, setStartPosition] = useState(initialStartPosition)
-	const [flying, setFlying] = useState(false)
-	const [isDeletePage, setIsDeletePage] = useState(false)
-	const [saveState, setSaveState] = useState(0)
-	const [mapStyle, setMapStyle] = useState('')
+	const [allAdventures, setAllAdventures] = useState([]) // an array
+	const [adventureAddState, setAdventureAddState] = useState(false) // a boolean
+	const [currentAdventure, setCurrentAdventure] = useState(null) // an object
+	const [editAdventureFields, setEditAdventureFields] = useState({}) // an object
+	const [currentBoundingBox, setCurrentBoundingBox] = useState(null) // an object
+	const [isEditable, setIsEditable] = useState(false) // a boolean
+	const [adventureError, setAdventureError] = useState(null) // a string
+	const [mapboxToken, setMapboxToken] = useState(null) // a string
+	const [startPosition, setStartPosition] = useState(initialStartPosition) // an object
+	const [flying, setFlying] = useState(false) // an object
+	const [isDeletePage, setIsDeletePage] = useState(false) // a boolean
+	const [saveState, setSaveState] = useState(0) // an integer
+	const [mapStyle, setMapStyle] = useState('') // a string
 
 	useEffect(() => {
 		localStorage.setItem('startPos', JSON.stringify(startPosition))

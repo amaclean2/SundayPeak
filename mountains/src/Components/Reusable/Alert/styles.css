@@ -3,17 +3,17 @@
 	bottom: 30px;
 	right: 10px;
 	width: 300px;
-	min-height: 100px;
-	background-color: var(--alert-blue-background);
-	border-radius: 10px;
+	min-height: 75px;
+	background-color: var(--primary-accent-color);
+	border-radius: 15px;
 	padding: 15px;
-	border: 2px solid var(--alert-blue);
 	box-shadow: 0 5px 10px var(--box-shadow-opacity);
-	color: var(--alert-blue);
-	font-size: 20px;
+	color: var(--default-background-color);
+	font-size: 18px;
 	opacity: 0;
 	transition: all 0.5s ease-in-out;
 	display: none;
+	line-height: 1.6em;
 }
 
 .alert.show-alert {

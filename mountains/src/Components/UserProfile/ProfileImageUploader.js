@@ -1,10 +1,10 @@
 import cx from 'classnames'
 
-import { usePictures, useUserStateContext } from '../../Providers'
+import { useUserPictures, useUserStateContext } from '../../Providers'
 import { Button } from '../Reusable'
 
 const ProfileImageUploader = () => {
-	const { updateProfilePicture, deletePicture } = usePictures()
+	const { updateProfilePicture, deletePicture } = useUserPictures()
 	const { workingUser, setWorkingUser } = useUserStateContext()
 
 	const handleUpload = ({ target: { files } }) => {

@@ -28,8 +28,6 @@ const ReactMap = () => {
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 
-	// const [popupInfo, setPopupInfo] = useState(null)
-
 	const onLoad = () => {
 		mapRef?.current?.getMap() && getAllAdventures(mapRef.current.getMap().getBounds())
 	}
@@ -92,19 +90,6 @@ const ReactMap = () => {
 			/>
 			<Layer {...skyLayer} />
 			<AdventurePins boundingBox={mapRef?.current?.getMap()?.getBounds()} />
-			{/* popupInfo && (
-				<MapPopup
-					popupInfo={popupInfo}
-					viewMore={() =>
-						viewMore({
-							id: popupInfo.id,
-							setPopupInfo,
-							boundingBox: mapRef.current.getMap().getBounds()
-						})
-					}
-					setPopupInfo={setPopupInfo}
-				/>
-				)*/}
 		</Map>
 	)
 }

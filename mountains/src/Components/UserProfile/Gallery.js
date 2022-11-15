@@ -1,7 +1,7 @@
-import { useCardStateContext, usePictures, useUserStateContext } from '../../Providers'
+import { useCardStateContext, useUserPictures, useUserStateContext } from '../../Providers'
 
 const UserProfileGallery = () => {
-	const { submitPicture } = usePictures()
+	const { submitPicture } = useUserPictures()
 	const { setViewingImage } = useCardStateContext()
 
 	const { workingUser, loggedInUser } = useUserStateContext()

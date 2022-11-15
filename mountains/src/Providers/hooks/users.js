@@ -3,7 +3,7 @@ import { redirect } from 'react-router-dom'
 import { fetcher } from '../utils'
 import { useUserStateContext } from '../userStateProvider'
 import { CARD_TYPES, useCardStateContext } from '../cardStateProvider'
-import { useAdventureEditContext } from '../adventureEditProvider'
+import { useAdventureEditContext } from '../adventureStateProvider'
 import { title } from '../../App'
 
 export const useCreateUser = () => {
@@ -255,7 +255,7 @@ export const useFollowUser = () => {
 	return { followUser, getFriends }
 }
 
-export const usePictures = () => {
+export const useUserPictures = () => {
 	const { refetchUser } = useGetUser()
 
 	const deletePicture = ({ pictureRef }) => {

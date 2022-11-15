@@ -1,4 +1,4 @@
-import { getBackendUri } from '../Constants'
+import { BACKEND_URI } from '../Constants'
 
 const isDefined = (property) => typeof property !== 'undefined'
 
@@ -122,7 +122,7 @@ export const validateAdventure = (currentAdventure, setAdventureError) => {
 export const validateUser = (newUser, setUserError) => {}
 
 export const fetcher = (url, options) => {
-	const uri = getBackendUri()
+	const uri = BACKEND_URI
 	const token = localStorage.getItem('token')
 	const headers = new Headers()
 

@@ -1,6 +1,6 @@
 import { debounce } from 'throttle-debounce'
 
-import { useAdventureEditContext } from '../adventureEditProvider'
+import { useAdventureEditContext } from '../adventureStateProvider'
 import { useCardStateContext } from '../cardStateProvider'
 import { fetcher, validateAdventure } from '../utils'
 

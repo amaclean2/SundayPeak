@@ -1,8 +1,8 @@
-import { useCardStateContext, usePictures, useUserStateContext } from '../../../Providers'
+import { useCardStateContext, useUserPictures, useUserStateContext } from '../../../Providers'
 import './styles.css'
 
-export const PhotoGallery = ({ container }) => {
-	const { submitPicture } = usePictures()
+export const PhotoGallery = () => {
+	const { submitPicture } = useUserPictures()
 
 	const { setViewingImage } = useCardStateContext()
 
@@ -18,8 +18,6 @@ export const PhotoGallery = ({ container }) => {
 	const handleImageClick = (imageSource) => {
 		setViewingImage(imageSource)
 	}
-
-	useEffect(() => {}, [workingUser])
 
 	return (
 		<div className='scroller-container flex-box'>
@@ -44,6 +42,7 @@ export const PhotoGallery = ({ container }) => {
 				return (
 					<img
 						src={image}
+						alt={''}
 						key={`profile_image_${key}`}
 						onClick={() => handleImageClick(image)}
 					/>

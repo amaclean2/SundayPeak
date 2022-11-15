@@ -1,3 +1,2 @@
-export const getBackendUri = () => {
-    return process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-};
+export const BACKEND_URI =
+	process.env.REACT_APP_API_URL || 'https://rivers-dot-sundaypeak.uw.r.appspot.com/api'
