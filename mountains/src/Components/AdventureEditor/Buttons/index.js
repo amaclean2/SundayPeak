@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
 import {
 	useAdventureEditContext,
 	useCardStateContext,
@@ -26,7 +24,7 @@ const AdventureEditorButtons = () => {
 	const { saveEditAdventure } = useSaveAdventure()
 	const { getAllAdventures } = useGetAdventures()
 	const { closeCard, setShowAlert, setAlertContent } = useCardStateContext()
-	const { deleteAdventure } = useDeleteAdventure()
+	const deleteAdventure = useDeleteAdventure()
 
 	const saveAdventure = async () => {
 		if (saveState === 0) {

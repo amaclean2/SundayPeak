@@ -9,7 +9,7 @@ import { formatSeasons } from '../../AdventureEditor/utils'
 import './styles.css'
 
 const MapPopup = ({ viewMore, popupInfo, setPopupInfo }) => {
-	const { saveTick } = useSaveTick()
+	const saveTick = useSaveTick()
 	const seasonArray =
 		typeof popupInfo.season === 'string' ? JSON.parse(popupInfo.season) : popupInfo.season
 

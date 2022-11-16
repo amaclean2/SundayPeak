@@ -4,7 +4,7 @@ import { useGetAdventure } from './adventures'
 
 export const useSaveActivity = () => {
 	const { setLoggedInUser, setWorkingUser } = useUserStateContext()
-	const { getAdventure } = useGetAdventure()
+	const getAdventure = useGetAdventure()
 
 	const saveActivity = ({ adventureId }) => {
 		return fetcher(`/activities/create`, {
@@ -22,7 +22,5 @@ export const useSaveActivity = () => {
 			.catch(console.error)
 	}
 
-	return {
-		saveActivity
-	}
+	return saveActivity
 }

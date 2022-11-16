@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 import { Button } from '../Button'
@@ -43,6 +44,18 @@ const PasswordInputField = ({
 			</Button>
 		</div>
 	)
+}
+
+PasswordInputField.propTypes = {
+	className: PropTypes.string,
+	name: PropTypes.string,
+	label: PropTypes.string,
+	hideLabel: PropTypes.bool,
+	placeholder: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	onChange: PropTypes.func,
+	autoComplete: PropTypes.string,
+	autoFocus: PropTypes.bool
 }
 
 export default PasswordInputField

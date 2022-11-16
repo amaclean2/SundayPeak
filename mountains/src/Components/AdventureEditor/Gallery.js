@@ -6,7 +6,7 @@ import {
 import './styles.css'
 
 const PhotoGallery = () => {
-	const { submitAdventurePicture } = useSubmitAdventurePicture()
+	const submitAdventurePicture = useSubmitAdventurePicture()
 	const { setViewingImage } = useCardStateContext()
 	const { currentAdventure } = useAdventureEditContext()
 

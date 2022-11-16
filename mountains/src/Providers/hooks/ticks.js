@@ -4,7 +4,7 @@ import { useGetAdventure } from './adventures'
 
 export const useSaveTick = () => {
 	const { setLoggedInUser, setWorkingUser } = useUserStateContext()
-	const { getAdventure } = useGetAdventure()
+	const getAdventure = useGetAdventure()
 
 	const saveTick = ({ adventureId }) => {
 		fetcher(`/ticks/create`, {
@@ -22,7 +22,5 @@ export const useSaveTick = () => {
 			.catch(console.error)
 	}
 
-	return {
-		saveTick
-	}
+	return saveTick
 }

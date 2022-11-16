@@ -20,7 +20,7 @@ const Tick = ({ tickName, onClick }) => (
 const UserTickPanel = ({ className }) => {
 	const { workingUser } = useUserStateContext()
 	const { switchCard } = useCardStateContext()
-	const { getAdventure } = useGetAdventure()
+	const getAdventure = useGetAdventure()
 
 	const [ticks, setTicks] = useState(null)
 

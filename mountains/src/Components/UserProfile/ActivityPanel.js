@@ -21,7 +21,7 @@ const Activity = ({ activityName, onClick }) => (
 const ActivityPanel = ({ className }) => {
 	const { workingUser } = useUserStateContext()
 	const { switchCard } = useCardStateContext()
-	const { getAdventure } = useGetAdventure()
+	const getAdventure = useGetAdventure()
 
 	const [activities, setActivities] = useState(null)
 

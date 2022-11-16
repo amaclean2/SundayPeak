@@ -26,7 +26,7 @@ const AdventureEditor = () => {
 		setIsDeletePage
 	} = useAdventureEditContext()
 	const { pathname } = useLocation()
-	const { getAdventure } = useGetAdventure()
+	const getAdventure = useGetAdventure()
 	const navigate = useNavigate()
 
 	const menuRef = useRef()

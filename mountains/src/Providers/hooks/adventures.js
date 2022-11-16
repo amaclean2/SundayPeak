@@ -17,7 +17,7 @@ export const useGetAdventure = () => {
 			.catch(console.error)
 	}
 
-	return { getAdventure }
+	return getAdventure
 }
 
 export const useGetAdventures = () => {
@@ -169,13 +169,11 @@ export const useDeleteAdventure = () => {
 			.catch(console.error)
 	}
 
-	return {
-		deleteAdventure
-	}
+	return deleteAdventure
 }
 
 export const useSubmitAdventurePicture = () => {
-	const { getAdventure } = useGetAdventure()
+	const getAdventure = useGetAdventure()
 
 	const submitAdventurePicture = ({ data, adventureId }) => {
 		const formData = new FormData()
@@ -190,5 +188,5 @@ export const useSubmitAdventurePicture = () => {
 			.catch(console.error)
 	}
 
-	return { submitAdventurePicture }
+	return submitAdventurePicture
 }

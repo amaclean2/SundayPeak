@@ -1,5 +1,7 @@
-import { FormField } from '.'
 import cx from 'classnames'
+import PropTypes from 'prop-types'
+
+import { FormField } from '.'
 
 const MultiField = ({ onChange, label, fields, className }) => {
 	return (
@@ -20,6 +22,19 @@ const MultiField = ({ onChange, label, fields, className }) => {
 			</div>
 		</div>
 	)
+}
+
+MultiField.propTypes = {
+	onChange: PropTypes.func,
+	label: PropTypes.string,
+	fields: PropTypes.arrayOf(
+		PropTypes.shape({
+			value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+			name: PropTypes.string,
+			placeholder: PropTypes.string
+		})
+	),
+	className: PropTypes.string
 }
 
 export default MultiField

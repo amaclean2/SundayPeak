@@ -16,7 +16,7 @@ export const useCreateNewAdventure = () => {
 		setCurrentBoundingBox
 	} = useAdventureEditContext()
 	const { openCard } = useCardStateContext()
-	const { getAdventure } = useGetAdventure()
+	const getAdventure = useGetAdventure()
 
 	const handleCreateNewAdventure = (event) => {
 		event.preventDefault()

@@ -1,4 +1,5 @@
 import cx from 'classnames'
+import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 
 const SelectManyField = ({ className, options, onChange, name, value }) => {
@@ -58,6 +59,16 @@ const SelectManyField = ({ className, options, onChange, name, value }) => {
 			))}
 		</div>
 	)
+}
+
+SelectManyField.propTypes = {
+	className: PropTypes.string,
+	options: PropTypes.shape({
+		selectMany: PropTypes.array
+	}),
+	onChange: PropTypes.func,
+	name: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
 }
 
 export default SelectManyField

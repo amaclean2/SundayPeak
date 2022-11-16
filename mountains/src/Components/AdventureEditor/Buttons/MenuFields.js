@@ -18,8 +18,8 @@ const AdventureEditorMenu = () => {
 		saveState
 	} = useAdventureEditContext()
 	const { loggedInUser } = useUserStateContext()
-	const { saveTick } = useSaveTick()
-	const { saveActivity } = useSaveActivity()
+	const saveTick = useSaveTick()
+	const saveActivity = useSaveActivity()
 
 	if (!loggedInUser) return null
 

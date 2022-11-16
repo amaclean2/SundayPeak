@@ -1,5 +1,7 @@
-import cx from 'classnames'
 import { useState } from 'react'
+import cx from 'classnames'
+import PropTypes from 'prop-types'
+
 import { Meatball } from '../../../Images/Meatball'
 import { Button } from '../Button'
 
@@ -40,6 +42,18 @@ const Menu = ({ className, fields = [] }) => {
 			</div>
 		</div>
 	)
+}
+
+Menu.propTypes = {
+	fields: PropTypes.arrayOf(
+		PropTypes.shape({
+			className: PropTypes.string,
+			id: PropTypes.number,
+			text: PropTypes.string,
+			action: PropTypes.func
+		})
+	).isRequired,
+	className: PropTypes.string
 }
 
 export default Menu
