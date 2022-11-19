@@ -1,10 +1,10 @@
-import { useAdventureEditContext } from '../../Providers'
+import { useAdventureStateContext } from '../../Providers'
 import { ErrorField, FormField, Accordion } from '../Reusable'
 import MultiField from '../Reusable/FormField/MultiField'
 import { directionSelectOptions, gearOptions, seasonOptions } from './utils'
 
 const AdventureEditorForm = ({ onChange }) => {
-	const { currentAdventure } = useAdventureEditContext()
+	const { currentAdventure } = useAdventureStateContext()
 
 	return (
 		<div className='adventure-info flex-box'>

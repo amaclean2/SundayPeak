@@ -17,7 +17,7 @@ const Friend = ({ friend, onClick }) => {
 
 const FriendsViewer = ({ className }) => {
 	const { getFriends } = useFollowUser()
-	const { friends, setFriends, workingUser } = useUserStateContext()
+	const { friends, workingUser, userDispatch } = useUserStateContext()
 	const { getOtherUser } = useGetUser()
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ const FriendsViewer = ({ className }) => {
 
 	const handleChangeUser = (friend) => {
 		getOtherUser({ userId: friend.follower_id })
-		setFriends(null)
+		userDispatch({ type: 'clearFriends' })
 	}
 
 	if (!friends) return null

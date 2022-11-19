@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useReducer, useState } from 'react'
 
 const UserStateContext = createContext()
 
@@ -13,71 +13,82 @@ export const useUserStateContext = () => {
 }
 
 export const UserStateProvider = ({ children }) => {
-	const [workingUser, setWorkingUser] = useState(null)
-	const [loggedInUser, loginUser] = useState({})
-	const [isLoggedIn, setIsLoggedIn] = useState(undefined)
-	const [formFields, setFormFields] = useState({})
-	const [isLandingPage, setIsLandingPage] = useState(true)
-	const [loginError, setLoginError] = useState('')
-	const [imageList, setImageList] = useState([])
-	const [isEditable, setIsEditable] = useState(false)
-	const [friends, setFriends] = useState(null)
-	const [listState, setListState] = useState('')
-
-	const clickOffLanding = () => {
-		setIsLandingPage(false)
+	const initialUserState = {
+		workingUser: null,
+		loggedInUser: {},
+		isLoggedIn: undefined,
+		formFields: {},
+		loginError: '',
+		isUserEditable: false,
+		friends: null,
+		listState: ''
 	}
 
-	const setLoggedInUser = (user) => {
-		loginUser(user)
-		setWorkingUser(user)
+	const userReducer = (state, action) => {
+		switch (action.type) {
+			case 'workingUser':
+				return { ...state, workingUser: action.payload }
+			case 'editUser':
+				return {
+					...state,
+					workingUser: {
+						...state.workingUser,
+						[action.payload.name]: action.payload.value
+					},
+					formFields: {
+						...state.formFields,
+						[action.payload.name]: action.payload.value
+					}
+				}
+			case 'loginUser':
+				return {
+					...state,
+					loggedInUser: action.payload,
+					workingUser: action.payload,
+					isLoggedIn: !!action.payload,
+					loginError: '',
+					formFields: {}
+				}
+			case 'logout':
+				localStorage.clear()
+				return { ...state, loggedInUser: {}, isLoggedIn: false }
+			case 'formFields':
+				return { ...state, formFields: action.payload, loginError: '' }
+			case 'loginError':
+				return { ...state, loginError: action.payload }
+			case 'clearLoginEerror':
+				return { ...state, loginError: '' }
+			case 'clearForm':
+				return { ...state, loginError: '', formFields: {} }
+			case 'toggleIsUserEditable':
+				return { ...state, isUserEditable: !state.isUserEditable }
+			case 'isUserEditable':
+				return { ...state, isUserEditable: action.payload }
+			case 'clearFriends':
+				return { ...state, friends: null }
+			case 'friends':
+				return { ...state, friends: action.payload }
+			case 'toggleListState':
+				return { ...state, listState: !state.listState }
+			case 'resetListState':
+				return { ...state, listState: false }
+			default:
+				return state
+		}
 	}
 
-	const handleLogout = async () => {
-		setLoggedInUser({})
-		setIsLoggedIn(false)
-		setWorkingUser(null)
-		localStorage.clear()
-		return 'SUCCESSFULLY_LOGGED_OUT'
-	}
+	const [userState, userDispatch] = useReducer(userReducer, initialUserState)
 
 	const editUser = (e) => {
-		setWorkingUser({
-			...workingUser,
-			[e.target.name]: e.target.value
-		})
-		setFormFields({
-			...formFields,
-			[e.target.name]: e.target.value
-		})
+		userDispatch({ type: 'editUser', payload: { name: e.target.name, value: e.target.value } })
 	}
 
 	return (
 		<UserStateContext.Provider
 			value={{
-				isLoggedIn,
-				formFields,
-				workingUser,
-				isLandingPage,
-				loginError,
-				loggedInUser,
-				imageList,
-				isEditable,
-				friends,
-				listState,
-				setLoginError,
-				setFormFields,
-				handleLogout,
-				clickOffLanding,
-				editUser,
-				setWorkingUser,
-				setIsLoggedIn,
-				setIsLandingPage,
-				setLoggedInUser,
-				setImageList,
-				setIsEditable,
-				setFriends,
-				setListState
+				...userState,
+				userDispatch,
+				editUser
 			}}
 		>
 			{children}

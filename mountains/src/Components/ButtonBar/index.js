@@ -11,13 +11,13 @@ import { Link } from 'react-router-dom'
 import MenuPanels from './MenuPanels'
 
 const LoginButton = () => {
-	const { openCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	return (
 		<Button
 			id='login-button-adventures'
 			className={cx('button-bar-button', 'login-button')}
-			onClick={() => openCard(CARD_TYPES.login)}
+			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.login })}
 		>
 			Log In
 		</Button>
@@ -25,12 +25,12 @@ const LoginButton = () => {
 }
 
 const SignUpButton = () => {
-	const { openCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	return (
 		<Button
 			className={cx('button-bar-button', 'signup-button')}
-			onClick={() => openCard(CARD_TYPES.signup)}
+			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })}
 			id={'signup-button-adventures'}
 		>
 			Create an Account
@@ -39,21 +39,21 @@ const SignUpButton = () => {
 }
 
 const UserProfileButton = () => {
-	const { openCard } = useCardStateContext()
-	const { setWorkingUser, loggedInUser, workingUser } = useUserStateContext()
+	const { cardDispatch } = useCardStateContext()
+	const { userDispatch, loggedInUser, workingUser } = useUserStateContext()
 	const [buttonClicked, setButtonClicked] = useState(false)
 
 	const handleProfileButton = () => {
 		setButtonClicked(true)
-		setWorkingUser(loggedInUser)
+		userDispatch({ type: 'workingUser', payload: loggedInUser })
 	}
 
 	useEffect(() => {
 		if (workingUser?.id === loggedInUser?.id && buttonClicked) {
-			openCard(CARD_TYPES.profile)
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.profile })
 			setButtonClicked(false)
 		}
-	}, [workingUser, buttonClicked, loggedInUser?.id, openCard])
+	}, [workingUser, buttonClicked, loggedInUser?.id, cardDispatch])
 
 	return (
 		<Button
@@ -67,13 +67,13 @@ const UserProfileButton = () => {
 }
 
 const ActivitiesButton = () => {
-	const { openCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	return (
 		<Button
 			className='button-bar-button'
 			id='activities-button-adventures'
-			onClick={() => openCard(CARD_TYPES.adventures)}
+			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })}
 		>
 			<Skier />
 		</Button>
@@ -81,7 +81,7 @@ const ActivitiesButton = () => {
 }
 
 const ButtonBar = () => {
-	const { notFullyOpen } = useCardStateContext()
+	const { displayCardBoolState } = useCardStateContext()
 	const { isLoggedIn } = useUserStateContext()
 
 	if (isLoggedIn === undefined) {
@@ -90,7 +90,7 @@ const ButtonBar = () => {
 
 	return (
 		<>
-			{notFullyOpen && (
+			{!displayCardBoolState && (
 				<div className='button-bar flex-box'>
 					{!isLoggedIn && <SignUpButton />}
 					{!isLoggedIn && <LoginButton />}

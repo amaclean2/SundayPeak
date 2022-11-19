@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 import { Marker } from 'react-map-gl'
 import { SkierIcon } from '../../Images'
-import { useAdventureEditContext } from '../../Providers'
+import { useAdventureStateContext } from '../../Providers'
 import { useCreateNewAdventure } from './utils'
 
 const AdventurePins = ({ boundingBox }) => {
-	const { allAdventures } = useAdventureEditContext()
+	const { allAdventures } = useAdventureStateContext()
 	const { viewMore } = useCreateNewAdventure()
 
 	const pins = useMemo(() => {

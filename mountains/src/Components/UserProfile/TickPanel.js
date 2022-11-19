@@ -19,7 +19,7 @@ const Tick = ({ tickName, onClick }) => (
 
 const UserTickPanel = ({ className }) => {
 	const { workingUser } = useUserStateContext()
-	const { switchCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const getAdventure = useGetAdventure()
 
 	const [ticks, setTicks] = useState(null)
@@ -32,7 +32,7 @@ const UserTickPanel = ({ className }) => {
 
 	const openAdventure = (adventureId) => {
 		return getAdventure({ id: adventureId }).then(() => {
-			switchCard(CARD_TYPES.adventures)
+			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.adventures })
 		})
 	}
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import Map, { GeolocateControl, Layer, NavigationControl, Source } from 'react-map-gl'
 
-import { useAdventureEditContext, useGetAdventures } from '../../Providers'
+import { useAdventureStateContext, useGetAdventures } from '../../Providers'
 
 import '../../App.css'
 import AdventurePins from './AdventurePins'
@@ -23,8 +23,8 @@ const ReactMap = () => {
 		if (ref) ref.trigger()
 	}, [])
 
-	const { allAdventures, mapboxToken, startPosition, flying, setFlying, mapStyle } =
-		useAdventureEditContext()
+	const { allAdventures, mapboxToken, startPosition, flyTo, adventureDispatch, mapStyle } =
+		useAdventureStateContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 
@@ -47,16 +47,16 @@ const ReactMap = () => {
 	useEffect(() => {
 		// flying is set by an external component
 		// if flying is set, fly to that location, then unset flying
-		if (flying) {
+		if (flyTo) {
 			mapRef?.current?.flyTo({
-				center: [flying.longitude, flying.latitude],
-				zoom: flying.zoom,
-				pitch: flying.pitch,
-				bearing: flying.bearing
+				center: [flyTo.longitude, flyTo.latitude],
+				zoom: flyTo.zoom,
+				pitch: flyTo.pitch,
+				bearing: flyTo.bearing
 			})
-			setFlying(false)
+			adventureDispatch({ type: 'stopFlying' })
 		}
-	}, [flying])
+	}, [flyTo, adventureDispatch])
 
 	if (!(allAdventures && mapboxToken && mapStyle)) {
 		return null

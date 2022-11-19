@@ -1,4 +1,5 @@
 import { BACKEND_URI } from '../Constants'
+import { useAdventureStateContext } from './adventureStateProvider'
 
 const isDefined = (property) => typeof property !== 'undefined'
 
@@ -13,110 +14,107 @@ export const createNewDefaultAdventure = ({ longitude, latitude }) => ({
 	}
 })
 
-export const validateAdventure = (currentAdventure, setAdventureError) => {
-	if (!isDefined(setAdventureError)) {
-		setAdventureError = () => {}
-	}
+export const useAdventureValidation = () => {
+	const { adventureDispatch } = useAdventureStateContext()
 
-	let approachDistance = null
-	let season = null
-	let avgAngle = null
-	let maxAngle = null
-	let elevation = null
-	let gear = null
-	let gain = null
+	const validateAdventure = ({ fields, type }) => {
+		const callDispatch = type === 'editFields' ? () => {} : adventureDispatch
 
-	if (isDefined(currentAdventure.adventure_name)) {
-		if (typeof currentAdventure.adventure_name !== 'string') {
-			setAdventureError('Adventure Name must be a string')
-			throw new Error('Adventure Name must be a string')
+		let approachDistance = null
+		let season = null
+		let avgAngle = null
+		let maxAngle = null
+		let elevation = null
+		let gear = null
+		let gain = null
+
+		if (isDefined(fields.adventure_name)) {
+			if (typeof fields.adventure_name !== 'string') {
+				callDispatch({ type: 'adventureError', payload: 'Adventure Name must be a string' })
+				throw new Error('Adventure Name must be a string')
+			}
+		}
+
+		if (isDefined(fields.approach_distance)) {
+			if (isNaN(parseFloat(fields.approach_distance)) && fields.approach_distance !== '') {
+				callDispatch({ type: 'adventureError', payload: 'Appraoch Distance must contain a number' })
+				throw new Error('Approach Distance must contain a number')
+			} else {
+				approachDistance = parseFloat(fields.approach_distance)
+			}
+		}
+
+		if (isDefined(fields.season)) {
+			if (fields.season?.length) {
+				season = JSON.stringify(fields.season.sort((a, b) => Number(a) - Number(b)))
+			} else if (!fields.season) {
+				season = JSON.stringify([])
+			}
+		}
+
+		if (isDefined(fields.avg_angle)) {
+			if (isNaN(parseFloat(fields.avg_angle)) && fields.avg_angle !== '') {
+				callDispatch({ type: 'adventureError', payload: 'Average Angle must contain a number' })
+				throw new Error('Average angle must contain a number')
+			} else {
+				avgAngle = parseFloat(fields.avg_angle)
+			}
+		}
+
+		if (isDefined(fields.max_angle)) {
+			if (fields.max_angle && isNaN(parseFloat(fields.max_angle)) && fields.max_angle !== '') {
+				callDispatch({ type: 'adventureError', payload: 'Max Angle must contain a number' })
+				throw new Error('Max angle must contain a number')
+			} else {
+				maxAngle = parseFloat(fields.max_angle)
+			}
+		}
+
+		if (isDefined(fields.elevation)) {
+			if (isNaN(parseFloat(fields.elevation)) && fields.elevation !== '') {
+				callDispatch({ type: 'adventureError', payload: 'Elevation must contain a number' })
+				throw new Error('Elevation must contain a number')
+			} else {
+				elevation = parseFloat(fields.elevation)
+			}
+		}
+
+		if (isDefined(fields.gear)) {
+			if (fields.gear?.length) {
+				gear = JSON.stringify(fields.gear.sort((a, b) => Number(a) - Number(b)))
+			} else if (!fields.gear.length) {
+				gear = JSON.stringify([])
+			}
+		}
+
+		if (isDefined(fields.gain)) {
+			if (isNaN(parseFloat(fields.gain)) && fields.gain !== '') {
+				callDispatch({ type: 'adventureError', payload: 'Elevation Gain must contain a number' })
+				throw new Error('Elevation Gain must contian a number')
+			} else {
+				gain = parseFloat(fields.gain)
+			}
+		}
+
+		return {
+			...fields,
+			...(fields.difficulty && { difficulty: parseFloat(fields.difficulty) }),
+			...(fields.approach_distance && { approach_distance: approachDistance }),
+			...(fields.season && { season: season || [] }),
+			...(fields.avg_angle && { avg_angle: avgAngle }),
+			...(fields.max_angle && { max_angle: maxAngle }),
+			...(fields.elevation && { elevation }),
+			...(fields.gear && { gear: gear || [] }),
+			...(fields.gain && { gain }),
+			...(fields.bio && { bio: fields.bio || '' }),
+			...(fields.nearest_city && { nearest_city: fields.nearest_city || '' }),
+			...(fields.coordinates && {
+				coordinates: JSON.stringify(fields.coordinates)
+			})
 		}
 	}
 
-	if (isDefined(currentAdventure.approach_distance)) {
-		if (
-			isNaN(parseFloat(currentAdventure.approach_distance)) &&
-			currentAdventure.approach_distance !== ''
-		) {
-			setAdventureError('Appraoch Distance must contain a number')
-			throw new Error('Approach Distance must contain a number')
-		} else {
-			approachDistance = parseFloat(currentAdventure.approach_distance)
-		}
-	}
-
-	if (isDefined(currentAdventure.season)) {
-		if (currentAdventure.season?.length) {
-			season = JSON.stringify(currentAdventure.season.sort((a, b) => Number(a) - Number(b)))
-		} else if (!currentAdventure.season) {
-			season = JSON.stringify([])
-		}
-	}
-
-	if (isDefined(currentAdventure.avg_angle)) {
-		if (isNaN(parseFloat(currentAdventure.avg_angle)) && currentAdventure.avg_angle !== '') {
-			setAdventureError('Average Angle must contain a number')
-			throw new Error('Average angle must contain a number')
-		} else {
-			avgAngle = parseFloat(currentAdventure.avg_angle)
-		}
-	}
-
-	if (isDefined(currentAdventure.max_angle)) {
-		if (
-			currentAdventure.max_angle &&
-			isNaN(parseFloat(currentAdventure.max_angle)) &&
-			currentAdventure.max_angle !== ''
-		) {
-			setAdventureError('Max Angle must contain a number')
-			throw new Error('Max angle must contain a number')
-		} else {
-			maxAngle = parseFloat(currentAdventure.max_angle)
-		}
-	}
-
-	if (isDefined(currentAdventure.elevation)) {
-		if (isNaN(parseFloat(currentAdventure.elevation)) && currentAdventure.elevation !== '') {
-			setAdventureError('Elevation must contain a number')
-			throw new Error('Elevation must contain a number')
-		} else {
-			elevation = parseFloat(currentAdventure.elevation)
-		}
-	}
-
-	if (isDefined(currentAdventure.gear)) {
-		if (currentAdventure.gear?.length) {
-			gear = JSON.stringify(currentAdventure.gear.sort((a, b) => Number(a) - Number(b)))
-		} else if (!currentAdventure.gear.length) {
-			gear = JSON.stringify([])
-		}
-	}
-
-	if (isDefined(currentAdventure.gain)) {
-		if (isNaN(parseFloat(currentAdventure.gain)) && currentAdventure.gain !== '') {
-			setAdventureError('Elevation Gain must contain a number')
-			throw new Error('Elevation Gain must contian a number')
-		} else {
-			gain = parseFloat(currentAdventure.gain)
-		}
-	}
-
-	return {
-		...currentAdventure,
-		...(currentAdventure.difficulty && { difficulty: parseFloat(currentAdventure.difficulty) }),
-		...(currentAdventure.approach_distance && { approach_distance: approachDistance }),
-		...(currentAdventure.season && { season: season || [] }),
-		...(currentAdventure.avg_angle && { avg_angle: avgAngle }),
-		...(currentAdventure.max_angle && { max_angle: maxAngle }),
-		...(currentAdventure.elevation && { elevation }),
-		...(currentAdventure.gear && { gear: gear || [] }),
-		...(currentAdventure.gain && { gain }),
-		...(currentAdventure.bio && { bio: currentAdventure.bio || '' }),
-		...(currentAdventure.nearest_city && { nearest_city: currentAdventure.nearest_city || '' }),
-		...(currentAdventure.coordinates && {
-			coordinates: JSON.stringify(currentAdventure.coordinates)
-		})
-	}
+	return validateAdventure
 }
 
 export const validateUser = (newUser, setUserError) => {}

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { CardStateProvider } from './Providers/cardStateProvider'
-import { AdventureEditProvider } from './Providers/adventureStateProvider'
+import { AdventureStateProvider } from './Providers/adventureStateProvider'
 import { UserStateProvider } from './Providers/userStateProvider'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
@@ -12,9 +12,9 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 const ProvidersWrapper = () => (
 	<CardStateProvider>
 		<UserStateProvider>
-			<AdventureEditProvider>
+			<AdventureStateProvider>
 				<App />
-			</AdventureEditProvider>
+			</AdventureStateProvider>
 		</UserStateProvider>
 	</CardStateProvider>
 )

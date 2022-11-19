@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import cx from 'classnames'
 
-import { useAdventureEditContext, useUserStateContext } from '../../../Providers'
+import { useAdventureStateContext, useUserStateContext } from '../../../Providers'
 
 import './styles.css'
 
 export const ErrorField = ({ form, className }) => {
 	const { loginError } = useUserStateContext()
-	const { adventureError } = useAdventureEditContext()
+	const { adventureError } = useAdventureStateContext()
 	const [error, setError] = useState('')
 
 	useEffect(() => {

@@ -5,14 +5,14 @@ import { LoginFlow, NewPassword, PasswordResetCapture, SignupFlow } from '../Sig
 import UserProfile from '../UserProfile'
 
 const MenuPanels = () => {
-	const { displayCardBoolState, workingCard, closeCard } = useCardStateContext()
+	const { displayCardBoolState, workingCard, cardDispatch } = useCardStateContext()
 	const { loggedInUser } = useUserStateContext()
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
 
 	if ((pathname.includes('/signup') || pathname.includes('/login')) && !!loggedInUser) {
 		navigate('/discover')
-		closeCard()
+		cardDispatch({ type: 'closeCard' })
 	}
 
 	return (

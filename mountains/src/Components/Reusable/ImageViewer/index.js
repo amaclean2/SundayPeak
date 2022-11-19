@@ -5,13 +5,13 @@ import { Button } from '../Button'
 import './styles.css'
 
 export const ImageViewer = () => {
-	const { viewingImage, setViewingImage } = useCardStateContext()
+	const { viewingImage, cardDispatch } = useCardStateContext()
 	const { deletePicture } = useUserPictures()
 
 	const largeImage = viewingImage?.replace('/thumbs', '')
 
 	const closeViewer = () => {
-		setViewingImage(null)
+		cardDispatch({ type: 'viewingImage', payload: null })
 	}
 
 	if (!viewingImage) {

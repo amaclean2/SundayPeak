@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
 	CARD_TYPES,
-	useAdventureEditContext,
+	useAdventureStateContext,
 	useCardStateContext,
 	useGetUser,
 	useUserStateContext
@@ -20,8 +20,8 @@ const UserImage = ({ url }) => (
 const MailIcon = () => <div className='mail-icon' />
 
 const AdventureTickPanel = () => {
-	const { currentAdventure } = useAdventureEditContext()
-	const { switchCard } = useCardStateContext()
+	const { currentAdventure } = useAdventureStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const { getOtherUser } = useGetUser()
 	const { workingUser } = useUserStateContext()
 
@@ -40,7 +40,7 @@ const AdventureTickPanel = () => {
 
 	useEffect(() => {
 		if (userOnLoad && workingUser?.id && userOnLoad !== workingUser?.id) {
-			switchCard(CARD_TYPES.profile)
+			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.profile })
 		}
 	}, [workingUser])
 

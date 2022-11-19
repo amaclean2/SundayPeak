@@ -2,7 +2,7 @@ import { useCardStateContext, useUserPictures, useUserStateContext } from '../..
 
 const UserProfileGallery = () => {
 	const { submitPicture } = useUserPictures()
-	const { setViewingImage } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	const { workingUser, loggedInUser } = useUserStateContext()
 
@@ -14,7 +14,7 @@ const UserProfileGallery = () => {
 		workingUser.id === loggedInUser.id ? [...workingUser.images, 'new'] : workingUser.images
 
 	const handleImageClick = (imageSource) => {
-		setViewingImage(imageSource)
+		cardDispatch({ type: 'viewingImage', payload: imageSource })
 	}
 
 	return (

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import { useAdventureEditContext, useGetAdventure } from '../../Providers'
+import { useAdventureStateContext, useGetAdventure } from '../../Providers'
 import { DisplayCard, FieldHeader, HeaderSubtext, ProfileContent, ProfileHeader } from '../Reusable'
 import AdventureEditorButtons from './Buttons'
 import AdventureEditorForm from './Editor'
@@ -13,18 +13,14 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 const AdventureEditor = () => {
 	const {
-		setAdventureAddState,
+		adventureDispatch,
+		editAdventureFields,
 		currentAdventure,
-		setCurrentAdventure,
-		setEditAdventureFields,
 		adventureAddState,
-		isEditable,
-		setIsEditable,
+		isAdventureEditable,
 		adventureError,
-		setFlying,
-		isDeletePage,
-		setIsDeletePage
-	} = useAdventureEditContext()
+		isDeletePage
+	} = useAdventureStateContext()
 	const { pathname } = useLocation()
 	const getAdventure = useGetAdventure()
 	const navigate = useNavigate()
@@ -33,23 +29,26 @@ const AdventureEditor = () => {
 
 	const onChange = (e) => {
 		if (currentAdventure.id) {
-			setEditAdventureFields((currentFields) => ({
-				...currentFields,
-				[e.target.name]: e.target.value
-			}))
+			adventureDispatch({
+				type: 'editAdventure',
+				payload: {
+					editAdventureFields: { ...editAdventureFields, [e.target.name]: e.target.value },
+					currentAdventure: { ...currentAdventure, [e.target.name]: e.target.value }
+				}
+			})
+		} else {
 		}
-
-		setCurrentAdventure((workingAdventure) => ({
-			...workingAdventure,
-			[e.target.name]: e.target.value
-		}))
+		adventureDispatch({
+			type: 'editAdventure',
+			payload: {
+				editAdventureFields,
+				currentAdventure: { ...currentAdventure, [e.target.name]: e.target.value }
+			}
+		})
 	}
 
 	const handleClose = () => {
-		setCurrentAdventure(null)
-		setAdventureAddState(false)
-		setIsEditable(false)
-		setIsDeletePage(false)
+		adventureDispatch({ type: 'closeAdventurePanel' })
 		navigate('/discover')
 	}
 
@@ -63,33 +62,39 @@ const AdventureEditor = () => {
 
 		if (urlAdventureId) {
 			getAdventure({ id: urlAdventureId }).then(({ adventure }) => {
-				setFlying({
-					latitude: adventure.coordinates_lat,
-					longitude: adventure.coordinates_lng,
-					zoom: 16,
-					pitch: 0,
-					bearing: 0
+				adventureDispatch({
+					type: 'flyTo',
+					payload: {
+						latitude: adventure.coordinates_lat,
+						longitude: adventure.coordinates_lng,
+						zoom: 16,
+						pitch: 0,
+						bearing: 0
+					}
 				})
 			})
 		} else if (currentAdventure) {
-			setFlying({
-				latitude: currentAdventure.coordinates_lat,
-				longitude: currentAdventure.coordinates_lng - 0.003,
-				zoom: 16,
-				pitch: 0,
-				bearing: 0
+			adventureDispatch({
+				type: 'flyTo',
+				payload: {
+					latitude: currentAdventure.coordinates_lat,
+					longitude: currentAdventure.coordinates_lng - 0.003,
+					zoom: 16,
+					pitch: 0,
+					bearing: 0
+				}
 			})
 		}
 	}, [])
 
 	const buildProfileHeader = () => {
 		if (currentAdventure) {
-			if (isEditable) {
+			if (isAdventureEditable) {
 				return (
 					<ProfileHeader
 						textContents={currentAdventure.adventure_name}
 						editFields={{
-							isEditable,
+							isAdventureEditable,
 							propName: 'adventure_name',
 							onChange
 						}}
@@ -136,10 +141,10 @@ const AdventureEditor = () => {
 							It will be gone forever
 						</ConfirmationPage>
 					)}
-					{!isDeletePage && currentAdventure && isEditable && (
+					{!isDeletePage && currentAdventure && isAdventureEditable && (
 						<AdventureEditorForm onChange={onChange} />
 					)}
-					{!isDeletePage && currentAdventure && !isEditable && <AdventureViewer />}
+					{!isDeletePage && currentAdventure && !isAdventureEditable && <AdventureViewer />}
 				</div>
 				<AdventureEditorButtons />
 			</ProfileContent>

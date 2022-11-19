@@ -1,5 +1,5 @@
 import {
-	useAdventureEditContext,
+	useAdventureStateContext,
 	useCardStateContext,
 	useDeleteAdventure,
 	useSaveAdventure,
@@ -11,45 +11,46 @@ const AdventureEditorButtons = () => {
 	const {
 		currentAdventure,
 		adventureAddState,
-		isEditable,
-		setAdventureAddState,
-		setIsEditable,
+		isAdventureEditable,
+		adventureDispatch,
 		saveState,
-		setSaveState,
 		currentBoundingBox,
-		setIsDeletePage,
 		isDeletePage
-	} = useAdventureEditContext()
+	} = useAdventureStateContext()
 	const { saveNewAdventure, startAdventureSaveProcess } = useSaveAdventure()
 	const { saveEditAdventure } = useSaveAdventure()
 	const { getAllAdventures } = useGetAdventures()
-	const { closeCard, setShowAlert, setAlertContent } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const deleteAdventure = useDeleteAdventure()
 
 	const saveAdventure = async () => {
-		if (saveState === 0) {
+		if (!saveState) {
 			const { error: saveAdventureError } = await startAdventureSaveProcess()
 
 			if (!saveAdventureError) {
-				setSaveState(1)
+				adventureDispatch({ type: 'toggleSaveState' })
 			}
-		} else if (saveState === 1) {
+		} else {
 			if (currentAdventure.id && currentAdventure.id !== 'waiting') {
 				saveEditAdventure()
 					.then(() => {
 						getAllAdventures(currentBoundingBox)
-						setSaveState(0)
-						setAlertContent(`${currentAdventure.adventure_name} has been saved.`)
-						setShowAlert(true)
+						adventureDispatch({ type: 'toggleSaveState' })
+						cardDispatch({
+							type: 'openAlert',
+							payload: `${currentAdventure.adventure_name} has been saved.`
+						})
 					})
 					.catch(console.error)
 			} else {
 				saveNewAdventure()
 					.then(() => {
 						getAllAdventures(currentBoundingBox)
-						setSaveState(0)
-						setAlertContent(`${currentAdventure.adventure_name} has been created.`)
-						setShowAlert(true)
+						adventureDispatch({ type: 'toggleSaveState' })
+						cardDispatch({
+							type: 'openAlert',
+							payload: `${currentAdventure.adventure_name} has been created.`
+						})
 					})
 					.catch(console.error)
 			}
@@ -58,21 +59,21 @@ const AdventureEditorButtons = () => {
 
 	const cancelSave = () => {
 		getAllAdventures(currentBoundingBox)
-		setSaveState(0)
-		setIsEditable(false)
+		adventureDispatch({ type: 'toggleEdit' })
 		if (!currentAdventure.id || currentAdventure.id === 'waiting') {
-			closeCard()
+			cardDispatch({ type: 'closeCard' })
 		}
 	}
 
 	const handleToggleEdit = () => {
-		setIsEditable(!isEditable)
-		setSaveState(saveState === 0 ? 1 : 0)
+		adventureDispatch({ type: 'toggleEdit' })
 	}
 
 	const handleDeleteAdventure = async () => {
-		setAlertContent(`${currentAdventure.adventure_name} has been deleted`)
-		setShowAlert(true)
+		cardDispatch({
+			type: 'openAlert',
+			payload: `${currentAdventure.adventure_name} has been deleted`
+		})
 		await deleteAdventure({ adventureId: currentAdventure.id })
 	}
 
@@ -80,7 +81,7 @@ const AdventureEditorButtons = () => {
 		<FooterButtons>
 			{!currentAdventure && !isDeletePage && (
 				<Button
-					onClick={() => setAdventureAddState(true)}
+					onClick={() => adventureDispatch({ type: 'toggleAdventureAddState' })}
 					disabled={adventureAddState}
 					className='adventure-add-button'
 				>
@@ -98,21 +99,21 @@ const AdventureEditorButtons = () => {
 					</Button>
 					<Button
 						id={`cancel-button-return-from-delete`}
-						onClick={() => setIsDeletePage(false)}
+						onClick={() => adventureDispatch({ type: 'toggleDeletePage' })}
 					>
 						Cancel
 					</Button>
 				</>
 			)}
-			{currentAdventure && !isDeletePage && (isEditable || saveState === 1) && (
+			{currentAdventure && !isDeletePage && (isAdventureEditable || saveState) && (
 				<>
 					<Button
 						onClick={saveAdventure}
 						className='adventure-edit-button'
 					>
-						{saveState === 0 ? 'Preview Save' : 'Finish Saving'}
+						{!saveState ? 'Preview Save' : 'Finish Saving'}
 					</Button>
-					{saveState === 1 && (
+					{saveState && (
 						<Button
 							onClick={handleToggleEdit}
 							className='adventure-edit-button'

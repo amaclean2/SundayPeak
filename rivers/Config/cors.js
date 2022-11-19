@@ -4,8 +4,8 @@ const allowedOrigins = [
   'http://localhost:5000',
   'http://localhost:3000',
   'http://sundaypeak.local:3000',
-  'https://backyardfriends.wl.r.appspot.com',
-  'https://sundaypeak.com'
+  'https://sundaypeak.com',
+  'http://sundaypeak.com'
 ]
 
 const corsHandler = (origin, cb) => {

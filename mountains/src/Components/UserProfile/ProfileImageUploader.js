@@ -5,7 +5,7 @@ import { Button } from '../Reusable'
 
 const ProfileImageUploader = () => {
 	const { updateProfilePicture, deletePicture } = useUserPictures()
-	const { workingUser, setWorkingUser } = useUserStateContext()
+	const { workingUser, userDispatch } = useUserStateContext()
 
 	const handleUpload = ({ target: { files } }) => {
 		updateProfilePicture({ data: files[0] })
@@ -13,10 +13,7 @@ const ProfileImageUploader = () => {
 
 	const deleteProfileImage = () => {
 		deletePicture({ pictureRef: workingUser.profile_picture_url }).then(() => {
-			setWorkingUser({
-				...workingUser,
-				profile_picture_url: ''
-			})
+			userDispatch({ type: 'workingUser', payload: { ...workingUser, profile_picture_url: '' } })
 		})
 	}
 

@@ -19,24 +19,23 @@ import {
 } from '../Reusable'
 
 export const SignupFlow = () => {
-	const { formFields, setFormFields, setLoginError } = useUserStateContext()
-	const { switchCard } = useCardStateContext()
+	const { formFields, userDispatch } = useUserStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const { signupUser } = useCreateUser()
 	const navigate = useNavigate()
 
 	const onChange = (e) => {
-		setFormFields((currFormFields) => {
-			return {
-				...currFormFields,
+		userDispatch({
+			type: 'formFields',
+			payload: {
+				...formFields,
 				[e.target.name]: e.target.value
 			}
 		})
-		setLoginError(null)
 	}
 
 	const onClose = () => {
-		setFormFields({})
-		setLoginError(null)
+		userDispatch({ type: 'clearForm' })
 		navigate('/discover')
 	}
 
@@ -136,7 +135,7 @@ export const SignupFlow = () => {
 							className='secondary-button new-account-button'
 							id={'switch-to-login-button'}
 							onClick={() => {
-								switchCard(CARD_TYPES.login)
+								cardDispatch({ type: 'switchCard', payload: CARD_TYPES.login })
 								navigate('/discover')
 							}}
 						>

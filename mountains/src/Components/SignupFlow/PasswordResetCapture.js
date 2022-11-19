@@ -12,15 +12,16 @@ import {
 } from '../Reusable'
 
 export const PasswordResetCapture = () => {
-	const { switchCard, closeCard, setAlertContent, setShowAlert } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const [fieldValue, setFieldValue] = useState('')
 	const { sendPasswordResetLink } = useCreateUser()
 
 	const handleResetButton = () => {
 		sendPasswordResetLink({ email: fieldValue })
-		closeCard()
-		setAlertContent('An email has been sent to reset your password')
-		setShowAlert(true)
+		cardDispatch({
+			type: 'closeCardMessage',
+			payload: 'An email has been sent to reset your password'
+		})
 	}
 
 	return (
@@ -57,7 +58,7 @@ export const PasswordResetCapture = () => {
 					<Button
 						id='return-to-login'
 						className={'secondary-button'}
-						onClick={() => switchCard(CARD_TYPES.login)}
+						onClick={() => cardDispatch({ type: 'switchCard', payload: CARD_TYPES.login })}
 					>
 						Return to login
 					</Button>

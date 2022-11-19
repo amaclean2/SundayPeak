@@ -3,7 +3,7 @@ import { fetcher } from '../utils'
 import { useGetAdventure } from './adventures'
 
 export const useSaveActivity = () => {
-	const { setLoggedInUser, setWorkingUser } = useUserStateContext()
+	const { userDispatch } = useUserStateContext()
 	const getAdventure = useGetAdventure()
 
 	const saveActivity = ({ adventureId }) => {
@@ -15,8 +15,7 @@ export const useSaveActivity = () => {
 			}
 		})
 			.then(({ data: { user } }) => {
-				setLoggedInUser(user)
-				setWorkingUser(user)
+				userDispatch({ type: 'loginUser', payload: user })
 				return getAdventure({ id: adventureId })
 			})
 			.catch(console.error)

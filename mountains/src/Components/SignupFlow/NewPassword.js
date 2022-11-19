@@ -19,7 +19,7 @@ export const NewPassword = () => {
 	}
 	const [newPassword, setNewPassword] = useState(newPasswordObject)
 	const [canRedirect, setCanRedirect] = useState(false)
-	const { switchCard, closeCard, setAlertContent, setShowAlert } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const { updateNewPassword } = useCreateUser()
 	const { search } = useLocation()
 
@@ -27,9 +27,11 @@ export const NewPassword = () => {
 		if (newPassword.password === newPassword.confirmPassword) {
 			const resetToken = search.split('resetToken=')?.[1]
 			updateNewPassword({ newPassword: newPassword.password, resetToken })
-			closeCard()
-			setAlertContent('Thank you! You can now log in with your new password.')
-			setShowAlert(true)
+			cardDispatch({ type: 'closeCard' })
+			cardDispatch({
+				type: 'openAlert',
+				payload: 'Thank you! You can now log in with your new password.'
+			})
 			setCanRedirect(true)
 		}
 	}
@@ -82,7 +84,7 @@ export const NewPassword = () => {
 					<Button
 						id='return-to-login'
 						className={'secondary-button'}
-						onClick={() => switchCard(CARD_TYPES.login)}
+						onClick={() => cardDispatch({ type: 'switchCard', payload: CARD_TYPES.login })}
 					>
 						Return to login
 					</Button>

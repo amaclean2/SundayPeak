@@ -1,5 +1,5 @@
 import { AngleIcon, DistanceIcon, ElevationIcon } from '../../../Images/LabelIcons'
-import { useAdventureEditContext, useUserStateContext } from '../../../Providers'
+import { useAdventureStateContext, useUserStateContext } from '../../../Providers'
 import { Degrees, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from '../../Reusable'
 import AdventureGallery from '../Gallery'
 import GearList from '../GearList'
@@ -8,7 +8,7 @@ import AdventureTickPanel from '../TickPanel'
 import { Aspect, DifficultyViewer, ExposureViewer } from './Symbols'
 
 const AdventureViewer = () => {
-	const { currentAdventure } = useAdventureEditContext()
+	const { currentAdventure } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 
 	return (

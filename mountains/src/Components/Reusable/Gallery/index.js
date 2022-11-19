@@ -4,7 +4,7 @@ import './styles.css'
 export const PhotoGallery = () => {
 	const { submitPicture } = useUserPictures()
 
-	const { setViewingImage } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	const { workingUser, loggedInUser } = useUserStateContext()
 
@@ -16,7 +16,7 @@ export const PhotoGallery = () => {
 		workingUser.id === loggedInUser.id ? [...workingUser.images, 'new'] : workingUser.images
 
 	const handleImageClick = (imageSource) => {
-		setViewingImage(imageSource)
+		cardDispatch({ type: 'viewingImage', payload: imageSource })
 	}
 
 	return (

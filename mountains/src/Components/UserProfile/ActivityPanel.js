@@ -20,7 +20,7 @@ const Activity = ({ activityName, onClick }) => (
 
 const ActivityPanel = ({ className }) => {
 	const { workingUser } = useUserStateContext()
-	const { switchCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const getAdventure = useGetAdventure()
 
 	const [activities, setActivities] = useState(null)
@@ -33,7 +33,7 @@ const ActivityPanel = ({ className }) => {
 
 	const openAdventure = (adventureId) => {
 		return getAdventure({ id: adventureId }).then(() => {
-			switchCard(CARD_TYPES.adventures)
+			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.adventures })
 		})
 	}
 

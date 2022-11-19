@@ -48,7 +48,7 @@ Menu.propTypes = {
 	fields: PropTypes.arrayOf(
 		PropTypes.shape({
 			className: PropTypes.string,
-			id: PropTypes.number,
+			id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 			text: PropTypes.string,
 			action: PropTypes.func
 		})

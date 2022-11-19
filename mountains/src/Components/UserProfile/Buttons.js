@@ -7,28 +7,26 @@ import {
 import { Button, FooterButtons } from '../Reusable'
 
 const UserProfileButtons = () => {
-	const { handleLogout, workingUser, loggedInUser, setIsEditable, isEditable } =
-		useUserStateContext()
-	const { closeCard, setShowAlert, setAlertContent } = useCardStateContext()
+	const { workingUser, loggedInUser, isUserEditable, userDispatch } = useUserStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const { followUser } = useFollowUser()
 	const { handleSaveEditUser } = useEditUser()
 
 	const logout = () => {
-		handleLogout().then(() => closeCard())
+		userDispatch({ type: 'logout' }).then(() => cardDispatch({ type: 'closeCard' }))
 	}
 
 	const handleFollow = () => followUser({ leaderId: workingUser.id, followerId: loggedInUser.id })
 
 	const handleEdit = () => {
-		if (isEditable) {
+		if (isUserEditable) {
 			handleSaveEditUser()
-			setAlertContent(
-				`${workingUser.first_name} ${workingUser.last_name}'s profile has been updated`
-			)
-			setShowAlert(true)
+			cardDispatch({
+				type: 'openAlert',
+				payload: `${workingUser.first_name} ${workingUser.last_name}'s profile has been updated`
+			})
 		}
-
-		setIsEditable(!isEditable)
+		userDispatch({ type: 'toggleIsUserEditable' })
 	}
 
 	return (
@@ -40,17 +38,17 @@ const UserProfileButtons = () => {
 						onClick={handleEdit}
 						className='adventure-add-button'
 					>
-						{isEditable ? 'Save' : 'Edit'}
+						{isUserEditable ? 'Save' : 'Edit'}
 					</Button>
-					{isEditable && (
+					{isUserEditable && (
 						<Button
 							id='profile-edit-cancel-button'
-							onClick={() => setIsEditable(false)}
+							onClick={() => userDispatch({ type: 'toggleIsUserEditable' })}
 						>
 							Cancel
 						</Button>
 					)}
-					{!isEditable && (
+					{!isUserEditable && (
 						<Button
 							id='logout-button'
 							onClick={logout}

@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-	useAdventureEditContext,
+	useAdventureStateContext,
 	useSaveActivity,
 	useSaveTick,
 	useUserStateContext
@@ -8,15 +8,8 @@ import {
 import Menu from '../../Reusable/Menu'
 
 const AdventureEditorMenu = () => {
-	const {
-		currentAdventure,
-		isDeletePage,
-		setIsDeletePage,
-		setAdventureAddState,
-		isEditable,
-		setIsEditable,
-		saveState
-	} = useAdventureEditContext()
+	const { currentAdventure, isDeletePage, adventureDispatch, isAdventureEditable, saveState } =
+		useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 	const saveTick = useSaveTick()
 	const saveActivity = useSaveActivity()
@@ -31,13 +24,13 @@ const AdventureEditorMenu = () => {
 
 	if (!currentAdventure && !isDeletePage) {
 		menuFields.push({
-			action: () => setAdventureAddState(true),
+			action: () => adventureDispatch({ type: 'toggleAdventureAddState' }),
 			id: 'adventure-add-button',
 			text: 'Add New Adventure'
 		})
-	} else if (currentAdventure && !isEditable && !isDeletePage && saveState === 0) {
+	} else if (currentAdventure && !isAdventureEditable && !isDeletePage && !saveState) {
 		menuFields.push({
-			action: () => setIsEditable(true),
+			action: () => adventureDispatch({ type: 'toggleAdventureEditable' }),
 			id: 'adventure-edit-button',
 			text: 'Edit Adventure'
 		})
@@ -60,7 +53,7 @@ const AdventureEditorMenu = () => {
 			menuFields.push({
 				id: 'delete-adventure-button',
 				className: 'delete-button',
-				action: () => setIsDeletePage(true),
+				action: () => adventureDispatch({ type: 'toggleDeletePage' }),
 				text: 'Delete Adventure'
 			})
 		}

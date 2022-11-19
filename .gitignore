@@ -11,3 +11,5 @@ rivers/app.yaml
 rivers/.env.dev
 rivers/google-cloud-key.json
 rivers/.DS_Store
+
+.DS_Store

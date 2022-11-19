@@ -1,17 +1,16 @@
 import { debounce } from 'throttle-debounce'
 
-import { useAdventureEditContext } from '../adventureStateProvider'
+import { useAdventureStateContext } from '../adventureStateProvider'
 import { useCardStateContext } from '../cardStateProvider'
-import { fetcher, validateAdventure } from '../utils'
+import { fetcher, useAdventureValidation } from '../utils'
 
 export const useGetAdventure = () => {
-	const { setCurrentAdventure } = useAdventureEditContext()
+	const { adventureDispatch } = useAdventureStateContext()
 
 	const getAdventure = async ({ id }) => {
 		return fetcher(`/adventures/details?id=${id}`)
 			.then(({ data }) => {
-				setCurrentAdventure(data.adventure)
-
+				adventureDispatch({ type: 'currentAdventure', payload: data.adventure })
 				return data
 			})
 			.catch(console.error)
@@ -21,8 +20,7 @@ export const useGetAdventure = () => {
 }
 
 export const useGetAdventures = () => {
-	const { setAllAdventures, setStartPosition, currentBoundingBox, startPosition } =
-		useAdventureEditContext()
+	const { currentBoundingBox, startPosition, adventureDispatch } = useAdventureStateContext()
 
 	const getAllAdventures = async (boundingBox) => {
 		return fetcher('/adventures/all', {
@@ -36,7 +34,7 @@ export const useGetAdventures = () => {
 			}
 		})
 			.then(({ data: { adventures } }) => {
-				setAllAdventures((currAdventures) => [...currAdventures, ...adventures])
+				adventureDispatch({ type: 'allAdventures', payload: { adventures, startPosition } })
 
 				return adventures
 			})
@@ -52,7 +50,7 @@ export const useGetAdventures = () => {
 			newStartPosition = startPosition
 		}
 
-		fetcher('/adventures/all', {
+		return fetcher('/adventures/all', {
 			method: 'POST',
 			body: {
 				bounding_box: {
@@ -63,8 +61,10 @@ export const useGetAdventures = () => {
 			}
 		})
 			.then(({ data: { adventures } }) => {
-				setAllAdventures(adventures)
-				setStartPosition(newStartPosition)
+				adventureDispatch({
+					type: 'allAdventures',
+					payload: { adventures, startPosition: newStartPosition }
+				})
 
 				return adventures
 			})
@@ -75,17 +75,11 @@ export const useGetAdventures = () => {
 }
 
 export const useSaveAdventure = () => {
-	const {
-		setAllAdventures,
-		currentAdventure,
-		editAdventureFields,
-		setEditAdventureFields,
-		setAdventureError,
-		setIsEditable,
-		setCurrentAdventure
-	} = useAdventureEditContext()
+	const { adventureDispatch, allAdventures, currentAdventure, editAdventureFields } =
+		useAdventureStateContext()
+	const validateAdventure = useAdventureValidation()
 
-	const { closeCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	const saveNewAdventure = () => {
 		return fetcher(`/adventures/create`, {
@@ -96,17 +90,19 @@ export const useSaveAdventure = () => {
 			}
 		})
 			.then(({ data }) => {
-				setAllAdventures((currAdventures) => {
-					currAdventures = currAdventures.filter(({ id }) => id !== 'waiting')
-
-					return [...currAdventures, data.adventure]
+				adventureDispatch({
+					type: 'addNewAdventure',
+					payload: data.adventure
 				})
 
-				closeCard()
+				cardDispatch({ type: 'closeCard' })
 			})
 			.catch((error) => {
 				console.error(error)
-				setAdventureError(error.toString().replace('Error: ', ''))
+				adventureDispatch({
+					type: 'adventureError',
+					payload: error.toString().replace('Error: ', '')
+				})
 
 				return error
 			})
@@ -114,16 +110,24 @@ export const useSaveAdventure = () => {
 
 	const startAdventureSaveProcess = () => {
 		try {
-			const validatedAdventure = validateAdventure(currentAdventure, setAdventureError)
-			const validatedEditFields = validateAdventure(editAdventureFields)
-			setCurrentAdventure(validatedAdventure)
-			setEditAdventureFields(validatedEditFields)
-			setIsEditable(false)
+			const validatedAdventure = validateAdventure({ fields: currentAdventure })
+			const validatedEditFields = validateAdventure({
+				fields: editAdventureFields,
+				type: 'editFields'
+			})
+			adventureDispatch({
+				type: 'validateAdventure',
+				payload: { currentAdventure: validatedAdventure, editAdventureFields: validatedEditFields }
+			})
+			adventureDispatch({ type: 'toggleAdventureEditable' })
 
 			return validatedAdventure
 		} catch (error) {
 			console.error(error)
-			setAdventureError(error.toString().replace('Error: ', ''))
+			adventureDispatch({
+				type: 'adventureError',
+				payload: error.toString().replace('Error: ', '')
+			})
 		}
 	}
 
@@ -142,8 +146,7 @@ export const useSaveAdventure = () => {
 		})
 			.then(console.log)
 			.catch(({ error }) => {
-				setAdventureError(error.message)
-				setIsEditable(true)
+				adventureDispatch({ type: 'adventureErrorOnSave', payload: error.message })
 				throw error.message
 			})
 	}
@@ -156,14 +159,14 @@ export const useSaveAdventure = () => {
 }
 
 export const useDeleteAdventure = () => {
-	const { closeCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const { refetchAdventures } = useGetAdventures()
-	const { setIsDeletePage } = useAdventureEditContext()
+	const { adventureDispatch } = useAdventureStateContext()
 	const deleteAdventure = ({ adventureId }) => {
 		return fetcher(`/adventures/delete?adventure_id=${adventureId}`, { method: 'DELETE' })
 			.then(() => {
-				closeCard()
-				setIsDeletePage(false)
+				cardDispatch({ type: 'closeCard' })
+				adventureDispatch({ type: 'toggleDeletePage' })
 				return refetchAdventures()
 			})
 			.catch(console.error)

@@ -17,24 +17,24 @@ import {
 import './styles.css'
 
 export const LoginFlow = () => {
-	const { formFields, setFormFields, setLoginError } = useUserStateContext()
+	const { formFields, userDispatch } = useUserStateContext()
 
 	const { loginUser } = useGetUser()
-	const { switchCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const navigate = useNavigate()
 
 	const onChange = (e) => {
-		setFormFields((currFormFields) => {
-			return {
-				...currFormFields,
+		userDispatch({
+			type: 'formFields',
+			payload: {
+				...formFields,
 				[e.target.name]: e.target.value
 			}
 		})
 	}
 
 	const handleOnClose = () => {
-		setLoginError('')
-		setFormFields({})
+		userDispatch({ type: 'clearForm' })
 		navigate('/discover')
 	}
 
@@ -93,7 +93,7 @@ export const LoginFlow = () => {
 						secondaryButton
 						className='forgot-button secondary-button'
 						onClick={() => {
-							switchCard(CARD_TYPES.password_reset)
+							cardDispatch({ type: 'switchCard', payload: CARD_TYPES.password_reset })
 							navigate('/discover')
 						}}
 						id={'forgot-password-button'}
@@ -106,7 +106,7 @@ export const LoginFlow = () => {
 							className='secondary-button new-account-button'
 							id={'switch-to-create-button'}
 							onClick={() => {
-								switchCard(CARD_TYPES.signup)
+								cardDispatch({ type: 'switchCard', payload: CARD_TYPES.signup })
 								navigate('/discover')
 							}}
 						>

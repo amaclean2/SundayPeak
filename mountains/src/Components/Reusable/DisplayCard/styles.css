@@ -34,13 +34,6 @@
 	height: auto;
 }
 
-.display-card.closing,
-.display-card.opening {
-	min-width: 0;
-	width: 50px;
-	opacity: 0;
-}
-
 .display-header {
 	height: 50px;
 	width: 100%;
@@ -75,14 +68,6 @@
 	padding-right: 10px;
 	transition: all 0.2s ease-in-out;
 	color: inherit;
-}
-
-.display-card.open .display-back-button svg {
-	transform: rotate(-180deg);
-}
-
-.display-card.closing .display-back-button svg {
-	transform: rotate(0deg);
 }
 
 .display-back-button:hover {
