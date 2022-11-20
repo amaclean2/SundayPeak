@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
 
 import { Skier, Profile } from '../../Images'
@@ -9,6 +8,7 @@ import './styles.css'
 import LogoInline from '../../Images/LogoInline'
 import { Link } from 'react-router-dom'
 import MenuPanels from './MenuPanels'
+import getContent from '../../TextContent'
 
 const LoginButton = () => {
 	const { cardDispatch } = useCardStateContext()
@@ -19,7 +19,7 @@ const LoginButton = () => {
 			className={cx('button-bar-button', 'login-button')}
 			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.login })}
 		>
-			Log In
+			{getContent('buttonText.login')}
 		</Button>
 	)
 }
@@ -33,27 +33,19 @@ const SignUpButton = () => {
 			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })}
 			id={'signup-button-adventures'}
 		>
-			Create an Account
+			{getContent('buttonText.signup')}
 		</Button>
 	)
 }
 
 const UserProfileButton = () => {
 	const { cardDispatch } = useCardStateContext()
-	const { userDispatch, loggedInUser, workingUser } = useUserStateContext()
-	const [buttonClicked, setButtonClicked] = useState(false)
+	const { userDispatch, loggedInUser } = useUserStateContext()
 
 	const handleProfileButton = () => {
-		setButtonClicked(true)
 		userDispatch({ type: 'workingUser', payload: loggedInUser })
+		cardDispatch({ type: 'openCard', payload: CARD_TYPES.profile })
 	}
-
-	useEffect(() => {
-		if (workingUser?.id === loggedInUser?.id && buttonClicked) {
-			cardDispatch({ type: 'openCard', payload: CARD_TYPES.profile })
-			setButtonClicked(false)
-		}
-	}, [workingUser, buttonClicked, loggedInUser?.id, cardDispatch])
 
 	return (
 		<Button

@@ -1,4 +1,4 @@
-import { redirect } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { fetcher } from '../utils'
 import { useUserStateContext } from '../userStateProvider'
@@ -72,8 +72,11 @@ export const useCreateUser = () => {
 			method: 'POST',
 			body: { password: newPassword, reset_token: resetToken }
 		})
-			.then(({ data }) => {
-				return redirect('/login')
+			.then(() => {
+				return cardDispatch({
+					type: 'closeCardMessage',
+					payload: 'Thank you! You can now log in with your new password.'
+				})
 			})
 			.catch(console.error)
 	}

@@ -1,40 +1,24 @@
-import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 const CheckboxField = ({ className, name, value, onChange, label }) => {
-	const [toggleState, setToggleState] = useState(!!value)
-
 	const handleChange = (e) => {
-		setToggleState(!toggleState)
-	}
-
-	const handleLabelClick = (e) => {
-		e.stopPropagation()
-		setToggleState(!toggleState)
-	}
-
-	useEffect(() => {
 		onChange({
 			target: {
-				value: toggleState,
+				value: e.target.checked,
 				name
 			}
 		})
-	}, [toggleState])
+	}
 
 	return (
-		<label
-			htmlFor={name}
-			className={cx('checkbox', className, 'label-field')}
-			onClick={handleLabelClick}
-		>
+		<label className={cx('checkbox', className, 'label-field')}>
 			<input
 				className={'hidden-checkbox'}
 				type='checkbox'
 				id={name}
 				name={name}
-				checked={toggleState}
+				checked={value}
 				onChange={handleChange}
 			/>
 			<div className='checkbox-illus' />
@@ -46,7 +30,7 @@ const CheckboxField = ({ className, name, value, onChange, label }) => {
 CheckboxField.propTypes = {
 	className: PropTypes.string,
 	name: PropTypes.string,
-	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	value: PropTypes.bool,
 	onChange: PropTypes.func,
 	label: PropTypes.string
 }

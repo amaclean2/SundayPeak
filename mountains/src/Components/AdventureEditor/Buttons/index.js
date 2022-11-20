@@ -5,6 +5,7 @@ import {
 	useSaveAdventure,
 	useGetAdventures
 } from '../../../Providers'
+import getContent from '../../../TextContent'
 import { Button, FooterButtons } from '../../Reusable'
 
 const AdventureEditorButtons = () => {
@@ -38,7 +39,9 @@ const AdventureEditorButtons = () => {
 						adventureDispatch({ type: 'toggleSaveState' })
 						cardDispatch({
 							type: 'openAlert',
-							payload: `${currentAdventure.adventure_name} has been saved.`
+							payload: getContent('adventurePanel.adventureSaved', [
+								currentAdventure.adventure_name
+							])
 						})
 					})
 					.catch(console.error)
@@ -49,7 +52,9 @@ const AdventureEditorButtons = () => {
 						adventureDispatch({ type: 'toggleSaveState' })
 						cardDispatch({
 							type: 'openAlert',
-							payload: `${currentAdventure.adventure_name} has been created.`
+							payload: getContent('adventurePanel.adventureCreated', [
+								currentAdventure.adventure_name
+							])
 						})
 					})
 					.catch(console.error)
@@ -72,7 +77,7 @@ const AdventureEditorButtons = () => {
 	const handleDeleteAdventure = async () => {
 		cardDispatch({
 			type: 'openAlert',
-			payload: `${currentAdventure.adventure_name} has been deleted`
+			payload: getContent('adventurePanel.adventureDeleted', [currentAdventure.adventure_name])
 		})
 		await deleteAdventure({ adventureId: currentAdventure.id })
 	}
@@ -85,7 +90,7 @@ const AdventureEditorButtons = () => {
 					disabled={adventureAddState}
 					className='adventure-add-button'
 				>
-					Add New Adventure
+					{getContent('buttonText.addAdventure')}
 				</Button>
 			)}
 			{isDeletePage && (
@@ -95,13 +100,13 @@ const AdventureEditorButtons = () => {
 						className={'delete-button'}
 						onClick={handleDeleteAdventure}
 					>
-						{`Delete ${currentAdventure.adventure_name}`}
+						{getContent('buttonText.deleteAdventureVar', [currentAdventure.adventure_name])}
 					</Button>
 					<Button
 						id={`cancel-button-return-from-delete`}
 						onClick={() => adventureDispatch({ type: 'toggleDeletePage' })}
 					>
-						Cancel
+						{getContent('buttonText.cancel')}
 					</Button>
 				</>
 			)}
@@ -111,7 +116,9 @@ const AdventureEditorButtons = () => {
 						onClick={saveAdventure}
 						className='adventure-edit-button'
 					>
-						{!saveState ? 'Preview Save' : 'Finish Saving'}
+						{!saveState
+							? getContent('buttonText.previewSave')
+							: getContent('buttonText.finishSave')}
 					</Button>
 					{saveState && (
 						<Button
@@ -119,14 +126,14 @@ const AdventureEditorButtons = () => {
 							className='adventure-edit-button'
 							id='adventure-edit-button'
 						>
-							Edit Adventure
+							{getContent('buttonText.editAdventure')}
 						</Button>
 					)}
 					<Button
 						onClick={cancelSave}
 						className='adventure-edit-button'
 					>
-						Cancel
+						{getContent('buttonText.cancel')}
 					</Button>
 				</>
 			)}

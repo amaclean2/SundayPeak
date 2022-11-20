@@ -1,4 +1,5 @@
 import { useCardStateContext, useUserPictures, useUserStateContext } from '../../../Providers'
+import getContent from '../../../TextContent'
 import './styles.css'
 
 export const PhotoGallery = () => {
@@ -28,7 +29,7 @@ export const PhotoGallery = () => {
 							className='file-upload-container flex-box'
 							key={`profile_image_create`}
 						>
-							Add a new photo
+							{getContent('adventurePanel.addNewPhoto')}
 							<input
 								type='file'
 								name='file'

@@ -2,7 +2,7 @@ import cx from 'classnames'
 
 import './styles.css'
 
-const ConfirmationPage = ({ type, children, className }) => (
+const ConfirmationPage = ({ children, className }) => (
 	<div className={cx('confirmation', className)}>{children}</div>
 )
 

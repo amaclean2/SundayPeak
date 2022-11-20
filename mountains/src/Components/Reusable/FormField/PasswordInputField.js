@@ -4,6 +4,7 @@ import cx from 'classnames'
 
 import { Button } from '../Button'
 import { placeholderDefinition } from './utils'
+import getContent from '../../../TextContent'
 
 const PasswordInputField = ({
 	className,
@@ -40,7 +41,7 @@ const PasswordInputField = ({
 				className='password-switch-field'
 				onClick={() => setPasswordShown(!passwordShown)}
 			>
-				{passwordShown ? 'Hide' : 'Show'}
+				{passwordShown ? getContent('buttonText.hide') : getContent('buttonText.show')}
 			</Button>
 		</div>
 	)

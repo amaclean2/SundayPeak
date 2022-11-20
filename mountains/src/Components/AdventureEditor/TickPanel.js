@@ -25,7 +25,8 @@ const AdventureTickPanel = () => {
 	const { getOtherUser } = useGetUser()
 	const { workingUser } = useUserStateContext()
 
-	const [ticks, setTicks] = useState(null)
+	const ticks = currentAdventure?.ticks || []
+
 	const [userOnLoad, setUserOnLoad] = useState()
 
 	useEffect(() => {
@@ -33,12 +34,7 @@ const AdventureTickPanel = () => {
 	}, [])
 
 	useEffect(() => {
-		if (currentAdventure?.ticks) {
-			setTicks(currentAdventure.ticks)
-		}
-	}, [currentAdventure])
-
-	useEffect(() => {
+		// I don't know what this does!
 		if (userOnLoad && workingUser?.id && userOnLoad !== workingUser?.id) {
 			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.profile })
 		}

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import cx from 'classnames'
 
 import {
@@ -23,14 +22,6 @@ const ActivityPanel = ({ className }) => {
 	const { cardDispatch } = useCardStateContext()
 	const getAdventure = useGetAdventure()
 
-	const [activities, setActivities] = useState(null)
-
-	useEffect(() => {
-		if (workingUser?.activities) {
-			setActivities(workingUser.activities)
-		}
-	}, [workingUser])
-
 	const openAdventure = (adventureId) => {
 		return getAdventure({ id: adventureId }).then(() => {
 			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.adventures })
@@ -41,7 +32,7 @@ const ActivityPanel = ({ className }) => {
 		<div className={cx(className, 'tick-list-container flex-box')}>
 			<FieldHeader className='label-field'>Completed Activities</FieldHeader>
 			<ul className='tick-list flex-box'>
-				{activities?.map((activity, key) => (
+				{workingUser.activities?.map((activity, key) => (
 					<Activity
 						onClick={() => openAdventure(activity.adventure_id)}
 						activityName={activity.adventure_name}

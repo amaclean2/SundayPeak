@@ -10,6 +10,7 @@ import './styles.css'
 import ConfirmationPage from '../Reusable/ConfirmationPage'
 import AdventureEditorMenu from './Buttons/MenuFields'
 import { useLocation, useNavigate } from 'react-router-dom'
+import getContent from '../../TextContent'
 
 const AdventureEditor = () => {
 	const {
@@ -116,7 +117,7 @@ const AdventureEditor = () => {
 				<ProfileHeader>
 					<FieldHeader
 						className='page-header'
-						text='Adventure Creator'
+						text={getContent('adventurePanel.adventureCreator')}
 					/>
 				</ProfileHeader>
 			)
@@ -130,15 +131,12 @@ const AdventureEditor = () => {
 				<div className='flex-box main-adventure-content'>
 					{adventureAddState && (
 						<ConfirmationPage>
-							To add a new adventure, double click on any point on the map. Then fill in the details
-							in the form provided.
+							{getContent('adventurePanel.adventureCreatorContent')}
 						</ConfirmationPage>
 					)}
 					{isDeletePage && (
 						<ConfirmationPage>
-							Are you sure you want to delete this adventure?
-							<br />
-							It will be gone forever
+							{getContent('adventurePanel.adventureDeleteContent')}
 						</ConfirmationPage>
 					)}
 					{!isDeletePage && currentAdventure && isAdventureEditable && (

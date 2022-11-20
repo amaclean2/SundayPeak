@@ -19,6 +19,7 @@ const skyLayer = {
 
 const ReactMap = () => {
 	const mapRef = useRef()
+
 	const getLocateControlRef = useCallback((ref) => {
 		if (ref) ref.trigger()
 	}, [])

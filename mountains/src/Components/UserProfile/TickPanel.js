@@ -1,5 +1,4 @@
 import cx from 'classnames'
-import { useEffect, useState } from 'react'
 import {
 	CARD_TYPES,
 	useCardStateContext,
@@ -22,14 +21,6 @@ const UserTickPanel = ({ className }) => {
 	const { cardDispatch } = useCardStateContext()
 	const getAdventure = useGetAdventure()
 
-	const [ticks, setTicks] = useState(null)
-
-	useEffect(() => {
-		if (workingUser?.ticks) {
-			setTicks(workingUser.ticks)
-		}
-	}, [workingUser])
-
 	const openAdventure = (adventureId) => {
 		return getAdventure({ id: adventureId }).then(() => {
 			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.adventures })
@@ -40,7 +31,7 @@ const UserTickPanel = ({ className }) => {
 		<div className={cx(className, 'tick-list-container flex-box')}>
 			<FieldHeader className='label-field'>Todo List</FieldHeader>
 			<ul className='tick-list flex-box'>
-				{ticks?.map((tick, key) => (
+				{workingUser.ticks?.map((tick, key) => (
 					<Tick
 						onClick={() => openAdventure(tick.adventure_id)}
 						tickName={tick.adventure_name}

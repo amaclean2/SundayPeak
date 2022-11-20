@@ -1,4 +1,5 @@
 import { useAdventureStateContext } from '../../Providers'
+import getContent from '../../TextContent'
 import { ErrorField, FormField, Accordion } from '../Reusable'
 import MultiField from '../Reusable/FormField/MultiField'
 import { directionSelectOptions, gearOptions, seasonOptions } from './utils'
@@ -11,7 +12,7 @@ const AdventureEditorForm = ({ onChange }) => {
 			<ErrorField form={'adventure'} />
 			<FormField
 				name='bio'
-				label='Description'
+				label={getContent('adventurePanel.editable.description')}
 				type='textarea'
 				isEditable
 				fullWidth
@@ -21,7 +22,7 @@ const AdventureEditorForm = ({ onChange }) => {
 			/>
 			<FormField
 				name='approach_distance'
-				label='Approach Distance'
+				label={getContent('adventurePanel.editable.approachDistance')}
 				isEditable
 				fullWidth
 				options={{ suffix: 'miles' }}
@@ -30,26 +31,26 @@ const AdventureEditorForm = ({ onChange }) => {
 			/>
 			<MultiField
 				onChange={onChange}
-				label={'Elevation'}
+				label={getContent('adventurePanel.fields.elevation')}
 				fields={[
 					{
 						type: 'text',
 						name: 'elevation',
 						value: currentAdventure.elevation,
-						placeholder: 'Summit Elevation'
+						placeholder: getContent('adventurePanel.editable.summit')
 					},
 					{
 						type: 'text',
 						name: 'gain',
 						value: currentAdventure.gain,
-						placeholder: 'Elevation Gain'
+						placeholder: getContent('adventurePanel.editable.elevationGain')
 					}
 				]}
 			/>
-			<Accordion title={'Season Picker'}>
+			<Accordion title={getContent('adventurePanel.editable.seasonPicker')}>
 				<FormField
 					name='season'
-					label='Best Months'
+					label={getContent('adventurePanel.editable.bestMonths')}
 					type='selectMany'
 					options={{ selectMany: seasonOptions }}
 					isEditable
@@ -58,10 +59,10 @@ const AdventureEditorForm = ({ onChange }) => {
 					onChange={onChange}
 				/>
 			</Accordion>
-			<Accordion title={'Gear Picker'}>
+			<Accordion title={getContent('adventurePanel.editable.gearPicker')}>
 				<FormField
 					name='gear'
-					label='Gear Required'
+					label={getContent('adventurePanel.editable.gearRequired')}
 					type='selectMany'
 					options={{ selectMany: gearOptions }}
 					isEditable
@@ -70,10 +71,10 @@ const AdventureEditorForm = ({ onChange }) => {
 					onChange={onChange}
 				/>
 			</Accordion>
-			<Accordion title={'Slope'}>
+			<Accordion title={getContent('adventurePanel.editable.slope')}>
 				<FormField
 					name='avg_angle'
-					label='Average Slope Angle'
+					label={getContent('adventurePanel.editable.avgAngle')}
 					isEditable
 					fullWidth
 					value={currentAdventure.avg_angle}
@@ -82,7 +83,7 @@ const AdventureEditorForm = ({ onChange }) => {
 				/>
 				<FormField
 					name='max_angle'
-					label='Max Slope Angle'
+					label={getContent('adventurePanel.editable.maxAngle')}
 					isEditable
 					fullWidth
 					value={currentAdventure.max_angle}
@@ -91,7 +92,7 @@ const AdventureEditorForm = ({ onChange }) => {
 				/>
 				<FormField
 					name='aspect'
-					label='Aspect'
+					label={getContent('adventurePanel.fields.aspect')}
 					type='select'
 					isEditable
 					fullWidth
@@ -102,10 +103,10 @@ const AdventureEditorForm = ({ onChange }) => {
 					onChange={onChange}
 				/>
 			</Accordion>
-			<Accordion title={'Experience'}>
+			<Accordion title={getContent('adventurePanel.editable.experience')}>
 				<FormField
 					name='difficulty'
-					label='Difficulty'
+					label={getContent('adventurePanel.fields.difficulty')}
 					type='range'
 					options={{
 						range: {
@@ -121,7 +122,7 @@ const AdventureEditorForm = ({ onChange }) => {
 				/>
 				<FormField
 					name='exposure'
-					label='Exposure'
+					label={getContent('adventurePanel.fields.exposure')}
 					type='range'
 					options={{
 						range: {
@@ -138,7 +139,7 @@ const AdventureEditorForm = ({ onChange }) => {
 			</Accordion>
 			<FormField
 				name='nearest_city'
-				label='Nearest City'
+				label={getContent('adventurePanel.editable.nearest')}
 				isEditable
 				fullWidth
 				value={currentAdventure.nearest_city}
@@ -146,7 +147,7 @@ const AdventureEditorForm = ({ onChange }) => {
 			/>
 			<FormField
 				name='public'
-				label='Public'
+				label={getContent('adventurePanel.editable.isPublic')}
 				type={'checkbox'}
 				isEditable
 				fullWidth

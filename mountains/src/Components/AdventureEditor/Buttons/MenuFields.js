@@ -5,10 +5,11 @@ import {
 	useSaveTick,
 	useUserStateContext
 } from '../../../Providers'
+import getContent from '../../../TextContent'
 import Menu from '../../Reusable/Menu'
 
 const AdventureEditorMenu = () => {
-	const { currentAdventure, isDeletePage, adventureDispatch, isAdventureEditable, saveState } =
+	const { adventureDispatch, currentAdventure, isDeletePage, isAdventureEditable, saveState } =
 		useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 	const saveTick = useSaveTick()
@@ -26,27 +27,27 @@ const AdventureEditorMenu = () => {
 		menuFields.push({
 			action: () => adventureDispatch({ type: 'toggleAdventureAddState' }),
 			id: 'adventure-add-button',
-			text: 'Add New Adventure'
+			text: getContent('buttonText.addAdventure')
 		})
 	} else if (currentAdventure && !isAdventureEditable && !isDeletePage && !saveState) {
 		menuFields.push({
 			action: () => adventureDispatch({ type: 'toggleAdventureEditable' }),
 			id: 'adventure-edit-button',
-			text: 'Edit Adventure'
+			text: getContent('buttonText.editAdventure')
 		})
 
 		if (canAddTick) {
 			menuFields.push({
 				id: 'adventure-tick-button',
 				action: () => saveTick({ adventureId: currentAdventure.id }),
-				text: 'Add to Ticklist'
+				text: getContent('buttonText.addToTicklist')
 			})
 		}
 
 		menuFields.push({
 			id: 'adventure-complete-button',
 			action: () => saveActivity({ adventureId: currentAdventure.id }),
-			text: 'Complete Activity'
+			text: getContent('buttonText.completeActivity')
 		})
 
 		if (!isDeletePage && currentAdventure.creator_id === loggedInUser.id) {
@@ -54,7 +55,7 @@ const AdventureEditorMenu = () => {
 				id: 'delete-adventure-button',
 				className: 'delete-button',
 				action: () => adventureDispatch({ type: 'toggleDeletePage' }),
-				text: 'Delete Adventure'
+				text: getContent('buttonText.deleteAdventure')
 			})
 		}
 	}

@@ -1,59 +1,67 @@
+import getContent from '../../TextContent'
+
 export const seasonOptions = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December'
+	getContent('lists.months.jan'),
+	getContent('lists.months.feb'),
+	getContent('lists.months.mar'),
+	getContent('lists.months.apr'),
+	getContent('lists.months.may'),
+	getContent('lists.months.jun'),
+	getContent('lists.months.jul'),
+	getContent('lists.months.aug'),
+	getContent('lists.months.sep'),
+	getContent('lists.months.oct'),
+	getContent('lists.months.nov'),
+	getContent('lists.months.dec')
 ]
 
-export const gearOptions = ['Rope', 'Ice Axe', 'Glacier Kit', 'Skins', 'Crampons']
+export const gearOptions = [
+	getContent('lists.gear.rope'),
+	getContent('lists.gear.axe'),
+	getContent('lists.gear.gear'),
+	getContent('lists.gear.skins'),
+	getContent('lists.gear.crampons')
+]
 
 export const directionSelectOptions = [
 	{
 		id: 0,
-		text: 'North',
+		text: getContent('lists.directions.north'),
 		value: 'N'
 	},
 	{
 		id: 1,
-		text: 'North East',
+		text: getContent('lists.directions.northEast'),
 		value: 'NE'
 	},
 	{
 		id: 2,
-		text: 'East',
+		text: getContent('lists.directions.east'),
 		value: 'E'
 	},
 	{
 		id: 3,
-		text: 'South East',
+		text: getContent('lists.directions.southEast'),
 		value: 'SE'
 	},
 	{
 		id: 4,
-		text: 'South',
+		text: getContent('lists.directions.south'),
 		value: 'S'
 	},
 	{
 		id: 5,
-		text: 'South West',
+		text: getContent('lists.directions.southWest'),
 		value: 'SW'
 	},
 	{
 		id: 6,
-		text: 'West',
+		text: getContent('lists.directions.west'),
 		value: 'W'
 	},
 	{
 		id: 7,
-		text: 'North West',
+		text: getContent('lists.directions.northWest'),
 		value: 'NW'
 	}
 ]
