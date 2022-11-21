@@ -7,9 +7,8 @@
 	outline: none;
 	box-shadow: 0 5px 10px var(--box-shadow-opacity);
 	transition: all 0.2s ease-in-out;
-	cursor: pointer;
-	margin-right: 10px;
 	padding: 0;
+	margin: 0;
 }
 
 .button-bar-button:hover {
@@ -21,7 +20,6 @@
 	top: 0px;
 	left: 0px;
 	width: calc(100% - 80px);
-	padding: 10px;
 	padding-right: 70px;
 	background: linear-gradient(#00000099, transparent);
 }
@@ -44,4 +42,12 @@
 .login-button {
 	background-color: var(--default-background-color);
 	color: var(--main-text-color);
+}
+
+.search-bar.form-field-container {
+	margin: 0;
+}
+
+.search-bar .form-field.text {
+	height: 50px;
 }

@@ -13,7 +13,8 @@ const UserProfileButtons = () => {
 	const { handleSaveEditUser } = useEditUser()
 
 	const logout = () => {
-		userDispatch({ type: 'logout' }).then(() => cardDispatch({ type: 'closeCard' }))
+		userDispatch({ type: 'logout' })
+		cardDispatch({ type: 'closeCard' })
 	}
 
 	const handleFollow = () => followUser({ leaderId: workingUser.id, followerId: loggedInUser.id })

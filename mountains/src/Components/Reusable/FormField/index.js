@@ -121,6 +121,7 @@ export const FormField = (props) => {
 			id={id || name}
 			className={cx(
 				'form-field-container',
+				className,
 				fullWidth && 'wide',
 				block && 'block',
 				!isEditable && 'static'
@@ -128,7 +129,6 @@ export const FormField = (props) => {
 		>
 			{isEditable && type === 'checkbox' ? (
 				<CheckboxField
-					className={className}
 					name={name}
 					value={workingValue}
 					onChange={handleChange}
@@ -157,11 +157,16 @@ FormField.propTypes = {
 	]),
 	name: PropTypes.string,
 	label: PropTypes.string,
-	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.array, PropTypes.bool]),
+	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.array, PropTypes.bool])
+		.isRequired,
 	isEditable: PropTypes.bool,
 	className: PropTypes.string,
 	hideLabel: PropTypes.bool,
 	fullWidth: PropTypes.bool,
 	block: PropTypes.bool,
-	onChange: PropTypes.func
+	onChange: PropTypes.func.isRequired,
+	autoComplete: PropTypes.string,
+	options: PropTypes.shape(),
+	placeholder: PropTypes.string,
+	autoFocus: PropTypes.bool
 }

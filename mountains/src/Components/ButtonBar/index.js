@@ -9,6 +9,7 @@ import LogoInline from '../../Images/LogoInline'
 import { Link } from 'react-router-dom'
 import MenuPanels from './MenuPanels'
 import getContent from '../../TextContent'
+import Search from './Search'
 
 const LoginButton = () => {
 	const { cardDispatch } = useCardStateContext()
@@ -88,6 +89,7 @@ const ButtonBar = () => {
 					{!isLoggedIn && <LoginButton />}
 					{isLoggedIn && <UserProfileButton />}
 					<ActivitiesButton />
+					<Search />
 					<FlexSpacer />
 					<Link
 						id='home-redirect'
