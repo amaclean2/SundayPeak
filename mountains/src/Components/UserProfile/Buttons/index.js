@@ -3,8 +3,9 @@ import {
 	useEditUser,
 	useFollowUser,
 	useUserStateContext
-} from '../../Providers'
-import { Button, FooterButtons } from '../Reusable'
+} from '../../../Providers'
+import getContent from '../../../TextContent'
+import { Button, FooterButtons } from '../../Reusable'
 
 const UserProfileButtons = () => {
 	const { workingUser, loggedInUser, isUserEditable, userDispatch } = useUserStateContext()
@@ -31,15 +32,17 @@ const UserProfileButtons = () => {
 
 	return (
 		<FooterButtons>
-			{workingUser.id === loggedInUser.id ? (
+			{workingUser.id === loggedInUser.id && (
 				<>
-					<Button
-						id='edit-user-button'
-						onClick={handleEdit}
-						className='adventure-add-button'
-					>
-						{isUserEditable ? 'Save' : 'Edit'}
-					</Button>
+					{isUserEditable && (
+						<Button
+							id='edit-user-button'
+							onClick={handleEdit}
+							className='adventure-add-button'
+						>
+							{getContent('buttonText.saveUser')}
+						</Button>
+					)}
 					{isUserEditable && (
 						<Button
 							id='profile-edit-cancel-button'
@@ -48,34 +51,6 @@ const UserProfileButtons = () => {
 							Cancel
 						</Button>
 					)}
-					{!isUserEditable && (
-						<Button
-							id='logout-button'
-							onClick={logout}
-							className='adventure-add-button'
-						>
-							Logout
-						</Button>
-					)}
-				</>
-			) : (
-				<>
-					{
-						<Button
-							id='follow-user-button'
-							onClick={handleFollow}
-							className='adventure-add-button'
-						>
-							Follow
-						</Button>
-					}
-					<Button
-						id='message-user-button'
-						onClick={() => {}}
-						className='adventure-add-button'
-					>
-						Message
-					</Button>
 				</>
 			)}
 		</FooterButtons>

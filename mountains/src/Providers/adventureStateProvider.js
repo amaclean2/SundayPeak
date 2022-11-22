@@ -101,6 +101,8 @@ export const AdventureStateProvider = ({ children }) => {
 				return { ...state, isDeletePage: !state.isDeletePage }
 			case 'toggleSaveState':
 				return { ...state, saveState: !state.saveState }
+			case 'exitEdit':
+				return { ...state, saveState: false, isAdventureEditable: false }
 			case 'toggleEdit':
 				return {
 					...state,

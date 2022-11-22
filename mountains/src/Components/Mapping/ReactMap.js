@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react'
 import Map, { GeolocateControl, Layer, NavigationControl, Source } from 'react-map-gl'
+import cx from 'classnames'
 
-import { useAdventureStateContext, useGetAdventures } from '../../Providers'
-
-import '../../App.css'
-import AdventurePins from './AdventurePins'
+import { useAdventureStateContext, useCardStateContext, useGetAdventures } from '../../Providers'
 import { useCreateNewAdventure } from './utils'
+import AdventurePins from './AdventurePins'
+
+import './styles.css'
 
 const skyLayer = {
 	id: 'sky',
@@ -28,6 +29,7 @@ const ReactMap = () => {
 		useAdventureStateContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
+	const { displayCardBoolState, screenType } = useCardStateContext()
 
 	const onLoad = () => {
 		mapRef?.current?.getMap() && getAllAdventures(mapRef.current.getMap().getBounds())
@@ -67,31 +69,33 @@ const ReactMap = () => {
 	const mapProps = {
 		ref: mapRef,
 		reuseMaps: true,
-		className: 'map-container',
 		mapboxAccessToken: mapboxToken,
 		mapStyle: `${mapStyle}?optimize=true`,
 		initialViewState: startPosition,
 		maxPitch: 0,
 		minZoom: 3,
-		onDblClick: handleCreateNewAdventure,
+		onDblClick: (e) => handleCreateNewAdventure(e),
+		...(screenType.mobile && { onClick: (e) => handleCreateNewAdventure(e) }),
 		onLoad,
 		onMove
 	}
 
 	return (
-		<Map {...mapProps}>
-			<NavigationControl showCompass />
-			<GeolocateControl ref={getLocateControlRef} />
-			<Source
-				id='mapbox-dem'
-				type='raster-dem'
-				url='mapbox://mapbox.mapbox-terrain-dem-v1'
-				tileSize={512}
-				maxZoom={14}
-			/>
-			<Layer {...skyLayer} />
-			<AdventurePins boundingBox={mapRef?.current?.getMap()?.getBounds()} />
-		</Map>
+		<div className={cx('map-container', displayCardBoolState && 'card-open')}>
+			<Map {...mapProps}>
+				<NavigationControl showCompass />
+				<GeolocateControl ref={getLocateControlRef} />
+				<Source
+					id='mapbox-dem'
+					type='raster-dem'
+					url='mapbox://mapbox.mapbox-terrain-dem-v1'
+					tileSize={512}
+					maxZoom={14}
+				/>
+				<Layer {...skyLayer} />
+				<AdventurePins boundingBox={mapRef?.current?.getMap()?.getBounds()} />
+			</Map>
+		</div>
 	)
 }
 

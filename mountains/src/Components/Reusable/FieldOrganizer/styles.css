@@ -39,3 +39,25 @@
 	width: 100%;
 	height: 100%;
 }
+
+@media screen and (max-width: 500px) {
+	.field-row.flex-box {
+		flex-direction: column;
+		padding: 0;
+	}
+
+	.field-row.border-bottom {
+		border-bottom: none;
+	}
+
+	.field-row .field {
+		border-bottom: 1px solid var(--seperator-color);
+		width: 100%;
+		align-items: flex-start;
+		padding: 1rem 2rem;
+	}
+
+	.field.border-right {
+		border-right: none;
+	}
+}

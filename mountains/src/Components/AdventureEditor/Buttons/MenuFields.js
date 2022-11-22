@@ -60,7 +60,7 @@ const AdventureEditorMenu = () => {
 		}
 	}
 
-	if (!menuFields.length) return
+	if (!menuFields.length) return null
 
 	return <Menu fields={menuFields} />
 }

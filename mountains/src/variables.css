@@ -17,7 +17,7 @@
 	--main-text-color: #000;
 	--text-on-dark-background: #eee;
 	--input-border-color: #d7d7e8;
-	--input-background-color: #ffffffaa;
+	--input-background-color: #ffffff;
 	--alert-text-color: #ff5151;
 	--header-gradient: linear-gradient(45deg, #2d966d, #3c9da5);
 	--default-background-color: #fff;
@@ -30,6 +30,7 @@
 	--alert-blue-background: #d9edff;
 
 	--box-shadow-opacity: rgba(0, 0, 0, 0.1);
+	--dim-background: rgba(0, 0, 0, 0.5);
 
 	--card-opening-speed: 0.3s;
 

@@ -34,7 +34,7 @@
 
 .adventure-viewer {
 	flex-direction: column;
-	width: calc(100% - 30px);
+	width: 100%;
 	margin: 0 10px;
 }
 
@@ -89,4 +89,18 @@
 .header-subtext {
 	font-size: 14px;
 	padding-left: 5px;
+}
+
+@media screen and (max-width: 500px) {
+	.main-adventure-content.flex-box {
+		width: 100%;
+	}
+
+	.adventure-viewer {
+		margin: 0;
+	}
+
+	.adventure-viewer .field-page {
+		margin-bottom: 5rem;
+	}
 }

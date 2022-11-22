@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 
@@ -9,14 +9,28 @@ import './styles.css'
 
 const Menu = ({ className, fields = [] }) => {
 	const [isOpen, setIsOpen] = useState(false)
+	const [position, setPosition] = useState('left')
+	const menuRef = useRef()
 
 	const handleMenuButton = (event, action) => {
 		setIsOpen(false)
 		action()
 	}
 
+	useEffect(() => {
+		const position = menuRef.current.getBoundingClientRect().x
+		const menuWidth = 200
+
+		if (position < menuWidth) {
+			setPosition('right')
+		}
+	}, [])
+
 	return (
-		<div className={cx('menu', className)}>
+		<div
+			ref={menuRef}
+			className={cx('menu', className, position)}
+		>
 			<Button
 				onClick={() => setIsOpen(!isOpen)}
 				id='menu-opener'

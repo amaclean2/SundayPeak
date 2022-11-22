@@ -2,12 +2,14 @@ import { adventurePanel } from './adventures'
 import { aboutPage } from './aboutPage'
 import { buttonText } from './buttonText'
 import { lists } from './lists'
+import { userProfile } from './userProfile'
 
 const textContent = {
 	aboutPage,
 	buttonText,
 	adventurePanel,
-	lists
+	lists,
+	userProfile
 }
 
 const getContent = (textContentKey, replacementStrings) => {
@@ -21,8 +23,8 @@ const getContent = (textContentKey, replacementStrings) => {
 	}
 
 	if (replacementStrings?.length && parent.includes('{var}')) {
-		for (const string in replacementStrings) {
-			parent.replace('{var}', string)
+		for (const string of replacementStrings) {
+			parent = parent.replace('{var}', string)
 		}
 	}
 

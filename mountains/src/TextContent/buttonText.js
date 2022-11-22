@@ -11,6 +11,13 @@ export const buttonText = {
 	addToTicklist: 'Add to Ticklist',
 	completeActivity: 'Complete Activity',
 	deleteAdventure: 'Delete Adventure',
+	profile: 'Profile',
+	adventures: 'Adventures',
+	saveUser: 'Save User',
+	editUser: 'Edit User',
+	logout: 'Logout',
+	follow: 'Follow {var}',
+	message: 'Message {var}',
 	show: 'Show',
 	hide: 'Hide'
 }

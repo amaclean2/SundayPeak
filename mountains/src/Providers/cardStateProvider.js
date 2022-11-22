@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer } from 'react'
+import { getScreenType } from './utils'
 
 const CardStateContext = createContext()
 
@@ -27,7 +28,8 @@ export const CardStateProvider = ({ children }) => {
 		workingCard: '',
 		viewingImage: null,
 		showAlert: false,
-		alertContent: ''
+		alertContent: '',
+		screenType: getScreenType()
 	}
 
 	const cardReducer = (state, action) => {

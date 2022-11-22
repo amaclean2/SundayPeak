@@ -8,7 +8,7 @@ const SeasonList = ({ seasons }) => {
 	useEffect(() => {
 		if (typeof seasons === 'string' && seasons.length) {
 			seasonList.current = JSON.parse(seasons)
-		} else if (typeof seasons === 'string' && !seasons.length) {
+		} else if ((typeof seasons === 'string' && !seasons.length) || !seasons) {
 			seasonList.current = []
 		} else {
 			seasonList.currrent = seasons

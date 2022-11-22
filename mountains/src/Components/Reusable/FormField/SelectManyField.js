@@ -33,7 +33,7 @@ const SelectManyField = ({ className, options, onChange, name, value }) => {
 		<div className={cx('form-field', 'select-many', 'flex-box', className)}>
 			{options?.selectMany?.map((option, key) => (
 				<label
-					htmlFor={option.name}
+					htmlFor={option}
 					className={cx('select-many-option', 'flex-box')}
 					key={`select_many_option_${key}`}
 				>

@@ -18,7 +18,7 @@ export const seasonOptions = [
 export const gearOptions = [
 	getContent('lists.gear.rope'),
 	getContent('lists.gear.axe'),
-	getContent('lists.gear.gear'),
+	getContent('lists.gear.kit'),
 	getContent('lists.gear.skins'),
 	getContent('lists.gear.crampons')
 ]

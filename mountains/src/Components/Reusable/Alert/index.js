@@ -14,7 +14,7 @@ const Alert = ({ className, type }) => {
 			setTimeout(() => {
 				cardDispatch({ type: 'closeAlert', payload: '' })
 				setDisplayState(2)
-			}, 10000)
+			}, 5000)
 		}
 	}, [showAlert, cardDispatch])
 

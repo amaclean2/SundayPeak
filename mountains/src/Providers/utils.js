@@ -46,6 +46,10 @@ export const useAdventureValidation = () => {
 
 		if (isDefined(fields.season)) {
 			if (fields.season?.length) {
+				if (typeof fields.season === 'string') {
+					fields.season = JSON.parse(fields.season)
+				}
+
 				season = JSON.stringify(fields.season.sort((a, b) => Number(a) - Number(b)))
 			} else if (!fields.season) {
 				season = JSON.stringify([])
@@ -81,6 +85,10 @@ export const useAdventureValidation = () => {
 
 		if (isDefined(fields.gear)) {
 			if (fields.gear?.length) {
+				if (typeof fields.gear === 'string') {
+					fields.gear = JSON.parse(fields.gear)
+				}
+
 				gear = JSON.stringify(fields.gear.sort((a, b) => Number(a) - Number(b)))
 			} else if (!fields.gear.length) {
 				gear = JSON.stringify([])
@@ -172,4 +180,23 @@ export const fetcher = (url, options) => {
 		.catch((error) => {
 			throw error
 		})
+}
+
+export const getScreenType = () => {
+	const screenWidth = window.screen.width
+	let screenType = {
+		mobile: false,
+		tablet: false,
+		browser: false
+	}
+
+	if (screenWidth < 420) {
+		screenType.mobile = true
+	} else if (screenWidth < 1300) {
+		screenType.tablet = true
+	} else {
+		screenType.browser = true
+	}
+
+	return screenType
 }

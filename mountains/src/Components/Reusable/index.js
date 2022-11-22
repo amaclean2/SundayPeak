@@ -9,6 +9,7 @@ export * from './FieldOrganizer'
 export * from './ImageViewer'
 export * from './Accordion'
 export * from './ConfirmationPage'
+export * from './MobileMenu'
 
 export const FlexSpacer = () => <div className='flex-spacer' />
 export const Degrees = () => <span>&#176;</span>

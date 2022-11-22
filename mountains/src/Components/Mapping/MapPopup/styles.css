@@ -15,7 +15,7 @@
 }
 
 .popup-field .field-value {
-	font-size: 16px;
+	font-size: 1rem;
 }
 
 .popup-field.flex-box {
@@ -47,6 +47,6 @@
 }
 
 .popup-description {
-	font-size: 16px;
+	font-size: 1rem;
 	margin-bottom: 15px;
 }

@@ -1,7 +1,14 @@
 import { useEffect, useRef } from 'react'
 
 import { useAdventureStateContext, useGetAdventure } from '../../Providers'
-import { DisplayCard, FieldHeader, HeaderSubtext, ProfileContent, ProfileHeader } from '../Reusable'
+import {
+	DisplayCard,
+	FieldHeader,
+	FlexSpacer,
+	HeaderSubtext,
+	ProfileContent,
+	ProfileHeader
+} from '../Reusable'
 import AdventureEditorButtons from './Buttons'
 import AdventureEditorForm from './Editor'
 import AdventureViewer from './Viewer'
@@ -78,8 +85,8 @@ const AdventureEditor = () => {
 			adventureDispatch({
 				type: 'flyTo',
 				payload: {
-					latitude: currentAdventure.coordinates_lat,
-					longitude: currentAdventure.coordinates_lng - 0.003,
+					latitude: currentAdventure.coordinates_lat || currentAdventure.coordinates.lat,
+					longitude: (currentAdventure.coordinates_lng || currentAdventure.coordinates.lng) - 0.003,
 					zoom: 16,
 					pitch: 0,
 					bearing: 0
@@ -95,7 +102,7 @@ const AdventureEditor = () => {
 					<ProfileHeader
 						textContents={currentAdventure.adventure_name}
 						editFields={{
-							isAdventureEditable,
+							isEditable: isAdventureEditable,
 							propName: 'adventure_name',
 							onChange
 						}}
@@ -103,12 +110,13 @@ const AdventureEditor = () => {
 				)
 			} else {
 				return (
-					<ProfileHeader>
-						<FieldHeader className='page-header'>
-							{currentAdventure.adventure_name}
-							<AdventureEditorMenu />
-						</FieldHeader>
-						<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
+					<ProfileHeader className={'user-profile-header'}>
+						<div>
+							<FieldHeader className='page-header'>{currentAdventure.adventure_name}</FieldHeader>
+							<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
+						</div>
+						<FlexSpacer />
+						<AdventureEditorMenu />
 					</ProfileHeader>
 				)
 			}

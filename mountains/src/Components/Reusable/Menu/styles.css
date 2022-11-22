@@ -2,6 +2,10 @@
 	position: relative;
 }
 
+.menu.left .menu-buttons {
+	right: 0;
+}
+
 .menu-buttons-background {
 	position: fixed;
 	top: 0;
@@ -26,7 +30,7 @@
 	border-radius: 10px;
 	color: var(--primary-accent-color);
 	width: 200px;
-	font-size: 15px;
+	font-size: 1rem;
 	overflow: hidden;
 	max-height: 1000px;
 	transition: all 0.3s ease-in-out;
@@ -50,4 +54,5 @@
 .menu-opener {
 	background-color: transparent;
 	height: auto;
+	margin: 0;
 }
