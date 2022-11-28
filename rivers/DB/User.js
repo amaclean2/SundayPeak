@@ -1,7 +1,7 @@
-const db = require('../Config/db.js')
-const logger = require('../Config/logger.js')
-const cryptoHandlers = require('../Crypto/index.js')
-const { mapboxStyles } = require('../Services/utils.js')
+const db = require('../Config/db')
+const logger = require('../Config/logger')
+const cryptoHandlers = require('../Crypto/index')
+const { mapboxStyles } = require('../Services/utils')
 const {
   createUserStatement,
   selectUserIdStatement,
@@ -18,7 +18,7 @@ const {
   getFriendsStatement,
   getFriendsCountStatement,
   getIsFriendStatement
-} = require('./Statements.js')
+} = require('./Statements')
 
 const addUser = async ({ email, password, first_name, last_name }) => {
   try {

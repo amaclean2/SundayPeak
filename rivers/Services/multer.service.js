@@ -15,7 +15,7 @@ const {
 const { nanoid } = require('nanoid')
 
 const storage = new Storage({ keyFilename: 'google-cloud-key.json' })
-const bucket = storage.bucket('user-image-storage')
+const bucket = storage.bucket('sunday-application-images')
 
 // max file size is 5MB
 // const MAX_SIZE = 5 * 1024 * 1024

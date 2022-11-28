@@ -1,9 +1,9 @@
 const queries = require('../DB')
 
-const buildAdventureObject = async ({ id }) => {
+const buildAdventureObject = async ({ id, type }) => {
   const { getAdventure, getTicksByAdventure, getAdventurePictures } = queries
 
-  const adventure = await getAdventure(id)
+  const adventure = await getAdventure(id, type)
   const ticks = await getTicksByAdventure({ adventureId: id })
   const images = await getAdventurePictures({ adventureId: id })
 

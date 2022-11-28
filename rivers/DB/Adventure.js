@@ -1,69 +1,118 @@
-const db = require('../Config/db.js')
-const logger = require('../Config/logger.js')
-const { deleteImageFromStorage } = require('../Services/multer.service.js')
+const db = require('../Config/db')
+const logger = require('../Config/logger')
+const { deleteImageFromStorage } = require('../Services/multer.service')
 const {
-  deleteAdventurePictures,
-  getAdventurePictures
-} = require('./Pictures.js')
+  getSkiSpecificFields,
+  getGeneralFields,
+  getClimbSpecificFields,
+  getHikeSpecificFields
+} = require('../Services/utils')
+const { deleteAdventurePictures, getAdventurePictures } = require('./Pictures')
 const {
-  createNewAdventureStatement,
   deleteActivityByAdventureStatement,
   deleteAdventureStatement,
   deleteTickByAdventureStatement,
   selectAdventureByIdStatement,
   selectAdventuresInRangeStatement,
   updateAdventureStatements
-} = require('./Statements.js')
+} = require('./Statements')
+const {
+  createNewSkiStatement,
+  createNewSkiAdventureStatement,
+  createNewClimbStatement,
+  createNewClimbAdventureStatement,
+  createNewHikeStatement,
+  createNewHikeAdventureStatement,
+  selectAdventureByIdGroup
+} = require('./Statements/Adventures')
 
 const addAdventure = async (adventure) => {
   try {
-    const {
-      adventure_type,
-      adventure_name,
-      approach_distance,
-      season,
-      avg_angle,
-      max_angle,
-      difficulty,
-      elevation,
-      gear,
-      gain,
-      bio,
-      nearest_city,
-      creator_id,
-      coordinates_lat,
-      coordinates_lng
-    } = adventure
+    /**
+     * 1. Get adventure type from 'adventure'
+     * 2. Figure out what properties of that specific adventure type
+     *    exist in the new adventure
+     * 3. Fill in the rest with default values
+     * 4. Create the specific adventure
+     * 5. Get the id from the specific adventure
+     * 6. Fill in the missing properties of a general adventure
+     * 7. Fill in the id from the specific adventure
+     * 8. Create the general adventure
+     * 9. Return the general adventure id
+     */
 
-    const [results] = await db.execute(createNewAdventureStatement, [
-      adventure_type,
-      adventure_name,
-      approach_distance || 0,
-      season || '',
-      avg_angle || 0,
-      max_angle || 0,
-      difficulty || 0,
-      elevation || 0,
-      gear || '',
-      gain || 0,
-      bio || '',
-      nearest_city || '',
-      creator_id,
-      coordinates_lat,
-      coordinates_lng
-    ])
+    const { adventure_type } = adventure
+    let generalAdventureId
+    switch (adventure_type) {
+      case 'ski': {
+        const specificFields = getSkiSpecificFields(adventure)
+        const [{ insertId: specificId }] = await db.execute(
+          createNewSkiStatement,
+          specificFields
+        )
+        const generalFields = getGeneralFields({
+          ...adventure,
+          adventure_ski_id: specificId
+        })
+        const [{ insertId }] = await db.execute(
+          createNewSkiAdventureStatement,
+          generalFields
+        )
+        generalAdventureId = insertId
+        break
+      }
+      case 'climb': {
+        const specificFields = getClimbSpecificFields(adventure)
+        const [{ insertId: specificId }] = await db.execute(
+          createNewClimbStatement,
+          specificFields
+        )
+        const generalFields = getGeneralFields({
+          ...adventure,
+          adventure_climb_id: specificId
+        })
+        const [{ insertId }] = await db.execute(
+          createNewClimbAdventureStatement,
+          generalFields
+        )
+        generalAdventureId = insertId
+        break
+      }
+      case 'hike': {
+        const specificFields = getHikeSpecificFields(adventure)
+        const [{ insertId: specificId }] = await db.execute(
+          createNewHikeStatement,
+          specificFields
+        )
+        const generalFields = getGeneralFields({
+          ...adventure,
+          adventure_hike_id: specificId
+        })
+        const [{ insertId }] = await db.execute(
+          createNewHikeAdventureStatement,
+          generalFields
+        )
+        generalAdventureId = insertId
+        break
+      }
+      default:
+        throw 'there is not a valid adventure type'
+    }
 
-    return results.insertId
+    return generalAdventureId
   } catch (error) {
     logger.error('DATABASE_INSERTION_FAILED', error)
     throw error
   }
 }
 
-const getAdventure = async (id) => {
+const getAdventure = async (id, type) => {
   try {
-    const [results] = await db.execute(selectAdventureByIdStatement, [id])
-    return results[0]
+    const [[selectedAdventure]] = await db.execute(
+      selectAdventureByIdGroup[type],
+      [id]
+    )
+    return selectedAdventure
   } catch (error) {
     logger.error('DATABASE_QUERY_FAILED', error)
     throw error

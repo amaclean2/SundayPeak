@@ -8,14 +8,21 @@ const adventureCreateValidator = () => {
     body('coordinates')
       .not()
       .isEmpty()
-      .withMessage('coordinates')
-      .customSanitizer((value, { req }) => {
+      .withMessage('coordinates_obj')
+      .custom((value, { req }) => {
+        if (!value) throw 'coordinates_obj'
+        logger.debug({ value })
+
         const parsedCoordinates = JSON.parse(value)
 
         req.body.coordinates_lat = parsedCoordinates.lat
         req.body.coordinates_lng = parsedCoordinates.lng
         delete req.body.coordinates
+
+        return true
       }),
+    body('nearest_city').not().isEmpty().withMessage('nearestCityFieldMissing'),
+    body('public').not().isEmpty().withMessage('publicFieldMissing'),
     body('id_from_token')
       .not()
       .isEmpty()

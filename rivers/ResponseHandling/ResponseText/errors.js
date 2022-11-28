@@ -4,7 +4,7 @@ const {
   UNAUTHORIZED,
   NOT_FOUND,
   FORBIDDEN
-} = require('../statuses.js')
+} = require('../statuses')
 
 const errorTexts = {
   // token errors
@@ -122,9 +122,21 @@ const errorTexts = {
     messageText: 'creator_id is required',
     status: NOT_ACCEPTABLE
   },
+  publicFieldMissing: {
+    messageText: 'public field is required',
+    status: NOT_ACCEPTABLE
+  },
+  nearestCityFieldMissing: {
+    messageText: 'nearest_city field is required',
+    status: NOT_ACCEPTABLE
+  },
   coordinates: {
     messageText: 'coordinates_lat and coordinates_lng are required',
     status: NOT_ACCEPTABLE
+  },
+  coordinates_obj: {
+    messageText:
+      'there must be a coordinates object present with "lat" and "lng" properties'
   },
   serverGetAdventures: {
     messageText: 'Server Error: Could not get adeventures',

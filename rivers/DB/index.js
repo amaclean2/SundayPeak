@@ -1,15 +1,15 @@
 const userQueries = require('./User')
 const adventureQueries = require('./Adventure')
-const tickQueries = require('./Tick.js')
+const tickQueries = require('./Tick')
 const activityQueries = require('./Activity')
 const pictureQueries = require('./Pictures')
 
 const queries = {
-	...userQueries,
-	...adventureQueries,
-	...tickQueries,
-	...activityQueries,
-	...pictureQueries
+  ...userQueries,
+  ...adventureQueries,
+  ...tickQueries,
+  ...activityQueries,
+  ...pictureQueries
 }
 
 module.exports = queries

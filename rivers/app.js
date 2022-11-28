@@ -4,7 +4,7 @@ const helmet = require('helmet')
 const { config } = require('dotenv')
 
 const router = require('./Routing')
-const { corsHandler } = require('./Config/cors.js')
+const { corsHandler } = require('./Config/cors')
 const authService = require('./Services/auth.service')
 
 config()

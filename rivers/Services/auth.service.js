@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
-const { getJWTSecret } = require('../Config/connections.js')
-const { isExempt, isPath } = require('../Config/exemptGql.js')
+const { getJWTSecret } = require('../Config/connections')
+const { isExempt, isPath } = require('../Config/exemptGql')
 const { returnError } = require('../ResponseHandling')
 
 const issue = (payload) =>
