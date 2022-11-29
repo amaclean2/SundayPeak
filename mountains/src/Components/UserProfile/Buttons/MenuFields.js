@@ -55,6 +55,7 @@ const UserEditorMenu = () => {
 		menuFields.push({
 			action: () => {},
 			id: 'message-user-button',
+			disabled: true,
 			text: getContent('buttonText.message', [workingUser.first_name])
 		})
 	}

@@ -5,13 +5,12 @@
 	max-width: 1000px;
 	border-radius: 30px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-	display: inline-flex;
+	display: none;
 	flex-direction: column;
 	overflow: hidden;
-	transition: opacity var(--card-opening-speed) ease-in-out,
-		width var(--card-opening-speed) ease-in-out;
+	transition: opacity 0.3s ease-in-out;
 	pointer-events: auto;
-	opacity: 1;
+	opacity: 0;
 	position: relative;
 }
 
@@ -23,6 +22,16 @@
 	height: 100vh;
 	align-items: flex-start;
 	pointer-events: none;
+}
+
+.display-card-container.opening .display-card,
+.display-card-container.open .display-card,
+.display-card-container.closing .display-card {
+	display: inline-flex;
+}
+
+.display-card-container.open .display-card {
+	opacity: 1;
 }
 
 .display-card-container.center {
@@ -126,18 +135,20 @@ h3.label-field {
 
 .image-header.flex-box {
 	flex-direction: row;
-}
-
-.image-header .field-image {
-	margin-right: 20px;
+	gap: 0.8rem;
 }
 
 .header-contents.flex-box {
-	flex-direction: column;
-	align-items: flex-start;
+	align-items: center;
+	flex: 1;
+	padding: 0 0.8em 0 0;
 }
 
 @media screen and (max-width: 500px) {
+	.field-header.page-header.flex-box {
+		font-size: 1.4rem;
+	}
+
 	.display-card-container .display-card {
 		height: 100vh;
 		min-width: initial;
@@ -151,22 +162,30 @@ h3.label-field {
 		justify-content: center;
 		display: flex;
 		flex-direction: column;
+		height: auto;
 	}
 
 	.adventure-info.flex-box {
 		margin: 0;
 		padding: 0;
-		margin-bottom: 8rem;
+		margin-bottom: 1rem;
 	}
 
 	.signup-buttons.flex-box {
 		left: 0;
 	}
 
+	.profile-content {
+		padding-bottom: 3rem;
+	}
+
 	.action-buttons.flex-box {
 		flex-direction: column;
 		align-items: stretch;
 		border-top: 1px solid var(--seperator-color);
+		position: relative;
+		bottom: auto;
+		box-shadow: none;
 	}
 
 	.action-buttons .button {

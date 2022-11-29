@@ -11,7 +11,6 @@ const adventureCreateValidator = () => {
       .withMessage('coordinates_obj')
       .custom((value, { req }) => {
         if (!value) throw 'coordinates_obj'
-        logger.debug({ value })
 
         const parsedCoordinates = JSON.parse(value)
 

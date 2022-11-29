@@ -8,6 +8,7 @@ export const createNewDefaultAdventure = ({ longitude, latitude }) => ({
 	adventure_name: 'New Adventure',
 	aspect: 'N',
 	images: [],
+	public: true,
 	coordinates: {
 		lng: longitude,
 		lat: latitude
@@ -111,9 +112,9 @@ export const useAdventureValidation = () => {
 			...(fields.season && { season: season || [] }),
 			...(fields.avg_angle && { avg_angle: avgAngle }),
 			...(fields.max_angle && { max_angle: maxAngle }),
-			...(fields.elevation && { elevation }),
+			...(fields.elevation && { elevation: elevation || 0 }),
 			...(fields.gear && { gear: gear || [] }),
-			...(fields.gain && { gain }),
+			...(fields.gain && { gain: gain || 0 }),
 			...(fields.bio && { bio: fields.bio || '' }),
 			...(fields.nearest_city && { nearest_city: fields.nearest_city || '' }),
 			...(fields.coordinates && {

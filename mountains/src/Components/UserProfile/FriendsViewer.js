@@ -25,7 +25,7 @@ const FriendsViewer = ({ className }) => {
 	}, [])
 
 	const handleChangeUser = (friend) => {
-		getOtherUser({ userId: friend.follower_id })
+		getOtherUser({ userId: friend.id })
 		userDispatch({ type: 'clearFriends' })
 	}
 

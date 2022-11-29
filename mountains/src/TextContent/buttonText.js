@@ -8,7 +8,7 @@ export const buttonText = {
 	finishSave: 'Finish Saving',
 	editAdventure: 'Edit Adventure',
 	deleteAdventureVar: 'Delete {var}',
-	addToTicklist: 'Add to Ticklist',
+	addToTicklist: 'Add to Todo List',
 	completeActivity: 'Complete Activity',
 	deleteAdventure: 'Delete Adventure',
 	profile: 'Profile',
@@ -19,5 +19,6 @@ export const buttonText = {
 	follow: 'Follow {var}',
 	message: 'Message {var}',
 	show: 'Show',
-	hide: 'Hide'
+	hide: 'Hide',
+	share: 'Share'
 }

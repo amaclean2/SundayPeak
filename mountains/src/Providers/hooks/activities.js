@@ -4,7 +4,7 @@ import { useGetAdventure } from './adventures'
 
 export const useSaveActivity = () => {
 	const { userDispatch } = useUserStateContext()
-	const getAdventure = useGetAdventure()
+	const { getAdventure } = useGetAdventure()
 
 	const saveActivity = ({ adventureId }) => {
 		return fetcher(`/activities/create`, {

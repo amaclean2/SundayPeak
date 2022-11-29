@@ -21,10 +21,8 @@ const Menu = ({ className, fields = [] }) => {
 		const position = menuRef.current.getBoundingClientRect().x
 		const menuWidth = 200
 
-		if (position < menuWidth) {
-			setPosition('right')
-		}
-	}, [])
+		setPosition(position < menuWidth ? 'right' : 'left')
+	}, [isOpen])
 
 	return (
 		<div
@@ -48,6 +46,7 @@ const Menu = ({ className, fields = [] }) => {
 						key={`menu_button_${key}`}
 						className={cx('menu-button', field.className)}
 						id={field.id || field.text.replaceAll(' ', '-')}
+						disabled={field.disabled}
 						onClick={(e) => handleMenuButton(e, field.action)}
 					>
 						{field.text}

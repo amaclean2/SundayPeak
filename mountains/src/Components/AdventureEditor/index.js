@@ -30,7 +30,7 @@ const AdventureEditor = () => {
 		isDeletePage
 	} = useAdventureStateContext()
 	const { pathname } = useLocation()
-	const getAdventure = useGetAdventure()
+	const { getAdventure } = useGetAdventure()
 	const navigate = useNavigate()
 
 	const menuRef = useRef()
@@ -45,14 +45,14 @@ const AdventureEditor = () => {
 				}
 			})
 		} else {
+			adventureDispatch({
+				type: 'editAdventure',
+				payload: {
+					editAdventureFields,
+					currentAdventure: { ...currentAdventure, [e.target.name]: e.target.value }
+				}
+			})
 		}
-		adventureDispatch({
-			type: 'editAdventure',
-			payload: {
-				editAdventureFields,
-				currentAdventure: { ...currentAdventure, [e.target.name]: e.target.value }
-			}
-		})
 	}
 
 	const handleClose = () => {
@@ -73,8 +73,8 @@ const AdventureEditor = () => {
 				adventureDispatch({
 					type: 'flyTo',
 					payload: {
-						latitude: adventure.coordinates_lat,
-						longitude: adventure.coordinates_lng,
+						latitude: adventure.coordinates.lat,
+						longitude: adventure.coordinates.lng,
 						zoom: 16,
 						pitch: 0,
 						bearing: 0
@@ -85,8 +85,8 @@ const AdventureEditor = () => {
 			adventureDispatch({
 				type: 'flyTo',
 				payload: {
-					latitude: currentAdventure.coordinates_lat || currentAdventure.coordinates.lat,
-					longitude: (currentAdventure.coordinates_lng || currentAdventure.coordinates.lng) - 0.003,
+					latitude: currentAdventure.coordinates.lat,
+					longitude: currentAdventure.coordinates.lng - 0.003,
 					zoom: 16,
 					pitch: 0,
 					bearing: 0
@@ -112,8 +112,13 @@ const AdventureEditor = () => {
 				return (
 					<ProfileHeader className={'user-profile-header'}>
 						<div>
-							<FieldHeader className='page-header'>{currentAdventure.adventure_name}</FieldHeader>
-							<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
+							<FieldHeader
+								className='page-header'
+								text={currentAdventure.adventure_name}
+							/>
+							{currentAdventure.nearest_city?.length && (
+								<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
+							)}
 						</div>
 						<FlexSpacer />
 						<AdventureEditorMenu />

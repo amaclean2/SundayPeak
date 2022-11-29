@@ -42,7 +42,7 @@ const UserProfile = () => {
 								className='page-header'
 								text={`${workingUser.first_name} ${workingUser.last_name}`}
 							/>
-							<HeaderSubtext>{workingUser.city}</HeaderSubtext>
+							{workingUser.city?.length && <HeaderSubtext>{workingUser.city}</HeaderSubtext>}
 						</div>
 						<FlexSpacer />
 						<UserEditorMenu />

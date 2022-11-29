@@ -12,6 +12,18 @@ import getContent from '../../TextContent'
 
 const LoginButton = () => {
 	const { cardDispatch } = useCardStateContext()
+	const { screenType } = useCardStateContext()
+
+	if (screenType.mobile) {
+		return (
+			<Button
+				className={'mobile-menu-button'}
+				onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.login })}
+			>
+				{getContent('buttonText.login')}
+			</Button>
+		)
+	}
 
 	return (
 		<Button
@@ -26,6 +38,18 @@ const LoginButton = () => {
 
 const SignUpButton = () => {
 	const { cardDispatch } = useCardStateContext()
+	const { screenType } = useCardStateContext()
+
+	if (screenType.mobile) {
+		return (
+			<Button
+				className={'mobile-menu-button'}
+				onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })}
+			>
+				{getContent('buttonText.signup')}
+			</Button>
+		)
+	}
 
 	return (
 		<Button

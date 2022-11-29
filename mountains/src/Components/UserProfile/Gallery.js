@@ -17,6 +17,10 @@ const UserProfileGallery = () => {
 		cardDispatch({ type: 'viewingImage', payload: imageSource })
 	}
 
+	if (workingUser.id !== loggedInUser.id && !workingUser.imaages?.length) {
+		return null
+	}
+
 	return (
 		<div className='scroller-container flex-box'>
 			{userImages.map((image, key) => {

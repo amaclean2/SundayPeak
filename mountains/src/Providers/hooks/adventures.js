@@ -1,4 +1,5 @@
 import { debounce } from 'throttle-debounce'
+import getContent from '../../TextContent'
 
 import { useAdventureStateContext } from '../adventureStateProvider'
 import { useCardStateContext } from '../cardStateProvider'
@@ -6,9 +7,10 @@ import { fetcher, useAdventureValidation } from '../utils'
 
 export const useGetAdventure = () => {
 	const { adventureDispatch } = useAdventureStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	const getAdventure = async ({ id }) => {
-		return fetcher(`/adventures/details?id=${id}`)
+		return fetcher(`/adventures/details?id=${id}&type=ski`)
 			.then(({ data }) => {
 				adventureDispatch({ type: 'currentAdventure', payload: data.adventure })
 				return data
@@ -16,7 +18,21 @@ export const useGetAdventure = () => {
 			.catch(console.error)
 	}
 
-	return getAdventure
+	const shareAdventure = ({ id }) => {
+		const url = window.location.href
+		const domain = url.includes('/adventure')
+			? url.split('/adventure')[0]
+			: url.split('/discover')[0]
+
+		const newDomain = `${domain}/adventure/${id}`
+		navigator.clipboard.writeText(newDomain)
+		cardDispatch({ type: 'openAlert', payload: getContent('adventurePanel.linkCopied') })
+	}
+
+	return {
+		getAdventure,
+		shareAdventure
+	}
 }
 
 export const useGetAdventures = () => {
@@ -30,7 +46,7 @@ export const useGetAdventures = () => {
 					NE: boundingBox._ne,
 					SW: boundingBox._sw
 				},
-				type: 'line'
+				type: 'ski'
 			}
 		})
 			.then(({ data: { adventures } }) => {
@@ -57,7 +73,7 @@ export const useGetAdventures = () => {
 					NE: boundingBox._ne,
 					SW: boundingBox._sw
 				},
-				type: 'line'
+				type: 'ski'
 			}
 		})
 			.then(({ data: { adventures } }) => {
@@ -75,8 +91,7 @@ export const useGetAdventures = () => {
 }
 
 export const useSaveAdventure = () => {
-	const { adventureDispatch, allAdventures, currentAdventure, editAdventureFields } =
-		useAdventureStateContext()
+	const { adventureDispatch, currentAdventure, editAdventureFields } = useAdventureStateContext()
 	const validateAdventure = useAdventureValidation()
 
 	const { cardDispatch } = useCardStateContext()
@@ -86,7 +101,7 @@ export const useSaveAdventure = () => {
 			method: 'POST',
 			body: {
 				...currentAdventure,
-				adventure_type: 'line'
+				adventure_type: 'ski'
 			}
 		})
 			.then(({ data }) => {
@@ -115,6 +130,7 @@ export const useSaveAdventure = () => {
 				fields: editAdventureFields,
 				type: 'editFields'
 			})
+
 			adventureDispatch({
 				type: 'validateAdventure',
 				payload: { currentAdventure: validatedAdventure, editAdventureFields: validatedEditFields }
@@ -176,7 +192,7 @@ export const useDeleteAdventure = () => {
 }
 
 export const useSubmitAdventurePicture = () => {
-	const getAdventure = useGetAdventure()
+	const { getAdventure } = useGetAdventure()
 
 	const submitAdventurePicture = ({ data, adventureId }) => {
 		const formData = new FormData()

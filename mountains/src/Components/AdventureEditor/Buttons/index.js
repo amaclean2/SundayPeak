@@ -22,7 +22,7 @@ const AdventureEditorButtons = () => {
 	const { saveNewAdventure, startAdventureSaveProcess } = useSaveAdventure()
 	const { saveEditAdventure } = useSaveAdventure()
 	const { getAllAdventures } = useGetAdventures()
-	const getAdventure = useGetAdventure()
+	const { getAdventure } = useGetAdventure()
 	const { cardDispatch, screenType } = useCardStateContext()
 	const deleteAdventure = useDeleteAdventure()
 

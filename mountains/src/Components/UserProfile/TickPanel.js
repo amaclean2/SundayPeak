@@ -19,7 +19,7 @@ const Tick = ({ tickName, onClick }) => (
 const UserTickPanel = ({ className }) => {
 	const { workingUser } = useUserStateContext()
 	const { cardDispatch } = useCardStateContext()
-	const getAdventure = useGetAdventure()
+	const { getAdventure } = useGetAdventure()
 
 	const openAdventure = (adventureId) => {
 		return getAdventure({ id: adventureId }).then(() => {

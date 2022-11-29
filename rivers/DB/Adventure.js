@@ -5,14 +5,15 @@ const {
   getSkiSpecificFields,
   getGeneralFields,
   getClimbSpecificFields,
-  getHikeSpecificFields
+  getHikeSpecificFields,
+  adventureTemplates,
+  getStatementKey
 } = require('../Services/utils')
 const { deleteAdventurePictures, getAdventurePictures } = require('./Pictures')
 const {
   deleteActivityByAdventureStatement,
   deleteAdventureStatement,
   deleteTickByAdventureStatement,
-  selectAdventureByIdStatement,
   selectAdventuresInRangeStatement,
   updateAdventureStatements
 } = require('./Statements')
@@ -23,7 +24,8 @@ const {
   createNewClimbAdventureStatement,
   createNewHikeStatement,
   createNewHikeAdventureStatement,
-  selectAdventureByIdGroup
+  selectAdventureByIdGroup,
+  getSpecificAdventureId
 } = require('./Statements/Adventures')
 
 const addAdventure = async (adventure) => {
@@ -96,6 +98,7 @@ const addAdventure = async (adventure) => {
         break
       }
       default:
+        logger.debug({ adventure_type })
         throw 'there is not a valid adventure type'
     }
 
@@ -135,7 +138,8 @@ const getAdventures = async (coordinates, type) => {
         coordinates: {
           lat: result.coordinates_lat,
           lng: result.coordinates_lng
-        }
+        },
+        public: !!result.public
       }
       delete newResult.coordinates_lat
       delete newResult.coordinates_lng
@@ -151,16 +155,37 @@ const getAdventures = async (coordinates, type) => {
 const updateAdventure = async ({ fields }) => {
   const responses = await Promise.all([
     fields.map((field) => {
-      return db
-        .execute(updateAdventureStatements[field.field_name], [
-          field.field_value,
-          field.adventure_id
-        ])
-        .then(([result]) => result)
-        .catch((error) => {
-          logger.error('DATABASE_UPDATE_FAILED', error)
-          throw error
-        })
+      if (adventureTemplates.general.includes(field.field_name)) {
+        return db
+          .execute(updateAdventureStatements[field.field_name], [
+            field.field_value,
+            field.adventure_id
+          ])
+          .then(([result]) => result)
+          .catch((error) => {
+            logger.error('DATABASE_UPDATE_FAILED', error)
+            throw error
+          })
+      } else {
+        return db
+          .execute(getSpecificAdventureId, [field.adventure_id])
+          .then(([[result]]) => {
+            const statementKey = getStatementKey(
+              field.field_name,
+              result.adventure_type
+            )
+            return db
+              .execute(updateAdventureStatements[statementKey], [
+                field.field_value,
+                result.specific_adventure_id
+              ])
+              .then(([result]) => result)
+              .catch((error) => {
+                logger.error('DATABASE_UPDATE_FAILED', error)
+                throw error
+              })
+          })
+      }
     })
   ])
 

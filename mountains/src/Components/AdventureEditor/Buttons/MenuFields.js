@@ -1,6 +1,7 @@
 import React from 'react'
 import {
 	useAdventureStateContext,
+	useGetAdventure,
 	useSaveActivity,
 	useSaveTick,
 	useUserStateContext
@@ -14,6 +15,7 @@ const AdventureEditorMenu = () => {
 	const { loggedInUser } = useUserStateContext()
 	const saveTick = useSaveTick()
 	const saveActivity = useSaveActivity()
+	const { shareAdventure } = useGetAdventure()
 
 	if (!loggedInUser) return null
 
@@ -30,6 +32,12 @@ const AdventureEditorMenu = () => {
 			text: getContent('buttonText.addAdventure')
 		})
 	} else if (currentAdventure && !isAdventureEditable && !isDeletePage && !saveState) {
+		menuFields.push({
+			action: () => shareAdventure({ id: currentAdventure.id }),
+			id: 'adventure-share-button',
+			text: getContent('buttonText.share')
+		})
+
 		menuFields.push({
 			action: () => adventureDispatch({ type: 'toggleAdventureEditable' }),
 			id: 'adventure-edit-button',

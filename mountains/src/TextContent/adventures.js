@@ -8,6 +8,7 @@ export const adventurePanel = {
 		'To add a new adventure, double click on any point on the map. Then fill in the details in the form provided.',
 	adventureDeleteContent:
 		'Are you sure you want to delete this adventure?\nIt will be gone forever',
+	linkCopied: 'Your adventure has been copied to the clipboard',
 	editable: {
 		description: 'Description',
 		approachDistance: 'Approach Distance',

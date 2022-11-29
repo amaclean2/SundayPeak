@@ -9,7 +9,7 @@ import { createNewDefaultAdventure } from '../../Providers/utils'
 export const useCreateNewAdventure = () => {
 	const { adventureAddState, allAdventures, adventureDispatch } = useAdventureStateContext()
 	const { cardDispatch } = useCardStateContext()
-	const getAdventure = useGetAdventure()
+	const { getAdventure } = useGetAdventure()
 
 	const handleCreateNewAdventure = (event) => {
 		event.preventDefault()

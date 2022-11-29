@@ -10,7 +10,6 @@
 	align-items: flex-start;
 	flex-direction: column;
 	width: 700px;
-	margin-bottom: 100px;
 }
 
 .adventure-tick-panel.flex-box {
@@ -35,7 +34,7 @@
 .adventure-viewer {
 	flex-direction: column;
 	width: 100%;
-	margin: 0 10px;
+	padding: 0 10px;
 }
 
 .user-image {

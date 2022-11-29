@@ -10,7 +10,6 @@ const adventureTemplates = {
     'coordinates_lat',
     'coordinates_lng',
     'nearest_city',
-    'creator_id',
     'rating',
     'public'
   ],
@@ -88,6 +87,26 @@ const getGeneralFields = (adventure) => {
   ]
 }
 
+const getStatementKey = (name, type) => {
+  switch (name) {
+    case 'difficulty':
+      if (type === 'ski') return 'ski_difficulty'
+      else return 'hike-difficulty'
+    case 'elevation':
+      if (type === 'ski') return 'ski_elevation'
+      else return 'hike_elevation'
+    case 'gain':
+      if (type === 'ski') return 'ski_gain'
+      else return 'hike_gain'
+    case 'season':
+      if (type === 'ski') return 'ski_season'
+      else if (type === 'climb') return 'climb_season'
+      else return 'hike_season'
+    default:
+      return name
+  }
+}
+
 const adventureTypes = ['ski', 'climb', 'hike']
 
 module.exports = {
@@ -97,5 +116,6 @@ module.exports = {
   getSkiSpecificFields,
   getClimbSpecificFields,
   getHikeSpecificFields,
-  getGeneralFields
+  getGeneralFields,
+  getStatementKey
 }
