@@ -16,7 +16,7 @@ const AdventureEditorForm = ({ onChange }) => {
 				type='textarea'
 				isEditable
 				fullWidth
-				value={currentAdventure.bio}
+				value={currentAdventure.bio || ''}
 				autoFocus={true}
 				onChange={onChange}
 			/>
@@ -26,7 +26,7 @@ const AdventureEditorForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				options={{ suffix: 'miles' }}
-				value={currentAdventure.approach_distance}
+				value={currentAdventure.approach_distance || ''}
 				onChange={onChange}
 			/>
 			<MultiField
@@ -36,13 +36,13 @@ const AdventureEditorForm = ({ onChange }) => {
 					{
 						type: 'text',
 						name: 'elevation',
-						value: currentAdventure.elevation,
+						value: currentAdventure.elevation || '',
 						placeholder: getContent('adventurePanel.editable.summit')
 					},
 					{
 						type: 'text',
 						name: 'gain',
-						value: currentAdventure.gain,
+						value: currentAdventure.gain || '',
 						placeholder: getContent('adventurePanel.editable.elevationGain')
 					}
 				]}
@@ -55,7 +55,7 @@ const AdventureEditorForm = ({ onChange }) => {
 					options={{ selectMany: seasonOptions }}
 					isEditable
 					fullWidth
-					value={currentAdventure.season}
+					value={currentAdventure.season || ''}
 					onChange={onChange}
 				/>
 			</Accordion>
@@ -67,7 +67,7 @@ const AdventureEditorForm = ({ onChange }) => {
 					options={{ selectMany: gearOptions }}
 					isEditable
 					fullWidth
-					value={currentAdventure.gear}
+					value={currentAdventure.gear || ''}
 					onChange={onChange}
 				/>
 			</Accordion>
@@ -77,7 +77,7 @@ const AdventureEditorForm = ({ onChange }) => {
 					label={getContent('adventurePanel.editable.avgAngle')}
 					isEditable
 					fullWidth
-					value={currentAdventure.avg_angle}
+					value={currentAdventure.avg_angle || ''}
 					options={{ suffix: 'degrees' }}
 					onChange={onChange}
 				/>
@@ -86,7 +86,7 @@ const AdventureEditorForm = ({ onChange }) => {
 					label={getContent('adventurePanel.editable.maxAngle')}
 					isEditable
 					fullWidth
-					value={currentAdventure.max_angle}
+					value={currentAdventure.max_angle || ''}
 					options={{ suffix: 'degrees' }}
 					onChange={onChange}
 				/>
@@ -117,7 +117,7 @@ const AdventureEditorForm = ({ onChange }) => {
 					}}
 					isEditable
 					fullWidth
-					value={currentAdventure.difficulty}
+					value={currentAdventure.difficulty || ''}
 					onChange={onChange}
 				/>
 				<FormField
@@ -133,7 +133,7 @@ const AdventureEditorForm = ({ onChange }) => {
 					}}
 					isEditable
 					fullWidth
-					value={currentAdventure.exposure || 0}
+					value={currentAdventure.exposure || ''}
 					onChange={onChange}
 				/>
 			</Accordion>
@@ -142,7 +142,7 @@ const AdventureEditorForm = ({ onChange }) => {
 				label={getContent('adventurePanel.editable.nearest')}
 				isEditable
 				fullWidth
-				value={currentAdventure.nearest_city}
+				value={currentAdventure.nearest_city || ''}
 				onChange={onChange}
 			/>
 			<FormField

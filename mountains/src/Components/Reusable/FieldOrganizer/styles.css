@@ -31,7 +31,8 @@
 }
 
 .field-image {
-	height: 100%;
+	height: 6rem;
+	width: 6rem;
 }
 
 .field-image img {

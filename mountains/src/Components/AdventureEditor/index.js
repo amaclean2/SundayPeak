@@ -18,6 +18,7 @@ import ConfirmationPage from '../Reusable/ConfirmationPage'
 import AdventureEditorMenu from './Buttons/MenuFields'
 import { useLocation, useNavigate } from 'react-router-dom'
 import getContent from '../../TextContent'
+import AdventureSearch from './Search'
 
 const AdventureEditor = () => {
 	const {
@@ -34,6 +35,7 @@ const AdventureEditor = () => {
 	const navigate = useNavigate()
 
 	const menuRef = useRef()
+	const loadedRef = useRef(false)
 
 	const onChange = (e) => {
 		if (currentAdventure.id) {
@@ -81,7 +83,12 @@ const AdventureEditor = () => {
 					}
 				})
 			})
-		} else if (currentAdventure) {
+		} else if (currentAdventure && !loadedRef.current) {
+			if (typeof currentAdventure.coordinates === 'string') {
+				return
+			}
+
+			loadedRef.current = true
 			adventureDispatch({
 				type: 'flyTo',
 				payload: {
@@ -93,7 +100,7 @@ const AdventureEditor = () => {
 				}
 			})
 		}
-	}, [])
+	}, [currentAdventure])
 
 	const buildProfileHeader = () => {
 		if (currentAdventure) {
@@ -156,6 +163,7 @@ const AdventureEditor = () => {
 						<AdventureEditorForm onChange={onChange} />
 					)}
 					{!isDeletePage && currentAdventure && !isAdventureEditable && <AdventureViewer />}
+					{!isDeletePage && !currentAdventure && !adventureAddState && <AdventureSearch />}
 				</div>
 				<AdventureEditorButtons />
 			</ProfileContent>

@@ -39,6 +39,7 @@ export const useGetAdventures = () => {
 	const { currentBoundingBox, startPosition, adventureDispatch } = useAdventureStateContext()
 
 	const getAllAdventures = async (boundingBox) => {
+		boundingBox && adventureDispatch({ type: 'boundingBox', payload: boundingBox })
 		return fetcher('/adventures/all', {
 			method: 'POST',
 			body: {
@@ -87,7 +88,13 @@ export const useGetAdventures = () => {
 			.catch(console.error)
 	})
 
-	return { getAllAdventures, refetchAdventures }
+	const searchAdventures = ({ searchQuery }) => {
+		return fetcher(`/adventures/search?queryString=${searchQuery}`)
+			.then(({ data }) => data.adventures)
+			.catch(console.error)
+	}
+
+	return { getAllAdventures, refetchAdventures, searchAdventures }
 }
 
 export const useSaveAdventure = () => {
@@ -183,7 +190,7 @@ export const useDeleteAdventure = () => {
 			.then(() => {
 				cardDispatch({ type: 'closeCard' })
 				adventureDispatch({ type: 'toggleDeletePage' })
-				return refetchAdventures()
+				return refetchAdventures({})
 			})
 			.catch(console.error)
 	}

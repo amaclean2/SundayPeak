@@ -26,10 +26,13 @@ const selectAdventureByIdGroup = {
   hike: 'SELECT * FROM adventures AS a INNER JOIN hike AS h ON a.adventure_hike_id = h.id WHERE a.id = ?'
 }
 
+const searchAdventureStatement =
+  'SELECT id, adventure_name, nearest_city, coordinates_lat, coordinates_lng FROM adventures WHERE adventure_name Like ? AND public = 1'
+
 const selectAdventuresInRangeStatement = `SELECT id, adventure_name, adventure_type, public, coordinates_lat, coordinates_lng FROM adventures WHERE
 coordinates_lat <= ? AND coordinates_lat >= ?
 AND coordinates_lng >= ? and coordinates_lng <= ?
-AND adventure_type = ?`
+AND adventure_type = ? AND public = 1`
 const getSpecificAdventureId = `SELECT adventure_type, CASE
     WHEN adventure_type = 'ski' THEN adventure_ski_id
     WHEN adventure_type = 'hike' THEN adventure_hike_id
@@ -81,5 +84,6 @@ module.exports = {
   deleteAdventureStatement,
   deleteSkiStatement,
   deleteClimbStatement,
-  deleteHikeStatement
+  deleteHikeStatement,
+  searchAdventureStatement
 }

@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator')
 
 const logger = require('../Config/logger')
-const { updateAdventure } = require('../DB')
+const { updateAdventure, searchAdventures } = require('../DB')
 const queries = require('../DB')
 const { returnError, sendResponse } = require('../ResponseHandling')
 const { SUCCESS, NO_CONTENT, CREATED } = require('../ResponseHandling/statuses')
@@ -23,6 +23,34 @@ const getAllAdventures = async (req, res) => {
     const adventures = await queries.getAdventures(parsedCoordinates, type, 10)
 
     return sendResponse({ req, res, data: { adventures }, status: SUCCESS })
+  } catch (error) {
+    return returnError({ req, res, error, message: 'serverGetAdventures' })
+  }
+}
+
+const searchAdventureNames = async (req, res) => {
+  try {
+    const { queryString } = req.query
+
+    logger.info('queryString', queryString)
+
+    if (!queryString || !queryString.length) {
+      return sendResponse({
+        req,
+        res,
+        data: { adventures: [], string: queryString },
+        status: SUCCESS
+      })
+    }
+
+    const matches = await searchAdventures({ keywords: queryString })
+
+    return sendResponse({
+      req,
+      res,
+      data: { adventures: matches, string: queryString },
+      status: SUCCESS
+    })
   } catch (error) {
     return returnError({ req, res, error, message: 'serverGetAdventures' })
   }
@@ -126,6 +154,7 @@ module.exports = {
   buildAdventureObject,
   parseCoordinates,
   getAllAdventures,
+  searchAdventureNames,
   getAdventureDetails,
   createNewAdventure,
   editAdventure,

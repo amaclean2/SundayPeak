@@ -1,0 +1,22 @@
+.adventure-search.flex-box {
+	flex-direction: column;
+	width: 100%;
+	padding: 0 1rem;
+	align-items: stretch;
+}
+
+.results-container {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	width: 100%;
+}
+
+.results-container li {
+	padding: 0.4rem 1rem;
+	transition: all 0.3s ease-in-out;
+}
+
+.results-container li:hover {
+	background-color: var(--text-on-dark-background);
+}

@@ -25,7 +25,8 @@ const {
   createNewHikeStatement,
   createNewHikeAdventureStatement,
   selectAdventureByIdGroup,
-  getSpecificAdventureId
+  getSpecificAdventureId,
+  searchAdventureStatement
 } = require('./Statements/Adventures')
 
 const addAdventure = async (adventure) => {
@@ -147,7 +148,7 @@ const getAdventures = async (coordinates, type) => {
       return newResult
     })
   } catch (error) {
-    logger.error('DATABASE_QUERYL_FAILED', error)
+    logger.error('DATABASE_QUERY_FAILED', error)
     throw error
   }
 }
@@ -192,6 +193,31 @@ const updateAdventure = async ({ fields }) => {
   return responses
 }
 
+const searchAdventures = async ({ keywords }) => {
+  try {
+    const [results] = await db.execute(searchAdventureStatement, [
+      `%${keywords}%`
+    ])
+    logger.debug({ results })
+    return results.map((result) => {
+      const newResult = {
+        ...result,
+        coordinates: {
+          lat: result.coordinates_lat,
+          lng: result.coordinates_lng
+        }
+      }
+      delete newResult.coordinates_lat
+      delete newResult.coordinates_lng
+
+      return newResult
+    })
+  } catch (error) {
+    logger.error('DATABASE_QUERY_FAILED', error)
+    throw error
+  }
+}
+
 const deleteAdventure = async (adventureId) => {
   return db
     .execute(deleteTickByAdventureStatement, [adventureId])
@@ -219,6 +245,7 @@ module.exports = {
   addAdventure,
   getAdventure,
   getAdventures,
+  searchAdventures,
   updateAdventure,
   deleteAdventure
 }

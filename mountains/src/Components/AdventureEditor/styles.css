@@ -34,7 +34,7 @@
 .adventure-viewer {
 	flex-direction: column;
 	width: 100%;
-	padding: 0 10px;
+	padding: 0 1rem;
 }
 
 .user-image {

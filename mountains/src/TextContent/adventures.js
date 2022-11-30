@@ -3,7 +3,7 @@ export const adventurePanel = {
 	adventureCreated: '{var} has been created.',
 	adventureDeleted: '{var} has been deleted.',
 	addNewPhoto: 'Add a New Photo',
-	adventureCreator: 'Adventure Creator',
+	adventureCreator: 'Adventures',
 	adventureCreatorContent:
 		'To add a new adventure, double click on any point on the map. Then fill in the details in the form provided.',
 	adventureDeleteContent:

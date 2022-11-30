@@ -51,7 +51,6 @@ const AdventureEditorButtons = () => {
 				saveNewAdventure()
 					.then(() => {
 						getAllAdventures(currentBoundingBox)
-						adventureDispatch({ type: 'toggleSaveState' })
 						cardDispatch({
 							type: 'openAlert',
 							payload: getContent('adventurePanel.adventureCreated', [

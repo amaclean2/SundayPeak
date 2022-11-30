@@ -49,7 +49,9 @@ export const AdventureStateProvider = ({ children }) => {
 					allAdventures: [
 						...state.allAdventures.filter(({ id }) => id !== 'waiting'),
 						action.payload
-					]
+					],
+					saveState: !state.saveState,
+					currentAdventure: null
 				}
 			case 'newAdventurePanel':
 				return {

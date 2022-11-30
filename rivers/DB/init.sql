@@ -134,6 +134,8 @@ CREATE TABLE user_images(
     PRIMARY KEY(file_name)
 );
 
+ALTER TABLE adventures ADD INDEX adventure_index (adventure_name);
+
 DROP TABLE user_images;
 DROP TABLE password_reset_tokens;
 DROP TABLE activities;
