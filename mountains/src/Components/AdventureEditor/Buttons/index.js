@@ -76,12 +76,12 @@ const AdventureEditorButtons = () => {
 		adventureDispatch({ type: 'toggleEdit' })
 	}
 
-	const handleDeleteAdventure = async () => {
+	const handleDeleteAdventure = () => {
 		cardDispatch({
 			type: 'openAlert',
 			payload: getContent('adventurePanel.adventureDeleted', [currentAdventure.adventure_name])
 		})
-		await deleteAdventure({ adventureId: currentAdventure.id })
+		deleteAdventure({ adventureId: currentAdventure.id })
 	}
 
 	const handleAddAdventure = () => {

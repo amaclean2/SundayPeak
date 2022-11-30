@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { useEditUser, useUserStateContext } from '../../Providers'
-import { ErrorField, FormField } from '../Reusable'
-import MultiField from '../Reusable/FormField/MultiField'
+import { useEditUser, useUserStateContext } from 'Providers'
+import { ErrorField, FormField, MultiField } from 'Components/Reusable'
 import ProfileImageUploader from './ProfileImageUploader'
 
 const UserEditor = () => {

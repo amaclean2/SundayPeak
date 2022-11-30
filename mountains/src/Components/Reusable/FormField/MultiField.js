@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { FormField } from '.'
 
-const MultiField = ({ onChange, label, fields, className }) => {
+export const MultiField = ({ onChange, label, fields, className }) => {
 	return (
 		<div className={cx('multi-field flex-box', className)}>
 			{label && <label className={'label-field'}>{label}</label>}
@@ -36,5 +36,3 @@ MultiField.propTypes = {
 	),
 	className: PropTypes.string
 }
-
-export default MultiField

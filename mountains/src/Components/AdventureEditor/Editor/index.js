@@ -1,8 +1,11 @@
-import { useAdventureStateContext } from '../../Providers'
-import getContent from '../../TextContent'
-import { ErrorField, FormField, Accordion } from '../Reusable'
-import MultiField from '../Reusable/FormField/MultiField'
-import { directionSelectOptions, gearOptions, seasonOptions } from './utils'
+import { useAdventureStateContext } from 'Providers'
+import getContent from 'TextContent'
+import { ErrorField, FormField, Accordion, MultiField } from 'Components/Reusable'
+import {
+	directionSelectOptions,
+	gearOptions,
+	seasonOptions
+} from 'Components/AdventureEditor/utils'
 
 const AdventureEditorForm = ({ onChange }) => {
 	const { currentAdventure } = useAdventureStateContext()

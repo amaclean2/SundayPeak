@@ -101,6 +101,8 @@ export const AdventureStateProvider = ({ children }) => {
 				return { ...state, flyTo: false }
 			case 'toggleDeletePage':
 				return { ...state, isDeletePage: !state.isDeletePage }
+			case 'deleteAdventure':
+				return { ...state, isDeletePage: !state.isDeletePage, currentAdventure: null }
 			case 'toggleSaveState':
 				return { ...state, saveState: !state.saveState }
 			case 'exitEdit':

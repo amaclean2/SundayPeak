@@ -1,9 +1,9 @@
 import { debounce } from 'throttle-debounce'
-import getContent from '../../TextContent'
+import getContent from 'TextContent'
 
-import { useAdventureStateContext } from '../adventureStateProvider'
-import { useCardStateContext } from '../cardStateProvider'
-import { fetcher, useAdventureValidation } from '../utils'
+import { useAdventureStateContext } from 'Providers/adventureStateProvider'
+import { useCardStateContext } from 'Providers/cardStateProvider'
+import { fetcher, useAdventureValidation } from 'Providers/utils'
 
 export const useGetAdventure = () => {
 	const { adventureDispatch } = useAdventureStateContext()
@@ -189,7 +189,7 @@ export const useDeleteAdventure = () => {
 		return fetcher(`/adventures/delete?adventure_id=${adventureId}`, { method: 'DELETE' })
 			.then(() => {
 				cardDispatch({ type: 'closeCard' })
-				adventureDispatch({ type: 'toggleDeletePage' })
+				adventureDispatch({ type: 'deleteAdventure' })
 				return refetchAdventures({})
 			})
 			.catch(console.error)
