@@ -32,7 +32,8 @@ export const AdventureStateProvider = ({ children }) => {
 		flyTo: false,
 		isDeletePage: false,
 		saveState: false,
-		mapStyle: ''
+		mapStyle: '',
+		adventureTypeViewer: localStorage.getItem('adventureTypeViewer') || 'ski'
 	}
 
 	const adventureReducer = (state, action) => {
@@ -115,6 +116,9 @@ export const AdventureStateProvider = ({ children }) => {
 				}
 			case 'mapStyle':
 				return { ...state, mapStyle: action.payload }
+			case 'adventureTypeViewer':
+				localStorage.setItem('adventureTypeViewer', action.payload)
+				return { ...state, adventureTypeViewer: action.payload }
 			default:
 				return state
 		}

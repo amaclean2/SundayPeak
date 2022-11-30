@@ -71,3 +71,21 @@ a {
 	margin-right: 15px;
 	margin-top: 15px;
 }
+
+.change-adventure-type {
+	background-color: var(--input-background-color);
+	color: var(--main-text-color);
+	margin: 0.2em 0;
+	display: flex;
+	gap: 1em;
+	height: 3em;
+	width: 15em;
+}
+
+.change-adventure-type svg {
+	flex: unset;
+}
+
+.change-adventure-type:hover {
+	background-color: var(--text-on-dark-background);
+}

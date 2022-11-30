@@ -19,7 +19,10 @@ export const useAdventureValidation = () => {
 	const { adventureDispatch } = useAdventureStateContext()
 
 	const validateAdventure = ({ fields, type }) => {
-		const callDispatch = type === 'editFields' ? () => {} : adventureDispatch
+		const printError =
+			type === 'editFields'
+				? () => {}
+				: (error) => adventureDispatch({ type: 'adventureError', payload: error })
 
 		let approachDistance = null
 		let season = null
@@ -31,17 +34,24 @@ export const useAdventureValidation = () => {
 
 		if (isDefined(fields.adventure_name)) {
 			if (typeof fields.adventure_name !== 'string') {
-				callDispatch({ type: 'adventureError', payload: 'Adventure Name must be a string' })
+				printError('Adventure Name must be a string')
 				throw new Error('Adventure Name must be a string')
 			}
 		}
 
 		if (isDefined(fields.approach_distance)) {
 			if (isNaN(parseFloat(fields.approach_distance)) && fields.approach_distance !== '') {
-				callDispatch({ type: 'adventureError', payload: 'Appraoch Distance must contain a number' })
+				printError('Appraoch Distance must contain a number')
 				throw new Error('Approach Distance must contain a number')
 			} else {
 				approachDistance = parseFloat(fields.approach_distance)
+			}
+		}
+
+		if (isDefined(fields.grade)) {
+			if (fields.grade === 'nothing') {
+				printError('Please select a grade')
+				throw new Error('Please select a grade')
 			}
 		}
 
@@ -59,7 +69,7 @@ export const useAdventureValidation = () => {
 
 		if (isDefined(fields.avg_angle)) {
 			if (isNaN(parseFloat(fields.avg_angle)) && fields.avg_angle !== '') {
-				callDispatch({ type: 'adventureError', payload: 'Average Angle must contain a number' })
+				printError('Average Angle must contain a number')
 				throw new Error('Average angle must contain a number')
 			} else {
 				avgAngle = parseFloat(fields.avg_angle)
@@ -68,7 +78,7 @@ export const useAdventureValidation = () => {
 
 		if (isDefined(fields.max_angle)) {
 			if (fields.max_angle && isNaN(parseFloat(fields.max_angle)) && fields.max_angle !== '') {
-				callDispatch({ type: 'adventureError', payload: 'Max Angle must contain a number' })
+				printError('Max Angle must contain a number')
 				throw new Error('Max angle must contain a number')
 			} else {
 				maxAngle = parseFloat(fields.max_angle)
@@ -77,7 +87,7 @@ export const useAdventureValidation = () => {
 
 		if (isDefined(fields.elevation)) {
 			if (isNaN(parseFloat(fields.elevation)) && fields.elevation !== '') {
-				callDispatch({ type: 'adventureError', payload: 'Elevation must contain a number' })
+				printError('Elevation must contain a number')
 				throw new Error('Elevation must contain a number')
 			} else {
 				elevation = parseFloat(fields.elevation)
@@ -98,7 +108,7 @@ export const useAdventureValidation = () => {
 
 		if (isDefined(fields.gain)) {
 			if (isNaN(parseFloat(fields.gain)) && fields.gain !== '') {
-				callDispatch({ type: 'adventureError', payload: 'Elevation Gain must contain a number' })
+				printError('Elevation Gain must contain a number')
 				throw new Error('Elevation Gain must contian a number')
 			} else {
 				gain = parseFloat(fields.gain)

@@ -1,24 +1,26 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { useAdventureStateContext, useGetAdventure } from '../../Providers'
+import { useAdventureStateContext, useGetAdventure } from 'Providers'
 import {
+	ConfirmationPage,
 	DisplayCard,
 	FieldHeader,
 	FlexSpacer,
 	HeaderSubtext,
 	ProfileContent,
 	ProfileHeader
-} from '../Reusable'
+} from 'Components/Reusable'
+import getContent from 'TextContent'
+
 import AdventureEditorButtons from './Buttons'
 import AdventureEditorForm from './Editor'
 import AdventureViewer from './Viewer'
+import AdventureEditorMenu from './Buttons/MenuFields'
+import AdventureSearch from './Search'
 
 import './styles.css'
-import ConfirmationPage from '../Reusable/ConfirmationPage'
-import AdventureEditorMenu from './Buttons/MenuFields'
-import { useLocation, useNavigate } from 'react-router-dom'
-import getContent from '../../TextContent'
-import AdventureSearch from './Search'
+import AdventureTypeSelector from './Editor/AdventureTypeSelector'
 
 const AdventureEditor = () => {
 	const {
@@ -34,11 +36,13 @@ const AdventureEditor = () => {
 	const { getAdventure } = useGetAdventure()
 	const navigate = useNavigate()
 
+	const [adventureType, setAdventureType] = useState(null)
+
 	const menuRef = useRef()
 	const loadedRef = useRef(false)
 
 	const onChange = (e) => {
-		if (currentAdventure.id) {
+		if (currentAdventure.id && currentAdventure.id !== 'waiting') {
 			adventureDispatch({
 				type: 'editAdventure',
 				payload: {
@@ -150,9 +154,18 @@ const AdventureEditor = () => {
 			<ProfileContent ref={menuRef}>
 				<div className='flex-box main-adventure-content'>
 					{adventureAddState && (
-						<ConfirmationPage>
-							{getContent('adventurePanel.adventureCreatorContent')}
-						</ConfirmationPage>
+						<>
+							{!!adventureType ? (
+								<ConfirmationPage>
+									{getContent('adventurePanel.adventureCreatorContent')}
+								</ConfirmationPage>
+							) : (
+								<AdventureTypeSelector
+									adventureType={adventureType}
+									setAdventureType={setAdventureType}
+								/>
+							)}
+						</>
 					)}
 					{isDeletePage && (
 						<ConfirmationPage>
@@ -160,7 +173,10 @@ const AdventureEditor = () => {
 						</ConfirmationPage>
 					)}
 					{!isDeletePage && currentAdventure && isAdventureEditable && (
-						<AdventureEditorForm onChange={onChange} />
+						<AdventureEditorForm
+							onChange={onChange}
+							adventureType={adventureType}
+						/>
 					)}
 					{!isDeletePage && currentAdventure && !isAdventureEditable && <AdventureViewer />}
 					{!isDeletePage && !currentAdventure && !adventureAddState && <AdventureSearch />}

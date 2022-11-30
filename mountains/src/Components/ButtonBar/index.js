@@ -130,7 +130,7 @@ const ButtonBar = () => {
 		<>
 			{!displayCardBoolState && (
 				<div className='button-bar flex-box'>
-					<div className='regular-buttons'>
+					<div className='regular-buttons flex-box'>
 						{!isLoggedIn && <SignUpButton />}
 						{!isLoggedIn && <LoginButton />}
 						{isLoggedIn && <UserProfileButton />}

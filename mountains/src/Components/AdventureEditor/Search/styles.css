@@ -20,3 +20,18 @@
 .results-container li:hover {
 	background-color: var(--text-on-dark-background);
 }
+
+.search-list-item {
+	gap: 0.5rem;
+	align-items: flex-end;
+	cursor: default;
+}
+
+.search-list-subtext {
+	font-size: 0.9rem;
+	color: var(--primary-accent-color);
+}
+
+.adventure-type-selector {
+	margin: 0 1rem;
+}

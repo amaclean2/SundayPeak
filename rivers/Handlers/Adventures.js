@@ -9,7 +9,6 @@ const {
   buildAdventureObject,
   parseCoordinates
 } = require('../Services/adventure.service')
-const { adventureTypes } = require('../Services/utils')
 
 const getAllAdventures = async (req, res) => {
   try {
@@ -58,21 +57,12 @@ const searchAdventureNames = async (req, res) => {
 
 const getAdventureDetails = async (req, res) => {
   try {
-    const { id, type } = req.query
-
-    if (!(id && type)) {
+    const { id } = req.query
+    if (!id) {
       throw returnError({ req, res, message: 'adventureIdFieldRequired' })
     }
 
-    if (!adventureTypes.includes(type)) {
-      throw returnError({
-        req,
-        res,
-        message: 'adventure type is not one that is supported'
-      })
-    }
-
-    const adventure = await buildAdventureObject({ id, type })
+    const adventure = await buildAdventureObject({ id })
     return sendResponse({ req, res, data: { adventure }, status: SUCCESS })
   } catch (error) {
     return returnError({

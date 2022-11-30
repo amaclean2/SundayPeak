@@ -5,9 +5,9 @@ import {
 	useSaveAdventure,
 	useGetAdventures,
 	useGetAdventure
-} from '../../../Providers'
-import getContent from '../../../TextContent'
-import { Button, FooterButtons } from '../../Reusable'
+} from 'Providers'
+import getContent from 'TextContent'
+import { Button, FooterButtons } from 'Components/Reusable'
 
 const AdventureEditorButtons = () => {
 	const {
@@ -23,7 +23,7 @@ const AdventureEditorButtons = () => {
 	const { saveEditAdventure } = useSaveAdventure()
 	const { getAllAdventures } = useGetAdventures()
 	const { getAdventure } = useGetAdventure()
-	const { cardDispatch, screenType } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const deleteAdventure = useDeleteAdventure()
 
 	const saveAdventure = async () => {
@@ -68,6 +68,7 @@ const AdventureEditorButtons = () => {
 		getAdventure({ id: currentAdventure.id })
 		if (!currentAdventure.id || currentAdventure.id === 'waiting') {
 			cardDispatch({ type: 'closeCard' })
+			adventureDispatch({ type: 'currentAdventure', payload: null })
 			getAllAdventures(currentBoundingBox)
 		}
 	}
@@ -86,9 +87,6 @@ const AdventureEditorButtons = () => {
 
 	const handleAddAdventure = () => {
 		adventureDispatch({ type: 'toggleAdventureAddState' })
-		if (screenType.mobile) {
-			cardDispatch({ type: 'closeCard' })
-		}
 	}
 
 	return (

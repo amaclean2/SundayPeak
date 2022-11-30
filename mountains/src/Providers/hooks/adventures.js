@@ -4,13 +4,14 @@ import getContent from 'TextContent'
 import { useAdventureStateContext } from 'Providers/adventureStateProvider'
 import { useCardStateContext } from 'Providers/cardStateProvider'
 import { fetcher, useAdventureValidation } from 'Providers/utils'
+import { useCallback, useEffect } from 'react'
 
 export const useGetAdventure = () => {
 	const { adventureDispatch } = useAdventureStateContext()
 	const { cardDispatch } = useCardStateContext()
 
 	const getAdventure = async ({ id }) => {
-		return fetcher(`/adventures/details?id=${id}&type=ski`)
+		return fetcher(`/adventures/details?id=${id}`)
 			.then(({ data }) => {
 				adventureDispatch({ type: 'currentAdventure', payload: data.adventure })
 				return data
@@ -36,7 +37,8 @@ export const useGetAdventure = () => {
 }
 
 export const useGetAdventures = () => {
-	const { currentBoundingBox, startPosition, adventureDispatch } = useAdventureStateContext()
+	const { currentBoundingBox, startPosition, adventureDispatch, adventureTypeViewer } =
+		useAdventureStateContext()
 
 	const getAllAdventures = async (boundingBox) => {
 		boundingBox && adventureDispatch({ type: 'boundingBox', payload: boundingBox })
@@ -47,7 +49,7 @@ export const useGetAdventures = () => {
 					NE: boundingBox._ne,
 					SW: boundingBox._sw
 				},
-				type: 'ski'
+				type: adventureTypeViewer
 			}
 		})
 			.then(({ data: { adventures } }) => {
@@ -74,7 +76,7 @@ export const useGetAdventures = () => {
 					NE: boundingBox._ne,
 					SW: boundingBox._sw
 				},
-				type: 'ski'
+				type: localStorage.getItem('adventureTypeViewer')
 			}
 		})
 			.then(({ data: { adventures } }) => {
@@ -106,10 +108,7 @@ export const useSaveAdventure = () => {
 	const saveNewAdventure = () => {
 		return fetcher(`/adventures/create`, {
 			method: 'POST',
-			body: {
-				...currentAdventure,
-				adventure_type: 'ski'
-			}
+			body: currentAdventure
 		})
 			.then(({ data }) => {
 				adventureDispatch({
@@ -137,6 +136,8 @@ export const useSaveAdventure = () => {
 				fields: editAdventureFields,
 				type: 'editFields'
 			})
+
+			console.log({ validatedAdventure })
 
 			adventureDispatch({
 				type: 'validateAdventure',

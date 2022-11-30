@@ -29,7 +29,9 @@ const adventureTemplates = {
     'protection',
     'pitches',
     'light_times',
-    'season'
+    'season',
+    'approach',
+    'first_ascent'
   ],
   hike: ['duration', 'season', 'length', 'gain']
 }
@@ -56,7 +58,9 @@ const getClimbSpecificFields = (adventure) => {
     adventure.protection || '',
     adventure.climb_type || '',
     adventure.light_times || '',
-    adventure.season || ''
+    adventure.season || '',
+    adventure.approach || '',
+    adventure.first_ascent || ''
   ]
 }
 
@@ -102,6 +106,8 @@ const getStatementKey = (name, type) => {
       if (type === 'ski') return 'ski_season'
       else if (type === 'climb') return 'climb_season'
       else return 'hike_season'
+    case 'approach':
+      return 'climb_approach'
     default:
       return name
   }

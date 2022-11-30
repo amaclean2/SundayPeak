@@ -45,8 +45,10 @@ CREATE TABLE ski(
 CREATE TABLE climb(
     id INT AUTO_INCREMENT,
     grade VARCHAR(50),
+    first_ascent VARCHAR(255),
     pitches INT,
     protection VARCHAR(100),
+    approach TEXT,
     climb_type VARCHAR(100),
     light_times VARCHAR(100),
     season VARCHAR(100),
@@ -135,6 +137,7 @@ CREATE TABLE user_images(
 );
 
 ALTER TABLE adventures ADD INDEX adventure_index (adventure_name);
+ALTER TABLE adventures ADD INDEX adventure_type (adventure_type);
 
 DROP TABLE user_images;
 DROP TABLE password_reset_tokens;

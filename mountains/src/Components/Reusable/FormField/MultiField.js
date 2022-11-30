@@ -14,6 +14,8 @@ export const MultiField = ({ onChange, label, fields, className }) => {
 						onChange={onChange}
 						value={field.value}
 						name={field.name}
+						type={field.type}
+						options={field.options}
 						hideLabel
 						isEditable
 						placeholder={field.placeholder || ''}

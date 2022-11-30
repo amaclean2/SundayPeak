@@ -1,3 +1,4 @@
+export * from './ConfirmationPage'
 export * from './DisplayCard'
 export * from './DisplayCard/ProfileHeader'
 export * from './DisplayCard/ProfileContent'

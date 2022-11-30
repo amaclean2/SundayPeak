@@ -26,7 +26,10 @@ const {
   createNewHikeAdventureStatement,
   selectAdventureByIdGroup,
   getSpecificAdventureId,
-  searchAdventureStatement
+  searchAdventureStatement,
+  selectAdventureStatement,
+  selectAdventureStatementTest,
+  getAdventureTypeStatement
 } = require('./Statements/Adventures')
 
 const addAdventure = async (adventure) => {
@@ -110,12 +113,17 @@ const addAdventure = async (adventure) => {
   }
 }
 
-const getAdventure = async (id, type) => {
+const getAdventure = async (id) => {
   try {
+    const [[{ adventure_type }]] = await db.execute(getAdventureTypeStatement, [
+      id
+    ])
+
     const [[selectedAdventure]] = await db.execute(
-      selectAdventureByIdGroup[type],
+      selectAdventureByIdGroup[adventure_type],
       [id]
     )
+    logger.debug({ selectedAdventure })
     return selectedAdventure
   } catch (error) {
     logger.error('DATABASE_QUERY_FAILED', error)

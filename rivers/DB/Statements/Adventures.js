@@ -2,7 +2,7 @@ const createNewSkiAdventureStatement = `INSERT INTO adventures (
   adventure_ski_id, adventure_name, adventure_type, bio, coordinates_lat,
   coordinates_lng, creator_id, nearest_city, public, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 const createNewClimbAdventureStatement = `INSERT INTO adventures (
-  adventure_climb _id, adventure_name, adventure_type, bio, coordinates_lat,
+  adventure_climb_id, adventure_name, adventure_type, bio, coordinates_lat,
   coordinates_lng, creator_id, nearest_city, public, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 const createNewHikeAdventureStatement = `INSERT INTO adventures (
   adventure_hike_id, adventure_name, adventure_type, bio, coordinates_lat,
@@ -10,12 +10,15 @@ const createNewHikeAdventureStatement = `INSERT INTO adventures (
 const createNewSkiStatement = `INSERT INTO ski (avg_angle, max_angle, approach_distance,
   aspect, difficulty, elevation, exposure, gain, gear, season) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 const createNewClimbStatement = `INSERT INTO climb (grade, pitches, protection, climb_type,
-  light_times, season) VALUES (?, ?, ?, ?, ?, ?)`
+  light_times, season, approach, first_ascent) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 const createNewHikeStatement =
   'INSERT INTO hike (difficulty, elevation, duration, season, gain) VALUES (?, ?, ?, ?, ?)'
 
+const getAdventureTypeStatement =
+  'SELECT adventure_type FROM adventures WHERE id = ?'
+
 const selectAdventureByIdGroup = {
-  ski: `SELECT a.id AS id, a.adventure_name AS adventure_name, a.bio AS bio, a.coordinates_lat AS coordinates_lat,
+  ski: `SELECT a.id AS id, a.adventure_name AS adventure_name, a.adventure_type AS adventure_type, a.bio AS bio, a.coordinates_lat AS coordinates_lat,
   a.coordinates_lng AS coordinates_lng, a.creator_id AS creator_id, a.date_created AS date_created,
   a.nearest_city AS nearest_city, a.public AS public, a.rating AS rating, s.avg_angle AS avg_angle,
   s.max_angle AS max_angle, s.approach_distance AS approach_distance, s.aspect AS aspect, s.difficulty AS difficulty,
@@ -27,7 +30,7 @@ const selectAdventureByIdGroup = {
 }
 
 const searchAdventureStatement =
-  'SELECT id, adventure_name, nearest_city, coordinates_lat, coordinates_lng FROM adventures WHERE adventure_name Like ? AND public = 1'
+  'SELECT id, adventure_type, adventure_name, nearest_city, coordinates_lat, coordinates_lng FROM adventures WHERE adventure_name Like ? AND public = 1'
 
 const selectAdventuresInRangeStatement = `SELECT id, adventure_name, adventure_type, public, coordinates_lat, coordinates_lng FROM adventures WHERE
 coordinates_lat <= ? AND coordinates_lat >= ?
@@ -44,6 +47,7 @@ const updateAdventureStatements = {
   approach_distance: 'UPDATE ski SET approach_distance = ? WHERE id = ?',
   aspect: 'UPDATE ski SET aspect = ? WHERE id = ?',
   bio: 'UPDATE adventures SET bio = ? WHERE id = ?',
+  climb_approach: 'UPDATE climb SET approach = ? WHERE id = ?',
   climb_type: 'UPDATE climb SET climb_type = ? WHERE id = ?',
   ski_difficulty: 'UPDATE ski SET difficulty = ? WHERE id = ?',
   hike_difficulty: 'UPDATE hike SET difficulty = ? WHERE id = ?',
@@ -51,6 +55,7 @@ const updateAdventureStatements = {
   ski_elevation: 'UPDATE ski SET elevation = ? WHERE id = ?',
   hike_elevation: 'UPDATE hike SET elevation = ? WHERE id = ?',
   exposure: 'UPDATE ski SET exposure = ? WHERE id = ?',
+  first_ascent: 'UPDATE climb SET first_ascent = ? WHERE id = ?',
   ski_gain: 'UPDATE ski SET gain = ? WHERE id = ?',
   hike_gain: 'UPDATE hike SET gain = ? WHERE id = ?',
   gear: 'UPDATE ski SET gear = ? WHERE id = ?',
@@ -85,5 +90,6 @@ module.exports = {
   deleteSkiStatement,
   deleteClimbStatement,
   deleteHikeStatement,
-  searchAdventureStatement
+  searchAdventureStatement,
+  getAdventureTypeStatement
 }
