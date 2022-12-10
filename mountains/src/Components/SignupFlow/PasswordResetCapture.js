@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef } from 'react'
 import { CARD_TYPES, useCardStateContext, useCreateUser } from '../../Providers'
 import {
 	Button,
@@ -12,15 +12,16 @@ import {
 } from '../Reusable'
 
 export const PasswordResetCapture = () => {
-	const { switchCard, closeCard, setAlertContent, setShowAlert } = useCardStateContext()
-	const [fieldValue, setFieldValue] = useState('')
+	const { cardDispatch } = useCardStateContext()
+	const resetEmail = useRef('')
 	const { sendPasswordResetLink } = useCreateUser()
 
 	const handleResetButton = () => {
-		sendPasswordResetLink({ email: fieldValue })
-		closeCard()
-		setAlertContent('An email has been sent to reset your password')
-		setShowAlert(true)
+		sendPasswordResetLink({ email: resetEmail.current })
+		cardDispatch({
+			type: 'closeCardMessage',
+			payload: 'An email has been sent to reset your password'
+		})
 	}
 
 	return (
@@ -42,8 +43,8 @@ export const PasswordResetCapture = () => {
 							placeholder={'email'}
 							isEditable
 							autoComplete={'on'}
-							value={fieldValue}
-							onChange={(e) => setFieldValue(e.target.value)}
+							value={resetEmail.current}
+							onChange={(e) => (resetEmail.current = e.target.value)}
 						/>
 					</div>
 				</div>
@@ -57,7 +58,7 @@ export const PasswordResetCapture = () => {
 					<Button
 						id='return-to-login'
 						className={'secondary-button'}
-						onClick={() => switchCard(CARD_TYPES.login)}
+						onClick={() => cardDispatch({ type: 'switchCard', payload: CARD_TYPES.login })}
 					>
 						Return to login
 					</Button>

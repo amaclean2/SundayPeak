@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import LogoInline from '../Images/LogoInline'
+import getContent from '../TextContent'
 
 const AboutFooter = () => {
 	return (
@@ -12,21 +13,21 @@ const AboutFooter = () => {
 					/>
 				</div>
 				<div className='footer-column'>
-					<h3>Map</h3>
+					<h3>{getContent('aboutPage.footerMap')}</h3>
 					<ul>
 						<li>
-							<Link to='/about'>About</Link>
+							<Link to='/about'>{getContent('aboutPage.footerAbout')}</Link>
 						</li>
 						<li>
-							<Link to='/discover'>Use Sunday Peak</Link>
+							<Link to='/discover'>{getContent('aboutPage.footerUseApp')}</Link>
 						</li>
 					</ul>
 				</div>
 				<div className='footer-column'>
-					<h3>Follow</h3>
+					<h3>{getContent('aboutPage.footerFollow')}</h3>
 					<ul>
 						<li>
-							<Link to='https://instagram.com'>Instagram</Link>
+							<Link to='https://instagram.com'>{getContent('aboutPage.footerIG')}</Link>
 						</li>
 					</ul>
 				</div>

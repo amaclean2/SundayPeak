@@ -1,57 +1,62 @@
-import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
 import {
-	useAdventureEditContext,
+	useAdventureStateContext,
 	useCardStateContext,
 	useDeleteAdventure,
 	useSaveAdventure,
-	useGetAdventures
-} from '../../../Providers'
-import { Button, FooterButtons } from '../../Reusable'
+	useGetAdventures,
+	useGetAdventure
+} from 'Providers'
+import getContent from 'TextContent'
+import { Button, FooterButtons } from 'Components/Reusable'
 
 const AdventureEditorButtons = () => {
 	const {
 		currentAdventure,
 		adventureAddState,
-		isEditable,
-		setAdventureAddState,
-		setIsEditable,
+		isAdventureEditable,
+		adventureDispatch,
 		saveState,
-		setSaveState,
 		currentBoundingBox,
-		setIsDeletePage,
 		isDeletePage
-	} = useAdventureEditContext()
+	} = useAdventureStateContext()
 	const { saveNewAdventure, startAdventureSaveProcess } = useSaveAdventure()
 	const { saveEditAdventure } = useSaveAdventure()
 	const { getAllAdventures } = useGetAdventures()
-	const { closeCard, setShowAlert, setAlertContent } = useCardStateContext()
-	const { deleteAdventure } = useDeleteAdventure()
+	const { getAdventure } = useGetAdventure()
+	const { cardDispatch } = useCardStateContext()
+	const deleteAdventure = useDeleteAdventure()
 
 	const saveAdventure = async () => {
-		if (saveState === 0) {
+		if (!saveState) {
 			const { error: saveAdventureError } = await startAdventureSaveProcess()
 
 			if (!saveAdventureError) {
-				setSaveState(1)
+				adventureDispatch({ type: 'toggleSaveState' })
 			}
-		} else if (saveState === 1) {
+		} else {
 			if (currentAdventure.id && currentAdventure.id !== 'waiting') {
 				saveEditAdventure()
 					.then(() => {
 						getAllAdventures(currentBoundingBox)
-						setSaveState(0)
-						setAlertContent(`${currentAdventure.adventure_name} has been saved.`)
-						setShowAlert(true)
+						adventureDispatch({ type: 'toggleSaveState' })
+						cardDispatch({
+							type: 'openAlert',
+							payload: getContent('adventurePanel.adventureSaved', [
+								currentAdventure.adventure_name
+							])
+						})
 					})
 					.catch(console.error)
 			} else {
 				saveNewAdventure()
 					.then(() => {
 						getAllAdventures(currentBoundingBox)
-						setSaveState(0)
-						setAlertContent(`${currentAdventure.adventure_name} has been created.`)
-						setShowAlert(true)
+						cardDispatch({
+							type: 'openAlert',
+							payload: getContent('adventurePanel.adventureCreated', [
+								currentAdventure.adventure_name
+							])
+						})
 					})
 					.catch(console.error)
 			}
@@ -59,34 +64,45 @@ const AdventureEditorButtons = () => {
 	}
 
 	const cancelSave = () => {
-		getAllAdventures(currentBoundingBox)
-		setSaveState(0)
-		setIsEditable(false)
-		if (!currentAdventure.id || currentAdventure.id === 'waiting') {
-			closeCard()
+		adventureDispatch({ type: 'exitEdit' })
+		if (currentAdventure.id === 'waiting') {
+			cardDispatch({ type: 'closeCard' })
+			adventureDispatch({ type: 'currentAdventure', payload: null })
+			getAllAdventures(currentBoundingBox)
+		} else {
+			getAdventure({ id: currentAdventure.id })
 		}
 	}
 
 	const handleToggleEdit = () => {
-		setIsEditable(!isEditable)
-		setSaveState(saveState === 0 ? 1 : 0)
+		adventureDispatch({ type: 'toggleEdit' })
 	}
 
-	const handleDeleteAdventure = async () => {
-		setAlertContent(`${currentAdventure.adventure_name} has been deleted`)
-		setShowAlert(true)
-		await deleteAdventure({ adventureId: currentAdventure.id })
+	const handleDeleteAdventure = () => {
+		cardDispatch({
+			type: 'openAlert',
+			payload: getContent('adventurePanel.adventureDeleted', [currentAdventure.adventure_name])
+		})
+		deleteAdventure({ adventureId: currentAdventure.id })
+	}
+
+	const handleAddAdventure = () => {
+		adventureDispatch({ type: 'toggleAdventureAddState' })
+	}
+
+	if (currentAdventure && !isDeletePage && !isAdventureEditable && !saveState) {
+		return null
 	}
 
 	return (
 		<FooterButtons>
 			{!currentAdventure && !isDeletePage && (
 				<Button
-					onClick={() => setAdventureAddState(true)}
+					onClick={handleAddAdventure}
 					disabled={adventureAddState}
 					className='adventure-add-button'
 				>
-					Add New Adventure
+					{getContent('buttonText.addAdventure')}
 				</Button>
 			)}
 			{isDeletePage && (
@@ -96,38 +112,40 @@ const AdventureEditorButtons = () => {
 						className={'delete-button'}
 						onClick={handleDeleteAdventure}
 					>
-						{`Delete ${currentAdventure.adventure_name}`}
+						{getContent('buttonText.deleteAdventureVar', [currentAdventure.adventure_name])}
 					</Button>
 					<Button
 						id={`cancel-button-return-from-delete`}
-						onClick={() => setIsDeletePage(false)}
+						onClick={() => adventureDispatch({ type: 'toggleDeletePage' })}
 					>
-						Cancel
+						{getContent('buttonText.cancel')}
 					</Button>
 				</>
 			)}
-			{currentAdventure && !isDeletePage && (isEditable || saveState === 1) && (
+			{currentAdventure && !isDeletePage && (isAdventureEditable || saveState) && (
 				<>
 					<Button
 						onClick={saveAdventure}
 						className='adventure-edit-button'
 					>
-						{saveState === 0 ? 'Preview Save' : 'Finish Saving'}
+						{!saveState
+							? getContent('buttonText.previewSave')
+							: getContent('buttonText.finishSave')}
 					</Button>
-					{saveState === 1 && (
+					{saveState && (
 						<Button
 							onClick={handleToggleEdit}
 							className='adventure-edit-button'
 							id='adventure-edit-button'
 						>
-							Edit Adventure
+							{getContent('buttonText.editAdventure')}
 						</Button>
 					)}
 					<Button
 						onClick={cancelSave}
 						className='adventure-edit-button'
 					>
-						Cancel
+						{getContent('buttonText.cancel')}
 					</Button>
 				</>
 			)}

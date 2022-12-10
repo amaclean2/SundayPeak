@@ -27,30 +27,67 @@ CREATE TABLE followers(
     FOREIGN KEY(leader_id) REFERENCES users(id)
 );
 
+CREATE TABLE ski(
+    id INT AUTO_INCREMENT,
+    avg_angle FLOAT,
+    max_angle FLOAT,
+    approach_distance VARCHAR(50),
+    aspect VARCHAR(3),
+    difficulty INT,
+    elevation VARCHAR(50),
+    exposure INT,
+    gain VARCHAR(50),
+    gear VARCHAR(50),
+    season VARCHAR(100),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE climb(
+    id INT AUTO_INCREMENT,
+    grade VARCHAR(50),
+    first_ascent VARCHAR(255),
+    pitches INT,
+    protection VARCHAR(100),
+    approach TEXT,
+    climb_type VARCHAR(100),
+    light_times VARCHAR(100),
+    season VARCHAR(100),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE hike(
+    id INT AUTO_INCREMENT,
+    difficulty INT,
+    elevation INT,
+    duration FLOAT,
+    season VARCHAR(100),
+    gain INT,
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE adventures(
     id INT AUTO_INCREMENT,
-    adventure_type VARCHAR(100),
-    adventure_name VARCHAR(100),
-    aspect VARCHAR(50),
-    approach_time VARCHAR(50),
-    exposure VARCHAR(50),
-    approach_distance VARCHAR(50),
-    season VARCHAR(100),
-    avg_angle VARCHAR(50),
-    max_angle VARCHAR(50),
-    difficulty VARCHAR(50),
-    elevation VARCHAR(50),
-    gear VARCHAR(50),
-    gain VARCHAR(50),
+    adventure_ski_id INT,
+    adventure_hike_id INT,
+    adventure_climb_id INT,
+    adventure_name VARCHAR(100) NOT NULL,
+    adventure_type VARCHAR(100) NOT NULL,
     bio TEXT,
+    coordinates_lat FLOAT NOT NULL,
+    coordinates_lng FLOAT NOT NULL,
+    creator_id INT NOT NULL,
+    date_created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     nearest_city VARCHAR(100),
-    creator_id INT,
-    coordinates_lat FLOAT,
-    coordinates_lng FLOAT,
-    date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
-    public TINYINT,
+    public TINYINT NOT NULL,
+    rating FLOAT,
     PRIMARY KEY(id),
-    FOREIGN KEY(creator_id) REFERENCES users(id)
+    FOREIGN KEY(creator_id) REFERENCES users(id),
+    FOREIGN KEY(adventure_ski_id) REFERENCES ski(id),
+    FOREIGN KEY(adventure_climb_id) REFERENCES climb(id),
+    FOREIGN KEY(adventure_hike_id) REFERENCES hike(id),
+    CHECK ((adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_climb_id IS NOT NULL)
+    OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_hike_id IS NOT NULL)
+    OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_ski_id IS NOT NULL))
 );
 
 CREATE TABLE adventure_editors(
@@ -99,11 +136,17 @@ CREATE TABLE user_images(
     PRIMARY KEY(file_name)
 );
 
+ALTER TABLE adventures ADD INDEX adventure_index (adventure_name);
+ALTER TABLE adventures ADD INDEX adventure_type (adventure_type);
+
 DROP TABLE user_images;
 DROP TABLE password_reset_tokens;
 DROP TABLE activities;
 DROP TABLE ticks;
 DROP TABLE adventure_editors;
 DROP TABLE adventures;
+DROP TABLE ski;
+DROP TABLE climb;
+DROP TABLE hike;
 DROP TABLE followers;
 DROP TABLE users;

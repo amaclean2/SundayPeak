@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef } from 'react'
 import Map, { GeolocateControl, Layer, NavigationControl, Source } from 'react-map-gl'
+import cx from 'classnames'
 
-import { useAdventureEditContext, useGetAdventures } from '../../Providers'
-
-import '../../App.css'
-import AdventurePins from './AdventurePins'
+import { useAdventureStateContext, useCardStateContext, useGetAdventures } from '../../Providers'
 import { useCreateNewAdventure } from './utils'
+import AdventurePins from './AdventurePins'
+
+import './styles.css'
 
 const skyLayer = {
 	id: 'sky',
@@ -19,16 +20,16 @@ const skyLayer = {
 
 const ReactMap = () => {
 	const mapRef = useRef()
+
 	const getLocateControlRef = useCallback((ref) => {
 		if (ref) ref.trigger()
 	}, [])
 
-	const { allAdventures, mapboxToken, startPosition, flying, setFlying, mapStyle } =
-		useAdventureEditContext()
+	const { allAdventures, mapboxToken, startPosition, flyTo, adventureDispatch, mapStyle } =
+		useAdventureStateContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
-
-	// const [popupInfo, setPopupInfo] = useState(null)
+	const { displayCardBoolState, screenType } = useCardStateContext()
 
 	const onLoad = () => {
 		mapRef?.current?.getMap() && getAllAdventures(mapRef.current.getMap().getBounds())
@@ -49,16 +50,16 @@ const ReactMap = () => {
 	useEffect(() => {
 		// flying is set by an external component
 		// if flying is set, fly to that location, then unset flying
-		if (flying) {
+		if (flyTo) {
 			mapRef?.current?.flyTo({
-				center: [flying.longitude, flying.latitude],
-				zoom: flying.zoom,
-				pitch: flying.pitch,
-				bearing: flying.bearing
+				center: [flyTo.longitude, flyTo.latitude],
+				zoom: flyTo.zoom,
+				pitch: flyTo.pitch,
+				bearing: flyTo.bearing
 			})
-			setFlying(false)
+			adventureDispatch({ type: 'stopFlying' })
 		}
-	}, [flying])
+	}, [flyTo, adventureDispatch])
 
 	if (!(allAdventures && mapboxToken && mapStyle)) {
 		return null
@@ -68,44 +69,33 @@ const ReactMap = () => {
 	const mapProps = {
 		ref: mapRef,
 		reuseMaps: true,
-		className: 'map-container',
 		mapboxAccessToken: mapboxToken,
 		mapStyle: `${mapStyle}?optimize=true`,
 		initialViewState: startPosition,
 		maxPitch: 0,
 		minZoom: 3,
-		onDblClick: handleCreateNewAdventure,
+		onDblClick: (e) => handleCreateNewAdventure(e),
+		...(screenType.mobile && { onClick: (e) => handleCreateNewAdventure(e) }),
 		onLoad,
 		onMove
 	}
 
 	return (
-		<Map {...mapProps}>
-			<NavigationControl showCompass />
-			<GeolocateControl ref={getLocateControlRef} />
-			<Source
-				id='mapbox-dem'
-				type='raster-dem'
-				url='mapbox://mapbox.mapbox-terrain-dem-v1'
-				tileSize={512}
-				maxZoom={14}
-			/>
-			<Layer {...skyLayer} />
-			<AdventurePins boundingBox={mapRef?.current?.getMap()?.getBounds()} />
-			{/* popupInfo && (
-				<MapPopup
-					popupInfo={popupInfo}
-					viewMore={() =>
-						viewMore({
-							id: popupInfo.id,
-							setPopupInfo,
-							boundingBox: mapRef.current.getMap().getBounds()
-						})
-					}
-					setPopupInfo={setPopupInfo}
+		<div className={cx('map-container', displayCardBoolState && 'card-open')}>
+			<Map {...mapProps}>
+				<NavigationControl showCompass />
+				<GeolocateControl ref={getLocateControlRef} />
+				<Source
+					id='mapbox-dem'
+					type='raster-dem'
+					url='mapbox://mapbox.mapbox-terrain-dem-v1'
+					tileSize={512}
+					maxZoom={14}
 				/>
-				)*/}
-		</Map>
+				<Layer {...skyLayer} />
+				<AdventurePins boundingBox={mapRef?.current?.getMap()?.getBounds()} />
+			</Map>
+		</div>
 	)
 }
 

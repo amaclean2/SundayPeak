@@ -1,17 +1,17 @@
 import { FlexSpacer } from '..'
-import { useCardStateContext, usePictures } from '../../../Providers'
+import { useCardStateContext, useUserPictures } from '../../../Providers'
 import { Button } from '../Button'
 
 import './styles.css'
 
 export const ImageViewer = () => {
-	const { viewingImage, setViewingImage } = useCardStateContext()
-	const { deletePicture } = usePictures()
+	const { viewingImage, cardDispatch } = useCardStateContext()
+	const { deletePicture } = useUserPictures()
 
 	const largeImage = viewingImage?.replace('/thumbs', '')
 
 	const closeViewer = () => {
-		setViewingImage(null)
+		cardDispatch({ type: 'viewingImage', payload: null })
 	}
 
 	if (!viewingImage) {

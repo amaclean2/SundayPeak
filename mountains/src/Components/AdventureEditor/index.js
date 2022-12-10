@@ -1,55 +1,69 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { useAdventureEditContext, useGetAdventure } from '../../Providers'
-import { DisplayCard, FieldHeader, HeaderSubtext, ProfileContent, ProfileHeader } from '../Reusable'
+import { useAdventureStateContext, useGetAdventure } from 'Providers'
+import {
+	ConfirmationPage,
+	DisplayCard,
+	FieldHeader,
+	FlexSpacer,
+	HeaderSubtext,
+	ProfileContent,
+	ProfileHeader
+} from 'Components/Reusable'
+import getContent from 'TextContent'
+
 import AdventureEditorButtons from './Buttons'
 import AdventureEditorForm from './Editor'
 import AdventureViewer from './Viewer'
+import AdventureEditorMenu from './Buttons/MenuFields'
+import AdventureSearch from './Search'
 
 import './styles.css'
-import ConfirmationPage from '../Reusable/ConfirmationPage'
-import AdventureEditorMenu from './Buttons/MenuFields'
-import { useLocation, useNavigate } from 'react-router-dom'
+import AdventureTypeSelector from './Editor/AdventureTypeSelector'
 
 const AdventureEditor = () => {
 	const {
-		setAdventureAddState,
+		adventureDispatch,
+		editAdventureFields,
 		currentAdventure,
-		setCurrentAdventure,
-		setEditAdventureFields,
 		adventureAddState,
-		isEditable,
-		setIsEditable,
+		isAdventureEditable,
 		adventureError,
-		setFlying,
-		isDeletePage,
-		setIsDeletePage
-	} = useAdventureEditContext()
+		isDeletePage
+	} = useAdventureStateContext()
 	const { pathname } = useLocation()
 	const { getAdventure } = useGetAdventure()
 	const navigate = useNavigate()
 
+	const [addAdventureInstructions, setAddAdventureInstructions] = useState(false)
+
 	const menuRef = useRef()
+	const loadedRef = useRef(false)
 
 	const onChange = (e) => {
-		if (currentAdventure.id) {
-			setEditAdventureFields((currentFields) => ({
-				...currentFields,
-				[e.target.name]: e.target.value
-			}))
+		if (currentAdventure.id && currentAdventure.id !== 'waiting') {
+			adventureDispatch({
+				type: 'editAdventure',
+				payload: {
+					editAdventureFields: { ...editAdventureFields, [e.target.name]: e.target.value },
+					currentAdventure: { ...currentAdventure, [e.target.name]: e.target.value }
+				}
+			})
+		} else {
+			adventureDispatch({
+				type: 'editAdventure',
+				payload: {
+					editAdventureFields,
+					currentAdventure: { ...currentAdventure, [e.target.name]: e.target.value }
+				}
+			})
 		}
-
-		setCurrentAdventure((workingAdventure) => ({
-			...workingAdventure,
-			[e.target.name]: e.target.value
-		}))
 	}
 
 	const handleClose = () => {
-		setCurrentAdventure(null)
-		setAdventureAddState(false)
-		setIsEditable(false)
-		setIsDeletePage(false)
+		adventureDispatch({ type: 'closeAdventurePanel' })
+		setAddAdventureInstructions(false)
 		navigate('/discover')
 	}
 
@@ -63,33 +77,44 @@ const AdventureEditor = () => {
 
 		if (urlAdventureId) {
 			getAdventure({ id: urlAdventureId }).then(({ adventure }) => {
-				setFlying({
-					latitude: adventure.coordinates_lat,
-					longitude: adventure.coordinates_lng,
+				adventureDispatch({
+					type: 'flyTo',
+					payload: {
+						latitude: adventure.coordinates.lat,
+						longitude: adventure.coordinates.lng,
+						zoom: 16,
+						pitch: 0,
+						bearing: 0
+					}
+				})
+			})
+		} else if (currentAdventure && !loadedRef.current) {
+			if (typeof currentAdventure.coordinates === 'string') {
+				return
+			}
+
+			loadedRef.current = true
+			adventureDispatch({
+				type: 'flyTo',
+				payload: {
+					latitude: currentAdventure.coordinates.lat,
+					longitude: currentAdventure.coordinates.lng - 0.003,
 					zoom: 16,
 					pitch: 0,
 					bearing: 0
-				})
-			})
-		} else if (currentAdventure) {
-			setFlying({
-				latitude: currentAdventure.coordinates_lat,
-				longitude: currentAdventure.coordinates_lng - 0.003,
-				zoom: 16,
-				pitch: 0,
-				bearing: 0
+				}
 			})
 		}
-	}, [])
+	}, [currentAdventure])
 
 	const buildProfileHeader = () => {
 		if (currentAdventure) {
-			if (isEditable) {
+			if (isAdventureEditable) {
 				return (
 					<ProfileHeader
 						textContents={currentAdventure.adventure_name}
 						editFields={{
-							isEditable,
+							isEditable: isAdventureEditable,
 							propName: 'adventure_name',
 							onChange
 						}}
@@ -97,12 +122,18 @@ const AdventureEditor = () => {
 				)
 			} else {
 				return (
-					<ProfileHeader>
-						<FieldHeader className='page-header'>
-							{currentAdventure.adventure_name}
-							<AdventureEditorMenu />
-						</FieldHeader>
-						<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
+					<ProfileHeader className={'user-profile-header'}>
+						<div>
+							<FieldHeader
+								className='page-header'
+								text={currentAdventure.adventure_name}
+							/>
+							{currentAdventure.nearest_city?.length && (
+								<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
+							)}
+						</div>
+						<FlexSpacer />
+						<AdventureEditorMenu />
 					</ProfileHeader>
 				)
 			}
@@ -111,7 +142,7 @@ const AdventureEditor = () => {
 				<ProfileHeader>
 					<FieldHeader
 						className='page-header'
-						text='Adventure Creator'
+						text={getContent('adventurePanel.adventureCreator')}
 					/>
 				</ProfileHeader>
 			)
@@ -124,22 +155,26 @@ const AdventureEditor = () => {
 			<ProfileContent ref={menuRef}>
 				<div className='flex-box main-adventure-content'>
 					{adventureAddState && (
-						<ConfirmationPage>
-							To add a new adventure, double click on any point on the map. Then fill in the details
-							in the form provided.
-						</ConfirmationPage>
+						<>
+							{addAdventureInstructions ? (
+								<ConfirmationPage>
+									{getContent('adventurePanel.adventureCreatorContent')}
+								</ConfirmationPage>
+							) : (
+								<AdventureTypeSelector setAddAdventureInstructions={setAddAdventureInstructions} />
+							)}
+						</>
 					)}
 					{isDeletePage && (
 						<ConfirmationPage>
-							Are you sure you want to delete this adventure?
-							<br />
-							It will be gone forever
+							{getContent('adventurePanel.adventureDeleteContent')}
 						</ConfirmationPage>
 					)}
-					{!isDeletePage && currentAdventure && isEditable && (
+					{!isDeletePage && currentAdventure && isAdventureEditable && (
 						<AdventureEditorForm onChange={onChange} />
 					)}
-					{!isDeletePage && currentAdventure && !isEditable && <AdventureViewer />}
+					{!isDeletePage && currentAdventure && !isAdventureEditable && <AdventureViewer />}
+					{!isDeletePage && !currentAdventure && !adventureAddState && <AdventureSearch />}
 				</div>
 				<AdventureEditorButtons />
 			</ProfileContent>

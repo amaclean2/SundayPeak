@@ -1,21 +1,14 @@
-import { redirect } from 'react-router-dom'
-
-import { fetcher } from '../utils'
-import { useUserStateContext } from '../userStateProvider'
-import { CARD_TYPES, useCardStateContext } from '../cardStateProvider'
-import { useAdventureEditContext } from '../adventureEditProvider'
-import { title } from '../../App'
+import { fetcher } from 'Providers/utils'
+import { useUserStateContext } from 'Providers/userStateProvider'
+import { CARD_TYPES, useCardStateContext } from 'Providers/cardStateProvider'
+import { useAdventureStateContext } from 'Providers/adventureStateProvider'
+import { title } from 'App'
+import { useHandleMessages } from './messages'
 
 export const useCreateUser = () => {
-	const {
-		setLoginError,
-		setLoggedInUser,
-		setIsLoggedIn,
-		setIsLandingPage,
-		formFields,
-		setFormFields
-	} = useUserStateContext()
-	const { closeCard, setShowAlert, setAlertContent } = useCardStateContext()
+	const { userDispatch, formFields } = useUserStateContext()
+	const { createNewMessagingUser } = useHandleMessages()
+	const { cardDispatch } = useCardStateContext()
 
 	const signupUser = () => {
 		const { email, first_name, last_name, password, password_2, legal } = formFields
@@ -35,34 +28,42 @@ export const useCreateUser = () => {
 					method: 'POST',
 					body: newUserObject
 				})
-					.then(({ data }) => {
-						console.log('USER_CREATED', data)
+					.then(({ data: { user, token } }) => {
+						console.log('USER_CREATED', user)
 
-						setAlertContent(
-							`User ${data.user.first_name} ${data.user.last_name} created!\nGet started with a new adventure.`
-						)
-						setShowAlert(true)
-						setLoggedInUser(data.user)
-						setIsLoggedIn(true)
-						setIsLandingPage(false)
-						setFormFields({})
+						cardDispatch({
+							type: 'closeCardMessage',
+							payload: `User ${user.first_name} ${user.last_name} created!\nGet started with a new adventure.`
+						})
+						userDispatch({ type: 'loginUser', payload: user })
+						localStorage.setItem('token', token)
 
-						localStorage.setItem('token', data.token)
-						closeCard()
+						createNewMessagingUser({
+							id: user.id,
+							email: user.email,
+							profile_picture_url: user.profile_picture_url,
+							name: `${user.first_name} ${user.last_name}`
+						})
 
-						return data
+						return {
+							user,
+							token
+						}
 					})
 					.catch(({ error }) => {
 						console.error(error)
-						setLoginError(error.message)
+						userDispatch({ type: 'loginError', payload: error.message })
 
 						return error
 					})
 			} else {
-				setLoginError(`You must agree to the ${title} terms and conditions.`)
+				userDispatch({
+					type: 'loginError',
+					payload: `You must agree to the ${title} terms and conditions.`
+				})
 			}
 		} else {
-			setLoginError('All fields are required. Please try again.')
+			userDispatch({ type: 'loginError', payload: 'All fields are required. Please try again.' })
 		}
 	}
 
@@ -80,8 +81,11 @@ export const useCreateUser = () => {
 			method: 'POST',
 			body: { password: newPassword, reset_token: resetToken }
 		})
-			.then(({ data }) => {
-				return redirect('/login')
+			.then(() => {
+				return cardDispatch({
+					type: 'closeCardMessage',
+					payload: 'Thank you! You can now log in with your new password.'
+				})
 			})
 			.catch(console.error)
 	}
@@ -94,32 +98,21 @@ export const useCreateUser = () => {
 }
 
 export const useGetUser = () => {
-	const {
-		setLoginError,
-		setLoggedInUser,
-		setWorkingUser,
-		setIsLoggedIn,
-		setIsLandingPage,
-		formFields,
-		setFormFields
-	} = useUserStateContext()
-	const { closeCard, switchCard } = useCardStateContext()
-	const { setMapboxToken, setMapStyle } = useAdventureEditContext()
+	const { userDispatch, formFields } = useUserStateContext()
+	const { cardDispatch } = useCardStateContext()
+	const { adventureDispatch } = useAdventureStateContext()
 
 	const getInitialCall = () => {
 		return fetcher('/services/initial')
 			.then(({ data }) => {
 				console.log('INITIAL_CALL', data)
-				setMapboxToken(data.mapbox_token)
+				adventureDispatch({ type: 'mapboxToken', payload: data.mapbox_token })
 				if (!!data.user) {
-					setLoggedInUser(data.user)
-					setMapStyle(data.user.map_style)
-					setIsLoggedIn(true)
-					setIsLandingPage(false)
+					userDispatch({ type: 'loginUser', payload: data.user })
+					adventureDispatch({ type: 'mapStyle', payload: data.user.map_style })
 				} else {
-					setLoggedInUser(null)
-					setMapStyle(data.map_style)
-					setIsLoggedIn(false)
+					userDispatch({ type: 'loginUser', payload: null })
+					adventureDispatch({ type: 'mapStyle', payload: data.map_style })
 					localStorage.clear()
 				}
 
@@ -127,18 +120,30 @@ export const useGetUser = () => {
 			})
 			.catch((error) => {
 				console.error(error)
-				setIsLoggedIn(false)
+				userDispatch({ type: 'loginUser', payload: null })
 
 				return error
 			})
 	}
 
-	const getOtherUser = ({ userId }) => {
-		return fetcher(`/users/id?id=${userId}`).then(({ data }) => {
-			setWorkingUser(data.user)
-			switchCard(CARD_TYPES.profile)
-			return data
+	const getOtherUser = ({ userId, profileSwitch }) => {
+		return fetcher(`/users/id?id=${userId}`).then(({ data: { user } }) => {
+			userDispatch({ type: 'workingUser', payload: user })
+			if (profileSwitch) {
+				cardDispatch({ type: 'switchCard', payload: CARD_TYPES.profile })
+			}
+			return user
 		})
+	}
+
+	const searchUsers = ({ keywords }) => {
+		return fetcher(`/users/search?queryString=${keywords}`).then(({ data: { users } }) => users)
+	}
+
+	const searchFriends = ({ keywords }) => {
+		return fetcher(`/users/friendSearch?queryString=${keywords}`).then(
+			({ data: { users } }) => users
+		)
 	}
 
 	const loginUser = () => {
@@ -157,29 +162,28 @@ export const useGetUser = () => {
 
 					localStorage.setItem('token', JSON.stringify(data.token))
 
-					setLoggedInUser(data.user)
-					setIsLoggedIn(true)
-					setIsLandingPage(false)
-					setFormFields({})
-					setLoginError('')
-					closeCard()
+					userDispatch({ type: 'loginUser', payload: data.user })
+					cardDispatch({ type: 'closeCard' })
 
 					return data
 				})
 				.catch(({ error }) => {
 					console.error(error)
-					setLoginError(error.message)
+					userDispatch({ type: 'loginError', payload: error.message })
 					return error
 				})
 		} else {
-			setLoginError('Email and Password fields are required. Please try again.')
+			userDispatch({
+				type: 'loginError',
+				payload: 'Email and Password fields are required. Please try again.'
+			})
 		}
 	}
 
 	const refetchUser = () => {
 		return fetcher('/users/refetch')
 			.then(({ data }) => {
-				setLoggedInUser(data.user)
+				userDispatch({ type: 'loginUser', payload: data.user })
 				return data
 			})
 			.catch((error) => {
@@ -192,7 +196,9 @@ export const useGetUser = () => {
 		getOtherUser,
 		loginUser,
 		getInitialCall,
-		refetchUser
+		refetchUser,
+		searchUsers,
+		searchFriends
 	}
 }
 
@@ -225,8 +231,8 @@ export const useEditUser = () => {
 }
 
 export const useFollowUser = () => {
-	const { setFriends } = useUserStateContext()
-	const { setAlertContent, setShowAlert } = useCardStateContext()
+	const { userDispatch } = useUserStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	const followUser = ({ leaderId, followerId }) => {
 		return fetcher(`/users/follow`, {
@@ -236,8 +242,7 @@ export const useFollowUser = () => {
 			}
 		})
 			.then(async ({ data }) => {
-				setAlertContent(`You have followed ${data.leader_name}.`)
-				setShowAlert(true)
+				cardDispatch({ type: 'openAlert', payload: `You have followed ${data.leader_name}.` })
 			})
 			.then(() => getFriends({ userId: followerId }))
 			.catch(console.error)
@@ -246,7 +251,7 @@ export const useFollowUser = () => {
 	const getFriends = ({ userId }) => {
 		return fetcher(`/users/friends?user_id=${userId}`)
 			.then(({ data }) => {
-				setFriends(data.friends)
+				userDispatch({ type: 'friends', payload: data.friends })
 				return data
 			})
 			.catch(console.error)
@@ -255,7 +260,7 @@ export const useFollowUser = () => {
 	return { followUser, getFriends }
 }
 
-export const usePictures = () => {
+export const useUserPictures = () => {
 	const { refetchUser } = useGetUser()
 
 	const deletePicture = ({ pictureRef }) => {

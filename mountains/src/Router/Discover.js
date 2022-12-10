@@ -9,19 +9,21 @@ import { CARD_TYPES, useCardStateContext } from '../Providers'
 
 const Discover = () => {
 	const { pathname } = useLocation()
-	const { openCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	useEffect(() => {
 		if (pathname.includes('/password')) {
-			openCard(CARD_TYPES.new_password)
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.new_password })
 		} else if (pathname.includes('/login')) {
-			openCard(CARD_TYPES.login)
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.login })
 		} else if (pathname.includes('/adventure')) {
-			openCard(CARD_TYPES.adventures)
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })
 		} else if (pathname.includes('/user')) {
-			openCard(CARD_TYPES.profile)
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.profile })
 		} else if (pathname.includes('/signup')) {
-			openCard(CARD_TYPES.signup)
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })
+		} else if (pathname.includes('/plan')) {
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.plan })
 		}
 	}, [])
 

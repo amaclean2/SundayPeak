@@ -1,11 +1,11 @@
-const db = require('../Config/db.js')
-const logger = require('../Config/logger.js')
+const db = require('../Config/db')
+const logger = require('../Config/logger')
 const {
   selectTicksByAdventureStatement,
   createTickStatement,
   selectTicksByUserStatement,
   deleteTickStatement
-} = require('./Statements.js')
+} = require('./Statements')
 
 const getTicksByAdventure = async ({ adventureId }) => {
   try {

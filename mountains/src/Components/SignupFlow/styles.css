@@ -6,7 +6,7 @@
 
 .forgot-button {
 	padding: 0;
-	font-size: 16px;
+	font-size: 1rem;
 }
 
 .create-account-cta {
@@ -23,7 +23,7 @@
 
 .signup-form,
 .login-form {
-	margin: 20px 15px 120px;
+	margin: 0 15px;
 	align-items: center;
 	flex-wrap: nowrap;
 	flex-direction: column;
@@ -45,8 +45,14 @@
 	max-width: 350px;
 }
 
-.main-login-content {
+.main-login-content,
+.main-signup-content {
 	width: 650px;
+	max-width: 100%;
+}
+
+.main-signup-content {
+	height: 35rem;
 }
 
 .signup-buttons.flex-box {
@@ -67,10 +73,6 @@
 
 .signup-header .field {
 	align-items: center;
-}
-
-.signup-error {
-	max-width: 330px;
 }
 
 .reset-form {

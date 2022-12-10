@@ -1,59 +1,86 @@
-import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
 
 import { Skier, Profile } from '../../Images'
 import { CARD_TYPES, useCardStateContext, useUserStateContext } from '../../Providers'
-import { Button, FlexSpacer } from '../Reusable'
+import { Button, FlexSpacer, MobileMenu } from '../Reusable'
 
 import './styles.css'
 import LogoInline from '../../Images/LogoInline'
 import { Link } from 'react-router-dom'
 import MenuPanels from './MenuPanels'
+import getContent from '../../TextContent'
 
 const LoginButton = () => {
-	const { openCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
+	const { screenType } = useCardStateContext()
+
+	if (screenType.mobile) {
+		return (
+			<Button
+				className={'mobile-menu-button'}
+				onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.login })}
+			>
+				{getContent('buttonText.login')}
+			</Button>
+		)
+	}
 
 	return (
 		<Button
 			id='login-button-adventures'
 			className={cx('button-bar-button', 'login-button')}
-			onClick={() => openCard(CARD_TYPES.login)}
+			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.login })}
 		>
-			Log In
+			{getContent('buttonText.login')}
 		</Button>
 	)
 }
 
 const SignUpButton = () => {
-	const { openCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
+	const { screenType } = useCardStateContext()
+
+	if (screenType.mobile) {
+		return (
+			<Button
+				className={'mobile-menu-button'}
+				onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })}
+			>
+				{getContent('buttonText.signup')}
+			</Button>
+		)
+	}
 
 	return (
 		<Button
 			className={cx('button-bar-button', 'signup-button')}
-			onClick={() => openCard(CARD_TYPES.signup)}
+			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })}
 			id={'signup-button-adventures'}
 		>
-			Create an Account
+			{getContent('buttonText.signup')}
 		</Button>
 	)
 }
 
 const UserProfileButton = () => {
-	const { openCard } = useCardStateContext()
-	const { setWorkingUser, loggedInUser, workingUser } = useUserStateContext()
-	const [buttonClicked, setButtonClicked] = useState(false)
+	const { cardDispatch, screenType } = useCardStateContext()
+	const { userDispatch, loggedInUser } = useUserStateContext()
 
 	const handleProfileButton = () => {
-		setButtonClicked(true)
-		setWorkingUser(loggedInUser)
+		userDispatch({ type: 'workingUser', payload: loggedInUser })
+		cardDispatch({ type: 'openCard', payload: CARD_TYPES.profile })
 	}
 
-	useEffect(() => {
-		if (workingUser?.id === loggedInUser?.id && buttonClicked) {
-			openCard(CARD_TYPES.profile)
-			setButtonClicked(false)
-		}
-	}, [workingUser, buttonClicked, loggedInUser?.id, openCard])
+	if (screenType.mobile) {
+		return (
+			<Button
+				className={'mobile-menu-button'}
+				onClick={() => handleProfileButton()}
+			>
+				{getContent('buttonText.profile')}
+			</Button>
+		)
+	}
 
 	return (
 		<Button
@@ -67,13 +94,24 @@ const UserProfileButton = () => {
 }
 
 const ActivitiesButton = () => {
-	const { openCard } = useCardStateContext()
+	const { cardDispatch, screenType } = useCardStateContext()
+
+	if (screenType.mobile) {
+		return (
+			<Button
+				className={'mobile-menu-button'}
+				onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })}
+			>
+				{getContent('buttonText.adventures')}
+			</Button>
+		)
+	}
 
 	return (
 		<Button
 			className='button-bar-button'
 			id='activities-button-adventures'
-			onClick={() => openCard(CARD_TYPES.adventures)}
+			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })}
 		>
 			<Skier />
 		</Button>
@@ -81,7 +119,7 @@ const ActivitiesButton = () => {
 }
 
 const ButtonBar = () => {
-	const { notFullyOpen } = useCardStateContext()
+	const { displayCardBoolState } = useCardStateContext()
 	const { isLoggedIn } = useUserStateContext()
 
 	if (isLoggedIn === undefined) {
@@ -90,12 +128,20 @@ const ButtonBar = () => {
 
 	return (
 		<>
-			{notFullyOpen && (
+			{!displayCardBoolState && (
 				<div className='button-bar flex-box'>
-					{!isLoggedIn && <SignUpButton />}
-					{!isLoggedIn && <LoginButton />}
-					{isLoggedIn && <UserProfileButton />}
-					<ActivitiesButton />
+					<div className='regular-buttons flex-box'>
+						{!isLoggedIn && <SignUpButton />}
+						{!isLoggedIn && <LoginButton />}
+						{isLoggedIn && <UserProfileButton />}
+						<ActivitiesButton />
+					</div>
+					<MobileMenu direction={'left'}>
+						{!isLoggedIn && <SignUpButton />}
+						{!isLoggedIn && <LoginButton />}
+						{isLoggedIn && <UserProfileButton />}
+						<ActivitiesButton />
+					</MobileMenu>
 					<FlexSpacer />
 					<Link
 						id='home-redirect'
@@ -104,7 +150,7 @@ const ButtonBar = () => {
 					>
 						<LogoInline
 							width={200}
-							color={'white'}
+							color={window.screen.width >= 500 ? 'white' : 'green'}
 						/>
 					</Link>
 				</div>

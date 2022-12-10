@@ -1,17 +1,14 @@
 .display-card {
 	margin: 10px;
-	height: calc(100vh - 60px);
-	min-width: 500px;
-	max-width: 1000px;
+	min-width: 28rem;
 	border-radius: 30px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-	display: inline-flex;
+	display: none;
 	flex-direction: column;
 	overflow: hidden;
-	transition: opacity var(--card-opening-speed) ease-in-out,
-		width var(--card-opening-speed) ease-in-out;
+	transition: opacity 0.3s ease-in-out;
 	pointer-events: auto;
-	opacity: 1;
+	opacity: 0;
 	position: relative;
 }
 
@@ -25,24 +22,23 @@
 	pointer-events: none;
 }
 
+.display-card-container.opening .display-card,
+.display-card-container.open .display-card,
+.display-card-container.closing .display-card {
+	display: inline-flex;
+}
+
+.display-card-container.open .display-card {
+	opacity: 1;
+}
+
 .display-card-container.center {
 	justify-content: center;
 	align-items: center;
 }
 
-.display-card-container.center .display-card {
-	height: auto;
-}
-
-.display-card.closing,
-.display-card.opening {
-	min-width: 0;
-	width: 50px;
-	opacity: 0;
-}
-
 .display-header {
-	height: 50px;
+	height: 3rem;
 	width: 100%;
 	left: 0;
 	display: flex;
@@ -62,8 +58,8 @@
 	padding: 0;
 	border-radius: 0;
 	color: var(--secondary-background-color);
-	width: 50px;
-	height: 50px;
+	width: 3rem;
+	height: 3rem;
 	outline: none;
 	background-color: transparent;
 	cursor: pointer;
@@ -77,14 +73,6 @@
 	color: inherit;
 }
 
-.display-card.open .display-back-button svg {
-	transform: rotate(-180deg);
-}
-
-.display-card.closing .display-back-button svg {
-	transform: rotate(0deg);
-}
-
 .display-back-button:hover {
 	background-color: #eee2;
 }
@@ -94,6 +82,7 @@
 	overflow: hidden;
 	transition: all 0.3s ease-in-out;
 	flex-direction: column;
+	max-height: 96vh;
 }
 
 .action-buttons.flex-box {
@@ -102,7 +91,7 @@
 	justify-content: flex-end;
 	position: absolute;
 	bottom: 0;
-	width: calc(100% - 20px);
+	width: 100%;
 	background-color: var(--secondary-background-color);
 	box-shadow: 0 0 50px 30px var(--secondary-background-color);
 }
@@ -118,19 +107,23 @@
 }
 
 .profile-content {
-	height: calc(100% - 90px);
 	background-color: var(--secondary-background-color);
 	padding-bottom: 10px;
 	overflow-y: auto;
 	overscroll-behavior: none;
+	width: 100%;
 }
 
 .profile-header {
 	width: 100%;
-	height: 80px;
-	padding-top: 50px;
+	height: 8rem;
+	padding-top: 3rem;
 	background: var(--header-gradient);
 	color: var(--text-on-dark-background);
+}
+
+.profile-header.slim {
+	height: 3rem;
 }
 
 .profile-header.centered {
@@ -144,13 +137,79 @@ h3.label-field {
 
 .image-header.flex-box {
 	flex-direction: row;
-}
-
-.image-header .field-image {
-	margin-right: 20px;
+	gap: 0.8rem;
 }
 
 .header-contents.flex-box {
-	flex-direction: column;
-	align-items: flex-start;
+	align-items: center;
+	flex: 1;
+	padding: 0 0.8em 0 0;
+}
+
+.main-adventure-content,
+.main-user-content {
+	min-height: 60rem;
+}
+
+@media screen and (max-width: 500px) {
+	.display-content {
+		max-height: 100vh;
+	}
+
+	.field-header.page-header.flex-box {
+		font-size: 1.4rem;
+	}
+
+	.display-card-container .display-card {
+		height: 100vh;
+		min-width: initial;
+		margin: 0;
+		border-radius: 0;
+		width: 100vw;
+	}
+
+	.display-card .main-login-content {
+		width: 100vw;
+		justify-content: center;
+		display: flex;
+		flex-direction: column;
+		height: auto;
+	}
+
+	.adventure-info.flex-box {
+		margin: 0;
+		padding: 0;
+		margin-bottom: 1rem;
+	}
+
+	.signup-buttons.flex-box {
+		left: 0;
+	}
+
+	.profile-content {
+		padding-bottom: 5rem;
+	}
+
+	.profile-header {
+		height: 12rem;
+	}
+
+	.action-buttons.flex-box {
+		flex-direction: column;
+		align-items: stretch;
+		border-top: 1px solid var(--seperator-color);
+		padding-bottom: 5rem;
+		box-shadow: none;
+	}
+
+	.action-buttons .button {
+		justify-content: center;
+		background-color: transparent;
+		color: var(--primary-accent-color);
+	}
+
+	.main-adventure-content,
+	.main-user-content {
+		min-height: 100%;
+	}
 }

@@ -1,7 +1,9 @@
-import { FormField } from '.'
 import cx from 'classnames'
+import PropTypes from 'prop-types'
 
-const MultiField = ({ onChange, label, fields, className }) => {
+import { FormField } from '.'
+
+export const MultiField = ({ onChange, label, fields, className }) => {
 	return (
 		<div className={cx('multi-field flex-box', className)}>
 			{label && <label className={'label-field'}>{label}</label>}
@@ -12,6 +14,8 @@ const MultiField = ({ onChange, label, fields, className }) => {
 						onChange={onChange}
 						value={field.value}
 						name={field.name}
+						type={field.type}
+						options={field.options}
 						hideLabel
 						isEditable
 						placeholder={field.placeholder || ''}
@@ -22,4 +26,15 @@ const MultiField = ({ onChange, label, fields, className }) => {
 	)
 }
 
-export default MultiField
+MultiField.propTypes = {
+	onChange: PropTypes.func,
+	label: PropTypes.string,
+	fields: PropTypes.arrayOf(
+		PropTypes.shape({
+			value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+			name: PropTypes.string,
+			placeholder: PropTypes.string
+		})
+	),
+	className: PropTypes.string
+}

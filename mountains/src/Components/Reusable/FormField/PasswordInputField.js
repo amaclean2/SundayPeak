@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 import { Button } from '../Button'
 import { placeholderDefinition } from './utils'
+import getContent from '../../../TextContent'
 
 const PasswordInputField = ({
 	className,
@@ -39,10 +41,22 @@ const PasswordInputField = ({
 				className='password-switch-field'
 				onClick={() => setPasswordShown(!passwordShown)}
 			>
-				{passwordShown ? 'Hide' : 'Show'}
+				{passwordShown ? getContent('buttonText.hide') : getContent('buttonText.show')}
 			</Button>
 		</div>
 	)
+}
+
+PasswordInputField.propTypes = {
+	className: PropTypes.string,
+	name: PropTypes.string,
+	label: PropTypes.string,
+	hideLabel: PropTypes.bool,
+	placeholder: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	onChange: PropTypes.func,
+	autoComplete: PropTypes.string,
+	autoFocus: PropTypes.bool
 }
 
 export default PasswordInputField

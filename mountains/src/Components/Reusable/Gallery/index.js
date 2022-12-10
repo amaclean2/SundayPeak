@@ -1,25 +1,23 @@
-import { useCardStateContext, usePictures, useUserStateContext } from '../../../Providers'
+import { useCardStateContext, useUserPictures, useUserStateContext } from '../../../Providers'
+import getContent from '../../../TextContent'
 import './styles.css'
 
-export const PhotoGallery = ({ container }) => {
-	const { submitPicture } = usePictures()
+export const PhotoGallery = () => {
+	const { submitPicture } = useUserPictures()
 
-	const { setViewingImage } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
-	const { workingUser, loggedInUser } = useUserStateContext()
+	const { workingUser, activeWorkingUser } = useUserStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
 		submitPicture({ data: files[0] })
 	}
 
-	const userImages =
-		workingUser.id === loggedInUser.id ? [...workingUser.images, 'new'] : workingUser.images
+	const userImages = !activeWorkingUser ? [...workingUser.images, 'new'] : workingUser.images
 
 	const handleImageClick = (imageSource) => {
-		setViewingImage(imageSource)
+		cardDispatch({ type: 'viewingImage', payload: imageSource })
 	}
-
-	useEffect(() => {}, [workingUser])
 
 	return (
 		<div className='scroller-container flex-box'>
@@ -30,7 +28,7 @@ export const PhotoGallery = ({ container }) => {
 							className='file-upload-container flex-box'
 							key={`profile_image_create`}
 						>
-							Add a new photo
+							{getContent('adventurePanel.addNewPhoto')}
 							<input
 								type='file'
 								name='file'
@@ -44,6 +42,7 @@ export const PhotoGallery = ({ container }) => {
 				return (
 					<img
 						src={image}
+						alt={''}
 						key={`profile_image_${key}`}
 						onClick={() => handleImageClick(image)}
 					/>

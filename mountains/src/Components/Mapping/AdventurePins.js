@@ -1,11 +1,13 @@
+import { ClimberIcon } from 'Images/ClimberIcon'
+import { HikerIcon } from 'Images/HikerIcon'
 import { useMemo } from 'react'
 import { Marker } from 'react-map-gl'
 import { SkierIcon } from '../../Images'
-import { useAdventureEditContext } from '../../Providers'
+import { useAdventureStateContext } from '../../Providers'
 import { useCreateNewAdventure } from './utils'
 
 const AdventurePins = ({ boundingBox }) => {
-	const { allAdventures } = useAdventureEditContext()
+	const { allAdventures, adventureTypeViewer } = useAdventureStateContext()
 	const { viewMore } = useCreateNewAdventure()
 
 	const pins = useMemo(() => {
@@ -14,7 +16,7 @@ const AdventurePins = ({ boundingBox }) => {
 				key={`marker_${idx}`}
 				longitude={adventure.coordinates.lng}
 				latitude={adventure.coordinates.lat}
-				anchor={'bottom'}
+				anchor={'center'}
 				onClick={(e) => {
 					e.originalEvent.stopPropagation()
 					// setPopupInfo(adventure)
@@ -24,7 +26,24 @@ const AdventurePins = ({ boundingBox }) => {
 					})
 				}}
 			>
-				<SkierIcon size={20} />
+				{adventureTypeViewer === 'ski' && (
+					<SkierIcon
+						size={25}
+						className={'pin-marker'}
+					/>
+				)}
+				{adventureTypeViewer === 'climb' && (
+					<ClimberIcon
+						size={25}
+						className={'pin-marker'}
+					/>
+				)}
+				{adventureTypeViewer === 'hike' && (
+					<HikerIcon
+						size={25}
+						className={'pin-marker'}
+					/>
+				)}
 			</Marker>
 		))
 	}, [allAdventures])

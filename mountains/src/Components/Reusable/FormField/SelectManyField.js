@@ -1,45 +1,39 @@
 import cx from 'classnames'
+import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 
 const SelectManyField = ({ className, options, onChange, name, value }) => {
-	const [selectManyState, setSelectManyState] = useState([])
+	// selectManyState is the current selection of present fields
+	const [selectManyState, setSelectManyState] = useState(value)
 
 	const handleSelectManyState = (e) => {
+		let newSelectionList
+
 		if (selectManyState.includes(e.target.value)) {
 			const index = selectManyState.indexOf(e.target.value)
 
 			// remove item from array
-			setSelectManyState((currArray) => {
-				return [...currArray.slice(0, index), ...currArray.slice(index + 1)]
-			})
+			newSelectionList = [...selectManyState.slice(0, index), ...selectManyState.slice(index + 1)]
 		} else {
 			// add item to the end of the array
-			setSelectManyState([...selectManyState, e.target.value])
+			newSelectionList = [...selectManyState, e.target.value]
 		}
+
+		onChange({ target: { name, value: newSelectionList } })
+		setSelectManyState(newSelectionList)
 	}
 
 	useEffect(() => {
-		onChange({
-			target: {
-				name,
-				value: selectManyState
-			}
-		})
-	}, [selectManyState])
-
-	useEffect(() => {
-		if (typeof value === 'string') {
-			setSelectManyState(!!value.length ? JSON.parse(value) : [])
-		} else {
-			setSelectManyState(value)
+		if (typeof selectManyState === 'string') {
+			setSelectManyState(!!selectManyState.length ? JSON.parse(selectManyState) : [])
 		}
-	}, [])
+	}, [selectManyState])
 
 	return (
 		<div className={cx('form-field', 'select-many', 'flex-box', className)}>
 			{options?.selectMany?.map((option, key) => (
 				<label
-					htmlFor={option.name}
+					htmlFor={option}
 					className={cx('select-many-option', 'flex-box')}
 					key={`select_many_option_${key}`}
 				>
@@ -58,6 +52,16 @@ const SelectManyField = ({ className, options, onChange, name, value }) => {
 			))}
 		</div>
 	)
+}
+
+SelectManyField.propTypes = {
+	className: PropTypes.string,
+	options: PropTypes.shape({
+		selectMany: PropTypes.array
+	}),
+	onChange: PropTypes.func,
+	name: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
 }
 
 export default SelectManyField

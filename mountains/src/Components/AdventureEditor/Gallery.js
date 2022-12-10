@@ -1,14 +1,15 @@
 import {
-	useAdventureEditContext,
+	useAdventureStateContext,
 	useCardStateContext,
 	useSubmitAdventurePicture
 } from '../../Providers'
+import getContent from '../../TextContent'
 import './styles.css'
 
 const PhotoGallery = () => {
-	const { submitAdventurePicture } = useSubmitAdventurePicture()
-	const { setViewingImage } = useCardStateContext()
-	const { currentAdventure } = useAdventureEditContext()
+	const submitAdventurePicture = useSubmitAdventurePicture()
+	const { cardDispatch } = useCardStateContext()
+	const { currentAdventure } = useAdventureStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
 		submitAdventurePicture({ data: files[0], adventureId: currentAdventure.id })
@@ -17,7 +18,7 @@ const PhotoGallery = () => {
 	const images = [...currentAdventure.images, 'new']
 
 	const handleImageClick = (imageSource) => {
-		setViewingImage(imageSource)
+		cardDispatch({ type: 'viewingImage', payload: imageSource })
 	}
 
 	return (
@@ -29,7 +30,7 @@ const PhotoGallery = () => {
 							className='file-upload-container flex-box'
 							key={`profile_image_create`}
 						>
-							Add a new photo
+							{getContent('adventurePanel.addNewPhoto')}
 							<input
 								type='file'
 								name='image'

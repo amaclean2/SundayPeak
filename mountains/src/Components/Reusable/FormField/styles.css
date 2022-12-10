@@ -5,7 +5,7 @@ input {
 .form-field-container {
 	min-width: 200px;
 	flex: 1;
-	padding-right: 8px;
+	padding-right: 1rem;
 	margin-bottom: 15px;
 }
 
@@ -33,7 +33,7 @@ input {
 }
 
 .label-field {
-	font-size: 16px;
+	font-size: 1rem;
 	font-weight: 700;
 	margin-bottom: 10px;
 	display: block;
@@ -47,20 +47,20 @@ input {
 	background-color: var(--input-background-color);
 	border: 1px solid var(--input-border-color);
 	border-radius: 10px;
-	font-size: 16px;
-	margin: 5px 0;
+	font-size: 1rem;
+	margin: 0.4rem 0;
 	display: block;
-	height: 40px;
+	height: 2.5rem;
 
 	/* subtract the padding from the form field and the border*/
-	width: calc(100% - 34px);
-	padding: 0 16px;
+	width: 100%;
+	padding: 0 1rem;
 	transition: all 0.15s ease-in-out;
 	outline: none;
 }
 
 .form-field.select {
-	width: auto;
+	width: 100%;
 	min-width: 200px;
 }
 
@@ -68,10 +68,9 @@ input {
 	background-color: var(--input-background-color);
 	border: 1px solid var(--input-border-color);
 	border-radius: 10px;
-	font-size: 16px;
+	font-size: 1rem;
 	margin: 5px 0;
-	/* subtract the padding from the form field and the border*/
-	width: calc(100% - 34px);
+	width: 100%;
 	height: 40px;
 	padding: 0 16px;
 	transition: all 0.2s ease-in-out;
@@ -122,7 +121,7 @@ input {
 }
 
 .form-field.card-header {
-	font-size: 16px;
+	font-size: 1rem;
 	margin: 10px;
 	display: block;
 	max-width: calc(100% - 60px);
@@ -197,4 +196,32 @@ input {
 
 .multi-field-box {
 	width: 100%;
+}
+
+@media screen and (max-width: 500px) {
+	.form-field-container {
+		max-width: 100%;
+		min-width: auto;
+		padding: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.multi-field.flex-box {
+		padding: 0 1rem;
+	}
+
+	.profile-header .form-field-container {
+		margin-bottom: 0;
+		padding: 0;
+	}
+
+	.multi-field-box .form-field-container {
+		padding: 0;
+		margin: 0;
+	}
+
+	.multi-field-box {
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
 }

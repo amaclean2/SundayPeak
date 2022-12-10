@@ -1,6 +1,11 @@
-import React, { useState } from 'react'
-import { useLocation, Navigate } from 'react-router-dom'
-import { CARD_TYPES, useCardStateContext, useCreateUser } from '../../Providers'
+import { useRef } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import {
+	CARD_TYPES,
+	useCardStateContext,
+	useCreateUser,
+	useUserStateContext
+} from '../../Providers'
 import {
 	Button,
 	DisplayCard,
@@ -13,29 +18,30 @@ import {
 } from '../Reusable'
 
 export const NewPassword = () => {
+	const { cardDispatch } = useCardStateContext()
+	const { userDispatch } = useUserStateContext()
+	const { updateNewPassword } = useCreateUser()
+	const { search } = useLocation()
+	const navigate = useNavigate()
+
 	const newPasswordObject = {
 		password: '',
 		confirmPassword: ''
 	}
-	const [newPassword, setNewPassword] = useState(newPasswordObject)
-	const [canRedirect, setCanRedirect] = useState(false)
-	const { switchCard, closeCard, setAlertContent, setShowAlert } = useCardStateContext()
-	const { updateNewPassword } = useCreateUser()
-	const { search } = useLocation()
 
-	const confirmNewPassword = () => {
-		if (newPassword.password === newPassword.confirmPassword) {
+	const newPassword = useRef(newPasswordObject)
+
+	const confirmNewPassword = async () => {
+		if (newPassword.current.password === newPassword.current.confirmPassword) {
 			const resetToken = search.split('resetToken=')?.[1]
-			updateNewPassword({ newPassword: newPassword.password, resetToken })
-			closeCard()
-			setAlertContent('Thank you! You can now log in with your new password.')
-			setShowAlert(true)
-			setCanRedirect(true)
+			await updateNewPassword({ newPassword: newPassword.current.password, resetToken })
+			navigate('/discover')
+		} else {
+			userDispatch({
+				type: 'loginError',
+				payload: 'Your password and confirm password fields have to match'
+			})
 		}
-	}
-
-	if (canRedirect) {
-		return <Navigate to={'/discover'} />
 	}
 
 	return (
@@ -49,7 +55,7 @@ export const NewPassword = () => {
 			<ProfileContent>
 				<div className='main-login-content'>
 					<div className='adventure-info flex-box reset-form'>
-						<ErrorField form='password-reset' />
+						<ErrorField form='login' />
 						<FormField
 							name='password'
 							label='New Password'
@@ -58,7 +64,9 @@ export const NewPassword = () => {
 							isEditable
 							autoComplete={'on'}
 							value={newPassword.password}
-							onChange={(e) => setNewPassword({ ...newPassword, password: e.target.value })}
+							onChange={(e) =>
+								(newPassword.current = { ...newPassword.current, password: e.target.value })
+							}
 						/>
 						<FormField
 							name='confirm'
@@ -68,7 +76,9 @@ export const NewPassword = () => {
 							isEditable
 							autoComplete={'on'}
 							value={newPassword.confirmPassword}
-							onChange={(e) => setNewPassword({ ...newPassword, confirmPassword: e.target.value })}
+							onChange={(e) =>
+								(newPassword.current = { ...newPassword.current, confirmPassword: e.target.value })
+							}
 						/>
 					</div>
 				</div>
@@ -82,7 +92,7 @@ export const NewPassword = () => {
 					<Button
 						id='return-to-login'
 						className={'secondary-button'}
-						onClick={() => switchCard(CARD_TYPES.login)}
+						onClick={() => cardDispatch({ type: 'switchCard', payload: CARD_TYPES.login })}
 					>
 						Return to login
 					</Button>

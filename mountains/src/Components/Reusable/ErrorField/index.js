@@ -1,32 +1,36 @@
-import { useEffect, useState } from 'react'
+import { useRef } from 'react'
+import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-import { useAdventureEditContext, useUserStateContext } from '../../../Providers'
+import { useAdventureStateContext, useUserStateContext } from '../../../Providers'
 
 import './styles.css'
 
 export const ErrorField = ({ form, className }) => {
 	const { loginError } = useUserStateContext()
-	const { adventureError } = useAdventureEditContext()
-	const [error, setError] = useState('')
+	const { adventureError } = useAdventureStateContext()
 
-	useEffect(() => {
-		switch (form) {
-			case 'login':
-				setError(loginError)
-				break
-			case 'adventure':
-				setError(adventureError)
-				break
-			default:
-				setError('')
-				break
-		}
-	}, [loginError, adventureError, form])
+	const error = useRef('')
+
+	switch (form) {
+		case 'login':
+			error.current = loginError
+			break
+		case 'adventure':
+			error.current = adventureError
+			break
+		default:
+			error.current = ''
+	}
 
 	return (
-		<span className={cx('error-field flex-box', className, !!error ? '' : 'collapsed')}>
-			{error}
+		<span className={cx('error-field flex-box', className, !!error.current ? '' : 'collapsed')}>
+			{error.current}
 		</span>
 	)
+}
+
+ErrorField.propTypes = {
+	form: PropTypes.string.isRequired,
+	className: PropTypes.string
 }

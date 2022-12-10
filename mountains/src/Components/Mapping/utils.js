@@ -1,21 +1,14 @@
 import {
 	CARD_TYPES,
-	useAdventureEditContext,
+	useAdventureStateContext,
 	useCardStateContext,
 	useGetAdventure
 } from '../../Providers'
 import { createNewDefaultAdventure } from '../../Providers/utils'
 
 export const useCreateNewAdventure = () => {
-	const {
-		adventureAddState,
-		setAllAdventures,
-		setCurrentAdventure,
-		setIsEditable,
-		setAdventureAddState,
-		setCurrentBoundingBox
-	} = useAdventureEditContext()
-	const { openCard } = useCardStateContext()
+	const { adventureAddState, allAdventures, adventureDispatch } = useAdventureStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const { getAdventure } = useGetAdventure()
 
 	const handleCreateNewAdventure = (event) => {
@@ -30,19 +23,21 @@ export const useCreateNewAdventure = () => {
 			latitude: event.lngLat.lat
 		})
 
-		setAllAdventures((currentAdventures) => [...currentAdventures, newAdventure])
-		setCurrentAdventure(newAdventure)
+		adventureDispatch({
+			type: 'newAdventurePanel',
+			payload: { adventures: [...allAdventures, newAdventure], currentAdventure: newAdventure }
+		})
 
-		openCard(CARD_TYPES.adventures)
-		setIsEditable(true)
-		setAdventureAddState(false)
+		cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })
+		adventureDispatch({ type: 'toggleAdventureEditable' })
 	}
 
 	const viewMore = ({ id, boundingBox }) => {
-		setCurrentBoundingBox(boundingBox)
-		return getAdventure({ id }).then(() => {
-			openCard(CARD_TYPES.adventures)
-		})
+		adventureDispatch({ type: 'boundingBox', payload: boundingBox })
+
+		return getAdventure({ id }).then(() =>
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })
+		)
 	}
 
 	return {

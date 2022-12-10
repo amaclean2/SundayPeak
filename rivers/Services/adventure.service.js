@@ -1,20 +1,29 @@
 const queries = require('../DB')
 
-const buildAdventureObject = async ({ id }) => {
+const buildAdventureObject = async ({ id, type }) => {
   const { getAdventure, getTicksByAdventure, getAdventurePictures } = queries
 
-  const adventure = await getAdventure(id)
+  const adventure = await getAdventure(id, type)
   const ticks = await getTicksByAdventure({ adventureId: id })
   const images = await getAdventurePictures({ adventureId: id })
 
-  return {
+  const formattedAdventure = {
     ...adventure,
     images,
     ticks: ticks.map((tick) => ({
-      ...tick,
-      user_id: tick.creator_id
-    }))
+      ...tick
+    })),
+    public: !!adventure.public,
+    coordinates: {
+      lat: adventure.coordinates_lat,
+      lng: adventure.coordinates_lng
+    }
   }
+
+  delete formattedAdventure.coordinates_lat
+  delete formattedAdventure.coordinates_lng
+
+  return formattedAdventure
 }
 
 const parseCoordinates = ({ boundingBox }) => {

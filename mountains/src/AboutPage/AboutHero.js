@@ -1,28 +1,29 @@
 import { Link } from 'react-router-dom'
 import { Button } from '../Components/Reusable'
 import { CARD_TYPES, useCardStateContext } from '../Providers'
+import getContent from '../TextContent'
 import './styles.css'
 
-const heroImage =
-	'https://storage.googleapis.com/backyard-image-storage/SiteImages/TouringUp_600.png'
+const heroImage = 'https://storage.googleapis.com/user-image-storage/SiteImages/TouringUp_600.png'
 
 const AboutHero = () => {
-	const { openCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
+
 	return (
 		<section className='hero-panel about-page-panel flex-box'>
 			<section className='left-section flex-box'>
 				<h1 className='hero-text'>
-					Find an adventure. Find a friend.
+					{getContent('aboutPage.heroTextLineOne')}
 					<br />
-					Play outside. Repeat.
+					{getContent('aboutPage.heroTextLineTwo')}
 				</h1>
 				<Link to={'/discover'}>
 					<Button
 						id='hero-button-about-page'
 						className='about-hero-button'
-						onClick={() => openCard(CARD_TYPES.signup)}
+						onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })}
 					>
-						Get Started
+						{getContent('buttonText.heroButtonText')}
 					</Button>
 				</Link>
 			</section>

@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
-import { useState } from 'react'
+import PropTypes from 'prop-types'
+
 import { Meatball } from '../../../Images/Meatball'
 import { Button } from '../Button'
 
@@ -7,14 +9,26 @@ import './styles.css'
 
 const Menu = ({ className, fields = [] }) => {
 	const [isOpen, setIsOpen] = useState(false)
+	const [position, setPosition] = useState('left')
+	const menuRef = useRef()
 
 	const handleMenuButton = (event, action) => {
 		setIsOpen(false)
 		action()
 	}
 
+	useEffect(() => {
+		const position = menuRef.current.getBoundingClientRect().x
+		const menuWidth = 200
+
+		setPosition(position < menuWidth ? 'right' : 'left')
+	}, [isOpen])
+
 	return (
-		<div className={cx('menu', className)}>
+		<div
+			ref={menuRef}
+			className={cx('menu', className, position)}
+		>
 			<Button
 				onClick={() => setIsOpen(!isOpen)}
 				id='menu-opener'
@@ -32,6 +46,7 @@ const Menu = ({ className, fields = [] }) => {
 						key={`menu_button_${key}`}
 						className={cx('menu-button', field.className)}
 						id={field.id || field.text.replaceAll(' ', '-')}
+						disabled={field.disabled}
 						onClick={(e) => handleMenuButton(e, field.action)}
 					>
 						{field.text}
@@ -40,6 +55,18 @@ const Menu = ({ className, fields = [] }) => {
 			</div>
 		</div>
 	)
+}
+
+Menu.propTypes = {
+	fields: PropTypes.arrayOf(
+		PropTypes.shape({
+			className: PropTypes.string,
+			id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+			text: PropTypes.string,
+			action: PropTypes.func
+		})
+	).isRequired,
+	className: PropTypes.string
 }
 
 export default Menu

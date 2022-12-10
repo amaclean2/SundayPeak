@@ -1,28 +1,59 @@
 import { debounce } from 'throttle-debounce'
+import getContent from 'TextContent'
 
-import { useAdventureEditContext } from '../adventureEditProvider'
-import { useCardStateContext } from '../cardStateProvider'
-import { fetcher, validateAdventure } from '../utils'
+import { useAdventureStateContext } from 'Providers/adventureStateProvider'
+import { useCardStateContext } from 'Providers/cardStateProvider'
+import { fetcher, useAdventureValidation } from 'Providers/utils'
+import { useEffect, useRef } from 'react'
 
 export const useGetAdventure = () => {
-	const { setCurrentAdventure } = useAdventureEditContext()
+	const { adventureDispatch } = useAdventureStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	const getAdventure = async ({ id }) => {
 		return fetcher(`/adventures/details?id=${id}`)
 			.then(({ data }) => {
-				setCurrentAdventure(data.adventure)
-
+				adventureDispatch({ type: 'currentAdventure', payload: data.adventure })
 				return data
 			})
 			.catch(console.error)
 	}
 
-	return { getAdventure }
+	const shareAdventure = ({ id }) => {
+		const url = window.location.href
+		const domain = url.includes('/adventure')
+			? url.split('/adventure')[0]
+			: url.split('/discover')[0]
+
+		const newDomain = `${domain}/adventure/${id}`
+		navigator.clipboard.writeText(newDomain)
+		cardDispatch({ type: 'openAlert', payload: getContent('adventurePanel.linkCopied') })
+	}
+
+	return {
+		getAdventure,
+		shareAdventure
+	}
 }
 
 export const useGetAdventures = () => {
-	const { setAllAdventures, setStartPosition, currentBoundingBox, startPosition } =
-		useAdventureEditContext()
+	const { currentBoundingBox, startPosition, adventureDispatch, adventureTypeViewer } =
+		useAdventureStateContext()
+	const { screenType, cardDispatch } = useCardStateContext()
+	const boundingRef = useRef(currentBoundingBox)
+
+	useEffect(() => {
+		boundingRef.current = currentBoundingBox
+	}, [currentBoundingBox])
+
+	const changeAdventureType = (newType) => {
+		adventureDispatch({ type: 'adventureTypeViewer', payload: newType })
+		refetchAdventures({ boundingBox: boundingRef.current })
+
+		if (screenType.mobile) {
+			cardDispatch({ type: 'closeCard' })
+		}
+	}
 
 	const getAllAdventures = async (boundingBox) => {
 		return fetcher('/adventures/all', {
@@ -32,11 +63,14 @@ export const useGetAdventures = () => {
 					NE: boundingBox._ne,
 					SW: boundingBox._sw
 				},
-				type: 'line'
+				type: adventureTypeViewer
 			}
 		})
 			.then(({ data: { adventures } }) => {
-				setAllAdventures((currAdventures) => [...currAdventures, ...adventures])
+				adventureDispatch({
+					type: 'allAdventures',
+					payload: { adventures, startPosition, boundingBox }
+				})
 
 				return adventures
 			})
@@ -52,61 +86,61 @@ export const useGetAdventures = () => {
 			newStartPosition = startPosition
 		}
 
-		fetcher('/adventures/all', {
+		return fetcher('/adventures/all', {
 			method: 'POST',
 			body: {
 				bounding_box: {
 					NE: boundingBox._ne,
 					SW: boundingBox._sw
 				},
-				type: 'line'
+				type: localStorage.getItem('adventureTypeViewer')
 			}
 		})
 			.then(({ data: { adventures } }) => {
-				setAllAdventures(adventures)
-				setStartPosition(newStartPosition)
+				adventureDispatch({
+					type: 'allAdventures',
+					payload: { adventures, startPosition: newStartPosition, boundingBox }
+				})
 
 				return adventures
 			})
 			.catch(console.error)
 	})
 
-	return { getAllAdventures, refetchAdventures }
+	const searchAdventures = ({ searchQuery }) => {
+		return fetcher(`/adventures/search?queryString=${searchQuery}`)
+			.then(({ data }) => data.adventures)
+			.catch(console.error)
+	}
+
+	return { getAllAdventures, refetchAdventures, searchAdventures, changeAdventureType }
 }
 
 export const useSaveAdventure = () => {
-	const {
-		setAllAdventures,
-		currentAdventure,
-		editAdventureFields,
-		setEditAdventureFields,
-		setAdventureError,
-		setIsEditable,
-		setCurrentAdventure
-	} = useAdventureEditContext()
+	const { adventureDispatch, currentAdventure, editAdventureFields } = useAdventureStateContext()
+	const validateAdventure = useAdventureValidation()
 
-	const { closeCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	const saveNewAdventure = () => {
 		return fetcher(`/adventures/create`, {
 			method: 'POST',
-			body: {
-				...currentAdventure,
-				adventure_type: 'line'
-			}
+			body: currentAdventure
 		})
 			.then(({ data }) => {
-				setAllAdventures((currAdventures) => {
-					currAdventures = currAdventures.filter(({ id }) => id !== 'waiting')
-
-					return [...currAdventures, data.adventure]
+				adventureDispatch({
+					type: 'addNewAdventure',
+					payload: data.adventure
 				})
 
-				closeCard()
+				cardDispatch({ type: 'closeCard' })
 			})
 			.catch((error) => {
 				console.error(error)
-				setAdventureError(error.toString().replace('Error: ', ''))
+				adventureDispatch({
+					type: 'adventureError',
+					payload: error.toString().replace('Error: ', '')
+				})
 
 				return error
 			})
@@ -114,16 +148,27 @@ export const useSaveAdventure = () => {
 
 	const startAdventureSaveProcess = () => {
 		try {
-			const validatedAdventure = validateAdventure(currentAdventure, setAdventureError)
-			const validatedEditFields = validateAdventure(editAdventureFields)
-			setCurrentAdventure(validatedAdventure)
-			setEditAdventureFields(validatedEditFields)
-			setIsEditable(false)
+			const validatedAdventure = validateAdventure({ fields: currentAdventure })
+			const validatedEditFields = validateAdventure({
+				fields: editAdventureFields,
+				type: 'editFields'
+			})
+
+			console.log({ validatedAdventure })
+
+			adventureDispatch({
+				type: 'validateAdventure',
+				payload: { currentAdventure: validatedAdventure, editAdventureFields: validatedEditFields }
+			})
+			adventureDispatch({ type: 'toggleAdventureEditable' })
 
 			return validatedAdventure
 		} catch (error) {
 			console.error(error)
-			setAdventureError(error.toString().replace('Error: ', ''))
+			adventureDispatch({
+				type: 'adventureError',
+				payload: error.toString().replace('Error: ', '')
+			})
 		}
 	}
 
@@ -142,8 +187,7 @@ export const useSaveAdventure = () => {
 		})
 			.then(console.log)
 			.catch(({ error }) => {
-				setAdventureError(error.message)
-				setIsEditable(true)
+				adventureDispatch({ type: 'adventureErrorOnSave', payload: error.message })
 				throw error.message
 			})
 	}
@@ -156,22 +200,26 @@ export const useSaveAdventure = () => {
 }
 
 export const useDeleteAdventure = () => {
-	const { closeCard } = useCardStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const { refetchAdventures } = useGetAdventures()
-	const { setIsDeletePage } = useAdventureEditContext()
+	const { adventureDispatch, currentBoundingBox } = useAdventureStateContext()
+	const boundingRef = useRef(currentBoundingBox)
+
+	useEffect(() => {
+		boundingRef.current = currentBoundingBox
+	}, [currentBoundingBox])
+
 	const deleteAdventure = ({ adventureId }) => {
 		return fetcher(`/adventures/delete?adventure_id=${adventureId}`, { method: 'DELETE' })
 			.then(() => {
-				closeCard()
-				setIsDeletePage(false)
-				return refetchAdventures()
+				cardDispatch({ type: 'closeCard' })
+				adventureDispatch({ type: 'deleteAdventure' })
+				return refetchAdventures({ boundingBox: boundingRef.current })
 			})
 			.catch(console.error)
 	}
 
-	return {
-		deleteAdventure
-	}
+	return deleteAdventure
 }
 
 export const useSubmitAdventurePicture = () => {
@@ -190,5 +238,5 @@ export const useSubmitAdventurePicture = () => {
 			.catch(console.error)
 	}
 
-	return { submitAdventurePicture }
+	return submitAdventurePicture
 }

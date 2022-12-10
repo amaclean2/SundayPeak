@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
 	CARD_TYPES,
-	useAdventureEditContext,
+	useAdventureStateContext,
 	useCardStateContext,
 	useGetUser,
 	useUserStateContext
@@ -20,12 +20,13 @@ const UserImage = ({ url }) => (
 const MailIcon = () => <div className='mail-icon' />
 
 const AdventureTickPanel = () => {
-	const { currentAdventure } = useAdventureEditContext()
-	const { switchCard } = useCardStateContext()
+	const { currentAdventure } = useAdventureStateContext()
+	const { cardDispatch } = useCardStateContext()
 	const { getOtherUser } = useGetUser()
 	const { workingUser } = useUserStateContext()
 
-	const [ticks, setTicks] = useState(null)
+	const ticks = currentAdventure?.ticks || []
+
 	const [userOnLoad, setUserOnLoad] = useState()
 
 	useEffect(() => {
@@ -33,14 +34,9 @@ const AdventureTickPanel = () => {
 	}, [])
 
 	useEffect(() => {
-		if (currentAdventure?.ticks) {
-			setTicks(currentAdventure.ticks)
-		}
-	}, [currentAdventure])
-
-	useEffect(() => {
+		// I don't know what this does!
 		if (userOnLoad && workingUser?.id && userOnLoad !== workingUser?.id) {
-			switchCard(CARD_TYPES.profile)
+			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.profile })
 		}
 	}, [workingUser])
 
@@ -57,7 +53,7 @@ const AdventureTickPanel = () => {
 						<li
 							key={`user_${key}`}
 							className={'tick flex-box multi-field-tick'}
-							onClick={() => getOtherUser({ userId: tick.user_id })}
+							onClick={() => getOtherUser({ userId: tick.user_id, profileSwitch: true })}
 						>
 							<UserImage url={tick.profile_picture_url} />
 							<FlexSpacer />

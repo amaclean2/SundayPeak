@@ -13,7 +13,7 @@ h1 {
 
 .scroller-container.flex-box {
 	height: 300px;
-	width: calc(100%);
+	width: 100%;
 	overflow-x: auto;
 	overflow-y: hidden;
 	margin-top: 10px;
@@ -49,7 +49,7 @@ h1 {
 	font-size: 40px;
 	line-height: 0.7em;
 	margin: 0;
-	color: var(--secondary-accent-color);
+	color: var(--primary-accent-color);
 }
 
 .stats .form-field-container {
@@ -92,28 +92,31 @@ h1 {
 	align-items: flex-start;
 }
 
+.friend-list-container.flex-box,
 .tick-list-container.flex-box {
-	margin: 10px;
+	margin: 1rem 0;
+	padding: 0 1rem;
 	flex-direction: column;
 	align-items: flex-start;
 	flex: 1;
+	width: 100%;
 }
 
 .tick-list.flex-box {
 	flex-direction: column;
-	font-size: 16px;
+	font-size: 1rem;
 	align-items: flex-start;
-	margin-top: 16px;
+	margin-top: 1rem;
 }
 
 .tick-list-header {
 	margin: 0;
 	font-weight: 600;
-	font-size: 16px;
+	font-size: 1rem;
 }
 
 .tick {
-	padding: 10px;
+	padding: 1rem;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
 	width: 100%;
@@ -131,7 +134,6 @@ h1 {
 
 .main-user-content {
 	width: 800px;
-	padding: 0 10px;
 }
 
 .profile-image-uploader.flex-box {
@@ -146,7 +148,7 @@ h1 {
 }
 
 .profile-header.image-header {
-	height: 100px;
+	height: 9rem;
 }
 
 .profile-image-upload.file-upload-container.flex-box,
@@ -180,4 +182,58 @@ h1 {
 
 .user-bio {
 	margin: 10px 15px;
+}
+
+.user-profile-header .field {
+	flex-direction: row;
+	width: 100%;
+	align-items: center;
+}
+
+.friends-search {
+	width: 300px;
+	max-width: 100%;
+}
+
+.friend-list.flex-box {
+	margin-top: 0;
+}
+
+.friend-list-container.flex-box .form-field-container {
+	margin: 5px 0 0;
+}
+
+@media screen and (max-width: 500px) {
+	.main-user-content {
+		max-width: 100%;
+	}
+
+	.profile-image-uploader.flex-box {
+		width: 100%;
+		margin: 1rem;
+		margin-bottom: 3rem;
+	}
+
+	.friend-list-container.flex-box .form-field-container {
+		padding: 0;
+		width: 100%;
+	}
+
+	.user-adventure-viewer.flex-box {
+		flex-direction: column;
+		margin-bottom: 10rem;
+		gap: 2rem;
+	}
+
+	.friend-list-container.flex-box {
+		width: 100%;
+	}
+
+	.tick-list {
+		max-width: 100%;
+	}
+
+	.tick {
+		padding: 1rem 0;
+	}
 }

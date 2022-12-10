@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
@@ -10,6 +9,7 @@ import RangeInputField from './RangeInputField'
 import TextareaField from './TextareaField'
 import SelectField from './SelectField'
 import DefaultField from './DefaultField'
+import NoEditField from './NoEditField'
 
 const InputBox = ({ field, onChange, value }) => {
 	switch (field.type) {
@@ -21,7 +21,7 @@ const InputBox = ({ field, onChange, value }) => {
 					value={value}
 				/>
 			)
-		case 'selectMany':
+		case 'selectmany':
 			return (
 				<SelectManyField
 					{...field}
@@ -53,6 +53,13 @@ const InputBox = ({ field, onChange, value }) => {
 					value={value}
 				/>
 			)
+		case 'noedit':
+			return (
+				<NoEditField
+					{...field}
+					value={value}
+				/>
+			)
 		default:
 			return (
 				<DefaultField
@@ -70,31 +77,16 @@ export const FormField = (props) => {
 	const {
 		id,
 		type = 'text',
-		name = '',
+		name,
 		label = '',
-		value = '',
+		value,
 		isEditable = false,
 		className = '',
 		hideLabel = false,
 		fullWidth = false,
 		block = false,
-		onChange = () => {}
+		onChange
 	} = props
-
-	const [workingValue, setWorkingValue] = useState(value === null ? '' : value)
-
-	const handleChange = (e) => {
-		onChange(e)
-		setWorkingValue(e.target.value)
-	}
-
-	const getInputValue = (workingField) => {
-		if (workingValue === undefined || workingValue === '') {
-			return workingField?.value || ''
-		} else {
-			return workingValue
-		}
-	}
 
 	const renderNonCheckbox = () => (
 		<>
@@ -109,8 +101,8 @@ export const FormField = (props) => {
 			{isEditable && (
 				<InputBox
 					field={props}
-					value={getInputValue(value)}
-					onChange={handleChange}
+					value={[null, undefined].includes(value) ? '' : value}
+					onChange={onChange}
 				/>
 			)}
 		</>
@@ -130,8 +122,8 @@ export const FormField = (props) => {
 				<CheckboxField
 					className={className}
 					name={name}
-					value={workingValue}
-					onChange={handleChange}
+					value={[null, undefined].includes(value) ? '' : value}
+					onChange={onChange}
 					label={label}
 				/>
 			) : (
@@ -148,20 +140,30 @@ FormField.propTypes = {
 		'select',
 		'textarea',
 		'range',
-		'selectMany',
+		'selectmany',
 		'password',
 		'checkbox',
 		'email',
 		'tel',
+		'noedit',
 		''
 	]),
-	name: PropTypes.string,
+	name: PropTypes.string.isRequired,
 	label: PropTypes.string,
-	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.array, PropTypes.bool]),
-	isEditable: PropTypes.bool,
+	value: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.string,
+		PropTypes.array,
+		PropTypes.bool,
+		PropTypes.node
+	]),
+	isEditable: PropTypes.bool.isRequired,
 	className: PropTypes.string,
 	hideLabel: PropTypes.bool,
 	fullWidth: PropTypes.bool,
 	block: PropTypes.bool,
-	onChange: PropTypes.func
+	onChange: PropTypes.func.isRequired,
+	options: PropTypes.shape({
+		onEnter: PropTypes.func
+	})
 }

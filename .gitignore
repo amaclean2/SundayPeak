@@ -7,3 +7,10 @@ mountinas/.DS_Store
 
 rivers/node_modules
 rivers/package-lock.json
+rivers/app.yaml
+rivers/.env.dev
+rivers/google-cloud-key.json
+rivers/.DS_Store
+
+.DS_Store
+.dispatch.yaml.swp

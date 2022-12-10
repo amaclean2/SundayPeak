@@ -1,8 +1,13 @@
-import './styles.css';
+import './styles.css'
 
-export * from './CarretIcon';
-export * from './Profile';
-export * from './Skier';
-export * from './SkierIcon';
-export * from './CheckboxChecked';
-export * from './CheckboxEmpty';
+export * from './CarretIcon'
+export * from './Profile'
+export * from './Skier'
+export * from './SkierIcon'
+export * from './ClimberIcon'
+export * from './HikerIcon'
+export * from './LargeSkierIcon'
+export * from './LargeClimberIcon'
+export * from './LargeHikerIcon'
+export * from './CheckboxChecked'
+export * from './CheckboxEmpty'

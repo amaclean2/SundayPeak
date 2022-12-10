@@ -4,7 +4,7 @@ const helmet = require('helmet')
 const { config } = require('dotenv')
 
 const router = require('./Routing')
-const { corsHandler } = require('./Config/cors.js')
+const { corsHandler } = require('./Config/cors')
 const authService = require('./Services/auth.service')
 
 config()
@@ -17,13 +17,15 @@ app.use(express.json())
 
 // security middleware
 app.use(cors({ origin: corsHandler }))
-app.use(helmet({
-	dnsPrefetchControl: false,
-	frameguard: false,
-	ieNoOpen: false
-}))
+app.use(
+  helmet({
+    dnsPrefetchControl: false,
+    frameguard: false,
+    ieNoOpen: false
+  })
+)
 
 // public routes
-app.use('/api', authService.validate, router)
+app.use(authService.validate, router)
 
 module.exports = app

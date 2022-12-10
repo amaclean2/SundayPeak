@@ -1,3 +1,5 @@
+import Plan from 'Components/Plan'
+import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { CARD_TYPES, useCardStateContext, useUserStateContext } from '../../Providers'
 import AdventureEditor from '../AdventureEditor'
@@ -5,14 +7,14 @@ import { LoginFlow, NewPassword, PasswordResetCapture, SignupFlow } from '../Sig
 import UserProfile from '../UserProfile'
 
 const MenuPanels = () => {
-	const { displayCardBoolState, workingCard, closeCard } = useCardStateContext()
+	const { displayCardBoolState, workingCard, cardDispatch } = useCardStateContext()
 	const { loggedInUser } = useUserStateContext()
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
 
 	if ((pathname.includes('/signup') || pathname.includes('/login')) && !!loggedInUser) {
 		navigate('/discover')
-		closeCard()
+		cardDispatch({ type: 'closeCard' })
 	}
 
 	return (
@@ -28,6 +30,8 @@ const MenuPanels = () => {
 			{pathname.includes('/password') && <NewPassword />}
 			{((displayCardBoolState && workingCard === CARD_TYPES.adventures) ||
 				pathname.includes('/adventure')) && <AdventureEditor />}
+			{((displayCardBoolState && workingCard === CARD_TYPES.plan) ||
+				pathname.includes('/plan')) && <Plan />}
 		</>
 	)
 }

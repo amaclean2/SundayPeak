@@ -1,20 +1,23 @@
-import { useCardStateContext, usePictures, useUserStateContext } from '../../Providers'
+import { useCardStateContext, useUserPictures, useUserStateContext } from '../../Providers'
 
 const UserProfileGallery = () => {
-	const { submitPicture } = usePictures()
-	const { setViewingImage } = useCardStateContext()
+	const { submitPicture } = useUserPictures()
+	const { cardDispatch } = useCardStateContext()
 
-	const { workingUser, loggedInUser } = useUserStateContext()
+	const { workingUser, activeWorkingUser } = useUserStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
 		submitPicture({ data: files[0] })
 	}
 
-	const userImages =
-		workingUser.id === loggedInUser.id ? [...workingUser.images, 'new'] : workingUser.images
+	const userImages = !activeWorkingUser ? [...workingUser.images, 'new'] : workingUser.images
 
 	const handleImageClick = (imageSource) => {
-		setViewingImage(imageSource)
+		cardDispatch({ type: 'viewingImage', payload: imageSource })
+	}
+
+	if (activeWorkingUser && !workingUser.imaages?.length) {
+		return null
 	}
 
 	return (

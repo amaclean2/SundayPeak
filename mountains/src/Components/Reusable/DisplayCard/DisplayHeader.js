@@ -1,14 +1,10 @@
 import cx from 'classnames'
 import { CarretIcon } from '../../../Images'
-import { useCardStateContext } from '../../../Providers'
 import { Button } from '../Button'
 
 const DisplayHeader = ({ className, onClose }) => {
-	const { closeCard } = useCardStateContext()
-
 	const localOnClose = (e) => {
 		onClose(e)
-		closeCard()
 	}
 
 	return (

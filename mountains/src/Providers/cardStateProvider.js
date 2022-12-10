@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useReducer } from 'react'
+import { getScreenType } from './utils'
 
 const CardStateContext = createContext()
 
@@ -12,87 +13,66 @@ export const useCardStateContext = () => {
 	return context
 }
 
-const changeCardState = (cardState) => {
-	switch (cardState) {
-		case 'open':
-			return 'closing'
-		case 'closing':
-			return 'closed'
-		case 'closed':
-			return 'opening'
-		case 'opening':
-			return 'open'
-		default:
-			return 'closed'
-	}
-}
-
 export const CARD_TYPES = {
 	adventures: 'adenvetures',
 	profile: 'profile',
 	signup: 'signup',
 	login: 'login',
 	password_reset: 'password_reset',
-	new_password: 'new_password'
+	new_password: 'new_password',
+	plan: 'plan'
 }
 
 export const CardStateProvider = ({ children }) => {
-	const [displayCardOpenState, setDisplayCardOpenState] = useState('closed')
-	const [displayCardBoolState, setDisplayCardBoolState] = useState(false)
-	const [workingCard, setWorkingCard] = useState('')
-	const [viewingImage, setViewingImage] = useState(null)
-	const [showAlert, setShowAlert] = useState(false)
-	const [alertContent, setAlertContent] = useState('')
-
-	const openCard = async (newWorkingCard) => {
-		setDisplayCardOpenState(changeCardState('closed'))
-		setWorkingCard(newWorkingCard)
-
-		return setTimeout(() => {
-			setDisplayCardOpenState(changeCardState('opening'))
-		}, 50)
+	const initialCardState = {
+		displayCardBoolState: false,
+		workingCard: '',
+		viewingImage: null,
+		showAlert: false,
+		alertContent: '',
+		screenType: getScreenType()
 	}
 
-	const switchCard = (newWorkingCard) => {
-		console.log('switched', newWorkingCard)
-		setWorkingCard(newWorkingCard)
-	}
-
-	const closeCard = async () => {
-		setDisplayCardOpenState(changeCardState('open'))
-
-		return setTimeout(() => {
-			setDisplayCardOpenState(changeCardState('closing'))
-			setWorkingCard('')
-		}, 300)
-	}
-
-	useEffect(() => {
-		if (['opening', 'open', 'closing'].includes(displayCardOpenState)) {
-			setDisplayCardBoolState(true)
-		} else {
-			setDisplayCardBoolState(false)
+	const cardReducer = (state, action) => {
+		switch (action.type) {
+			case 'openCard':
+				return {
+					...state,
+					workingCard: action.payload,
+					displayCardBoolState: true
+				}
+			case 'switchCard':
+				return { ...state, workingCard: action.payload, displayCardBoolState: true }
+			case 'closeCard':
+				return { ...state, workingCard: '', displayCardBoolState: false }
+			case 'closeCardMessage':
+				return {
+					...state,
+					displayCardBoolState: false,
+					workingCard: '',
+					showAlert: true,
+					alertContent: action.payload
+				}
+			case 'workingCard':
+				return { ...state, workingCard: action.payload }
+			case 'viewingImage':
+				return { ...state, viewingImage: action.payload }
+			case 'openAlert':
+				return { ...state, showAlert: true, alertContent: action.payload }
+			case 'closeAlert':
+				return { ...state, showAlert: false }
+			default:
+				return state
 		}
-	}, [displayCardOpenState])
+	}
+
+	const [cardState, cardDispatch] = useReducer(cardReducer, initialCardState)
 
 	return (
 		<CardStateContext.Provider
 			value={{
-				displayCardOpenState,
-				displayCardBoolState,
-				workingCard,
-				viewingImage,
-				// notFullyOpen describes the intermediate loading states of animations
-				notFullyOpen: ['closing', 'closed', 'opening'].includes(displayCardOpenState),
-				showAlert,
-				alertContent,
-				setDisplayCardOpenState,
-				openCard,
-				closeCard,
-				switchCard,
-				setViewingImage,
-				setShowAlert,
-				setAlertContent
+				...cardState,
+				cardDispatch
 			}}
 		>
 			{children}

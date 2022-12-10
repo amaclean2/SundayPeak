@@ -1,5 +1,6 @@
 const exemptQueries = [
   '/adventures/all',
+  '/adventures/search',
   '/adventures/details',
   'savePasswordReset',
   'resetPassword',

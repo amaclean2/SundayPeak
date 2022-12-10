@@ -5,19 +5,18 @@ import { useCardStateContext } from '../../../Providers'
 import './styles.css'
 
 const Alert = ({ className, type }) => {
-	const { showAlert, alertContent, setShowAlert, setAlertContent } = useCardStateContext()
+	const { showAlert, alertContent, cardDispatch } = useCardStateContext()
 	const [displayState, setDisplayState] = useState(0)
 
 	useEffect(() => {
 		if (showAlert) {
 			setDisplayState(1)
 			setTimeout(() => {
-				setShowAlert(false)
-				setAlertContent('')
+				cardDispatch({ type: 'closeAlert', payload: '' })
 				setDisplayState(2)
-			}, 10000)
+			}, 5000)
 		}
-	}, [showAlert, setShowAlert, setAlertContent])
+	}, [showAlert, cardDispatch])
 
 	const handleEndTransition = () => {
 		displayState === 2 && setDisplayState(0)

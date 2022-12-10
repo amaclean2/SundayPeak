@@ -1,25 +1,21 @@
 import React from 'react'
 import {
-	useAdventureEditContext,
+	useAdventureStateContext,
+	useGetAdventure,
 	useSaveActivity,
 	useSaveTick,
 	useUserStateContext
 } from '../../../Providers'
+import getContent from '../../../TextContent'
 import Menu from '../../Reusable/Menu'
 
 const AdventureEditorMenu = () => {
-	const {
-		currentAdventure,
-		isDeletePage,
-		setIsDeletePage,
-		setAdventureAddState,
-		isEditable,
-		setIsEditable,
-		saveState
-	} = useAdventureEditContext()
+	const { adventureDispatch, currentAdventure, isDeletePage, isAdventureEditable, saveState } =
+		useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
-	const { saveTick } = useSaveTick()
-	const { saveActivity } = useSaveActivity()
+	const saveTick = useSaveTick()
+	const saveActivity = useSaveActivity()
+	const { shareAdventure } = useGetAdventure()
 
 	if (!loggedInUser) return null
 
@@ -31,42 +27,48 @@ const AdventureEditorMenu = () => {
 
 	if (!currentAdventure && !isDeletePage) {
 		menuFields.push({
-			action: () => setAdventureAddState(true),
+			action: () => adventureDispatch({ type: 'toggleAdventureAddState' }),
 			id: 'adventure-add-button',
-			text: 'Add New Adventure'
+			text: getContent('buttonText.addAdventure')
 		})
-	} else if (currentAdventure && !isEditable && !isDeletePage && saveState === 0) {
+	} else if (currentAdventure && !isAdventureEditable && !isDeletePage && !saveState) {
 		menuFields.push({
-			action: () => setIsEditable(true),
+			action: () => shareAdventure({ id: currentAdventure.id }),
+			id: 'adventure-share-button',
+			text: getContent('buttonText.share')
+		})
+
+		menuFields.push({
+			action: () => adventureDispatch({ type: 'toggleAdventureEditable' }),
 			id: 'adventure-edit-button',
-			text: 'Edit Adventure'
+			text: getContent('buttonText.editAdventure')
 		})
 
 		if (canAddTick) {
 			menuFields.push({
 				id: 'adventure-tick-button',
 				action: () => saveTick({ adventureId: currentAdventure.id }),
-				text: 'Add to Ticklist'
+				text: getContent('buttonText.addToTicklist')
 			})
 		}
 
 		menuFields.push({
 			id: 'adventure-complete-button',
 			action: () => saveActivity({ adventureId: currentAdventure.id }),
-			text: 'Complete Activity'
+			text: getContent('buttonText.completeActivity')
 		})
 
 		if (!isDeletePage && currentAdventure.creator_id === loggedInUser.id) {
 			menuFields.push({
 				id: 'delete-adventure-button',
 				className: 'delete-button',
-				action: () => setIsDeletePage(true),
-				text: 'Delete Adventure'
+				action: () => adventureDispatch({ type: 'toggleDeletePage' }),
+				text: getContent('buttonText.deleteAdventure')
 			})
 		}
 	}
 
-	if (!menuFields.length) return
+	if (!menuFields.length) return null
 
 	return <Menu fields={menuFields} />
 }

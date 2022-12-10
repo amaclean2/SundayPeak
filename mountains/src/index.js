@@ -1,34 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { CardStateProvider } from './Providers/cardStateProvider';
-import { AdventureEditProvider } from './Providers/adventureEditProvider';
-import { UserStateProvider } from './Providers/userStateProvider';
+import App from './App'
+import reportWebVitals from './reportWebVitals'
 
-import 'mapbox-gl/dist/mapbox-gl.css';
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { AdventureStateProvider, CardStateProvider, UserStateProvider } from 'Providers'
 
-const ProvidersWrapper = () => {
-  return (
-    <CardStateProvider>
-        <UserStateProvider>
-          <AdventureEditProvider>
-            <App />
-          </AdventureEditProvider>
-        </UserStateProvider>
-    </CardStateProvider>
-  );
-};
+const ProvidersWrapper = () => (
+	<CardStateProvider>
+		<UserStateProvider>
+			<AdventureStateProvider>
+				<App />
+			</AdventureStateProvider>
+		</UserStateProvider>
+	</CardStateProvider>
+)
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <ProvidersWrapper />
-  </React.StrictMode>
-);
+const root = ReactDOM.createRoot(document.getElementById('root'))
+
+// root.render(
+// 	<React.StrictMode>
+// 		<ProvidersWrapper />
+// 	</React.StrictMode>
+// )
+
+root.render(<ProvidersWrapper />)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals()
