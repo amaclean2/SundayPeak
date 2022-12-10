@@ -4,20 +4,19 @@ const UserProfileGallery = () => {
 	const { submitPicture } = useUserPictures()
 	const { cardDispatch } = useCardStateContext()
 
-	const { workingUser, loggedInUser } = useUserStateContext()
+	const { workingUser, activeWorkingUser } = useUserStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
 		submitPicture({ data: files[0] })
 	}
 
-	const userImages =
-		workingUser.id === loggedInUser.id ? [...workingUser.images, 'new'] : workingUser.images
+	const userImages = !activeWorkingUser ? [...workingUser.images, 'new'] : workingUser.images
 
 	const handleImageClick = (imageSource) => {
 		cardDispatch({ type: 'viewingImage', payload: imageSource })
 	}
 
-	if (workingUser.id !== loggedInUser.id && !workingUser.imaages?.length) {
+	if (activeWorkingUser && !workingUser.imaages?.length) {
 		return null
 	}
 

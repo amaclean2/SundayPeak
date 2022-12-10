@@ -1,8 +1,6 @@
 .display-card {
 	margin: 10px;
-	height: calc(100vh - 60px);
-	min-width: 500px;
-	max-width: 1000px;
+	min-width: 28rem;
 	border-radius: 30px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 	display: none;
@@ -84,6 +82,7 @@
 	overflow: hidden;
 	transition: all 0.3s ease-in-out;
 	flex-direction: column;
+	max-height: 96vh;
 }
 
 .action-buttons.flex-box {
@@ -108,7 +107,6 @@
 }
 
 .profile-content {
-	height: calc(100% - 90px);
 	background-color: var(--secondary-background-color);
 	padding-bottom: 10px;
 	overflow-y: auto;
@@ -122,6 +120,10 @@
 	padding-top: 3rem;
 	background: var(--header-gradient);
 	color: var(--text-on-dark-background);
+}
+
+.profile-header.slim {
+	height: 3rem;
 }
 
 .profile-header.centered {
@@ -144,7 +146,16 @@ h3.label-field {
 	padding: 0 0.8em 0 0;
 }
 
+.main-adventure-content,
+.main-user-content {
+	min-height: 60rem;
+}
+
 @media screen and (max-width: 500px) {
+	.display-content {
+		max-height: 100vh;
+	}
+
 	.field-header.page-header.flex-box {
 		font-size: 1.4rem;
 	}
@@ -158,7 +169,7 @@ h3.label-field {
 	}
 
 	.display-card .main-login-content {
-		width: 100%;
+		width: 100vw;
 		justify-content: center;
 		display: flex;
 		flex-direction: column;
@@ -176,15 +187,18 @@ h3.label-field {
 	}
 
 	.profile-content {
-		padding-bottom: 3rem;
+		padding-bottom: 5rem;
+	}
+
+	.profile-header {
+		height: 12rem;
 	}
 
 	.action-buttons.flex-box {
 		flex-direction: column;
 		align-items: stretch;
 		border-top: 1px solid var(--seperator-color);
-		position: relative;
-		bottom: auto;
+		padding-bottom: 5rem;
 		box-shadow: none;
 	}
 
@@ -192,5 +206,10 @@ h3.label-field {
 		justify-content: center;
 		background-color: transparent;
 		color: var(--primary-accent-color);
+	}
+
+	.main-adventure-content,
+	.main-user-content {
+		min-height: 100%;
 	}
 }

@@ -48,19 +48,19 @@ input {
 	border: 1px solid var(--input-border-color);
 	border-radius: 10px;
 	font-size: 1rem;
-	margin: 5px 0;
+	margin: 0.4rem 0;
 	display: block;
-	height: 40px;
+	height: 2.5rem;
 
 	/* subtract the padding from the form field and the border*/
 	width: 100%;
-	padding: 0 16px;
+	padding: 0 1rem;
 	transition: all 0.15s ease-in-out;
 	outline: none;
 }
 
 .form-field.select {
-	width: auto;
+	width: 100%;
 	min-width: 200px;
 }
 
@@ -201,15 +201,18 @@ input {
 @media screen and (max-width: 500px) {
 	.form-field-container {
 		max-width: 100%;
-		padding: 0 1rem;
-		padding-right: 1rem;
 		min-width: auto;
-		margin: 1rem 0;
+		padding: 1rem;
 		margin-bottom: 1rem;
 	}
 
 	.multi-field.flex-box {
 		padding: 0 1rem;
+	}
+
+	.profile-header .form-field-container {
+		margin-bottom: 0;
+		padding: 0;
 	}
 
 	.multi-field-box .form-field-container {
@@ -219,5 +222,6 @@ input {
 
 	.multi-field-box {
 		gap: 1rem;
+		flex-wrap: wrap;
 	}
 }

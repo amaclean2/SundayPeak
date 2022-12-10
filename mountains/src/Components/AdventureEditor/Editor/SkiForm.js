@@ -6,6 +6,7 @@ import {
 	gearOptions,
 	seasonOptions
 } from 'Components/AdventureEditor/utils'
+import { LargeSkierIcon } from 'Images'
 
 const SkiForm = ({ onChange }) => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -16,8 +17,13 @@ const SkiForm = ({ onChange }) => {
 			<FormField
 				type='noedit'
 				name='adventure_type'
-				label={'Adventure Type'}
-				value={currentAdventure.adventure_type}
+				hideLabel
+				value={
+					<LargeSkierIcon
+						size={40}
+						className={'editor-skier'}
+					/>
+				}
 				isEditable
 				onChange={() => {}}
 			/>

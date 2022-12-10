@@ -22,6 +22,8 @@ const Discover = () => {
 			cardDispatch({ type: 'openCard', payload: CARD_TYPES.profile })
 		} else if (pathname.includes('/signup')) {
 			cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })
+		} else if (pathname.includes('/plan')) {
+			cardDispatch({ type: 'openCard', payload: CARD_TYPES.plan })
 		}
 	}, [])
 

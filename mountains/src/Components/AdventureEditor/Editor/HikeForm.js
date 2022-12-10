@@ -1,14 +1,21 @@
 import { Accordion, ErrorField, FormField, MultiField } from 'Components/Reusable'
 import { useAdventureStateContext } from 'Providers'
 import getContent from 'TextContent'
-import {
-	directionSelectOptions,
-	gearOptions,
-	seasonOptions
-} from 'Components/AdventureEditor/utils'
+import { seasonOptions } from 'Components/AdventureEditor/utils'
+import { LargeHikerIcon } from 'Images'
 
 const HikeForm = ({ onChange }) => {
 	const { currentAdventure } = useAdventureStateContext()
+
+	/**
+	 * id INT AUTO_INCREMENT,
+    difficulty INT,
+    elevation INT,
+    distance FLOAT,
+    season VARCHAR(100),
+    gain INT,
+    PRIMARY KEY(id)
+	 */
 
 	return (
 		<div className='adventure-info flex-box'>
@@ -16,9 +23,14 @@ const HikeForm = ({ onChange }) => {
 			<FormField
 				type='noedit'
 				name='adventure_type'
-				label={'Adventure Type'}
-				value={currentAdventure.adventure_type}
+				value={
+					<LargeHikerIcon
+						size={70}
+						className={'editor-hiker'}
+					/>
+				}
 				isEditable
+				hideLabel
 				onChange={() => {}}
 			/>
 			<FormField
@@ -32,12 +44,12 @@ const HikeForm = ({ onChange }) => {
 				onChange={onChange}
 			/>
 			<FormField
-				name='approach_distance'
-				label={getContent('adventurePanel.editable.approachDistance')}
+				name='distance'
+				label={'Distance'}
 				isEditable
 				fullWidth
 				options={{ suffix: 'miles' }}
-				value={currentAdventure.approach_distance || ''}
+				value={currentAdventure.distance || ''}
 				onChange={onChange}
 			/>
 			<MultiField
@@ -58,6 +70,22 @@ const HikeForm = ({ onChange }) => {
 					}
 				]}
 			/>
+			<FormField
+				name='difficulty'
+				label={getContent('adventurePanel.fields.difficulty')}
+				type='range'
+				options={{
+					range: {
+						min: 1,
+						max: 3,
+						step: 1
+					}
+				}}
+				isEditable
+				fullWidth
+				value={currentAdventure.difficulty || ''}
+				onChange={onChange}
+			/>
 			<Accordion title={getContent('adventurePanel.editable.seasonPicker')}>
 				<FormField
 					name='season'
@@ -67,84 +95,6 @@ const HikeForm = ({ onChange }) => {
 					isEditable
 					fullWidth
 					value={currentAdventure.season || ''}
-					onChange={onChange}
-				/>
-			</Accordion>
-			<Accordion title={getContent('adventurePanel.editable.gearPicker')}>
-				<FormField
-					name='gear'
-					label={getContent('adventurePanel.editable.gearRequired')}
-					type='selectmany'
-					options={{ selectMany: gearOptions }}
-					isEditable
-					fullWidth
-					value={currentAdventure.gear || ''}
-					onChange={onChange}
-				/>
-			</Accordion>
-			<Accordion title={getContent('adventurePanel.editable.slope')}>
-				<FormField
-					name='avg_angle'
-					label={getContent('adventurePanel.editable.avgAngle')}
-					isEditable
-					fullWidth
-					value={currentAdventure.avg_angle || ''}
-					options={{ suffix: 'degrees' }}
-					onChange={onChange}
-				/>
-				<FormField
-					name='max_angle'
-					label={getContent('adventurePanel.editable.maxAngle')}
-					isEditable
-					fullWidth
-					value={currentAdventure.max_angle || ''}
-					options={{ suffix: 'degrees' }}
-					onChange={onChange}
-				/>
-				<FormField
-					name='aspect'
-					label={getContent('adventurePanel.fields.aspect')}
-					type='select'
-					isEditable
-					fullWidth
-					options={{
-						selectOptions: directionSelectOptions
-					}}
-					value={currentAdventure.aspect || 'N'}
-					onChange={onChange}
-				/>
-			</Accordion>
-			<Accordion title={getContent('adventurePanel.editable.experience')}>
-				<FormField
-					name='difficulty'
-					label={getContent('adventurePanel.fields.difficulty')}
-					type='range'
-					options={{
-						range: {
-							min: 1,
-							max: 3,
-							step: 1
-						}
-					}}
-					isEditable
-					fullWidth
-					value={currentAdventure.difficulty || ''}
-					onChange={onChange}
-				/>
-				<FormField
-					name='exposure'
-					label={getContent('adventurePanel.fields.exposure')}
-					type='range'
-					options={{
-						range: {
-							min: 0,
-							max: 5,
-							step: 1
-						}
-					}}
-					isEditable
-					fullWidth
-					value={currentAdventure.exposure || ''}
 					onChange={onChange}
 				/>
 			</Accordion>

@@ -2,7 +2,6 @@ import { useAdventureStateContext, useUserStateContext } from '../../../Provider
 import getContent from '../../../TextContent'
 import { Field, FieldHeader, FieldPage, FieldRow, FieldValue } from '../../Reusable'
 import AdventureGallery from '../Gallery'
-import GearList from '../GearList'
 import SeasonList from '../SeasonList'
 import AdventureTickPanel from '../TickPanel'
 import { pitchClimbs } from '../utils'

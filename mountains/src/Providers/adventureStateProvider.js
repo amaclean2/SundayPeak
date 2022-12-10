@@ -42,7 +42,8 @@ export const AdventureStateProvider = ({ children }) => {
 				return {
 					...state,
 					allAdventures: action.payload.adventures,
-					startPosition: action.payload.startPosition
+					startPosition: action.payload.startPosition,
+					...(action.payload.boundingBox && { currentBoundingBox: action.payload.boundingBox })
 				}
 			case 'addNewAdventure':
 				return {

@@ -1,5 +1,6 @@
 import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
-import React, { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { debounce, throttle } from 'throttle-debounce'
 import {
 	CARD_TYPES,
 	useAdventureStateContext,
@@ -12,19 +13,13 @@ import { Button, FlexSpacer, FormField } from '../../Reusable'
 import './styles.css'
 
 const AdventureSearch = () => {
-	const [adventureText, setAdventureText] = useState('')
-	const [searchResults, setSearchResults] = useState(null)
-
-	const { searchAdventures, refetchAdventures } = useGetAdventures()
+	const { searchAdventures, changeAdventureType } = useGetAdventures()
 	const { getAdventure } = useGetAdventure()
 	const { cardDispatch } = useCardStateContext()
 	const { adventureDispatch } = useAdventureStateContext()
 
-	useEffect(() => {
-		searchAdventures({ searchQuery: adventureText }).then((adventures) =>
-			setSearchResults(adventures)
-		)
-	}, [adventureText])
+	const [searchResults, setSearchResults] = useState(null)
+	const [adventureText, setAdventureText] = useState('')
 
 	const openAdventure = (id, type) => {
 		return getAdventure({ id }).then(() => {
@@ -33,10 +28,16 @@ const AdventureSearch = () => {
 		})
 	}
 
-	const changeAdventureType = (newType) => {
-		adventureDispatch({ type: 'adventureTypeViewer', payload: newType })
-		refetchAdventures({})
-	}
+	const slowSearch = useCallback(
+		() => debounce(100, searchAdventures({ searchQuery: adventureText }).then(setSearchResults)),
+		[adventureText]
+	)
+
+	useEffect(() => {
+		if (adventureText.length) {
+			slowSearch()
+		}
+	}, [adventureText])
 
 	return (
 		<>
@@ -44,6 +45,7 @@ const AdventureSearch = () => {
 				<FormField
 					type='text'
 					name={'adventure_search'}
+					className={'adventure-search-field'}
 					value={adventureText}
 					isEditable
 					fullWidth
@@ -56,13 +58,13 @@ const AdventureSearch = () => {
 						{searchResults.map((result, key) => (
 							<li
 								key={`search_result_${key}`}
-								className={'search-list-item flex-box'}
+								className={'drop-list-item flex-box'}
 								onClick={() => openAdventure(result.id, result.adventure_type)}
 							>
 								{result.adventure_name}
-								<span className='search-list-subtext'>{result.adventure_type}</span>
+								<span className='drop-list-subtext'>{result.adventure_type}</span>
 								<FlexSpacer />
-								{result.nearest_city}
+								<span className='drop-list-secondary'>{result.nearest_city}</span>
 							</li>
 						))}
 					</ul>

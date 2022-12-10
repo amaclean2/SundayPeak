@@ -55,7 +55,7 @@ export const SignupFlow = () => {
 				/>
 			</ProfileHeader>
 			<ProfileContent>
-				<div className='main-login-content'>
+				<div className='main-signup-content'>
 					<div className='adventure-info flex-box signup-form'>
 						<ErrorField
 							form='login'

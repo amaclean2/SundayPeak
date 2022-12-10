@@ -1,3 +1,5 @@
+import Plan from 'Components/Plan'
+import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { CARD_TYPES, useCardStateContext, useUserStateContext } from '../../Providers'
 import AdventureEditor from '../AdventureEditor'
@@ -28,6 +30,8 @@ const MenuPanels = () => {
 			{pathname.includes('/password') && <NewPassword />}
 			{((displayCardBoolState && workingCard === CARD_TYPES.adventures) ||
 				pathname.includes('/adventure')) && <AdventureEditor />}
+			{((displayCardBoolState && workingCard === CARD_TYPES.plan) ||
+				pathname.includes('/plan')) && <Plan />}
 		</>
 	)
 }

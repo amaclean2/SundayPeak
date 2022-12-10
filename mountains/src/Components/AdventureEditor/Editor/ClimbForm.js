@@ -7,6 +7,7 @@ import {
 	pitchClimbs,
 	seasonOptions
 } from 'Components/AdventureEditor/utils'
+import { LargeClimberIcon } from 'Images'
 
 const ClimbForm = ({ onChange }) => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -26,8 +27,13 @@ const ClimbForm = ({ onChange }) => {
 			<FormField
 				type='noedit'
 				name='adventure_type'
-				label={'Adventure Type'}
-				value={currentAdventure.adventure_type || 'ski'}
+				hideLabel
+				value={
+					<LargeClimberIcon
+						size={70}
+						className={'editor-climber'}
+					/>
+				}
 				isEditable
 				onChange={() => {}}
 			/>

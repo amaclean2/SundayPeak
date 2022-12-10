@@ -1,11 +1,14 @@
 import { ConfirmationPage, FormField } from 'Components/Reusable'
-import { useCardStateContext } from 'Providers'
+import { useAdventureStateContext, useCardStateContext, useGetAdventures } from 'Providers'
 
-const AdventureTypeSelector = ({ adventureType, setAdventureType }) => {
+const AdventureTypeSelector = ({ setAddAdventureInstructions }) => {
 	const { screenType, cardDispatch } = useCardStateContext()
+	const { changeAdventureType } = useGetAdventures()
+	const { adventureTypeViewer } = useAdventureStateContext()
 
 	const handleChange = (event) => {
-		setAdventureType(event.target.value)
+		changeAdventureType(event.target.value)
+		setAddAdventureInstructions((currInstructions) => !currInstructions)
 
 		if (screenType.mobile) {
 			cardDispatch({ type: 'closeCard' })
@@ -19,7 +22,8 @@ const AdventureTypeSelector = ({ adventureType, setAdventureType }) => {
 				name='adventure_type_selector'
 				isEditable
 				fullWidth
-				placeholder={'Select an Adventure Type'}
+				label={'Select an Adventure Type'}
+				placeholder={'Adventure Type'}
 				options={{
 					selectOptions: [
 						{
@@ -39,7 +43,7 @@ const AdventureTypeSelector = ({ adventureType, setAdventureType }) => {
 						}
 					]
 				}}
-				value={adventureType || 0}
+				value={adventureTypeViewer || 'ski'}
 				onChange={handleChange}
 			/>
 		</ConfirmationPage>

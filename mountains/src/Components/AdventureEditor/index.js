@@ -36,7 +36,7 @@ const AdventureEditor = () => {
 	const { getAdventure } = useGetAdventure()
 	const navigate = useNavigate()
 
-	const [adventureType, setAdventureType] = useState(null)
+	const [addAdventureInstructions, setAddAdventureInstructions] = useState(false)
 
 	const menuRef = useRef()
 	const loadedRef = useRef(false)
@@ -63,6 +63,7 @@ const AdventureEditor = () => {
 
 	const handleClose = () => {
 		adventureDispatch({ type: 'closeAdventurePanel' })
+		setAddAdventureInstructions(false)
 		navigate('/discover')
 	}
 
@@ -155,15 +156,12 @@ const AdventureEditor = () => {
 				<div className='flex-box main-adventure-content'>
 					{adventureAddState && (
 						<>
-							{!!adventureType ? (
+							{addAdventureInstructions ? (
 								<ConfirmationPage>
 									{getContent('adventurePanel.adventureCreatorContent')}
 								</ConfirmationPage>
 							) : (
-								<AdventureTypeSelector
-									adventureType={adventureType}
-									setAdventureType={setAdventureType}
-								/>
+								<AdventureTypeSelector setAddAdventureInstructions={setAddAdventureInstructions} />
 							)}
 						</>
 					)}
@@ -173,10 +171,7 @@ const AdventureEditor = () => {
 						</ConfirmationPage>
 					)}
 					{!isDeletePage && currentAdventure && isAdventureEditable && (
-						<AdventureEditorForm
-							onChange={onChange}
-							adventureType={adventureType}
-						/>
+						<AdventureEditorForm onChange={onChange} />
 					)}
 					{!isDeletePage && currentAdventure && !isAdventureEditable && <AdventureViewer />}
 					{!isDeletePage && !currentAdventure && !adventureAddState && <AdventureSearch />}

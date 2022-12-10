@@ -6,6 +6,11 @@
 	height: 100vh;
 }
 
+.mapboxgl-canvas {
+	width: 100% !important;
+	height: 100% !important;
+}
+
 @media screen and (max-width: 500px) {
 	.card-open {
 		display: none;

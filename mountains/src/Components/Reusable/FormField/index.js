@@ -150,12 +150,20 @@ FormField.propTypes = {
 	]),
 	name: PropTypes.string.isRequired,
 	label: PropTypes.string,
-	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.array, PropTypes.bool])
-		.isRequired,
+	value: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.string,
+		PropTypes.array,
+		PropTypes.bool,
+		PropTypes.node
+	]),
 	isEditable: PropTypes.bool.isRequired,
 	className: PropTypes.string,
 	hideLabel: PropTypes.bool,
 	fullWidth: PropTypes.bool,
 	block: PropTypes.bool,
-	onChange: PropTypes.func.isRequired
+	onChange: PropTypes.func.isRequired,
+	options: PropTypes.shape({
+		onEnter: PropTypes.func
+	})
 }

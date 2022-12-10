@@ -58,6 +58,15 @@
 	color: var(--text-on-dark-background);
 }
 
+.landing-header-logo {
+	background-color: transparent;
+	cursor: auto;
+}
+
+.landing-header-logo:hover {
+	background-color: transparent;
+}
+
 .flipped-align {
 	text-align: right;
 	padding-left: 0;

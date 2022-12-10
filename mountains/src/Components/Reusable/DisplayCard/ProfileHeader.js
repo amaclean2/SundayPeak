@@ -11,7 +11,8 @@ export const ProfileHeader = ({
 	editFields: { isEditable, propName, onChange } = {},
 	children,
 	image = false,
-	className
+	className,
+	slim
 }) => {
 	const renderEditHeader = () => (
 		<FormField
@@ -37,6 +38,7 @@ export const ProfileHeader = ({
 				'profile-header',
 				'flex-box',
 				configuration,
+				slim && 'slim',
 				className,
 				image && 'image-header'
 			)}

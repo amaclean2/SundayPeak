@@ -1,6 +1,12 @@
 .confirmation {
 	font-size: 25px;
-	margin: 15px;
+	padding: 0.8em;
 	line-height: 1.5em;
-	width: 100%;
+	max-width: 35rem;
+}
+
+@media screen and (max-width: 500px) {
+	.confirmation .form-field-container {
+		padding: 0;
+	}
 }

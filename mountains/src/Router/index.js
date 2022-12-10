@@ -27,6 +27,10 @@ const AppRouter = () => {
 						element={<Discover />}
 					/>
 					<Route
+						path='/plan'
+						element={<Discover />}
+					/>
+					<Route
 						path='/login'
 						element={<Discover />}
 					/>

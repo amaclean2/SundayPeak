@@ -19,7 +19,8 @@ export const CARD_TYPES = {
 	signup: 'signup',
 	login: 'login',
 	password_reset: 'password_reset',
-	new_password: 'new_password'
+	new_password: 'new_password',
+	plan: 'plan'
 }
 
 export const CardStateProvider = ({ children }) => {

@@ -7,14 +7,13 @@ export const PhotoGallery = () => {
 
 	const { cardDispatch } = useCardStateContext()
 
-	const { workingUser, loggedInUser } = useUserStateContext()
+	const { workingUser, activeWorkingUser } = useUserStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
 		submitPicture({ data: files[0] })
 	}
 
-	const userImages =
-		workingUser.id === loggedInUser.id ? [...workingUser.images, 'new'] : workingUser.images
+	const userImages = !activeWorkingUser ? [...workingUser.images, 'new'] : workingUser.images
 
 	const handleImageClick = (imageSource) => {
 		cardDispatch({ type: 'viewingImage', payload: imageSource })

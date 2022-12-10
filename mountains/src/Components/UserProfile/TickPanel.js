@@ -5,14 +5,15 @@ import {
 	useGetAdventure,
 	useUserStateContext
 } from '../../Providers'
-import { FieldHeader } from '../Reusable'
+import { FieldHeader, FlexSpacer } from '../Reusable'
 
-const Tick = ({ tickName, onClick }) => (
+const Tick = ({ onClick, tick }) => (
 	<li
 		onClick={onClick}
-		className='tick'
+		className='tick drop-list-item flex-box'
 	>
-		{tickName}
+		{tick.adventure_name}
+		<span className='drop-list-subtext'>{tick.adventure_type}</span>
 	</li>
 )
 
@@ -34,7 +35,7 @@ const UserTickPanel = ({ className }) => {
 				{workingUser.ticks?.map((tick, key) => (
 					<Tick
 						onClick={() => openAdventure(tick.adventure_id)}
-						tickName={tick.adventure_name}
+						tick={tick}
 						key={`user_tick_${key}`}
 					/>
 				))}

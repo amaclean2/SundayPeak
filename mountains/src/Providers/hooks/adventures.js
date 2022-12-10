@@ -4,7 +4,7 @@ import getContent from 'TextContent'
 import { useAdventureStateContext } from 'Providers/adventureStateProvider'
 import { useCardStateContext } from 'Providers/cardStateProvider'
 import { fetcher, useAdventureValidation } from 'Providers/utils'
-import { useCallback, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 export const useGetAdventure = () => {
 	const { adventureDispatch } = useAdventureStateContext()
@@ -39,9 +39,23 @@ export const useGetAdventure = () => {
 export const useGetAdventures = () => {
 	const { currentBoundingBox, startPosition, adventureDispatch, adventureTypeViewer } =
 		useAdventureStateContext()
+	const { screenType, cardDispatch } = useCardStateContext()
+	const boundingRef = useRef(currentBoundingBox)
+
+	useEffect(() => {
+		boundingRef.current = currentBoundingBox
+	}, [currentBoundingBox])
+
+	const changeAdventureType = (newType) => {
+		adventureDispatch({ type: 'adventureTypeViewer', payload: newType })
+		refetchAdventures({ boundingBox: boundingRef.current })
+
+		if (screenType.mobile) {
+			cardDispatch({ type: 'closeCard' })
+		}
+	}
 
 	const getAllAdventures = async (boundingBox) => {
-		boundingBox && adventureDispatch({ type: 'boundingBox', payload: boundingBox })
 		return fetcher('/adventures/all', {
 			method: 'POST',
 			body: {
@@ -53,7 +67,10 @@ export const useGetAdventures = () => {
 			}
 		})
 			.then(({ data: { adventures } }) => {
-				adventureDispatch({ type: 'allAdventures', payload: { adventures, startPosition } })
+				adventureDispatch({
+					type: 'allAdventures',
+					payload: { adventures, startPosition, boundingBox }
+				})
 
 				return adventures
 			})
@@ -82,7 +99,7 @@ export const useGetAdventures = () => {
 			.then(({ data: { adventures } }) => {
 				adventureDispatch({
 					type: 'allAdventures',
-					payload: { adventures, startPosition: newStartPosition }
+					payload: { adventures, startPosition: newStartPosition, boundingBox }
 				})
 
 				return adventures
@@ -96,7 +113,7 @@ export const useGetAdventures = () => {
 			.catch(console.error)
 	}
 
-	return { getAllAdventures, refetchAdventures, searchAdventures }
+	return { getAllAdventures, refetchAdventures, searchAdventures, changeAdventureType }
 }
 
 export const useSaveAdventure = () => {
@@ -185,13 +202,19 @@ export const useSaveAdventure = () => {
 export const useDeleteAdventure = () => {
 	const { cardDispatch } = useCardStateContext()
 	const { refetchAdventures } = useGetAdventures()
-	const { adventureDispatch } = useAdventureStateContext()
+	const { adventureDispatch, currentBoundingBox } = useAdventureStateContext()
+	const boundingRef = useRef(currentBoundingBox)
+
+	useEffect(() => {
+		boundingRef.current = currentBoundingBox
+	}, [currentBoundingBox])
+
 	const deleteAdventure = ({ adventureId }) => {
 		return fetcher(`/adventures/delete?adventure_id=${adventureId}`, { method: 'DELETE' })
 			.then(() => {
 				cardDispatch({ type: 'closeCard' })
 				adventureDispatch({ type: 'deleteAdventure' })
-				return refetchAdventures({})
+				return refetchAdventures({ boundingBox: boundingRef.current })
 			})
 			.catch(console.error)
 	}

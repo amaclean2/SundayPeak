@@ -1,3 +1,4 @@
+import { push, set } from 'firebase/database'
 import { BACKEND_URI } from '../Constants'
 import { useAdventureStateContext } from './adventureStateProvider'
 
@@ -128,7 +129,10 @@ export const useAdventureValidation = () => {
 			...(fields.bio && { bio: fields.bio || '' }),
 			...(fields.nearest_city && { nearest_city: fields.nearest_city || '' }),
 			...(fields.coordinates && {
-				coordinates: JSON.stringify(fields.coordinates)
+				coordinates:
+					typeof fields.coordinates === 'string'
+						? fields.coordinates
+						: JSON.stringify(fields.coordinates)
 			})
 		}
 	}
@@ -210,4 +214,15 @@ export const getScreenType = () => {
 	}
 
 	return screenType
+}
+
+export const firebaseConfig = {
+	apiKey: 'AIzaSyB8jSk3GrurMaFKadIU58_lMGKBXvz9JxE',
+	authDomain: 'sundaypeak.firebaseapp.com',
+	databaseURL: 'https://sundaypeak-default-rtdb.firebaseio.com',
+	projectId: 'sundaypeak',
+	storageBucket: 'sundaypeak.appspot.com',
+	messagingSenderId: '373141856713',
+	appId: '1:373141856713:web:5be8d3a564bad99e554818',
+	measurementId: 'G-PQ5YZ55MXZ'
 }

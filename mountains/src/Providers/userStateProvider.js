@@ -21,7 +21,8 @@ export const UserStateProvider = ({ children }) => {
 		loginError: '',
 		isUserEditable: false,
 		friends: null,
-		listState: ''
+		listState: '',
+		searchList: null
 	}
 
 	const userReducer = (state, action) => {
@@ -87,6 +88,7 @@ export const UserStateProvider = ({ children }) => {
 		<UserStateContext.Provider
 			value={{
 				...userState,
+				activeWorkingUser: userState.workingUser?.id !== userState.loggedInUser?.id,
 				userDispatch,
 				editUser
 			}}

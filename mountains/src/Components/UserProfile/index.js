@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import { useUserStateContext } from '../../Providers'
+import { useFollowUser, useUserStateContext } from '../../Providers'
 import {
 	DisplayCard,
 	FieldHeader,
@@ -18,6 +18,11 @@ import UserEditorMenu from './Buttons/MenuFields'
 
 const UserProfile = () => {
 	const { workingUser, isUserEditable, userDispatch } = useUserStateContext()
+	const { getFriends } = useFollowUser()
+
+	useEffect(() => {
+		getFriends({ userId: workingUser.id })
+	}, [workingUser.id])
 
 	if (!workingUser) {
 		return null

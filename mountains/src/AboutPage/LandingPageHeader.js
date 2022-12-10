@@ -8,10 +8,15 @@ import './styles.css'
 const LandingPageHeader = () => {
 	return (
 		<div className='flex-box landing-header'>
-			<LogoInline
-				width={200}
-				color={'green'}
-			/>
+			<Link
+				className='landing-header-logo'
+				to='/discover'
+			>
+				<LogoInline
+					width={200}
+					color={'green'}
+				/>
+			</Link>
 			<div className='flex-spacer' />
 			<MobileMenu>
 				<Link

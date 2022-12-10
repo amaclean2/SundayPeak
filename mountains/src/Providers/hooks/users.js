@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom'
-
-import { fetcher } from '../utils'
-import { useUserStateContext } from '../userStateProvider'
-import { CARD_TYPES, useCardStateContext } from '../cardStateProvider'
-import { useAdventureStateContext } from '../adventureStateProvider'
-import { title } from '../../App'
+import { fetcher } from 'Providers/utils'
+import { useUserStateContext } from 'Providers/userStateProvider'
+import { CARD_TYPES, useCardStateContext } from 'Providers/cardStateProvider'
+import { useAdventureStateContext } from 'Providers/adventureStateProvider'
+import { title } from 'App'
+import { useHandleMessages } from './messages'
 
 export const useCreateUser = () => {
 	const { userDispatch, formFields } = useUserStateContext()
+	const { createNewMessagingUser } = useHandleMessages()
 	const { cardDispatch } = useCardStateContext()
 
 	const signupUser = () => {
@@ -28,18 +28,27 @@ export const useCreateUser = () => {
 					method: 'POST',
 					body: newUserObject
 				})
-					.then(({ data }) => {
-						console.log('USER_CREATED', data)
+					.then(({ data: { user, token } }) => {
+						console.log('USER_CREATED', user)
 
 						cardDispatch({
 							type: 'closeCardMessage',
-							payload: `User ${data.user.first_name} ${data.user.last_name} created!\nGet started with a new adventure.`
+							payload: `User ${user.first_name} ${user.last_name} created!\nGet started with a new adventure.`
 						})
-						userDispatch({ type: 'loginUser', payload: data.user })
+						userDispatch({ type: 'loginUser', payload: user })
+						localStorage.setItem('token', token)
 
-						localStorage.setItem('token', data.token)
+						createNewMessagingUser({
+							id: user.id,
+							email: user.email,
+							profile_picture_url: user.profile_picture_url,
+							name: `${user.first_name} ${user.last_name}`
+						})
 
-						return data
+						return {
+							user,
+							token
+						}
 					})
 					.catch(({ error }) => {
 						console.error(error)
@@ -117,12 +126,24 @@ export const useGetUser = () => {
 			})
 	}
 
-	const getOtherUser = ({ userId }) => {
-		return fetcher(`/users/id?id=${userId}`).then(({ data }) => {
-			userDispatch({ type: 'workingUser', payload: data.user })
-			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.profile })
-			return data
+	const getOtherUser = ({ userId, profileSwitch }) => {
+		return fetcher(`/users/id?id=${userId}`).then(({ data: { user } }) => {
+			userDispatch({ type: 'workingUser', payload: user })
+			if (profileSwitch) {
+				cardDispatch({ type: 'switchCard', payload: CARD_TYPES.profile })
+			}
+			return user
 		})
+	}
+
+	const searchUsers = ({ keywords }) => {
+		return fetcher(`/users/search?queryString=${keywords}`).then(({ data: { users } }) => users)
+	}
+
+	const searchFriends = ({ keywords }) => {
+		return fetcher(`/users/friendSearch?queryString=${keywords}`).then(
+			({ data: { users } }) => users
+		)
 	}
 
 	const loginUser = () => {
@@ -175,7 +196,9 @@ export const useGetUser = () => {
 		getOtherUser,
 		loginUser,
 		getInitialCall,
-		refetchUser
+		refetchUser,
+		searchUsers,
+		searchFriends
 	}
 }
 

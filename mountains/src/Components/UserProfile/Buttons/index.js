@@ -8,16 +8,10 @@ import getContent from '../../../TextContent'
 import { Button, FooterButtons } from '../../Reusable'
 
 const UserProfileButtons = () => {
-	const { workingUser, loggedInUser, isUserEditable, userDispatch } = useUserStateContext()
+	const { workingUser, loggedInUser, isUserEditable, userDispatch, activeWorkingUser } =
+		useUserStateContext()
 	const { cardDispatch } = useCardStateContext()
-	const { followUser } = useFollowUser()
 	const { handleSaveEditUser } = useEditUser()
-
-	const logout = () => {
-		userDispatch({ type: 'logout' }).then(() => cardDispatch({ type: 'closeCard' }))
-	}
-
-	const handleFollow = () => followUser({ leaderId: workingUser.id, followerId: loggedInUser.id })
 
 	const handleEdit = () => {
 		if (isUserEditable) {
@@ -30,9 +24,13 @@ const UserProfileButtons = () => {
 		userDispatch({ type: 'toggleIsUserEditable' })
 	}
 
+	if (!isUserEditable) {
+		return null
+	}
+
 	return (
 		<FooterButtons>
-			{workingUser.id === loggedInUser.id && (
+			{!activeWorkingUser && (
 				<>
 					{isUserEditable && (
 						<Button

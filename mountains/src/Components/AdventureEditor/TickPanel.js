@@ -53,7 +53,7 @@ const AdventureTickPanel = () => {
 						<li
 							key={`user_${key}`}
 							className={'tick flex-box multi-field-tick'}
-							onClick={() => getOtherUser({ userId: tick.user_id })}
+							onClick={() => getOtherUser({ userId: tick.user_id, profileSwitch: true })}
 						>
 							<UserImage url={tick.profile_picture_url} />
 							<FlexSpacer />

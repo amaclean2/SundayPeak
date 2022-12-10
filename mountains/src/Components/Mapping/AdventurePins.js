@@ -16,7 +16,7 @@ const AdventurePins = ({ boundingBox }) => {
 				key={`marker_${idx}`}
 				longitude={adventure.coordinates.lng}
 				latitude={adventure.coordinates.lat}
-				anchor={'bottom'}
+				anchor={'center'}
 				onClick={(e) => {
 					e.originalEvent.stopPropagation()
 					// setPopupInfo(adventure)

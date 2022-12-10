@@ -1,0 +1,157 @@
+.messaging-content {
+	width: 50rem;
+	max-width: 100%;
+	align-items: flex-start;
+	padding: 0;
+	gap: 1rem;
+	max-height: 80vh;
+}
+
+.message-bar {
+	padding: 1rem 1rem 1rem 0;
+	gap: 1rem;
+	align-items: flex-start;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+	background-color: var(--input-background-color);
+}
+
+.message-bar .form-field-container {
+	padding: 0;
+	margin-bottom: 0;
+}
+
+.send-message-button,
+.message-bar .form-field,
+.message-bar label {
+	margin: 0;
+}
+
+.conversation-selector {
+	width: 15rem;
+	height: 100%;
+}
+
+.messages-content {
+	flex: 1;
+	height: 100%;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.conversation-selector .form-field-container {
+	padding: 0 0.8rem;
+}
+
+.chat-content {
+	flex-direction: column;
+	flex: 1;
+	align-items: stretch;
+	padding-top: 1rem;
+	min-height: 20rem;
+	max-height: 80vh;
+	position: relative;
+}
+
+.friend-search-list {
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0.5rem 1rem;
+}
+
+.friend-search-list li {
+	padding: 0.4rem 0.6rem;
+	margin: 0;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	border-radius: 0.5rem;
+	gap: 1rem;
+	background-color: var(--input-background-color);
+}
+
+.friend-search-list li:hover {
+	background-color: var(--box-shadow-opacity);
+}
+
+.friend-search-list li img {
+	height: 2.5rem;
+	width: 2.5rem;
+	border-radius: 0.5rem;
+}
+
+.conversation-messages {
+	margin: 0;
+	padding: 0 1rem 5rem 0;
+	max-height: 75vh;
+	overflow-y: auto;
+}
+
+.conversation-messages li {
+	padding-bottom: 0.5rem;
+}
+
+.conversation-messages li.me {
+	justify-content: flex-end;
+}
+
+.conversation-messages li .message-text {
+	padding: 0.5rem 0.8rem;
+	border-radius: 0.8rem;
+	background-color: var(--input-border-color);
+	max-width: 60%;
+}
+
+.conversation-messages li.me .message-text {
+	background-color: var(--primary-accent-color);
+	color: var(--text-on-dark-background);
+}
+
+.send-message-button {
+	background-color: var(--secondary-accent-color);
+}
+
+@media screen and (max-width: 500px) {
+	.messaging-content {
+		height: 100%;
+		padding: 0;
+		gap: 0;
+		max-height: 100vh;
+	}
+
+	.messages-content .field-header {
+		margin: 1rem;
+		position: absolute;
+	}
+
+	.conversation-messages {
+		padding: 3rem 1rem 5rem;
+		max-height: 100%;
+	}
+
+	.conversation-selector {
+		display: none;
+		width: 100%;
+	}
+
+	.conversation-selector.open {
+		display: block;
+	}
+
+	.chat-content {
+		height: 100%;
+		max-height: 100%;
+		padding: 0 0 5rem 0;
+		display: none;
+	}
+
+	.chat-content.open {
+		display: block;
+	}
+
+	.message-bar {
+		padding: 1rem;
+		bottom: 5rem;
+	}
+}

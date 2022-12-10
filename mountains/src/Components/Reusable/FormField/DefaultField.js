@@ -16,6 +16,12 @@ const DefaultField = ({
 	onChange,
 	autoFocus = false
 }) => {
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter' && options?.onEnter) {
+			options.onEnter()
+		}
+	}
+
 	return (
 		<input
 			className={cx(type || 'text', 'form-field', className)}
@@ -23,6 +29,7 @@ const DefaultField = ({
 			type={type}
 			name={name}
 			id={name}
+			onKeyDown={handleKeyDown}
 			autoComplete={autoComplete}
 			placeholder={placeholderDefinition({ placeholder, hideLabel, label })}
 			value={value}

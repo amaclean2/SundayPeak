@@ -65,11 +65,12 @@ const AdventureEditorButtons = () => {
 
 	const cancelSave = () => {
 		adventureDispatch({ type: 'exitEdit' })
-		getAdventure({ id: currentAdventure.id })
-		if (!currentAdventure.id || currentAdventure.id === 'waiting') {
+		if (currentAdventure.id === 'waiting') {
 			cardDispatch({ type: 'closeCard' })
 			adventureDispatch({ type: 'currentAdventure', payload: null })
 			getAllAdventures(currentBoundingBox)
+		} else {
+			getAdventure({ id: currentAdventure.id })
 		}
 	}
 
@@ -87,6 +88,10 @@ const AdventureEditorButtons = () => {
 
 	const handleAddAdventure = () => {
 		adventureDispatch({ type: 'toggleAdventureAddState' })
+	}
+
+	if (currentAdventure && !isDeletePage && !isAdventureEditable && !saveState) {
+		return null
 	}
 
 	return (

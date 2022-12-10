@@ -45,9 +45,14 @@
 	max-width: 350px;
 }
 
-.main-login-content {
+.main-login-content,
+.main-signup-content {
 	width: 650px;
-	height: 100%;
+	max-width: 100%;
+}
+
+.main-signup-content {
+	height: 35rem;
 }
 
 .signup-buttons.flex-box {
