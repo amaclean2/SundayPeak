@@ -5,12 +5,11 @@
 	border-bottom: 1px solid var(--seperator-color);
 	overflow: hidden;
 	overflow-y: auto;
-	padding: 0 0.8rem;
 }
 
 .results-container {
 	margin: 0;
-	padding: 0 0.4rem 1rem;
+	padding: 0 0.8rem 1rem;
 	list-style-type: none;
 	width: 100%;
 }
@@ -32,9 +31,14 @@
 	padding: 0;
 }
 
+.result-title {
+	font-weight: 500;
+}
+
 @media screen and (max-width: 500px) {
 	.adventure-search .form-field-container {
-		width: 100%;
+		padding: 0.8rem;
+		padding-bottom: 1rem;
 	}
 
 	.adventure-search.flex-box {
@@ -44,6 +48,6 @@
 	}
 
 	.results-container li {
-		padding: 0.4rem 0;
+		padding: 0.8rem 0;
 	}
 }

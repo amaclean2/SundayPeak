@@ -108,6 +108,8 @@ const getStatementKey = (name, type) => {
       else return 'hike_season'
     case 'approach':
       return 'climb_approach'
+    case 'distance':
+      return 'hike_distance'
     default:
       return name
   }

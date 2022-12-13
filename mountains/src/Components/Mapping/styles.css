@@ -2,8 +2,8 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 100vw;
-	height: 100vh;
+	right: 0;
+	bottom: 0;
 }
 
 .mapboxgl-canvas {
@@ -14,12 +14,5 @@
 @media screen and (max-width: 500px) {
 	.card-open {
 		display: none;
-	}
-
-	.map-container {
-		top: 67px;
-		bottom: 100vw;
-		left: 0;
-		right: 0;
 	}
 }

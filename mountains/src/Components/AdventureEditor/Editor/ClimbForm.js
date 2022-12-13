@@ -12,15 +12,6 @@ import { LargeClimberIcon } from 'Images'
 const ClimbForm = ({ onChange }) => {
 	const { currentAdventure } = useAdventureStateContext()
 
-	/**
-   * grade VARCHAR(50),
-    pitches INT,
-    protection VARCHAR(100),
-    climb_type VARCHAR(100),
-    light_times VARCHAR(100),
-    season VARCHAR(100),
-   */
-
 	return (
 		<div className='adventure-info flex-box'>
 			<ErrorField form={'adventure'} />
@@ -128,7 +119,9 @@ const ClimbForm = ({ onChange }) => {
 				type={'checkbox'}
 				isEditable
 				fullWidth
-				value={currentAdventure.public || true}
+				value={
+					![undefined, null].includes(currentAdventure.public) ? currentAdventure.public : true
+				}
 				onChange={onChange}
 			/>
 		</div>

@@ -81,7 +81,7 @@ export const LoginFlow = () => {
 						/>
 					</div>
 				</div>
-				<FooterButtons className='signup-buttons'>
+				<FooterButtons>
 					<Button
 						onClick={handleLogin}
 						id={'login-button'}

@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { getDatabase, off, onValue, ref } from 'firebase/database'
 import cx from 'classnames'
+import Linkify from 'linkify-react'
 
 import { FieldHeader } from 'Components/Reusable'
 import { useMessagingStateContext, useUserStateContext } from 'Providers'
+import { CarretIcon } from 'Images'
 
-const MessageBody = ({ toggleSelectorOpen }) => {
+const MessageBody = () => {
 	const { currentConversation } = useMessagingStateContext()
 	const { loggedInUser } = useUserStateContext()
 	const [conversationMessages, setConversationMessages] = useState([])
@@ -44,17 +46,15 @@ const MessageBody = ({ toggleSelectorOpen }) => {
 
 	return (
 		<div className='messages-content flex-box'>
-			<FieldHeader
-				text={currentConversation.name}
-				onClick={toggleSelectorOpen}
-			/>
 			<ul className={'conversation-messages'}>
 				{conversationMessages.map((message, key) => (
 					<li
 						key={`message_${key}`}
 						className={cx('flex-box', message.sender && 'me')}
 					>
-						<span className='message-text'>{message.text}</span>
+						<span className='message-text'>
+							<Linkify options={{ defaultProtocol: 'https' }}>{message.text}</Linkify>
+						</span>
 					</li>
 				))}
 			</ul>

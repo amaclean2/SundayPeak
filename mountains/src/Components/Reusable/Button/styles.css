@@ -14,7 +14,7 @@ button {
 	cursor: pointer;
 	transition: all 0.2s ease-in-out;
 	text-decoration: none;
-	padding: 0 20px;
+	padding: 0 1.5rem;
 	text-decoration: none;
 }
 
@@ -80,6 +80,7 @@ a {
 	gap: 1em;
 	height: 3em;
 	width: 15em;
+	padding: 0 0.8rem;
 }
 
 .change-adventure-type svg {

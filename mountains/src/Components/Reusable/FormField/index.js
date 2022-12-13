@@ -90,7 +90,7 @@ export const FormField = (props) => {
 
 	const renderNonCheckbox = () => (
 		<>
-			{!hideLabel && (
+			{!hideLabel && label && (
 				<label
 					htmlFor={name}
 					className={cx(type, className, 'label-field')}
@@ -115,7 +115,8 @@ export const FormField = (props) => {
 				'form-field-container',
 				fullWidth && 'wide',
 				block && 'block',
-				!isEditable && 'static'
+				!isEditable && 'static',
+				type === 'noedit' && 'no-edit'
 			)}
 		>
 			{isEditable && type === 'checkbox' ? (

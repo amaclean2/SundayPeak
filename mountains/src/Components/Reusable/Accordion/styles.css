@@ -22,13 +22,24 @@
 	max-height: 500px;
 }
 
-.accordion-closed {
+.accordion-closed .accordion-content-wrapper {
 	max-height: 0;
+	margin: 0;
+}
+
+.accordion-expander {
+	transform: rotate(270deg);
+	transition: all 0.3s ease-in-out;
+}
+
+.accordion-closed .accordion-expander {
+	transform: rotate(90deg);
 }
 
 @media screen and (max-width: 500px) {
 	.accordion {
-		margin: 1rem;
+		margin: 0.8rem;
+		margin-bottom: 1.3rem;
 	}
 
 	.accordion-content-wrapper {

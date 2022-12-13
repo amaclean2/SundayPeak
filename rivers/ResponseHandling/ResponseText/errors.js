@@ -73,11 +73,15 @@ const errorTexts = {
     status: SERVER_ERROR
   },
   serverLoginUser: {
-    messageText: 'Server Error: Could not login user',
+    messageText: 'Server Error: Could not log in user',
     status: SERVER_ERROR
   },
   serverFollowUser: {
     messageText: 'Server Error: Could not follow this user',
+    status: SERVER_ERROR
+  },
+  serverGetFriends: {
+    messageText: 'Server Error: Could not get users',
     status: SERVER_ERROR
   },
   noAccountExists: {

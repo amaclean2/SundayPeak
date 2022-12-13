@@ -43,10 +43,8 @@
 	left: 0;
 	display: flex;
 	background-color: #ffffff22;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1;
+	background: var(--header-gradient-light);
+	z-index: 2;
 }
 
 .display-header-spacer {
@@ -89,8 +87,6 @@
 	padding: 10px;
 	align-items: center;
 	justify-content: flex-end;
-	position: absolute;
-	bottom: 0;
 	width: 100%;
 	background-color: var(--secondary-background-color);
 	box-shadow: 0 0 50px 30px var(--secondary-background-color);
@@ -108,26 +104,8 @@
 
 .profile-content {
 	background-color: var(--secondary-background-color);
-	padding-bottom: 10px;
-	overflow-y: auto;
-	overscroll-behavior: none;
 	width: 100%;
-}
-
-.profile-header {
-	width: 100%;
-	height: 8rem;
-	padding-top: 3rem;
-	background: var(--header-gradient);
-	color: var(--text-on-dark-background);
-}
-
-.profile-header.slim {
-	height: 3rem;
-}
-
-.profile-header.centered {
-	justify-content: center;
+	position: relative;
 }
 
 h3.label-field {
@@ -146,14 +124,35 @@ h3.label-field {
 	padding: 0 0.8em 0 0;
 }
 
-.main-adventure-content,
-.main-user-content {
-	min-height: 60rem;
+.profile-header {
+	background: var(--header-gradient);
+	color: var(--text-on-dark-background);
+	width: 100%;
+	min-height: 5rem;
+}
+
+.profile-header.header-locked {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.profile-header.slim {
+	min-height: 3.5rem;
+}
+
+.profile-header .field.flex-box {
+	flex-direction: row;
+	align-items: center;
 }
 
 @media screen and (max-width: 500px) {
 	.display-content {
 		max-height: 100vh;
+		position: relative;
+		overflow-y: scroll;
+		margin-bottom: 6rem;
+		overscroll-behavior: none;
 	}
 
 	.field-header.page-header.flex-box {
@@ -162,7 +161,7 @@ h3.label-field {
 
 	.display-card-container .display-card {
 		height: 100vh;
-		min-width: initial;
+		min-width: 100vw;
 		margin: 0;
 		border-radius: 0;
 		width: 100vw;
@@ -182,23 +181,10 @@ h3.label-field {
 		margin-bottom: 1rem;
 	}
 
-	.signup-buttons.flex-box {
-		left: 0;
-	}
-
-	.profile-content {
-		padding-bottom: 5rem;
-	}
-
-	.profile-header {
-		height: 12rem;
-	}
-
 	.action-buttons.flex-box {
 		flex-direction: column;
 		align-items: stretch;
 		border-top: 1px solid var(--seperator-color);
-		padding-bottom: 5rem;
 		box-shadow: none;
 	}
 
@@ -206,10 +192,5 @@ h3.label-field {
 		justify-content: center;
 		background-color: transparent;
 		color: var(--primary-accent-color);
-	}
-
-	.main-adventure-content,
-	.main-user-content {
-		min-height: 100%;
 	}
 }

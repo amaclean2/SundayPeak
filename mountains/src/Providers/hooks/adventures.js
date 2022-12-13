@@ -154,8 +154,6 @@ export const useSaveAdventure = () => {
 				type: 'editFields'
 			})
 
-			console.log({ validatedAdventure })
-
 			adventureDispatch({
 				type: 'validateAdventure',
 				payload: { currentAdventure: validatedAdventure, editAdventureFields: validatedEditFields }

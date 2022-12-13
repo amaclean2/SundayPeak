@@ -1,5 +1,8 @@
 const { Router } = require('express')
-const { getMapboxAccessToken } = require('../../Config/connections')
+const {
+  getMapboxAccessToken,
+  getFirebaseApiKey
+} = require('../../Config/connections')
 const { getLoggedInUser } = require('../../Handlers/Users')
 const { returnError, sendResponse } = require('../../ResponseHandling')
 const { NOT_FOUND, SUCCESS } = require('../../ResponseHandling/statuses')
@@ -28,6 +31,7 @@ router.get('/initial', (req, res) => {
       res,
       data: {
         user: false,
+        firebase_api_key: getFirebaseApiKey(),
         mapbox_token: getMapboxAccessToken(),
         map_style: mapboxStyles.default
       },

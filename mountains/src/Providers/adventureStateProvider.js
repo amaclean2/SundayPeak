@@ -27,7 +27,6 @@ export const AdventureStateProvider = ({ children }) => {
 		currentBoundingBox: null,
 		isAdventureEditable: false,
 		adventureError: null,
-		mapboxToken: null,
 		startPosition: initialStartPosition,
 		flyTo: false,
 		isDeletePage: false,
@@ -95,8 +94,6 @@ export const AdventureStateProvider = ({ children }) => {
 				return { ...state, adventureError: action.payload }
 			case 'adventureErrorOnSave':
 				return { ...state, isAdventureEditable: true, adventureError: action.payload }
-			case 'mapboxToken':
-				return { ...state, mapboxToken: action.payload }
 			case 'flyTo':
 				return { ...state, flyTo: action.payload }
 			case 'stopFlying':

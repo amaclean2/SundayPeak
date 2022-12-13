@@ -11,7 +11,6 @@
 .main-adventure-content.flex-box {
 	align-items: flex-start;
 	flex-direction: column;
-	min-height: 60rem;
 }
 
 .adventure-tick-panel.flex-box {
@@ -81,10 +80,8 @@
 }
 
 .field-header.page-header {
-	font-size: 26px;
 	font-weight: 500;
 	margin-bottom: 0;
-	padding-left: 5px;
 }
 
 .header-subtext {
@@ -96,7 +93,6 @@
 	.main-adventure-content.flex-box {
 		width: 100%;
 		min-height: 0;
-		margin-bottom: 10rem;
 	}
 
 	.adventure-viewer {
@@ -105,9 +101,13 @@
 		max-width: 100%;
 	}
 
+	.no-edit {
+		padding-top: 1.5rem;
+	}
+
 	.editor-climber,
 	.editor-skier,
 	.editor-hiker {
-		margin-left: -0.7rem;
+		height: 2.5rem;
 	}
 }

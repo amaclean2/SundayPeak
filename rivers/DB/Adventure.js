@@ -1,4 +1,4 @@
-const db = require('../Config/db')
+const { db } = require('../Config/db')
 const logger = require('../Config/logger')
 const { deleteImageFromStorage } = require('../Services/multer.service')
 const {
@@ -27,8 +27,6 @@ const {
   selectAdventureByIdGroup,
   getSpecificAdventureId,
   searchAdventureStatement,
-  selectAdventureStatement,
-  selectAdventureStatementTest,
   getAdventureTypeStatement
 } = require('./Statements/Adventures')
 
@@ -206,7 +204,6 @@ const searchAdventures = async ({ keywords }) => {
     const [results] = await db.execute(searchAdventureStatement, [
       `%${keywords}%`
     ])
-    logger.debug({ results })
     return results.map((result) => {
       const newResult = {
         ...result,

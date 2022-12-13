@@ -12,7 +12,7 @@ h1 {
 }
 
 .scroller-container.flex-box {
-	height: 300px;
+	height: 18rem;
 	width: 100%;
 	overflow-x: auto;
 	overflow-y: hidden;
@@ -27,7 +27,7 @@ h1 {
 
 .file-upload-container.flex-box {
 	border: 2px dashed #ccc;
-	height: calc(100% - 10px);
+	height: calc(100% - 12px);
 	margin: 6px 12px;
 	cursor: pointer;
 	width: 200px;
@@ -94,8 +94,7 @@ h1 {
 
 .friend-list-container.flex-box,
 .tick-list-container.flex-box {
-	margin: 1rem 0;
-	padding: 0 1rem;
+	padding: 0.8rem;
 	flex-direction: column;
 	align-items: flex-start;
 	flex: 1;
@@ -147,8 +146,8 @@ h1 {
 	margin: 50px 0;
 }
 
-.profile-header.image-header {
-	height: 9rem;
+.user-profile-header.flex-box {
+	min-height: 6rem;
 }
 
 .profile-image-upload.file-upload-container.flex-box,
@@ -184,12 +183,6 @@ h1 {
 	margin: 10px 15px;
 }
 
-.user-profile-header .field {
-	flex-direction: row;
-	width: 100%;
-	align-items: center;
-}
-
 .friends-search {
 	width: 300px;
 	max-width: 100%;
@@ -197,10 +190,6 @@ h1 {
 
 .friend-list.flex-box {
 	margin-top: 0;
-}
-
-.friend-list-container.flex-box .form-field-container {
-	margin: 5px 0 0;
 }
 
 @media screen and (max-width: 500px) {
@@ -215,13 +204,12 @@ h1 {
 	}
 
 	.friend-list-container.flex-box .form-field-container {
-		padding: 0;
+		padding: 1rem 0 1.5rem;
 		width: 100%;
 	}
 
 	.user-adventure-viewer.flex-box {
 		flex-direction: column;
-		margin-bottom: 10rem;
 		gap: 2rem;
 	}
 
@@ -234,6 +222,10 @@ h1 {
 	}
 
 	.tick {
-		padding: 1rem 0;
+		padding: 1rem 0.8rem;
+	}
+
+	.scroller-container.flex-box {
+		height: 10rem;
 	}
 }

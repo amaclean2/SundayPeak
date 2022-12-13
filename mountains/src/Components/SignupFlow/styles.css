@@ -21,9 +21,9 @@
 	padding: 5px;
 }
 
-.signup-form,
-.login-form {
-	margin: 0 15px;
+.signup-form.flex-box,
+.login-form.flex-box {
+	margin: 0;
 	align-items: center;
 	flex-wrap: nowrap;
 	flex-direction: column;
@@ -49,10 +49,6 @@
 .main-signup-content {
 	width: 650px;
 	max-width: 100%;
-}
-
-.main-signup-content {
-	height: 35rem;
 }
 
 .signup-buttons.flex-box {

@@ -2,25 +2,17 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { useAdventureStateContext, useGetAdventure } from 'Providers'
-import {
-	ConfirmationPage,
-	DisplayCard,
-	FieldHeader,
-	FlexSpacer,
-	HeaderSubtext,
-	ProfileContent,
-	ProfileHeader
-} from 'Components/Reusable'
+import { ConfirmationPage, DisplayCard, ProfileContent } from 'Components/Reusable'
 import getContent from 'TextContent'
 
 import AdventureEditorButtons from './Buttons'
 import AdventureEditorForm from './Editor'
 import AdventureViewer from './Viewer'
-import AdventureEditorMenu from './Buttons/MenuFields'
 import AdventureSearch from './Search'
 
 import './styles.css'
 import AdventureTypeSelector from './Editor/AdventureTypeSelector'
+import AdventureHeader from './AdventureHeader'
 
 const AdventureEditor = () => {
 	const {
@@ -107,51 +99,9 @@ const AdventureEditor = () => {
 		}
 	}, [currentAdventure])
 
-	const buildProfileHeader = () => {
-		if (currentAdventure) {
-			if (isAdventureEditable) {
-				return (
-					<ProfileHeader
-						textContents={currentAdventure.adventure_name}
-						editFields={{
-							isEditable: isAdventureEditable,
-							propName: 'adventure_name',
-							onChange
-						}}
-					/>
-				)
-			} else {
-				return (
-					<ProfileHeader className={'user-profile-header'}>
-						<div>
-							<FieldHeader
-								className='page-header'
-								text={currentAdventure.adventure_name}
-							/>
-							{currentAdventure.nearest_city?.length && (
-								<HeaderSubtext>{currentAdventure.nearest_city}</HeaderSubtext>
-							)}
-						</div>
-						<FlexSpacer />
-						<AdventureEditorMenu />
-					</ProfileHeader>
-				)
-			}
-		} else {
-			return (
-				<ProfileHeader>
-					<FieldHeader
-						className='page-header'
-						text={getContent('adventurePanel.adventureCreator')}
-					/>
-				</ProfileHeader>
-			)
-		}
-	}
-
 	return (
 		<DisplayCard onClose={handleClose}>
-			{buildProfileHeader()}
+			<AdventureHeader onChange={onChange} />
 			<ProfileContent ref={menuRef}>
 				<div className='flex-box main-adventure-content'>
 					{adventureAddState && (

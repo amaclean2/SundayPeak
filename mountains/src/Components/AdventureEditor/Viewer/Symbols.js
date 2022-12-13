@@ -1,11 +1,11 @@
 import React from 'react'
-import { AspectIcon } from '../../../Images/AspectIcon'
+import { AspectIcon } from '../../../Images/Symbols/AspectIcon'
 import {
 	DifficultyEasyIcon,
 	DifficultyHardIcon,
 	DifficultyMediumIcon
-} from '../../../Images/Difficulty'
-import { ExposureS } from '../../../Images/Exposure'
+} from '../../../Images/Symbols/Difficulty'
+import { ExposureS } from '../../../Images/Symbols/Exposure'
 
 export const DifficultyViewer = ({ difficulty }) => {
 	switch (Number(difficulty)) {

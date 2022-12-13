@@ -10,38 +10,54 @@ import {
 import MessageBody from './MessageBody'
 import ConversationSelector from './ConversationSelector'
 import MessageBar from './MessageBar'
-import { useCardStateContext } from 'Providers'
+import { useCardStateContext, useMessagingStateContext } from 'Providers'
 
 import './styles.css'
-import { useState } from 'react'
+import { CarretIcon } from 'Images'
 
 const MessagingContianer = () => {
 	const { screenType } = useCardStateContext()
-	const [isSelectorOpen, setIsSelectorOpen] = useState(true)
+	const { currentConversation, messagingDispatch } = useMessagingStateContext()
 
 	const handleOnClose = () => {}
+
+	const handleConversationHeader = () => {
+		if (currentConversation?.name) {
+			messagingDispatch({ type: 'clearCurrentConversation' })
+		}
+	}
 
 	return (
 		<DisplayCard
 			onClose={handleOnClose}
 			configuration={'left'}
 		>
-			<ProfileHeader slim>
-				{!screenType.mobile && (
-					<FieldHeader
-						className='page-header signup-header-text'
-						text={`Plan with Your Friends`}
-					/>
-				)}
+			<ProfileHeader
+				slim
+				className={'messages-header'}
+			>
+				<FieldHeader
+					className='page-header'
+					onClick={handleConversationHeader}
+				>
+					{currentConversation ? (
+						<>
+							<CarretIcon
+								color='#EEE'
+								size='18'
+							/>
+							{currentConversation.name}
+						</>
+					) : (
+						'Conversations'
+					)}
+				</FieldHeader>
 				<FlexSpacer />
 			</ProfileHeader>
 			<ProfileContent className={cx('messaging-content', !screenType.mobile && 'flex-box')}>
-				<ConversationSelector
-					className={isSelectorOpen && 'open'}
-					toggleSelectorOpen={() => setIsSelectorOpen(!isSelectorOpen)}
-				/>
-				<div className={cx('chat-content flex-box', !isSelectorOpen && 'open')}>
-					<MessageBody toggleSelectorOpen={() => setIsSelectorOpen(!isSelectorOpen)} />
+				<ConversationSelector className={currentConversation === null && 'open'} />
+				<div className={cx('chat-content flex-box', currentConversation && 'open')}>
+					<MessageBody />
 					<MessageBar />
 				</div>
 			</ProfileContent>

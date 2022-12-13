@@ -168,7 +168,9 @@ const SkiForm = ({ onChange }) => {
 				type={'checkbox'}
 				isEditable
 				fullWidth
-				value={currentAdventure.public || true}
+				value={
+					![undefined, null].includes(currentAdventure.public) ? currentAdventure.public : true
+				}
 				onChange={onChange}
 			/>
 		</div>

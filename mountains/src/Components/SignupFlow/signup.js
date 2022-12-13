@@ -121,7 +121,7 @@ export const SignupFlow = () => {
 						/>
 					</div>
 				</div>
-				<FooterButtons className='signup-buttons'>
+				<FooterButtons>
 					<Button
 						onClick={handleSignup}
 						id={'create-account-button'}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import cx from 'classnames'
 
 import { FlexSpacer, FormField } from 'Components/Reusable'
@@ -9,53 +9,17 @@ import {
 	useUserStateContext
 } from 'Providers'
 
-const ConversationSelector = ({ className, toggleSelectorOpen }) => {
-	const { searchFriends, getOtherUser } = useGetUser()
+const ConversationSelector = ({ className }) => {
+	const { searchFriends } = useGetUser()
 	const { conversations } = useMessagingStateContext()
 	const { loggedInUser } = useUserStateContext()
-	const { setCurrentConversation, createNewConversation } = useHandleMessages()
+	const { setCurrentConversation, establishNewConversation } = useHandleMessages()
 
 	const [searchList, setSearchList] = useState(null)
 	const [textSearch, setTextSearch] = useState('')
 
-	useEffect(() => {
-		if (textSearch.length) {
-			searchFriends({ keywords: textSearch }).then(setSearchList)
-		}
-	}, [textSearch, searchFriends])
-
-	const establishNewConversation = (userId) => {
-		// createNewConversation if it donesn't already exist
-		toggleSelectorOpen()
-		return getOtherUser({ userId }).then((otherUser) => {
-			const matchingConversation = conversations.find(({ members }) => members[userId])
-			if (matchingConversation) {
-				// set the current conversation
-				setCurrentConversation({
-					userId: loggedInUser.id,
-					conversationId: matchingConversation.id
-				})
-			} else {
-				// create a new conversation
-				createNewConversation({
-					userId: loggedInUser.id,
-					conversationBody: {
-						last_message: '',
-						timestamp: Date.now(),
-						members: {
-							[loggedInUser.id]: true,
-							[otherUser.id]: true
-						},
-						name: {
-							[loggedInUser.id]: `${otherUser.first_name} ${otherUser.last_name}`,
-							[otherUser.id]: `${loggedInUser.first_name} ${loggedInUser.last_name}`
-						}
-					}
-				})
-			}
-			textSearch.current = ''
-			setSearchList(null)
-		})
+	const handleSearch = () => {
+		searchFriends({ keywords: textSearch }).then(setSearchList)
 	}
 
 	const buildList = () => {
@@ -66,7 +30,14 @@ const ConversationSelector = ({ className, toggleSelectorOpen }) => {
 						<li
 							key={`search_friend_list_${key}`}
 							className='flex-box'
-							onClick={() => establishNewConversation(friend.user_id)}
+							onClick={() =>
+								establishNewConversation(
+									friend.user_id,
+									conversations,
+									setTextSearch,
+									setSearchList
+								)
+							}
 						>
 							<img
 								src={friend.profile_picture_url}
@@ -84,10 +55,9 @@ const ConversationSelector = ({ className, toggleSelectorOpen }) => {
 						<li
 							key={`conversation_${key}`}
 							className='flex-box'
-							onClick={() => {
+							onClick={() =>
 								setCurrentConversation({ userId: loggedInUser.id, conversationId: conversation.id })
-								toggleSelectorOpen()
-							}}
+							}
 						>
 							{conversation.name}
 						</li>
@@ -105,6 +75,7 @@ const ConversationSelector = ({ className, toggleSelectorOpen }) => {
 				value={textSearch}
 				name={''}
 				onChange={(e) => setTextSearch(e.target.value)}
+				options={{ onEnter: handleSearch }}
 				isEditable
 				placeholder={'Talk to...'}
 				autoComplete={'off'}

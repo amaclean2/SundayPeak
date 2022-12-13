@@ -1,4 +1,4 @@
-import { ElevationIcon } from 'Images/LabelIcons'
+import { ElevationIcon } from 'Images/Symbols/LabelIcons'
 import { useAdventureStateContext, useUserStateContext } from '../../../Providers'
 import getContent from '../../../TextContent'
 import { Field, FieldHeader, FieldPage, FieldRow, FieldValue } from '../../Reusable'

@@ -31,8 +31,6 @@ const searchAdventureNames = async (req, res) => {
   try {
     const { queryString } = req.query
 
-    logger.info('queryString', queryString)
-
     if (!queryString || !queryString.length) {
       return sendResponse({
         req,

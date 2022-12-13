@@ -1,4 +1,4 @@
-import { AngleIcon, DistanceIcon, ElevationIcon } from '../../../Images/LabelIcons'
+import { AngleIcon, DistanceIcon, ElevationIcon } from '../../../Images/Symbols/LabelIcons'
 import { useAdventureStateContext, useUserStateContext } from '../../../Providers'
 import getContent from '../../../TextContent'
 import { Degrees, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from '../../Reusable'

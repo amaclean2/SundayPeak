@@ -59,7 +59,7 @@ CREATE TABLE hike(
     id INT AUTO_INCREMENT,
     difficulty INT,
     elevation INT,
-    duration FLOAT,
+    distance FLOAT,
     season VARCHAR(100),
     gain INT,
     PRIMARY KEY(id)
@@ -118,13 +118,6 @@ CREATE TABLE activities(
     PRIMARY KEY(creator_id, adventure_id),
     FOREIGN KEY(creator_id) REFERENCES users(id),
     FOREIGN KEY(adventure_id) REFERENCES adventures(id)
-);
-
-CREATE TABLE password_reset_tokens(
-    email VARCHAR(100),
-    reset_token VARCHAR(255),
-    date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY(reset_token)
 );
 
 CREATE TABLE user_images(

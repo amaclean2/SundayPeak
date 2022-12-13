@@ -1,4 +1,4 @@
-const db = require('../Config/db')
+const { db } = require('../Config/db')
 const logger = require('../Config/logger')
 const cryptoHandlers = require('../Crypto/index')
 const { mapboxStyles } = require('../Services/utils')
@@ -17,7 +17,9 @@ const {
   getFriendCredStatement,
   getFriendsStatement,
   getFriendsCountStatement,
-  getIsFriendStatement
+  getIsFriendStatement,
+  findNewFriendStatement,
+  findFromFriendsStatement
 } = require('./Statements')
 
 const addUser = async ({ email, password, first_name, last_name }) => {
@@ -114,6 +116,33 @@ const getFriendCreds = async ({ followedId }) => {
   }
 }
 
+const searchUsers = async ({ keywords, userId }) => {
+  try {
+    const [results] = await db.execute(findNewFriendStatement, [
+      `%${keywords}%`,
+      userId
+    ])
+    return results
+  } catch (error) {
+    logger.error('DATABASE_QUERY_FAILED', error)
+    throw error
+  }
+}
+
+const searchFriends = async ({ keywords, userId }) => {
+  try {
+    const [results] = await db.execute(findFromFriendsStatement, [
+      userId,
+      userId,
+      `%${keywords}%`
+    ])
+    return results
+  } catch (error) {
+    logger.error('DATABASE_QUERY_FAILED', error)
+    throw error
+  }
+}
+
 const getRelationship = async ({ follower_id, leader_id }) => {
   try {
     const [results] = await db.execute(getIsFriendStatement, [
@@ -200,6 +229,8 @@ module.exports = {
   checkForUser,
   getUser,
   getUserById,
+  searchUsers,
+  searchFriends,
   checkPasswordResetToken,
   updatePassword,
   followUser,

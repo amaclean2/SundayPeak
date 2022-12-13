@@ -18,8 +18,10 @@
 	--text-on-dark-background: #eee;
 	--input-border-color: #d7d7e8;
 	--input-background-color: #ffffff;
+	--mobile-background-color: #eee;
 	--alert-text-color: #ff5151;
 	--header-gradient: linear-gradient(45deg, #2d966d, #3c9da5);
+	--header-gradient-light: linear-gradient(45deg, #3da67d, #4cadb5);
 	--default-background-color: #fff;
 	--off-background-color: #f6f6f6;
 	--default-background-color-hover: #ddd;

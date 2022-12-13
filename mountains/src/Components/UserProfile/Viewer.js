@@ -9,7 +9,7 @@ import UserBio from './UserBio'
 const ListViewer = () => {
 	const { listState } = useUserStateContext()
 
-	if (listState) {
+	if (listState === 'friends') {
 		return <FriendsViewer />
 	} else {
 		return (

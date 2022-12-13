@@ -1,7 +1,6 @@
 .messaging-content {
 	width: 50rem;
 	max-width: 100%;
-	align-items: flex-start;
 	padding: 0;
 	gap: 1rem;
 	max-height: 80vh;
@@ -42,7 +41,8 @@
 }
 
 .conversation-selector .form-field-container {
-	padding: 0 0.8rem;
+	padding: 0.8rem;
+	padding-bottom: 1rem;
 }
 
 .chat-content {
@@ -58,15 +58,18 @@
 .friend-search-list {
 	list-style-type: none;
 	padding: 0;
-	margin: 0 0.5rem 1rem;
+	margin: 0 0 1rem;
 }
 
 .friend-search-list li {
-	padding: 0.4rem 0.6rem;
+	height: 4rem;
+	padding: 0 1rem;
+	font-weight: 600;
+	font-size: 1.1rem;
+	border-bottom: 1px solid var(--input-border-color);
 	margin: 0;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
-	border-radius: 0.5rem;
 	gap: 1rem;
 	background-color: var(--input-background-color);
 }
@@ -101,6 +104,12 @@
 	border-radius: 0.8rem;
 	background-color: var(--input-border-color);
 	max-width: 60%;
+	word-wrap: break-word;
+}
+
+.message-text a {
+	color: var(--default-text-color);
+	text-decoration: underline;
 }
 
 .conversation-messages li.me .message-text {
@@ -117,17 +126,26 @@
 		height: 100%;
 		padding: 0;
 		gap: 0;
-		max-height: 100vh;
+		max-height: 100%;
 	}
 
 	.messages-content .field-header {
-		margin: 1rem;
+		margin: 0.5rem 0.8rem 1.5rem;
+		gap: 0.5rem;
 		position: absolute;
 	}
 
 	.conversation-messages {
 		padding: 3rem 1rem 5rem;
 		max-height: 100%;
+	}
+
+	.messages-header svg {
+		transform: rotate(180deg);
+	}
+
+	.messages-header .page-header {
+		gap: 0.3rem;
 	}
 
 	.conversation-selector {
@@ -142,7 +160,7 @@
 	.chat-content {
 		height: 100%;
 		max-height: 100%;
-		padding: 0 0 5rem 0;
+		padding: 0;
 		display: none;
 	}
 
@@ -152,6 +170,5 @@
 
 	.message-bar {
 		padding: 1rem;
-		bottom: 5rem;
 	}
 }

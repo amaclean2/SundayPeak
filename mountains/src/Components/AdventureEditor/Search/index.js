@@ -28,16 +28,11 @@ const AdventureSearch = () => {
 		})
 	}
 
-	const slowSearch = useCallback(
-		() => debounce(100, searchAdventures({ searchQuery: adventureText }).then(setSearchResults)),
-		[adventureText]
-	)
-
-	useEffect(() => {
+	const handleEnter = () => {
 		if (adventureText.length) {
-			slowSearch()
+			searchAdventures({ searchQuery: adventureText }).then(setSearchResults)
 		}
-	}, [adventureText])
+	}
 
 	return (
 		<>
@@ -49,6 +44,9 @@ const AdventureSearch = () => {
 					value={adventureText}
 					isEditable
 					fullWidth
+					options={{
+						onEnter: handleEnter
+					}}
 					autoComplete={'off'}
 					placeholder={'Find an adventure'}
 					onChange={(e) => setAdventureText(e.target.value)}
@@ -61,7 +59,7 @@ const AdventureSearch = () => {
 								className={'drop-list-item flex-box'}
 								onClick={() => openAdventure(result.id, result.adventure_type)}
 							>
-								{result.adventure_name}
+								<span className='result-title'>{result.adventure_name}</span>
 								<span className='drop-list-subtext'>{result.adventure_type}</span>
 								<FlexSpacer />
 								<span className='drop-list-secondary'>{result.nearest_city}</span>

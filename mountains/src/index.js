@@ -6,15 +6,18 @@ import reportWebVitals from './reportWebVitals'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { AdventureStateProvider, CardStateProvider, UserStateProvider } from 'Providers'
+import { TokenStateProvider } from 'Providers/tokensProvider'
 
 const ProvidersWrapper = () => (
-	<CardStateProvider>
-		<UserStateProvider>
-			<AdventureStateProvider>
-				<App />
-			</AdventureStateProvider>
-		</UserStateProvider>
-	</CardStateProvider>
+	<TokenStateProvider>
+		<CardStateProvider>
+			<UserStateProvider>
+				<AdventureStateProvider>
+					<App />
+				</AdventureStateProvider>
+			</UserStateProvider>
+		</CardStateProvider>
+	</TokenStateProvider>
 )
 
 const root = ReactDOM.createRoot(document.getElementById('root'))

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 
-import { Meatball } from '../../../Images/Meatball'
+import { Meatball } from '../../../Images/UIGlyphs/Meatball'
 import { Button } from '../Button'
 
 import './styles.css'

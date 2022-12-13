@@ -12,12 +12,17 @@ const queries = require('../DB')
 const { buildUserObject } = require('../Services/user.service')
 const logger = require('../Config/logger')
 const { sendResponse } = require('../ResponseHandling/success')
-const { getMapboxAccessToken } = require('../Config/connections')
+const {
+  getMapboxAccessToken,
+  getFirebaseApiKey
+} = require('../Config/connections')
 const {
   updateUser,
   getFriendsLookup,
   updatePassword,
-  getFriendCreds
+  getFriendCreds,
+  searchUsers,
+  searchFriends
 } = require('../DB')
 const { uploadPictureToStorage } = require('../Services/multer.service')
 const {
@@ -112,7 +117,8 @@ const getLoggedInUser = async (req, res) => {
         res,
         data: {
           user: userObject,
-          mapbox_token: getMapboxAccessToken()
+          mapbox_token: getMapboxAccessToken(),
+          firebase_api_key: getFirebaseApiKey()
         },
         status: SUCCESS
       })
@@ -255,6 +261,66 @@ const getFriends = async (req, res) => {
   }
 }
 
+const searchForFriends = async (req, res) => {
+  try {
+    const { queryString } = req.query
+    const { id_from_token } = req.body
+
+    if (!queryString || !queryString.length) {
+      return sendResponse({
+        req,
+        res,
+        data: { users: [], string: queryString },
+        status: SUCCESS
+      })
+    }
+
+    const matches = await searchUsers({
+      keywords: queryString,
+      userId: id_from_token
+    })
+
+    return sendResponse({
+      req,
+      res,
+      data: { users: matches, string: queryString },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({ req, res, error, message: 'serverGetFriends' })
+  }
+}
+
+const searchAmongFriends = async (req, res) => {
+  try {
+    const { queryString } = req.query
+    const { id_from_token } = req.body
+
+    if (!queryString || !queryString.length) {
+      return sendResponse({
+        req,
+        res,
+        data: { users: [], string: queryString },
+        status: SUCCESS
+      })
+    }
+
+    const matches = await searchFriends({
+      keywords: queryString,
+      userId: id_from_token
+    })
+
+    return sendResponse({
+      req,
+      res,
+      data: { users: matches, string: queryString },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({ req, res, error, message: 'serverGetFriends' })
+  }
+}
+
 const followUser = async (req, res) => {
   try {
     const errors = validationResult(req)
@@ -348,6 +414,8 @@ module.exports = {
   createUser,
   savePasswordReset,
   getFriends,
+  searchForFriends,
+  searchAmongFriends,
   followUser,
   editUser,
   deleteUser

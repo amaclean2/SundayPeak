@@ -6,37 +6,54 @@
 	border-radius: 0;
 	background-color: transparent;
 	padding: 0 0.5rem;
+	outline: none;
+}
+
+.mobile-button:hover {
+	background-color: transparent;
 }
 
 .mobile-menu-drop {
-	width: 75vw;
+	width: 100vw;
 	overflow: hidden;
-	transition: all 0.4s ease-in-out;
+	transition: all 0.3s ease-in-out;
 	position: fixed;
-	top: 0;
-	left: 110vw;
-	height: 100vh;
+	height: 20rem;
+	bottom: -18rem;
+	left: 0;
+	border-radius: 1rem 1rem 0 0;
 	background-color: var(--off-background-color);
 	box-shadow: -5px 0 10px var(--box-shadow-opacity);
 	flex-direction: column;
-}
-
-.mobile-menu-drop.left {
-	right: 110vw;
-	left: auto;
 }
 
 .mobile-menu-drop .mobile-menu-button {
 	width: 100%;
 	padding: 1rem 2rem;
 	color: var(--main-text-color);
-	font-weight: 600;
+	font-weight: 500;
 	background-color: transparent;
 }
 
 .mobile-menu-drop.open {
-	left: 25vw;
+	bottom: 0;
 	overflow: auto;
+}
+
+.mobile-menu-header {
+	width: 100%;
+	background: var(--header-gradient);
+	height: 2rem;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 0.5rem 0;
+}
+
+.mobile-menu-header .open-icon {
+	width: 4rem;
+	height: 0.4rem;
+	background-color: var(--input-background-color);
+	border-radius: 0.2rem;
 }
 
 .mobile-menu-drop.left.open {

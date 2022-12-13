@@ -8,12 +8,13 @@ import {
 } from '../../Providers'
 import { FieldHeader } from '../Reusable'
 
-const Activity = ({ activityName, onClick }) => (
+const Activity = ({ activity, onClick }) => (
 	<li
 		onClick={onClick}
-		className='tick'
+		className='tick drop-list-item flex-box'
 	>
-		{activityName}
+		{activity.adventure_name}
+		<span className='drop-list-subtext'>{activity.adventure_type}</span>
 	</li>
 )
 
@@ -35,7 +36,7 @@ const ActivityPanel = ({ className }) => {
 				{workingUser.activities?.map((activity, key) => (
 					<Activity
 						onClick={() => openAdventure(activity.adventure_id)}
-						activityName={activity.adventure_name}
+						activity={activity}
 						key={`user_activity_${key}`}
 					/>
 				))}

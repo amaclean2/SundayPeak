@@ -1,5 +1,5 @@
-import { ClimberIcon } from 'Images/ClimberIcon'
-import { HikerIcon } from 'Images/HikerIcon'
+import { ClimberIcon } from 'Images/Activities/ClimberIcon'
+import { HikerIcon } from 'Images/Activities/HikerIcon'
 import { useMemo } from 'react'
 import { Marker } from 'react-map-gl'
 import { SkierIcon } from '../../Images'

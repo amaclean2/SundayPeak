@@ -7,6 +7,7 @@ import { useCreateNewAdventure } from './utils'
 import AdventurePins from './AdventurePins'
 
 import './styles.css'
+import { useTokenStateContext } from 'Providers/tokensProvider'
 
 const skyLayer = {
 	id: 'sky',
@@ -25,8 +26,9 @@ const ReactMap = () => {
 		if (ref) ref.trigger()
 	}, [])
 
-	const { allAdventures, mapboxToken, startPosition, flyTo, adventureDispatch, mapStyle } =
+	const { allAdventures, startPosition, flyTo, adventureDispatch, mapStyle } =
 		useAdventureStateContext()
+	const { mapboxToken } = useTokenStateContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 	const { displayCardBoolState, screenType } = useCardStateContext()

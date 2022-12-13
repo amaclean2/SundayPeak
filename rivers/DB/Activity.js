@@ -1,4 +1,4 @@
-const db = require('../Config/db')
+const { db } = require('../Config/db')
 const logger = require('../Config/logger')
 const {
   selectActivitiesByAdventureStatement,
