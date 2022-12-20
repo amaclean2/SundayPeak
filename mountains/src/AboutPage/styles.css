@@ -1,9 +1,11 @@
 .landing-header {
-	padding: 1.5rem;
-	position: absolute;
+	padding: 1rem;
+	position: relative;
+	top: 0;
 	background-color: transparent;
 	z-index: 1;
 	width: 100%;
+	background-color: var(--off-background-color);
 }
 
 .about-page-panel {
@@ -55,7 +57,7 @@
 
 .invert-color {
 	background-color: var(--primary-accent-color);
-	color: var(--text-on-dark-background);
+	color: var(--main-off-white);
 }
 
 .landing-header-logo {
@@ -76,7 +78,7 @@
 
 .about-footer {
 	background-color: #333;
-	color: var(--text-on-dark-background);
+	color: var(--main-off-white);
 	padding: 50px;
 }
 
@@ -100,13 +102,18 @@
 .footer-column ul a {
 	color: inherit;
 	line-height: 1.5em;
+	font-size: 0.9rem;
 	display: block;
 	text-transform: uppercase;
 	margin-bottom: 10px;
 }
 
 .footer-column ul a:hover {
-	border-bottom: 1px solid var(--text-on-dark-background);
+	border-bottom: 1px solid var(--main-off-white);
+}
+
+.landing-header .action-buttons .button {
+	width: auto;
 }
 
 @media screen and (max-width: 500px) {

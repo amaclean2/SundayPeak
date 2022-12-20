@@ -14,7 +14,7 @@
 	bottom: 0;
 	right: 0;
 	width: 100%;
-	background-color: var(--input-background-color);
+	background-color: var(--main-light);
 }
 
 .message-bar .form-field-container {
@@ -31,6 +31,7 @@
 .conversation-selector {
 	width: 15rem;
 	height: 100%;
+	border-right: 1px solid var(--border-color);
 }
 
 .messages-content {
@@ -48,11 +49,17 @@
 .chat-content {
 	flex-direction: column;
 	flex: 1;
+	align-self: stretch;
 	align-items: stretch;
 	padding-top: 1rem;
 	min-height: 20rem;
 	max-height: 80vh;
 	position: relative;
+}
+
+.friend-search-list li.current-conversation {
+	background-color: var(--primary-accent-color-hover);
+	color: var(--main-off-white);
 }
 
 .friend-search-list {
@@ -64,14 +71,15 @@
 .friend-search-list li {
 	height: 4rem;
 	padding: 0 1rem;
-	font-weight: 600;
+	font-weight: 500;
 	font-size: 1.1rem;
-	border-bottom: 1px solid var(--input-border-color);
 	margin: 0;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
 	gap: 1rem;
-	background-color: var(--input-background-color);
+	background-color: var(--main-light);
+	border-radius: 0.3rem;
+	margin: 0.3rem;
 }
 
 .friend-search-list li:hover {
@@ -102,7 +110,7 @@
 .conversation-messages li .message-text {
 	padding: 0.5rem 0.8rem;
 	border-radius: 0.8rem;
-	background-color: var(--input-border-color);
+	background-color: var(--border-color);
 	max-width: 60%;
 	word-wrap: break-word;
 }
@@ -114,11 +122,11 @@
 
 .conversation-messages li.me .message-text {
 	background-color: var(--primary-accent-color);
-	color: var(--text-on-dark-background);
+	color: var(--main-off-white);
 }
 
 .send-message-button {
-	background-color: var(--secondary-accent-color);
+	background-color: var(--primary-accent-color);
 }
 
 @media screen and (max-width: 500px) {
@@ -151,6 +159,7 @@
 	.conversation-selector {
 		display: none;
 		width: 100%;
+		border: none;
 	}
 
 	.conversation-selector.open {
@@ -170,5 +179,11 @@
 
 	.message-bar {
 		padding: 1rem;
+	}
+
+	.friend-search-list li {
+		border-radius: 0;
+		font-weight: 600;
+		border-bottom: 1px solid var(--border-color);
 	}
 }

@@ -4,10 +4,10 @@ button {
 
 .button {
 	background-color: var(--primary-accent-color);
-	color: var(--text-on-dark-background);
+	color: var(--main-off-white);
 	border: none;
 	border-radius: 10px;
-	height: 40px;
+	height: 2.5rem;
 	font-weight: 500;
 	font-size: 1rem;
 	margin: 5px;
@@ -27,11 +27,11 @@ a {
 }
 
 .button:hover {
-	background-color: var(--secondary-hover-color);
+	background-color: var(--primary-accent-color-hover);
 }
 
 .button:disabled {
-	background-color: var(--secondary-disabled-color);
+	background-color: var(--primary-disabled-color);
 }
 
 .secondary-button {
@@ -44,7 +44,7 @@ a {
 
 .secondary-button:hover {
 	background-color: transparent;
-	color: var(--main-text-color);
+	color: var(--main-dark);
 }
 
 .button.small {
@@ -54,12 +54,12 @@ a {
 }
 
 .delete-button.flex-box {
-	color: var(--alert-text-color);
-	background-color: var(--default-background-color);
+	color: var(--alert-error-color);
+	background-color: var(--main-light);
 }
 
 .delete-button.flex-box:hover {
-	background-color: var(--default-background-color-hover);
+	background-color: var(--main-off-white);
 }
 
 .about-hero-button {
@@ -73,8 +73,8 @@ a {
 }
 
 .change-adventure-type {
-	background-color: var(--input-background-color);
-	color: var(--main-text-color);
+	background-color: var(--main-light);
+	color: var(--main-dark);
 	margin: 0.2em 0;
 	display: flex;
 	gap: 1em;
@@ -88,5 +88,5 @@ a {
 }
 
 .change-adventure-type:hover {
-	background-color: var(--text-on-dark-background);
+	background-color: var(--main-off-white);
 }

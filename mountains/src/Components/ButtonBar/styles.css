@@ -1,7 +1,7 @@
 .button-bar-button {
 	width: 3.2rem;
 	height: 3.2rem;
-	background-color: var(--default-background-color);
+	background-color: var(--main-light);
 	border-radius: 0.7rem;
 	border: none;
 	outline: none;
@@ -17,7 +17,7 @@
 }
 
 .button-bar-button:hover {
-	background-color: var(--default-background-color-hover);
+	background-color: var(--main-off-white);
 }
 
 .button-bar {
@@ -28,7 +28,7 @@
 	padding: 10px;
 	padding-right: 70px;
 	background: linear-gradient(#00000099, transparent);
-	align-items: flex-start;
+	align-items: center;
 }
 
 .signup-button,
@@ -39,7 +39,7 @@
 	padding: 0 1.5rem;
 	background-color: var(--primary-accent-color);
 	font-size: 1rem;
-	color: var(--text-on-dark-background);
+	color: var(--main-off-white);
 }
 
 .signup-button:hover {
@@ -47,15 +47,14 @@
 }
 
 .login-button {
-	background-color: var(--default-background-color);
-	color: var(--main-text-color);
+	background-color: var(--main-light);
+	color: var(--main-dark);
 }
 
 @media screen and (max-width: 500px) {
 	.button-bar {
 		padding: 1rem;
 		padding-bottom: 0.5rem;
-		align-items: center;
 	}
 
 	.button-bar .regular-buttons {

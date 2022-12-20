@@ -1,13 +1,13 @@
 .accordion {
 	width: 100%;
-	border: 1px solid var(--input-border-color);
+	border: 1px solid var(--border-color);
 	border-radius: 10px;
 	overflow: hidden;
-	margin: 1rem 0;
+	margin: 1rem 0.8rem;
 }
 
 .accordion-top {
-	background-color: var(--text-on-dark-background);
+	background-color: var(--main-off-white);
 	padding: 5px 15px;
 	margin: 0;
 	font-size: 18px;

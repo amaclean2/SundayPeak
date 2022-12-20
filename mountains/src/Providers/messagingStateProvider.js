@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useReducer } from 'react'
 import { getDatabase, off, onChildAdded, onValue, ref, set } from 'firebase/database'
 import { initializeApp } from 'firebase/app'
 import { useUserStateContext } from './userStateProvider'
-import { firebaseConfig } from './utils'
 import { useHandleMessages } from './hooks'
 import { useTokenStateContext } from './tokensProvider'
 
@@ -26,7 +25,7 @@ export const MessagingStateProvider = ({ children }) => {
 	const initialMessagingState = {
 		conversations: [],
 		currentConversation: null,
-		firebaseApiKey: firebaseApiKey
+		firebaseApiKey
 	}
 
 	const messageReducer = (state, action) => {
@@ -53,10 +52,7 @@ export const MessagingStateProvider = ({ children }) => {
 
 	const [messageState, messagingDispatch] = useReducer(messageReducer, initialMessagingState)
 
-	initializeApp({
-		...firebaseConfig,
-		apiKey: messageState.firebaseKey
-	})
+	initializeApp(messageState.firebaseApiKey)
 
 	useEffect(() => {
 		// listen for changes to conversations

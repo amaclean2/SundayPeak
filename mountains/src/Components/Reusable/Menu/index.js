@@ -17,6 +17,7 @@ const Menu = ({ className, fields = [] }) => {
 		action()
 	}
 
+	// this useEffect needs to be here because it needs to wait for the DOM to be loaded
 	useEffect(() => {
 		const position = menuRef.current.getBoundingClientRect().x
 		const menuWidth = 200

@@ -67,6 +67,7 @@ const AdventureEditor = () => {
 	useEffect(() => {
 		const urlAdventureId = pathname?.includes('/adventure') && pathname.split('/')[2]
 
+		// if a new adventure comes from the url
 		if (urlAdventureId) {
 			getAdventure({ id: urlAdventureId }).then(({ adventure }) => {
 				adventureDispatch({

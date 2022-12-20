@@ -1,10 +1,12 @@
 import cx from 'classnames'
 import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const SelectManyField = ({ className, options, onChange, name, value }) => {
 	// selectManyState is the current selection of present fields
-	const [selectManyState, setSelectManyState] = useState(value)
+	const [selectManyState, setSelectManyState] = useState(
+		typeof value === 'string' ? (!!value.length ? JSON.parse(value) : []) : value
+	)
 
 	const handleSelectManyState = (e) => {
 		let newSelectionList
@@ -22,12 +24,6 @@ const SelectManyField = ({ className, options, onChange, name, value }) => {
 		onChange({ target: { name, value: newSelectionList } })
 		setSelectManyState(newSelectionList)
 	}
-
-	useEffect(() => {
-		if (typeof selectManyState === 'string') {
-			setSelectManyState(!!selectManyState.length ? JSON.parse(selectManyState) : [])
-		}
-	}, [selectManyState])
 
 	return (
 		<div className={cx('form-field', 'select-many', 'flex-box', className)}>

@@ -1,6 +1,7 @@
+import cx from 'classnames'
+
 import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { debounce, throttle } from 'throttle-debounce'
+import { useState } from 'react'
 import {
 	CARD_TYPES,
 	useAdventureStateContext,
@@ -16,7 +17,7 @@ const AdventureSearch = () => {
 	const { searchAdventures, changeAdventureType } = useGetAdventures()
 	const { getAdventure } = useGetAdventure()
 	const { cardDispatch } = useCardStateContext()
-	const { adventureDispatch } = useAdventureStateContext()
+	const { adventureDispatch, adventureTypeViewer } = useAdventureStateContext()
 
 	const [searchResults, setSearchResults] = useState(null)
 	const [adventureText, setAdventureText] = useState('')
@@ -33,6 +34,8 @@ const AdventureSearch = () => {
 			searchAdventures({ searchQuery: adventureText }).then(setSearchResults)
 		}
 	}
+
+	console.log({ adventureTypeViewer })
 
 	return (
 		<>
@@ -72,26 +75,44 @@ const AdventureSearch = () => {
 				<h3>Adventure Types</h3>
 				<Button
 					id='set-ski-adventure-type'
-					className={'change-adventure-type'}
+					className={cx(
+						'change-adventure-type',
+						adventureTypeViewer === 'ski' && 'current-adventure-type'
+					)}
 					onClick={() => changeAdventureType('ski')}
 				>
-					<LargeSkierIcon size={30} />
+					<LargeSkierIcon
+						size={30}
+						color={adventureTypeViewer === 'ski' ? '#FFF' : '#000'}
+					/>
 					Ski
 				</Button>
 				<Button
 					id='set-climb-adventure-type'
-					className={'change-adventure-type'}
+					className={cx(
+						'change-adventure-type',
+						adventureTypeViewer === 'climb' && 'current-adventure-type'
+					)}
 					onClick={() => changeAdventureType('climb')}
 				>
-					<LargeClimberIcon size={30} />
+					<LargeClimberIcon
+						size={30}
+						color={adventureTypeViewer === 'climb' ? '#FFF' : '#000'}
+					/>
 					Climb
 				</Button>
 				<Button
 					id='set-hike-adventure-type'
-					className={'change-adventure-type'}
+					className={cx(
+						'change-adventure-type',
+						adventureTypeViewer === 'hike' && 'current-adventure-type'
+					)}
 					onClick={() => changeAdventureType('hike')}
 				>
-					<LargeHikerIcon size={30} />
+					<LargeHikerIcon
+						size={30}
+						color={adventureTypeViewer === 'hike' ? '#FFF' : '#000'}
+					/>
 					Hike
 				</Button>
 			</div>

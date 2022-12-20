@@ -2,13 +2,12 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	right: 0;
-	bottom: 0;
+	height: 100vh;
 }
 
-.mapboxgl-canvas {
-	width: 100% !important;
-	height: 100% !important;
+.mapboxgl-canvas-container {
+	width: 100%;
+	height: 100%;
 }
 
 @media screen and (max-width: 500px) {

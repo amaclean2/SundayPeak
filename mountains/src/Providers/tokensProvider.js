@@ -14,6 +14,7 @@ export const useTokenStateContext = () => {
 export const TokenStateProvider = ({ children }) => {
 	const initialTokenState = {
 		mapboxToken: null,
+		mapboxStyleKey: null,
 		firebaseApiKey: ''
 	}
 
@@ -27,7 +28,9 @@ export const TokenStateProvider = ({ children }) => {
 				return {
 					...state,
 					mapboxToken: action.payload.mapboxToken,
-					firebaseApiKey: action.payload.firebaseApiKey
+					mapboxStyleKey: action.payload.mapboxStyleKey,
+					firebaseApiKey: action.payload.firebaseApiKey,
+					mapboxStyles: action.payload.mapboxStyles
 				}
 			default:
 				return state

@@ -41,8 +41,8 @@
 }
 
 .pin-marker {
-	background-color: var(--default-background-color);
+	background-color: var(--main-light);
 	border-radius: 100%;
 	padding: 0.15rem;
-	border: 1px solid var(--main-text-color);
+	border: 1px solid var(--main-dark);
 }

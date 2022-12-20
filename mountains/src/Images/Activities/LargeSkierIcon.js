@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const LargeSkierIcon = ({ size = 100, className }) => (
+export const LargeSkierIcon = ({ size = 100, className, color = '#000000' }) => (
 	<svg
 		id='Layer_1'
 		data-name='Layer 1'
@@ -9,6 +9,7 @@ export const LargeSkierIcon = ({ size = 100, className }) => (
 		height={size}
 		viewBox='0 0 100 100'
 		className={className}
+		fill={color}
 	>
 		<circle
 			cx='81.19'

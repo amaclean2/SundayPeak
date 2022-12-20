@@ -1,13 +1,10 @@
 import { FieldHeader, FlexSpacer, HeaderSubtext, ProfileHeader } from 'Components/Reusable'
 import { useAdventureStateContext } from 'Providers'
-import { useEffect } from 'react'
 import getContent from 'TextContent'
 import AdventureEditorMenu from './Buttons/MenuFields'
 
 const AdventureHeader = ({ onChange }) => {
 	const { currentAdventure, isAdventureEditable } = useAdventureStateContext()
-
-	useEffect(() => {}, [])
 
 	if (currentAdventure) {
 		if (isAdventureEditable) {
@@ -33,7 +30,7 @@ const AdventureHeader = ({ onChange }) => {
 				>
 					<div>
 						<FieldHeader
-							className='page-header'
+							pageHeader
 							text={currentAdventure.adventure_name}
 						/>
 						{currentAdventure.nearest_city?.length && (
@@ -50,7 +47,7 @@ const AdventureHeader = ({ onChange }) => {
 		return (
 			<ProfileHeader slim>
 				<FieldHeader
-					className='page-header'
+					pageHeader
 					text={getContent('adventurePanel.adventureCreator')}
 				/>
 			</ProfileHeader>

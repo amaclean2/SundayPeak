@@ -55,6 +55,18 @@ export const useGetAdventures = () => {
 		}
 	}
 
+	const createNewDefaultAdventure = ({ longitude, latitude }) => ({
+		id: 'waiting',
+		adventure_name: '',
+		adventure_type: adventureTypeViewer,
+		images: [],
+		public: true,
+		coordinates: {
+			lng: longitude,
+			lat: latitude
+		}
+	})
+
 	const getAllAdventures = async (boundingBox) => {
 		return fetcher('/adventures/all', {
 			method: 'POST',
@@ -113,7 +125,13 @@ export const useGetAdventures = () => {
 			.catch(console.error)
 	}
 
-	return { getAllAdventures, refetchAdventures, searchAdventures, changeAdventureType }
+	return {
+		getAllAdventures,
+		refetchAdventures,
+		searchAdventures,
+		changeAdventureType,
+		createNewDefaultAdventure
+	}
 }
 
 export const useSaveAdventure = () => {

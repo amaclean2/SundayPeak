@@ -1,7 +1,7 @@
 .display-card {
 	margin: 10px;
 	min-width: 28rem;
-	border-radius: 30px;
+	border-radius: 1rem;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 	display: none;
 	flex-direction: column;
@@ -55,7 +55,7 @@
 	border: none;
 	padding: 0;
 	border-radius: 0;
-	color: var(--secondary-background-color);
+	color: var(--main-light);
 	width: 3rem;
 	height: 3rem;
 	outline: none;
@@ -87,13 +87,16 @@
 	padding: 10px;
 	align-items: center;
 	justify-content: flex-end;
+	flex-direction: column;
 	width: 100%;
-	background-color: var(--secondary-background-color);
-	box-shadow: 0 0 50px 30px var(--secondary-background-color);
+	background-color: var(--main-light);
+	box-shadow: 0 0 50px 30px var(--main-light);
 }
 
 .action-buttons .button {
 	display: inline-flex;
+	width: 25rem;
+	justify-content: center;
 }
 
 .action-buttons.cta-buttons {
@@ -103,9 +106,11 @@
 }
 
 .profile-content {
-	background-color: var(--secondary-background-color);
+	background-color: var(--main-light);
 	width: 100%;
 	position: relative;
+	height: 80vh;
+	overflow-y: auto;
 }
 
 h3.label-field {
@@ -126,7 +131,7 @@ h3.label-field {
 
 .profile-header {
 	background: var(--header-gradient);
-	color: var(--text-on-dark-background);
+	color: var(--main-off-white);
 	width: 100%;
 	min-height: 5rem;
 }
@@ -144,6 +149,10 @@ h3.label-field {
 .profile-header .field.flex-box {
 	flex-direction: row;
 	align-items: center;
+}
+
+.profile-header.center .field {
+	justify-content: center;
 }
 
 @media screen and (max-width: 500px) {
@@ -167,30 +176,28 @@ h3.label-field {
 		width: 100vw;
 	}
 
-	.display-card .main-login-content {
-		width: 100vw;
-		justify-content: center;
-		display: flex;
-		flex-direction: column;
-		height: auto;
-	}
-
-	.adventure-info.flex-box {
-		margin: 0;
-		padding: 0;
-		margin-bottom: 1rem;
+	.profile-content {
+		height: 100%;
 	}
 
 	.action-buttons.flex-box {
 		flex-direction: column;
 		align-items: stretch;
-		border-top: 1px solid var(--seperator-color);
+		border-top: 1px solid var(--border-color);
 		box-shadow: none;
+		gap: 0.5rem;
 	}
 
 	.action-buttons .button {
+		width: 100%;
+		margin: 0;
 		justify-content: center;
 		background-color: transparent;
 		color: var(--primary-accent-color);
+	}
+
+	.action-buttons .cta-button {
+		background-color: var(--primary-accent-color);
+		color: var(--main-off-white);
 	}
 }

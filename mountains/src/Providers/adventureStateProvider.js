@@ -124,6 +124,7 @@ export const AdventureStateProvider = ({ children }) => {
 
 	const [adventureState, adventureDispatch] = useReducer(adventureReducer, initialAdventureState)
 
+	// update the local browser state of the new start position when it changes
 	useEffect(() => {
 		adventureState?.startPosition &&
 			localStorage.setItem('startPos', JSON.stringify(adventureState.startPosition))

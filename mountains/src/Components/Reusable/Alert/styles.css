@@ -8,7 +8,7 @@
 	border-radius: 15px;
 	padding: 15px;
 	box-shadow: 0 5px 10px var(--box-shadow-opacity);
-	color: var(--default-background-color);
+	color: var(--main-light);
 	font-size: 18px;
 	opacity: 0;
 	transition: all 0.5s ease-in-out;

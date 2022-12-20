@@ -30,7 +30,7 @@
 .mobile-menu-drop .mobile-menu-button {
 	width: 100%;
 	padding: 1rem 2rem;
-	color: var(--main-text-color);
+	color: var(--main-dark);
 	font-weight: 500;
 	background-color: transparent;
 }
@@ -52,7 +52,7 @@
 .mobile-menu-header .open-icon {
 	width: 4rem;
 	height: 0.4rem;
-	background-color: var(--input-background-color);
+	background-color: var(--main-light);
 	border-radius: 0.2rem;
 }
 
@@ -68,7 +68,7 @@
 	position: fixed;
 	top: 0;
 	left: 0;
-	background-color: var(--dim-background);
+	background-color: var(--main-light);
 }
 
 .mobile-menu-background.open {

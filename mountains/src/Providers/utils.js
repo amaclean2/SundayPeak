@@ -3,18 +3,6 @@ import { useAdventureStateContext } from './adventureStateProvider'
 
 const isDefined = (property) => typeof property !== 'undefined'
 
-export const createNewDefaultAdventure = ({ longitude, latitude }) => ({
-	id: 'waiting',
-	adventure_name: '',
-	aspect: 'N',
-	images: [],
-	public: true,
-	coordinates: {
-		lng: longitude,
-		lat: latitude
-	}
-})
-
 export const useAdventureValidation = () => {
 	const { adventureDispatch } = useAdventureStateContext()
 
@@ -213,14 +201,4 @@ export const getScreenType = () => {
 	}
 
 	return screenType
-}
-
-export const firebaseConfig = {
-	authDomain: 'sundaypeak.firebaseapp.com',
-	databaseURL: 'https://sundaypeak-default-rtdb.firebaseio.com',
-	projectId: 'sundaypeak',
-	storageBucket: 'sundaypeak.appspot.com',
-	messagingSenderId: '373141856713',
-	appId: '1:373141856713:web:5be8d3a564bad99e554818',
-	measurementId: 'G-PQ5YZ55MXZ'
 }

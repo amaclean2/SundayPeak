@@ -4,6 +4,7 @@ import Discover from './Discover'
 import About from './About'
 import '../App.css'
 import '../variables.css'
+import PrivacyPolicy from 'PrivacyPolicy'
 
 export const title = 'Sunday Peak'
 
@@ -21,6 +22,10 @@ const AppRouter = () => {
 					<Route
 						path='/adventure'
 						element={<Discover />}
+					/>
+					<Route
+						path='/privacy'
+						element={<PrivacyPolicy />}
 					/>
 					<Route
 						path='/password'

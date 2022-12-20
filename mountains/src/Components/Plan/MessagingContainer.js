@@ -37,10 +37,10 @@ const MessagingContianer = () => {
 				className={'messages-header'}
 			>
 				<FieldHeader
-					className='page-header'
+					pageHeader
 					onClick={handleConversationHeader}
 				>
-					{currentConversation ? (
+					{currentConversation && screenType.mobile ? (
 						<>
 							<CarretIcon
 								color='#EEE'

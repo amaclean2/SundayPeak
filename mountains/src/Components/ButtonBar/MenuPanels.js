@@ -1,4 +1,5 @@
 import Plan from 'Components/Plan'
+import PrivacyPolicy from 'PrivacyPolicy'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { CARD_TYPES, useCardStateContext, useUserStateContext } from '../../Providers'

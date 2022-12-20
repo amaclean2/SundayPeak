@@ -2,7 +2,7 @@
 	flex-direction: column;
 	width: 100%;
 	align-items: stretch;
-	border-bottom: 1px solid var(--seperator-color);
+	border-bottom: 1px solid var(--border-color);
 	overflow: hidden;
 	overflow-y: auto;
 }
@@ -20,7 +20,7 @@
 }
 
 .results-container li:hover {
-	background-color: var(--text-on-dark-background);
+	background-color: var(--main-off-white);
 }
 
 .adventure-type-selector {
@@ -28,16 +28,24 @@
 }
 
 .adventure-search .form-field-container {
-	padding: 0;
+	padding: 0.8rem;
 }
 
 .result-title {
 	font-weight: 500;
 }
 
+.current-adventure-type {
+	background-color: var(--primary-accent-color);
+	color: var(--main-off-white);
+}
+
+.current-adventure-type:hover {
+	background-color: var(--primary-accent-color-hover);
+}
+
 @media screen and (max-width: 500px) {
 	.adventure-search .form-field-container {
-		padding: 0.8rem;
 		padding-bottom: 1rem;
 	}
 

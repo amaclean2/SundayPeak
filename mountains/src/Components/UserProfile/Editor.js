@@ -1,25 +1,19 @@
-import { useEffect, useState } from 'react'
-
-import { useEditUser, useUserStateContext } from 'Providers'
+import { useUserStateContext } from 'Providers'
 import { ErrorField, FormField, MultiField } from 'Components/Reusable'
 import ProfileImageUploader from './ProfileImageUploader'
+import { useTokenStateContext } from 'Providers/tokensProvider'
 
 const UserEditor = () => {
 	const { workingUser, editUser } = useUserStateContext()
-	const { getMapboxStyles } = useEditUser()
-	const [styles, setStyles] = useState()
+	const { mapboxStyles } = useTokenStateContext()
 
-	useEffect(() => {
-		getMapboxStyles().then((mapboxStyles) =>
-			setStyles(
-				Object.keys(mapboxStyles).map((style, key) => ({
-					id: key,
-					value: mapboxStyles[style],
-					text: style
-				}))
-			)
-		)
-	}, [])
+	const styles =
+		mapboxStyles &&
+		Object.keys(mapboxStyles).map((style, key) => ({
+			id: key,
+			value: mapboxStyles[style],
+			text: style
+		}))
 
 	if (!styles) return
 

@@ -3,13 +3,15 @@ import { aboutPage } from './aboutPage'
 import { buttonText } from './buttonText'
 import { lists } from './lists'
 import { userProfile } from './userProfile'
+import { privacyText } from './privacyPolicy'
 
 const textContent = {
 	aboutPage,
 	buttonText,
 	adventurePanel,
 	lists,
-	userProfile
+	userProfile,
+	privacyText
 }
 
 const getContent = (textContentKey, replacementStrings) => {

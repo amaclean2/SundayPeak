@@ -22,7 +22,7 @@ const UserProfile = () => {
 
 	useEffect(() => {
 		getFriends({ userId: workingUser.id })
-	}, [workingUser.id])
+	}, [workingUser.id, getFriends])
 
 	if (!workingUser) {
 		return null
@@ -35,7 +35,7 @@ const UserProfile = () => {
 					className={'edit-user-profile-header'}
 					slim
 				>
-					<FieldHeader className='page-header'>My Profile</FieldHeader>
+					<FieldHeader pageHeader>My Profile</FieldHeader>
 				</ProfileHeader>
 			) : (
 				<ProfileHeader
@@ -45,7 +45,7 @@ const UserProfile = () => {
 				>
 					<div>
 						<FieldHeader
-							className='page-header'
+							pageHeader
 							text={`${workingUser.first_name} ${workingUser.last_name}`}
 						/>
 						{workingUser.city?.length && <HeaderSubtext>{workingUser.city}</HeaderSubtext>}

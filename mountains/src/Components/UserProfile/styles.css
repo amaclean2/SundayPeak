@@ -101,6 +101,15 @@ h1 {
 	width: 100%;
 }
 
+.friend-list-container.flex-box {
+	gap: 1rem;
+}
+
+.tick-list-container .field-header,
+.friend-list-container .field-header {
+	padding-left: 0.8rem;
+}
+
 .tick-list.flex-box {
 	flex-direction: column;
 	font-size: 1rem;
@@ -119,24 +128,25 @@ h1 {
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
 	width: 100%;
-	border-bottom: 1px solid var(--input-border-color);
+	border-bottom: 1px solid var(--border-color);
 	border-left: none;
 }
 
 .tick.multi-field-tick {
 	justify-content: space-between;
+	padding: 1rem 0;
 }
 
 .tick:hover {
-	background-color: var(--text-on-dark-background);
+	background-color: var(--main-off-white);
 }
 
 .main-user-content {
-	width: 800px;
+	width: 40rem;
 }
 
 .profile-image-uploader.flex-box {
-	margin-bottom: 50px;
+	margin: 0.8rem;
 	flex-direction: column;
 	align-items: flex-start;
 }
@@ -192,6 +202,11 @@ h1 {
 	margin-top: 0;
 }
 
+.friend-list-container.flex-box .form-field-container {
+	padding: 0;
+	width: 100%;
+}
+
 @media screen and (max-width: 500px) {
 	.main-user-content {
 		max-width: 100%;
@@ -201,11 +216,6 @@ h1 {
 		width: 100%;
 		margin: 1rem;
 		margin-bottom: 3rem;
-	}
-
-	.friend-list-container.flex-box .form-field-container {
-		padding: 1rem 0 1.5rem;
-		width: 100%;
 	}
 
 	.user-adventure-viewer.flex-box {

@@ -142,6 +142,7 @@ const ButtonBar = () => {
 						{isLoggedIn && <UserProfileButton />}
 						<ActivitiesButton />
 					</MobileMenu>
+					{!screenType.mobile && <FlexSpacer />}
 					<Link
 						id='home-redirect'
 						className={'secondary-button'}
@@ -152,7 +153,7 @@ const ButtonBar = () => {
 							color={'white'}
 						/>
 					</Link>
-					<FlexSpacer />
+					{screenType.mobile && <FlexSpacer />}
 				</div>
 			)}
 			<MenuPanels />

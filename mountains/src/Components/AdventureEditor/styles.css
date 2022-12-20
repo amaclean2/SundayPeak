@@ -1,16 +1,27 @@
 .adventure-info {
-	margin: 0 10px;
+	margin: 0;
 	padding-top: 20px;
 	flex-wrap: wrap;
 	min-width: 300px;
 	width: 38rem;
 	max-width: 100vw;
-	margin-bottom: 170px;
+	gap: 1rem;
 }
 
 .main-adventure-content.flex-box {
 	align-items: flex-start;
 	flex-direction: column;
+}
+
+.main-adventure-content + .action-buttons,
+.main-user-content + .action-buttons {
+	flex-direction: row;
+	width: auto;
+}
+
+.main-adventure-content + .action-buttons .button,
+.main-user-content + .action-buttons .button {
+	width: auto;
 }
 
 .adventure-tick-panel.flex-box {
@@ -28,8 +39,9 @@
 	display: block;
 }
 
-.adventure-bio {
+.adventure-bio.flex-box {
 	align-self: flex-start;
+	padding: 2rem 0;
 }
 
 .adventure-viewer {
@@ -42,6 +54,7 @@
 	width: 35px;
 	height: 35px;
 	background-color: #ddd;
+	margin-right: 0.8rem;
 }
 
 .user-image img {
@@ -57,7 +70,6 @@
 
 .tick-list {
 	width: 100%;
-	max-width: 300px;
 	border-collapse: collapse;
 	list-style-type: none;
 	margin: 0;
@@ -82,17 +94,31 @@
 .field-header.page-header {
 	font-weight: 500;
 	margin-bottom: 0;
+	font-size: 1.5rem;
 }
 
 .header-subtext {
-	font-size: 14px;
-	padding-left: 5px;
+	font-size: 0.85rem;
+}
+
+.action-buttons.add-button-container {
+	justify-content: flex-start;
+	border-top: 1px solid var(--border-color);
 }
 
 @media screen and (max-width: 500px) {
+	.adventure-info {
+		gap: 0rem;
+	}
+
 	.main-adventure-content.flex-box {
 		width: 100%;
 		min-height: 0;
+	}
+
+	.main-adventure-content + .action-buttons {
+		flex-direction: column;
+		width: auto;
 	}
 
 	.adventure-viewer {
@@ -102,7 +128,7 @@
 	}
 
 	.no-edit {
-		padding-top: 1.5rem;
+		padding: 0;
 	}
 
 	.editor-climber,

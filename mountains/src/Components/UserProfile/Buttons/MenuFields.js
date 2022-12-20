@@ -48,6 +48,12 @@ const UserEditorMenu = () => {
 			text: 'View Conversations'
 		})
 
+		menuFields.push({
+			action: () => cardDispatch({ type: 'switchCard', payload: CARD_TYPES.privacy }),
+			id: 'privacy-policy-button',
+			text: 'View Privacy Policy'
+		})
+
 		if (isUserEditable) {
 			menuFields.push({
 				action: () => userDispatch({ type: 'toggleIsUserEditable' }),

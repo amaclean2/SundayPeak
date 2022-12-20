@@ -19,6 +19,9 @@ const AboutFooter = () => {
 							<Link to='/about'>{getContent('aboutPage.footerAbout')}</Link>
 						</li>
 						<li>
+							<Link to='/privacy'>{getContent('aboutPage.footerPrivacy')}</Link>
+						</li>
+						<li>
 							<Link to='/discover'>{getContent('aboutPage.footerUseApp')}</Link>
 						</li>
 					</ul>

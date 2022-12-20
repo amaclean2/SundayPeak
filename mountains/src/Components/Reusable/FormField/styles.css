@@ -2,11 +2,12 @@ input {
 	font-family: inherit;
 }
 
-.form-field-container {
+.form-field-container,
+.multi-field {
+	width: 100%;
+	padding: 0.8rem 0.8rem 1.3rem;
 	min-width: 200px;
 	flex: 1;
-	padding-right: 1rem;
-	margin-bottom: 1rem;
 }
 
 .form-field-container.wide {
@@ -21,10 +22,6 @@ input {
 .form-field-container.block {
 	display: block;
 	flex-basis: 100%;
-}
-
-.form-field-container.block .form-field {
-	max-width: 250px;
 }
 
 .form-field-static {
@@ -44,8 +41,8 @@ input {
 .form-field.select,
 .form-field.tel,
 .form-field.email {
-	background-color: var(--input-background-color);
-	border: 1px solid var(--input-border-color);
+	background-color: var(--main-light);
+	border: 1px solid var(--border-color);
 	border-radius: 10px;
 	font-size: 1rem;
 	margin: 0;
@@ -65,11 +62,11 @@ input {
 }
 
 .form-field.password {
-	background-color: var(--input-background-color);
-	border: 1px solid var(--input-border-color);
+	background-color: var(--main-light);
+	border: 1px solid var(--border-color);
 	border-radius: 10px;
 	font-size: 1rem;
-	margin: 5px 0;
+	margin: 0;
 	width: 100%;
 	height: 40px;
 	padding: 0 16px;
@@ -86,8 +83,8 @@ input {
 }
 
 .form-field.password.focus {
-	box-shadow: 0 0 5px var(--half-opacity-accent-color);
-	border: 1px solid var(--secondary-accent-color);
+	box-shadow: 0 0 5px var(--primary-accent-color-opacity);
+	border: 1px solid var(--primary-accent-color);
 }
 
 .form-field.password input {
@@ -101,12 +98,12 @@ input {
 
 .form-field.password button {
 	background-color: transparent;
-	color: var(--main-text-color);
+	color: var(--main-dark);
 	padding: 0;
 }
 
 .form-field.form-field.password.focus button {
-	color: var(--secondary-accent-color);
+	color: var(--primary-accent-color);
 }
 
 .form-field-static.card-header {
@@ -136,9 +133,9 @@ input {
 
 .checkbox .checkbox-illus,
 .select-many .select-many-illus {
-	width: 20px;
-	height: 20px;
-	border: 2px solid var(--input-border-color);
+	width: 1.4rem;
+	height: 1.4rem;
+	border: 2px solid var(--border-color);
 	margin-right: 8px;
 	border-radius: 5px;
 	display: flex;
@@ -148,8 +145,8 @@ input {
 
 .hidden-checkbox:checked + .checkbox-illus,
 .hidden-checkbox:checked + .select-many-illus {
-	background-color: var(--secondary-accent-color);
-	border: 2px solid var(--default-background-color);
+	background-color: var(--primary-accent-color);
+	border: 2px solid var(--main-light);
 	outline: none;
 }
 
@@ -182,7 +179,6 @@ input {
 .multi-field.flex-box {
 	flex-direction: column;
 	align-items: flex-start;
-	width: 100%;
 }
 
 .multi-field .form-field {
@@ -191,6 +187,11 @@ input {
 
 .multi-field-box {
 	width: 100%;
+	gap: 1rem;
+}
+
+.multi-field-box .form-field-container {
+	padding: 0;
 }
 
 @media screen and (max-width: 500px) {
@@ -201,8 +202,14 @@ input {
 	.form-field.email,
 	.form-field.password,
 	.form-field.password input {
-		background-color: var(--mobile-background-color);
+		background-color: var(--main-off-white);
 		border: none;
+	}
+
+	.checkbox .checkbox-illus,
+	.select-many .select-many-illus {
+		width: 1.5rem;
+		height: 1.5rem;
 	}
 
 	.select-many-option {
@@ -212,13 +219,6 @@ input {
 
 	.form-field.select-many {
 		max-height: 250px;
-	}
-
-	.form-field-container {
-		max-width: 100%;
-		min-width: auto;
-		padding: 0.8rem 0.8rem 1.3rem;
-		margin-bottom: 0;
 	}
 
 	.multi-field.flex-box {

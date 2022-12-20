@@ -11,7 +11,7 @@ import {
 
 const ConversationSelector = ({ className }) => {
 	const { searchFriends } = useGetUser()
-	const { conversations } = useMessagingStateContext()
+	const { conversations, currentConversation } = useMessagingStateContext()
 	const { loggedInUser } = useUserStateContext()
 	const { setCurrentConversation, establishNewConversation } = useHandleMessages()
 
@@ -54,7 +54,10 @@ const ConversationSelector = ({ className }) => {
 					{conversations.map((conversation, key) => (
 						<li
 							key={`conversation_${key}`}
-							className='flex-box'
+							className={cx(
+								'flex-box',
+								currentConversation?.id === conversation.id && 'current-conversation'
+							)}
 							onClick={() =>
 								setCurrentConversation({ userId: loggedInUser.id, conversationId: conversation.id })
 							}

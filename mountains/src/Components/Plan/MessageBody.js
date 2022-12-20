@@ -3,9 +3,7 @@ import { getDatabase, off, onValue, ref } from 'firebase/database'
 import cx from 'classnames'
 import Linkify from 'linkify-react'
 
-import { FieldHeader } from 'Components/Reusable'
 import { useMessagingStateContext, useUserStateContext } from 'Providers'
-import { CarretIcon } from 'Images'
 
 const MessageBody = () => {
 	const { currentConversation } = useMessagingStateContext()
@@ -38,7 +36,7 @@ const MessageBody = () => {
 				off(currentConversationRef)
 			}
 		}
-	}, [currentConversation])
+	}, [currentConversation, loggedInUser])
 
 	if (!currentConversation) {
 		return null

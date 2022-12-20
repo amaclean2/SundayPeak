@@ -1,11 +1,4 @@
-import { useEffect, useState } from 'react'
-import {
-	CARD_TYPES,
-	useAdventureStateContext,
-	useCardStateContext,
-	useGetUser,
-	useUserStateContext
-} from '../../Providers'
+import { useAdventureStateContext, useGetUser } from '../../Providers'
 import { Field, FieldHeader, FieldRow, FlexSpacer } from '../Reusable'
 
 const UserImage = ({ url }) => (
@@ -21,24 +14,9 @@ const MailIcon = () => <div className='mail-icon' />
 
 const AdventureTickPanel = () => {
 	const { currentAdventure } = useAdventureStateContext()
-	const { cardDispatch } = useCardStateContext()
 	const { getOtherUser } = useGetUser()
-	const { workingUser } = useUserStateContext()
 
 	const ticks = currentAdventure?.ticks || []
-
-	const [userOnLoad, setUserOnLoad] = useState()
-
-	useEffect(() => {
-		workingUser?.id && setUserOnLoad(workingUser.id)
-	}, [])
-
-	useEffect(() => {
-		// I don't know what this does!
-		if (userOnLoad && workingUser?.id && userOnLoad !== workingUser?.id) {
-			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.profile })
-		}
-	}, [workingUser])
 
 	if (!ticks || !ticks.length) {
 		return null
@@ -47,7 +25,7 @@ const AdventureTickPanel = () => {
 	return (
 		<FieldRow>
 			<Field>
-				<FieldHeader text='BYF' />
+				<FieldHeader text='Adventurers' />
 				<ul className='tick-list'>
 					{ticks.map((tick, key) => (
 						<li
@@ -56,16 +34,14 @@ const AdventureTickPanel = () => {
 							onClick={() => getOtherUser({ userId: tick.user_id, profileSwitch: true })}
 						>
 							<UserImage url={tick.profile_picture_url} />
-							<FlexSpacer />
 							{tick.first_name} {tick.last_name}
-							<FlexSpacer />
-							<FlexSpacer />
 							<FlexSpacer />
 							<MailIcon />
 						</li>
 					))}
 				</ul>
 			</Field>
+			<FlexSpacer />
 		</FieldRow>
 	)
 }

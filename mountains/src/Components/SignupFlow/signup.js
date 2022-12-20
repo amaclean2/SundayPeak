@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { title } from '../../App'
 import {
 	CARD_TYPES,
@@ -45,81 +45,87 @@ export const SignupFlow = () => {
 
 	return (
 		<DisplayCard
-			configuration={'center'}
 			onClose={onClose}
+			configuration={'center'}
 		>
-			<ProfileHeader className='signup-header'>
+			<ProfileHeader
+				className='signup-header'
+				configuration={'center'}
+			>
 				<FieldHeader
-					className='page-header signup-header-text'
+					pageHeader
+					className='signup-header-text'
 					text={`Sign up with ${title}`}
 				/>
 			</ProfileHeader>
-			<ProfileContent>
-				<div className='main-signup-content'>
-					<div className='adventure-info flex-box signup-form'>
-						<ErrorField
-							form='login'
-							className='signup-error'
-						/>
-						<FormField
-							onChange={onChange}
-							type='text'
-							name='first_name'
-							label='First Name'
-							isEditable
-							hideLabel
-							block
-							value={formFields.first_name}
-						/>
-						<FormField
-							onChange={onChange}
-							type='text'
-							name='last_name'
-							label='Last Name'
-							hideLabel
-							isEditable
-							block
-							value={formFields.last_name}
-						/>
-						<FormField
-							type='email'
-							name='email'
-							label='Email'
-							hideLabel
-							isEditable
-							block
-							value={formFields.email}
-							onChange={onChange}
-						/>
-						<FormField
-							name='password'
-							label='Password'
-							type='password'
-							hideLabel
-							block
-							isEditable
-							value={formFields.password}
-							onChange={onChange}
-						/>
-						<FormField
-							name='password_2'
-							label='Confirm Password'
-							type='password'
-							hideLabel
-							block
-							isEditable
-							value={formFields.password_2}
-							onChange={onChange}
-						/>
-						<FormField
-							type='checkbox'
-							name='legal'
-							value={formFields.legal}
-							label={`I agree with the ${title} Privacy Policy`}
-							isEditable
-							onChange={onChange}
-						/>
-					</div>
+			<ProfileContent className='main-signup-content'>
+				<div className='adventure-info flex-box signup-form'>
+					<ErrorField
+						form='login'
+						className='signup-error'
+					/>
+					<FormField
+						onChange={onChange}
+						type='text'
+						name='first_name'
+						label='First Name'
+						isEditable
+						hideLabel
+						block
+						value={formFields.first_name}
+					/>
+					<FormField
+						onChange={onChange}
+						type='text'
+						name='last_name'
+						label='Last Name'
+						hideLabel
+						isEditable
+						block
+						value={formFields.last_name}
+					/>
+					<FormField
+						type='email'
+						name='email'
+						label='Email'
+						hideLabel
+						isEditable
+						block
+						value={formFields.email}
+						onChange={onChange}
+					/>
+					<FormField
+						name='password'
+						label='Password'
+						type='password'
+						hideLabel
+						block
+						isEditable
+						value={formFields.password}
+						onChange={onChange}
+					/>
+					<FormField
+						name='password_2'
+						label='Confirm Password'
+						type='password'
+						hideLabel
+						block
+						isEditable
+						value={formFields.password_2}
+						onChange={onChange}
+					/>
+					<FormField
+						type='checkbox'
+						name='legal'
+						value={formFields.legal}
+						label={
+							<span>
+								I agree with the {title} <Link to='/privacy'>Privacy Policy</Link>
+							</span>
+						}
+						isEditable
+						onChange={onChange}
+					/>
 				</div>
 				<FooterButtons>
 					<Button

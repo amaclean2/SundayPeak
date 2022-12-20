@@ -48,7 +48,8 @@ export const NewPassword = () => {
 		<DisplayCard configuration='center'>
 			<ProfileHeader>
 				<FieldHeader
-					className={'page-header signup-header-text'}
+					pageHeader
+					className={'signup-header-text'}
 					text={'Reset Your Password'}
 				/>
 			</ProfileHeader>

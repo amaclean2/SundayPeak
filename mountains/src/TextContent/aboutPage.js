@@ -14,5 +14,6 @@ export const aboutPage = {
 	footerAbout: 'About',
 	footerUseApp: 'Use Sunday Peak',
 	footerFollow: 'Follow',
-	footerIG: 'Instagram'
+	footerIG: 'Instagram',
+	footerPrivacy: 'Privacy Policy'
 }

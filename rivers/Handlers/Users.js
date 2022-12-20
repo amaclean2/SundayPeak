@@ -13,10 +13,6 @@ const { buildUserObject } = require('../Services/user.service')
 const logger = require('../Config/logger')
 const { sendResponse } = require('../ResponseHandling/success')
 const {
-  getMapboxAccessToken,
-  getFirebaseApiKey
-} = require('../Config/connections')
-const {
   updateUser,
   getFriendsLookup,
   updatePassword,
@@ -29,6 +25,7 @@ const {
   sendResetPasswordMessage,
   sendUserFollowedMessage
 } = require('../Services/email.service')
+const { getAccessoryInformation } = require('../Services/utils')
 
 const loginUser = async (req, res) => {
   try {
@@ -117,8 +114,7 @@ const getLoggedInUser = async (req, res) => {
         res,
         data: {
           user: userObject,
-          mapbox_token: getMapboxAccessToken(),
-          firebase_api_key: getFirebaseApiKey()
+          ...getAccessoryInformation({ user: true })
         },
         status: SUCCESS
       })

@@ -94,13 +94,15 @@ const AdventureEditorButtons = () => {
 		return null
 	}
 
+	const addButtonContainerClass = !currentAdventure && !isDeletePage ? 'add-button-container' : ''
+
 	return (
-		<FooterButtons>
+		<FooterButtons className={addButtonContainerClass}>
 			{!currentAdventure && !isDeletePage && (
 				<Button
 					onClick={handleAddAdventure}
 					disabled={adventureAddState}
-					className='adventure-add-button'
+					className='adventure-add-button secondary-button'
 				>
 					{getContent('buttonText.addAdventure')}
 				</Button>
