@@ -1,6 +1,6 @@
 # Orginazation of the Messaging App
 
-## Watch /users/<userId>/conversations
+## Watch /users/<user_id>/conversations
 
 ### If the user doesn't exist initiate them
 
