@@ -7,7 +7,6 @@ const ticksRouter = require('./Ticks')
 const picturesRouter = require('./Pictures')
 const servicesRouter = require('./Services')
 const { requestLogger } = require('../Config/loggerMiddleware')
-const { getAppStats } = require('../Handlers/General')
 
 const router = Router()
 
@@ -19,7 +18,5 @@ router.use('/activities', activitiesRouter)
 router.use('/ticks', ticksRouter)
 router.use('/pictures', picturesRouter)
 router.use('/services', servicesRouter)
-
-router.get('/verify', getAppStats)
 
 module.exports = router

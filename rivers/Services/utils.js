@@ -125,7 +125,7 @@ const getAccessoryInformation = ({ user }) => {
     firebase_api_key: getFirebaseApiKey(),
     mapbox_token: getMapboxAccessToken(),
     mapbox_styles: mapboxStyles,
-    ...(user && { map_style: mapboxStyles.default })
+    ...(!user && { map_style: mapboxStyles.default })
   }
 }
 

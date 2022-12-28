@@ -22,11 +22,10 @@ const {
   findFromFriendsStatement
 } = require('./Statements')
 
-const addUser = async ({ email, password, first_name, last_name }) => {
+const addUser = async ({ email, first_name, last_name }) => {
   try {
     const [result] = await db.execute(createUserStatement, [
       email,
-      password,
       first_name,
       last_name,
       mapboxStyles.default

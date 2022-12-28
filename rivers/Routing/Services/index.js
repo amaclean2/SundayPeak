@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const { getAppStats } = require('../../Handlers/General')
 const { getLoggedInUser } = require('../../Handlers/Users')
 const { sendResponse } = require('../../ResponseHandling')
 const { NOT_FOUND, SUCCESS } = require('../../ResponseHandling/statuses')
@@ -6,6 +7,7 @@ const { getAccessoryInformation } = require('../../Services/utils')
 
 const router = Router()
 
+router.get('/verify', getAppStats)
 router.get('/initial', (req, res) => {
   if (req.body.id_from_token) return getLoggedInUser(req, res)
   else {

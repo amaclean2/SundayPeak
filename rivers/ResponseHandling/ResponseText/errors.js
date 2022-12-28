@@ -84,6 +84,11 @@ const errorTexts = {
     messageText: 'Server Error: Could not get users',
     status: SERVER_ERROR
   },
+  newPasswordRequired: {
+    messageText:
+      'A new password is required to meed the new security standards. Please click forgot my password.',
+    status: NOT_ACCEPTABLE
+  },
   noAccountExists: {
     messageText: 'This account cannot be found. Please try again.',
     status: NOT_FOUND
