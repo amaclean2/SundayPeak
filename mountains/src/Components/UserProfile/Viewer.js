@@ -1,3 +1,4 @@
+import { FlexSpacer } from 'Components/Reusable'
 import { useUserStateContext } from '../../Providers'
 import ActivityPanel from './ActivityPanel'
 import FriendsViewer from './FriendsViewer'
@@ -9,8 +10,13 @@ import UserBio from './UserBio'
 const ListViewer = () => {
 	const { listState } = useUserStateContext()
 
-	if (listState) {
-		return <FriendsViewer />
+	if (listState === 'friends') {
+		return (
+			<>
+				<FriendsViewer />
+				<FlexSpacer />
+			</>
+		)
 	} else {
 		return (
 			<>

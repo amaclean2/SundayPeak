@@ -12,7 +12,7 @@ h1 {
 }
 
 .scroller-container.flex-box {
-	height: 300px;
+	height: 18rem;
 	width: 100%;
 	overflow-x: auto;
 	overflow-y: hidden;
@@ -27,7 +27,7 @@ h1 {
 
 .file-upload-container.flex-box {
 	border: 2px dashed #ccc;
-	height: calc(100% - 10px);
+	height: calc(100% - 12px);
 	margin: 6px 12px;
 	cursor: pointer;
 	width: 200px;
@@ -94,12 +94,20 @@ h1 {
 
 .friend-list-container.flex-box,
 .tick-list-container.flex-box {
-	margin: 1rem 0;
-	padding: 0 1rem;
+	padding: 0.8rem;
 	flex-direction: column;
 	align-items: flex-start;
 	flex: 1;
 	width: 100%;
+}
+
+.friend-list-container.flex-box {
+	gap: 1rem;
+}
+
+.tick-list-container .field-header,
+.friend-list-container .field-header {
+	padding-left: 0.8rem;
 }
 
 .tick-list.flex-box {
@@ -120,24 +128,25 @@ h1 {
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
 	width: 100%;
-	border-bottom: 1px solid var(--input-border-color);
+	border-bottom: 1px solid var(--border-color);
 	border-left: none;
 }
 
 .tick.multi-field-tick {
 	justify-content: space-between;
+	padding: 1rem 0;
 }
 
 .tick:hover {
-	background-color: var(--text-on-dark-background);
+	background-color: var(--main-off-white);
 }
 
 .main-user-content {
-	width: 800px;
+	width: 40rem;
 }
 
 .profile-image-uploader.flex-box {
-	margin-bottom: 50px;
+	margin: 0.8rem;
 	flex-direction: column;
 	align-items: flex-start;
 }
@@ -147,8 +156,8 @@ h1 {
 	margin: 50px 0;
 }
 
-.profile-header.image-header {
-	height: 9rem;
+.user-profile-header.flex-box {
+	min-height: 6rem;
 }
 
 .profile-image-upload.file-upload-container.flex-box,
@@ -184,12 +193,6 @@ h1 {
 	margin: 10px 15px;
 }
 
-.user-profile-header .field {
-	flex-direction: row;
-	width: 100%;
-	align-items: center;
-}
-
 .friends-search {
 	width: 300px;
 	max-width: 100%;
@@ -200,7 +203,8 @@ h1 {
 }
 
 .friend-list-container.flex-box .form-field-container {
-	margin: 5px 0 0;
+	padding: 0;
+	width: 100%;
 }
 
 @media screen and (max-width: 500px) {
@@ -214,14 +218,8 @@ h1 {
 		margin-bottom: 3rem;
 	}
 
-	.friend-list-container.flex-box .form-field-container {
-		padding: 0;
-		width: 100%;
-	}
-
 	.user-adventure-viewer.flex-box {
 		flex-direction: column;
-		margin-bottom: 10rem;
 		gap: 2rem;
 	}
 
@@ -234,6 +232,10 @@ h1 {
 	}
 
 	.tick {
-		padding: 1rem 0;
+		padding: 1rem 0.8rem;
+	}
+
+	.scroller-container.flex-box {
+		height: 10rem;
 	}
 }

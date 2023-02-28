@@ -8,7 +8,7 @@ export const buttonText = {
 	finishSave: 'Finish Saving',
 	editAdventure: 'Edit Adventure',
 	deleteAdventureVar: 'Delete {var}',
-	addToTicklist: 'Add to Todo List',
+	addToTicklist: 'Add to Hit List',
 	completeActivity: 'Complete Activity',
 	deleteAdventure: 'Delete Adventure',
 	profile: 'Profile',

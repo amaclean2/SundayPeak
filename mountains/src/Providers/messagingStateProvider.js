@@ -1,18 +1,9 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
-import {
-	getDatabase,
-	off,
-	onChildAdded,
-	onChildChanged,
-	onValue,
-	query,
-	ref,
-	set
-} from 'firebase/database'
+import { getDatabase, off, onChildAdded, onValue, ref, set } from 'firebase/database'
 import { initializeApp } from 'firebase/app'
 import { useUserStateContext } from './userStateProvider'
-import { firebaseConfig } from './utils'
 import { useHandleMessages } from './hooks'
+import { useTokenStateContext } from './tokensProvider'
 
 const MessagingStateContext = createContext()
 
@@ -27,25 +18,23 @@ export const useMessagingStateContext = () => {
 
 export const MessagingStateProvider = ({ children }) => {
 	const { loggedInUser, activeWorkingUser, workingUser } = useUserStateContext()
-	const {
-		createNewMessagingUser,
-		createNewConversationForUser,
-		createNewConversation,
-		setCurrentConversation
-	} = useHandleMessages()
-
-	const firebaseApp = initializeApp(firebaseConfig)
+	const { firebaseApiKey } = useTokenStateContext()
+	const { createNewMessagingUser, createNewConversation, setCurrentConversation } =
+		useHandleMessages()
 
 	const initialMessagingState = {
-		messageStore: getDatabase(firebaseApp),
 		conversations: [],
-		currentConversation: null
+		currentConversation: null,
+		firebaseApiKey
 	}
 
 	const messageReducer = (state, action) => {
 		switch (action.type) {
 			case 'currentConversation':
 				return { ...state, currentConversation: action.payload }
+			case 'clearCurrentConversation':
+				setCurrentConversation({ userId: loggedInUser.id, conversationId: false })
+				return { ...state, currentConversation: null }
 			case 'clearConversations':
 				return { ...state, conversations: [] }
 			case 'conversations':
@@ -62,6 +51,8 @@ export const MessagingStateProvider = ({ children }) => {
 	}
 
 	const [messageState, messagingDispatch] = useReducer(messageReducer, initialMessagingState)
+
+	initializeApp(messageState.firebaseApiKey)
 
 	useEffect(() => {
 		// listen for changes to conversations
@@ -132,7 +123,6 @@ export const MessagingStateProvider = ({ children }) => {
 										const data = convoSnapshot.val()
 										// if the conversation is found then set that as the current conversation
 										if (data.members[workingUser.id]) {
-											console.log(data, conversation.key)
 											foundCurrentConversation = true
 											setCurrentConversation({
 												userId: loggedInUser.id,

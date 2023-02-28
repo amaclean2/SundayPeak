@@ -2,12 +2,13 @@ import {
 	CARD_TYPES,
 	useAdventureStateContext,
 	useCardStateContext,
-	useGetAdventure
+	useGetAdventure,
+	useGetAdventures
 } from '../../Providers'
-import { createNewDefaultAdventure } from '../../Providers/utils'
 
 export const useCreateNewAdventure = () => {
 	const { adventureAddState, allAdventures, adventureDispatch } = useAdventureStateContext()
+	const { createNewDefaultAdventure } = useGetAdventures()
 	const { cardDispatch } = useCardStateContext()
 	const { getAdventure } = useGetAdventure()
 

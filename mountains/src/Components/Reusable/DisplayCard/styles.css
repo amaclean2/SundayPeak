@@ -1,7 +1,7 @@
 .display-card {
 	margin: 10px;
 	min-width: 28rem;
-	border-radius: 30px;
+	border-radius: 1rem;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 	display: none;
 	flex-direction: column;
@@ -43,10 +43,8 @@
 	left: 0;
 	display: flex;
 	background-color: #ffffff22;
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1;
+	background: var(--header-gradient-light);
+	z-index: 2;
 }
 
 .display-header-spacer {
@@ -57,7 +55,7 @@
 	border: none;
 	padding: 0;
 	border-radius: 0;
-	color: var(--secondary-background-color);
+	color: var(--main-light);
 	width: 3rem;
 	height: 3rem;
 	outline: none;
@@ -89,15 +87,16 @@
 	padding: 10px;
 	align-items: center;
 	justify-content: flex-end;
-	position: absolute;
-	bottom: 0;
+	flex-direction: column;
 	width: 100%;
-	background-color: var(--secondary-background-color);
-	box-shadow: 0 0 50px 30px var(--secondary-background-color);
+	background-color: var(--main-light);
+	box-shadow: 0 0 50px 30px var(--main-light);
 }
 
 .action-buttons .button {
 	display: inline-flex;
+	width: 25rem;
+	justify-content: center;
 }
 
 .action-buttons.cta-buttons {
@@ -107,27 +106,11 @@
 }
 
 .profile-content {
-	background-color: var(--secondary-background-color);
-	padding-bottom: 10px;
+	background-color: var(--main-light);
+	width: 100%;
+	position: relative;
+	height: 80vh;
 	overflow-y: auto;
-	overscroll-behavior: none;
-	width: 100%;
-}
-
-.profile-header {
-	width: 100%;
-	height: 8rem;
-	padding-top: 3rem;
-	background: var(--header-gradient);
-	color: var(--text-on-dark-background);
-}
-
-.profile-header.slim {
-	height: 3rem;
-}
-
-.profile-header.centered {
-	justify-content: center;
 }
 
 h3.label-field {
@@ -146,14 +129,39 @@ h3.label-field {
 	padding: 0 0.8em 0 0;
 }
 
-.main-adventure-content,
-.main-user-content {
-	min-height: 60rem;
+.profile-header {
+	background: var(--header-gradient);
+	color: var(--main-off-white);
+	width: 100%;
+	min-height: 5rem;
+}
+
+.profile-header.header-locked {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.profile-header.slim {
+	min-height: 3.5rem;
+}
+
+.profile-header .field.flex-box {
+	flex-direction: row;
+	align-items: center;
+}
+
+.profile-header.center .field {
+	justify-content: center;
 }
 
 @media screen and (max-width: 500px) {
 	.display-content {
 		max-height: 100vh;
+		position: relative;
+		overflow-y: scroll;
+		margin-bottom: 6rem;
+		overscroll-behavior: none;
 	}
 
 	.field-header.page-header.flex-box {
@@ -162,54 +170,34 @@ h3.label-field {
 
 	.display-card-container .display-card {
 		height: 100vh;
-		min-width: initial;
+		min-width: 100vw;
 		margin: 0;
 		border-radius: 0;
 		width: 100vw;
 	}
 
-	.display-card .main-login-content {
-		width: 100vw;
-		justify-content: center;
-		display: flex;
-		flex-direction: column;
-		height: auto;
-	}
-
-	.adventure-info.flex-box {
-		margin: 0;
-		padding: 0;
-		margin-bottom: 1rem;
-	}
-
-	.signup-buttons.flex-box {
-		left: 0;
-	}
-
 	.profile-content {
-		padding-bottom: 5rem;
-	}
-
-	.profile-header {
-		height: 12rem;
+		height: 100%;
 	}
 
 	.action-buttons.flex-box {
 		flex-direction: column;
 		align-items: stretch;
-		border-top: 1px solid var(--seperator-color);
-		padding-bottom: 5rem;
+		border-top: 1px solid var(--border-color);
 		box-shadow: none;
+		gap: 0.5rem;
 	}
 
 	.action-buttons .button {
+		width: 100%;
+		margin: 0;
 		justify-content: center;
 		background-color: transparent;
 		color: var(--primary-accent-color);
 	}
 
-	.main-adventure-content,
-	.main-user-content {
-		min-height: 100%;
+	.action-buttons .cta-button {
+		background-color: var(--primary-accent-color);
+		color: var(--main-off-white);
 	}
 }

@@ -12,18 +12,75 @@ const queries = require('../DB')
 const { buildUserObject } = require('../Services/user.service')
 const logger = require('../Config/logger')
 const { sendResponse } = require('../ResponseHandling/success')
-const { getMapboxAccessToken } = require('../Config/connections')
 const {
   updateUser,
   getFriendsLookup,
   updatePassword,
-  getFriendCreds
+  getFriendCreds,
+  searchUsers,
+  searchFriends
 } = require('../DB')
 const { uploadPictureToStorage } = require('../Services/multer.service')
 const {
   sendResetPasswordMessage,
   sendUserFollowedMessage
 } = require('../Services/email.service')
+const { getAccessoryInformation } = require('../Services/utils')
+const {
+  firebaseLogin,
+  firebaseSignup
+} = require('../Services/firebase.service')
+
+const createUser = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw returnError({ req, res, error: errors.array()[0] })
+    }
+
+    const firebaseAuth = await firebaseSignup(req.body)
+    logger.debug(firebaseAuth)
+
+    const newUser = req.body
+
+    const newUserId = await queries.addUser(newUser)
+    const { publicUrl: defaultProfilePicture } = await uploadPictureToStorage(
+      req,
+      res,
+      false,
+      true
+    )
+
+    await updateUser({
+      fields: [
+        {
+          field_name: 'profile_picture_url',
+          field_value: defaultProfilePicture,
+          user_id: newUserId
+        }
+      ]
+    })
+
+    const userObject = await buildUserObject({
+      req,
+      res,
+      initiation: { id: newUserId }
+    })
+
+    const { id } = userObject
+    const token = authService.issue({ id })
+    delete userObject.password
+
+    return sendResponse({
+      req,
+      res,
+      data: { user: userObject, token },
+      status: CREATED
+    })
+  } catch (error) {
+    return returnError({ req, res, message: 'serverCreateUser', error })
+  }
+}
 
 const loginUser = async (req, res) => {
   try {
@@ -32,22 +89,34 @@ const loginUser = async (req, res) => {
       return returnError({ req, res, error: errors.array()[0] })
     }
 
-    const { email, password } = req.body
+    const { email } = req.body
+
+    const firebaseAuth = await firebaseLogin(req.body)
+    logger.debug(firebaseAuth)
 
     const user = await buildUserObject({ req, res, initiation: { email } })
 
-    if (cryptoHandlers.comparePassword(password, user.password)) {
-      delete user.password
-      const token = authService.issue({ id: user.id })
+    delete user.password
+    const token = authService.issue({ id: user.id })
 
-      logger.debug('USER_LOGGED_IN', user, token)
-
-      return sendResponse({ req, res, data: { user, token }, status: SUCCESS })
-    } else {
-      return returnError({ req, res, message: 'invalidField' })
-    }
+    logger.info('USER_LOGGED_IN', user, token)
+    return sendResponse({ req, res, data: { user, token }, status: SUCCESS })
   } catch (error) {
-    return returnError({ req, res, message: 'serverLoginUser', error })
+    if (error.code === 'auth/user-not-found') {
+      return firebaseSignup(req.body)
+        .then((resp) => {
+          const { user } = resp
+          return user
+        })
+        .catch((error) => {
+          if (error.code === 'auth/weak-password')
+            return returnError({ req, res, message: 'newPasswordRequired' })
+        })
+    } else if (error.code === 'auth/wrong-password') {
+      return returnError({ req, res, message: 'invalidField', error })
+    } else {
+      return returnError({ req, res, message: 'serverLoginUser', error })
+    }
   }
 }
 
@@ -112,7 +181,7 @@ const getLoggedInUser = async (req, res) => {
         res,
         data: {
           user: userObject,
-          mapbox_token: getMapboxAccessToken()
+          ...getAccessoryInformation({ user: true })
         },
         status: SUCCESS
       })
@@ -152,57 +221,6 @@ const resetPassword = async (req, res) => {
     })
   } catch (error) {
     return returnError({ req, res, message: 'serverValidateUser', error })
-  }
-}
-
-const createUser = async (req, res) => {
-  try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
-    }
-
-    const newUser = {
-      ...req.body,
-      password: cryptoHandlers.hashPassword(req.body.password)
-    }
-
-    const newUserId = await queries.addUser(newUser)
-    const { publicUrl: defaultProfilePicture } = await uploadPictureToStorage(
-      req,
-      res,
-      false,
-      true
-    )
-
-    await updateUser({
-      fields: [
-        {
-          field_name: 'profile_picture_url',
-          field_value: defaultProfilePicture,
-          user_id: newUserId
-        }
-      ]
-    })
-
-    const userObject = await buildUserObject({
-      req,
-      res,
-      initiation: { id: newUserId }
-    })
-
-    const { id } = userObject
-    const token = authService.issue({ id })
-    delete userObject.password
-
-    return sendResponse({
-      req,
-      res,
-      data: { user: userObject, token },
-      status: CREATED
-    })
-  } catch (error) {
-    return returnError({ req, res, message: 'serverCreateUser', error })
   }
 }
 
@@ -252,6 +270,66 @@ const getFriends = async (req, res) => {
       message: 'friends cannot be fetched at this time',
       error
     })
+  }
+}
+
+const searchForFriends = async (req, res) => {
+  try {
+    const { queryString } = req.query
+    const { id_from_token } = req.body
+
+    if (!queryString || !queryString.length) {
+      return sendResponse({
+        req,
+        res,
+        data: { users: [], string: queryString },
+        status: SUCCESS
+      })
+    }
+
+    const matches = await searchUsers({
+      keywords: queryString,
+      userId: id_from_token
+    })
+
+    return sendResponse({
+      req,
+      res,
+      data: { users: matches, string: queryString },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({ req, res, error, message: 'serverGetFriends' })
+  }
+}
+
+const searchAmongFriends = async (req, res) => {
+  try {
+    const { queryString } = req.query
+    const { id_from_token } = req.body
+
+    if (!queryString || !queryString.length) {
+      return sendResponse({
+        req,
+        res,
+        data: { users: [], string: queryString },
+        status: SUCCESS
+      })
+    }
+
+    const matches = await searchFriends({
+      keywords: queryString,
+      userId: id_from_token
+    })
+
+    return sendResponse({
+      req,
+      res,
+      data: { users: matches, string: queryString },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({ req, res, error, message: 'serverGetFriends' })
   }
 }
 
@@ -348,6 +426,8 @@ module.exports = {
   createUser,
   savePasswordReset,
   getFriends,
+  searchForFriends,
+  searchAmongFriends,
   followUser,
   editUser,
   deleteUser

@@ -1,6 +1,6 @@
 .error-field {
-	background-color: var(--alert-text-color);
-	color: var(--text-on-dark-background);
+	background-color: var(--alert-error-color);
+	color: var(--main-off-white);
 	width: 100%;
 	padding: 15px 10px;
 	margin-bottom: 20px;

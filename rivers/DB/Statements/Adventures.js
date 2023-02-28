@@ -12,21 +12,86 @@ const createNewSkiStatement = `INSERT INTO ski (avg_angle, max_angle, approach_d
 const createNewClimbStatement = `INSERT INTO climb (grade, pitches, protection, climb_type,
   light_times, season, approach, first_ascent) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 const createNewHikeStatement =
-  'INSERT INTO hike (difficulty, elevation, duration, season, gain) VALUES (?, ?, ?, ?, ?)'
+  'INSERT INTO hike (difficulty, elevation, distance, season, gain) VALUES (?, ?, ?, ?, ?)'
 
 const getAdventureTypeStatement =
   'SELECT adventure_type FROM adventures WHERE id = ?'
 
 const selectAdventureByIdGroup = {
-  ski: `SELECT a.id AS id, a.adventure_name AS adventure_name, a.adventure_type AS adventure_type, a.bio AS bio, a.coordinates_lat AS coordinates_lat,
-  a.coordinates_lng AS coordinates_lng, a.creator_id AS creator_id, a.date_created AS date_created,
-  a.nearest_city AS nearest_city, a.public AS public, a.rating AS rating, s.avg_angle AS avg_angle,
-  s.max_angle AS max_angle, s.approach_distance AS approach_distance, s.aspect AS aspect, s.difficulty AS difficulty,
-  s.elevation AS elevation, s.exposure AS exposure, s.gain AS gain, s.gear AS gear, s.season AS season FROM adventures AS a
-  INNER JOIN ski AS s ON a.adventure_ski_id = s.id WHERE a.id = ?`,
-  climb:
-    'SELECT * FROM adventures AS a INNER JOIN climb AS c ON a.adventure_climb_id = c.id WHERE a.id = ?',
-  hike: 'SELECT * FROM adventures AS a INNER JOIN hike AS h ON a.adventure_hike_id = h.id WHERE a.id = ?'
+  ski: `SELECT
+    a.id AS id,
+    a.adventure_name AS adventure_name,
+    a.adventure_type AS adventure_type,
+    a.bio AS bio,
+    a.coordinates_lat AS coordinates_lat, 
+    a.coordinates_lng AS coordinates_lng, 
+    a.creator_id AS creator_id,
+    u.first_name AS creator_first_name,
+    u.last_name AS creator_last_name,
+    u.email AS creator_email,
+    a.date_created AS date_created,
+    a.nearest_city AS nearest_city,
+    a.public AS public,
+    a.rating AS rating,
+    s.avg_angle AS avg_angle,
+    s.max_angle AS max_angle,
+    s.approach_distance AS approach_distance,
+    s.aspect AS aspect,
+    s.difficulty AS difficulty,
+    s.elevation AS elevation,
+    s.exposure AS exposure,
+    s.gain AS gain,
+    s.gear AS gear,
+    s.season AS season
+    FROM adventures AS a 
+    INNER JOIN ski AS s ON a.adventure_ski_id = s.id 
+    INNER JOIN users AS u ON a.creator_id = u.id WHERE a.id = ?`,
+  climb: `SELECT 
+    a.id AS id,
+    a.adventure_name AS adventure_name, 
+    a.adventure_type AS adventure_type,
+    a.bio AS bio,
+    a.coordinates_lat AS coordinates_lat,
+    a.coordinates_lng AS coordinates_lng,
+    u.first_name AS creator_first_name,
+    u.last_name AS creator_last_name,
+    u.email AS creator_email,
+    a.date_created AS date_created,
+    a.nearest_city AS nearest_city,
+    a.public AS public,
+    a.rating AS rating,
+    c.grade AS grade,
+    c.first_ascent AS first_ascent,
+    c.pitches AS pitches,
+    c.protection AS protection,
+    c.approach AS approach,
+    c.climb_type AS climb_type,
+    c.season AS season
+    FROM adventures AS a 
+    INNER JOIN climb AS c ON a.adventure_climb_id = c.id 
+    INNER JOIN users AS u ON a.creator_id = u.id WHERE a.id = ?`,
+  hike: `SELECT 
+    a.id AS id,
+    a.adventure_name AS adventure_name, 
+    a.adventure_type AS adventure_type,
+    a.bio AS bio,
+    a.coordinates_lat AS coordinates_lat,
+    a.coordinates_lng AS coordinates_lng,
+    u.first_name AS creator_first_name,
+    u.last_name AS creator_last_name,
+    u.email AS creator_email,
+    a.date_created AS date_created,
+    a.nearest_city AS nearest_city,
+    a.public AS public,
+    a.rating AS rating,
+    h.difficulty AS difficulty,
+    h.elevation AS elevation,
+    h.distance AS distance,
+    h.season AS season,
+    h.gain AS gain
+    FROM adventures AS a 
+    INNER JOIN hike AS h ON a.adventure_hike_id = h.id 
+    INNER JOIN users AS u ON a.creator_id = u.id WHERE a.id = ?`
 }
 
 const searchAdventureStatement =
@@ -45,6 +110,7 @@ const updateAdventureStatements = {
   avg_angle: 'UPDATE ski SET adventure_name = ? WHERE id = ?',
   max_angle: 'UPDATE ski SET max_angle = ? WHERE id = ?',
   approach_distance: 'UPDATE ski SET approach_distance = ? WHERE id = ?',
+  hike_distance: 'UPDATE hike SET distance = ? WHERE id = ?',
   aspect: 'UPDATE ski SET aspect = ? WHERE id = ?',
   bio: 'UPDATE adventures SET bio = ? WHERE id = ?',
   climb_approach: 'UPDATE climb SET approach = ? WHERE id = ?',

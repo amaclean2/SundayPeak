@@ -4,7 +4,8 @@ import { CARD_TYPES, useCardStateContext } from '../Providers'
 import getContent from '../TextContent'
 import './styles.css'
 
-const heroImage = 'https://storage.googleapis.com/user-image-storage/SiteImages/TouringUp_600.png'
+const heroImage =
+	'https://storage.googleapis.com/sunday-application-images/site_images/TouringUp_600.png'
 
 const AboutHero = () => {
 	const { cardDispatch } = useCardStateContext()

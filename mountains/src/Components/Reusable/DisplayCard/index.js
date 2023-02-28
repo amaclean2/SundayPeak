@@ -6,7 +6,12 @@ import DisplayHeader from './DisplayHeader'
 
 import './styles.css'
 
-export const DisplayCard = ({ children, onClose = () => {}, configuration = 'left' }) => {
+export const DisplayCard = ({
+	children,
+	onClose = () => {},
+	configuration = 'left',
+	className
+}) => {
 	const { displayCardBoolState, cardDispatch } = useCardStateContext()
 	const [displayState, setDisplayState] = useState(0)
 
@@ -34,6 +39,7 @@ export const DisplayCard = ({ children, onClose = () => {}, configuration = 'lef
 			onTransitionEnd={handleFinishedTransition}
 			className={cx(
 				'display-card-container flex-box',
+				className,
 				configuration,
 				displayState === 1 && 'opening',
 				displayState === 2 && 'open',

@@ -30,7 +30,7 @@ const UserTickPanel = ({ className }) => {
 
 	return (
 		<div className={cx(className, 'tick-list-container flex-box')}>
-			<FieldHeader className='label-field'>Todo List</FieldHeader>
+			<FieldHeader className='label-field'>Hit List</FieldHeader>
 			<ul className='tick-list flex-box'>
 				{workingUser.ticks?.map((tick, key) => (
 					<Tick

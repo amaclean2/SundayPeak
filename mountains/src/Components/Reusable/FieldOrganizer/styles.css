@@ -12,19 +12,19 @@
 
 .field-row.flex-box {
 	width: 100%;
-	padding: 15px 0;
+	padding: 1rem 0;
 }
 
 .field-row.border-bottom {
-	border-bottom: 2px solid var(--seperator-color);
+	border-bottom: 2px solid var(--border-color);
 }
 
 .field.border-right {
-	border-right: 2px solid var(--seperator-color);
+	border-right: 2px solid var(--border-color);
 }
 
 .field-header {
-	font-size: 20px;
+	font-size: 1.2rem;
 	margin: 0;
 	margin-bottom: 1rem;
 	font-weight: 600;
@@ -51,7 +51,7 @@
 	}
 
 	.field-row .field {
-		border-bottom: 1px solid var(--seperator-color);
+		border-bottom: 1px solid var(--border-color);
 		width: 100%;
 		align-items: flex-start;
 		padding: 1rem 1.5rem;

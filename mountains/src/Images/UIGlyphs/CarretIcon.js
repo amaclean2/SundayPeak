@@ -1,11 +1,12 @@
 import React from 'react'
 
-export const CarretIcon = ({ color = '#000000' }) => (
+export const CarretIcon = ({ color = '#000000', size = '21.213', className }) => (
 	<svg
 		xmlns='http://www.w3.org/2000/svg'
-		width='21.213'
-		height='21.213'
+		width={size}
+		height={size}
 		viewBox='0 0 21.213 21.213'
+		className={className}
 		fill={color}
 	>
 		<g

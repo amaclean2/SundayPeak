@@ -1,3 +1,8 @@
+const {
+  getFirebaseApiKey,
+  getMapboxAccessToken
+} = require('../Config/connections')
+
 const mapboxStyles = {
   default: 'mapbox://styles/amaclean/cl96apqbm000215lj13gii46x',
   topo: 'mapbox://styles/amaclean/cl96imu9s005q14pd6u8pqd0b'
@@ -108,8 +113,19 @@ const getStatementKey = (name, type) => {
       else return 'hike_season'
     case 'approach':
       return 'climb_approach'
+    case 'distance':
+      return 'hike_distance'
     default:
       return name
+  }
+}
+
+const getAccessoryInformation = ({ user }) => {
+  return {
+    firebase_api_key: getFirebaseApiKey(),
+    mapbox_token: getMapboxAccessToken(),
+    mapbox_styles: mapboxStyles,
+    ...(!user && { map_style: mapboxStyles.default })
   }
 }
 
@@ -123,5 +139,6 @@ module.exports = {
   getClimbSpecificFields,
   getHikeSpecificFields,
   getGeneralFields,
-  getStatementKey
+  getStatementKey,
+  getAccessoryInformation
 }

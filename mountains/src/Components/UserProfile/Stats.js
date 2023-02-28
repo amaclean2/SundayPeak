@@ -10,12 +10,12 @@ const Stats = ({ className }) => {
 			<StatTemplate
 				statLabel={'Completed'}
 				statValue={workingUser?.activity_count}
-				onClick={() => userDispatch({ type: 'toggleListState' })}
+				onClick={() => userDispatch({ type: 'selectListState', payload: 'completed' })}
 			/>
 			<StatTemplate
 				statLabel={'Friends'}
 				statValue={workingUser?.friend_count}
-				onClick={() => userDispatch({ type: 'toggleListState' })}
+				onClick={() => userDispatch({ type: 'selectListState', payload: 'friends' })}
 			/>
 			<div className='flex-spacer' />
 		</div>

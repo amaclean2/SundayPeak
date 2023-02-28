@@ -19,7 +19,11 @@ const AdventureEditorMenu = () => {
 
 	if (!loggedInUser) return null
 
-	const canAddTick = !loggedInUser?.ticks
+	const canAddTick =
+		!loggedInUser?.ticks.map(({ adventure_id }) => adventure_id).includes(currentAdventure?.id) &&
+		!loggedInUser?.activities.map(({ adventure_id }) => adventure_id).includes(currentAdventure?.id)
+
+	const canComplete = !loggedInUser?.activities
 		.map(({ adventure_id }) => adventure_id)
 		.includes(currentAdventure?.id)
 
@@ -52,11 +56,13 @@ const AdventureEditorMenu = () => {
 			})
 		}
 
-		menuFields.push({
-			id: 'adventure-complete-button',
-			action: () => saveActivity({ adventureId: currentAdventure.id }),
-			text: getContent('buttonText.completeActivity')
-		})
+		if (canComplete) {
+			menuFields.push({
+				id: 'adventure-complete-button',
+				action: () => saveActivity({ adventureId: currentAdventure.id }),
+				text: getContent('buttonText.completeActivity')
+			})
+		}
 
 		if (!isDeletePage && currentAdventure.creator_id === loggedInUser.id) {
 			menuFields.push({

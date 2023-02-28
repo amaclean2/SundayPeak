@@ -14,19 +14,23 @@
 	margin-top: 10px;
 	font-size: 14px;
 	margin-left: 5px;
+	text-align: center;
+	width: 25rem;
 }
 
-.new-account-button {
+.new-account-button.button {
 	font-size: inherit;
 	padding: 5px;
+	width: auto;
 }
 
-.signup-form,
-.login-form {
-	margin: 0 15px;
+.signup-form.flex-box,
+.login-form.flex-box {
+	margin: 0;
 	align-items: center;
 	flex-wrap: nowrap;
 	flex-direction: column;
+	gap: 1.2rem;
 }
 
 .login-form {
@@ -37,22 +41,13 @@
 .login-form .form-field-container {
 	display: flex;
 	justify-content: flex-start;
-	width: 350px;
-}
-
-.signup-form .form-field-container .form-field,
-.login-form .form-field-container .form-field {
-	max-width: 350px;
+	width: 25rem;
 }
 
 .main-login-content,
 .main-signup-content {
-	width: 650px;
 	max-width: 100%;
-}
-
-.main-signup-content {
-	height: 35rem;
+	height: auto;
 }
 
 .signup-buttons.flex-box {
@@ -93,4 +88,22 @@
 	max-width: 400px;
 	width: 100%;
 	justify-content: center;
+}
+
+@media screen and (max-width: 500px) {
+	.signup-form.flex-box,
+	.login-form.flex-box {
+		gap: 0;
+	}
+
+	.signup-form .form-field-container,
+	.login-form .form-field-container {
+		display: flex;
+		justify-content: flex-start;
+		width: 100%;
+	}
+
+	.create-account-cta {
+		width: 100%;
+	}
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const LargeHikerIcon = ({ size = 100, className }) => (
+export const LargeHikerIcon = ({ size = 100, className, color = '#000000' }) => (
 	<svg
 		id='Layer_1'
 		data-name='Layer 1'
@@ -9,6 +9,7 @@ export const LargeHikerIcon = ({ size = 100, className }) => (
 		height={size}
 		viewBox='0 0 100 100'
 		className={className}
+		fill={color}
 	>
 		<path d='M78.52,35.66h0c.63-.07,1.19,.36,1.26,.96l4.68,41.74c.07,.6-.39,1.14-1.01,1.21h0c-.63,.07-1.19-.36-1.26-.96l-4.68-41.74c-.07-.6,.39-1.14,1.01-1.21Z' />
 		<circle

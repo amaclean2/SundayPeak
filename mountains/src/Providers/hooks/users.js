@@ -4,6 +4,8 @@ import { CARD_TYPES, useCardStateContext } from 'Providers/cardStateProvider'
 import { useAdventureStateContext } from 'Providers/adventureStateProvider'
 import { title } from 'App'
 import { useHandleMessages } from './messages'
+import { useMessagingStateContext } from 'Providers/messagingStateProvider'
+import { useTokenStateContext } from 'Providers/tokensProvider'
 
 export const useCreateUser = () => {
 	const { userDispatch, formFields } = useUserStateContext()
@@ -99,20 +101,26 @@ export const useCreateUser = () => {
 
 export const useGetUser = () => {
 	const { userDispatch, formFields } = useUserStateContext()
+	const { tokenDispatch } = useTokenStateContext()
 	const { cardDispatch } = useCardStateContext()
-	const { adventureDispatch } = useAdventureStateContext()
 
 	const getInitialCall = () => {
 		return fetcher('/services/initial')
 			.then(({ data }) => {
 				console.log('INITIAL_CALL', data)
-				adventureDispatch({ type: 'mapboxToken', payload: data.mapbox_token })
+				tokenDispatch({
+					type: 'setTokens',
+					payload: {
+						mapboxToken: data.mapbox_token,
+						firebaseApiKey: data.firebase_api_key,
+						mapboxStyleKey: data.user?.map_style || data.map_style,
+						mpaboxStyles: data.mapbox_styles
+					}
+				})
 				if (!!data.user) {
 					userDispatch({ type: 'loginUser', payload: data.user })
-					adventureDispatch({ type: 'mapStyle', payload: data.user.map_style })
 				} else {
 					userDispatch({ type: 'loginUser', payload: null })
-					adventureDispatch({ type: 'mapStyle', payload: data.map_style })
 					localStorage.clear()
 				}
 
@@ -220,13 +228,8 @@ export const useEditUser = () => {
 		}).then(console.log)
 	}
 
-	const getMapboxStyles = () => {
-		return fetcher('/services/mapboxStyles').then(({ data: { mapbox_styles } }) => mapbox_styles)
-	}
-
 	return {
-		handleSaveEditUser,
-		getMapboxStyles
+		handleSaveEditUser
 	}
 }
 
@@ -267,7 +270,9 @@ export const useUserPictures = () => {
 		return fetcher(`/pictures/delete`, {
 			method: 'POST',
 			body: { file_name: pictureRef }
-		}).catch(console.error)
+		})
+			.then(refetchUser)
+			.catch(console.error)
 	}
 
 	const submitPicture = ({ data }) => {
@@ -279,7 +284,7 @@ export const useUserPictures = () => {
 			headers: [{ name: 'content-type', value: 'none' }],
 			body: formData
 		})
-			.then(() => refetchUser())
+			.then(refetchUser)
 			.catch(console.error)
 	}
 

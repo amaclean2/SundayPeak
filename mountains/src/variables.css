@@ -1,39 +1,22 @@
 :root {
-	/* OPTIONS */
-	/* --primary-accent-color: #b038a9;
-    --primary-accent-color-opacity: #b038a9aa; */
-
-	/* --primary-accent-color: #A8EEFC;
-    --primary-accent-color-opacity: #A8EEFCAA; */
-
-	/* --primary-accent-color: #249275; */
 	--primary-accent-color: #02ad85;
+	--primary-accent-color-hover: #5dd1b6;
 	--primary-accent-color-opacity: #249275aa;
-	--secondary-accent-color: #007f98;
-	--secondary-hover-color: #58a3b2;
-	--secondary-disabled-color: #9bb4b9;
-	--half-opacity-accent-color: rgba(28, 157, 183, 0.5);
+	--primary-disabled-color: #b1d7ce;
 
-	--main-text-color: #000;
-	--text-on-dark-background: #eee;
-	--input-border-color: #d7d7e8;
-	--input-background-color: #ffffff;
-	--alert-text-color: #ff5151;
+	--main-dark: #000000;
+	--main-off-white: #eeeeee;
+	--main-light: #ffffff;
+	--main-off-dark: #666666;
+
+	--border-color: #d7d7e8;
+
+	--alert-error-color: #ff5151;
+
 	--header-gradient: linear-gradient(45deg, #2d966d, #3c9da5);
-	--default-background-color: #fff;
-	--off-background-color: #f6f6f6;
-	--default-background-color-hover: #ddd;
-	/* --secondary-background-color: #DEDEDE99; */
-	--secondary-background-color: #ffffff;
+	--header-gradient-light: linear-gradient(45deg, #3da67d, #4cadb5);
 
-	--alert-blue: #528cbf;
-	--alert-blue-background: #d9edff;
+	--off-background-color: #f6f6f6;
 
 	--box-shadow-opacity: rgba(0, 0, 0, 0.1);
-	--dim-background: rgba(0, 0, 0, 0.5);
-
-	--seperator-color: #e4e4e4;
 }
-
-/* 9300df */
-/* b038a9 */

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const LargeClimberIcon = ({ size = 100, className }) => (
+export const LargeClimberIcon = ({ size = 100, className, color = '#000000' }) => (
 	<svg
 		id='Layer_1'
 		data-name='Layer 1'
@@ -9,6 +9,7 @@ export const LargeClimberIcon = ({ size = 100, className }) => (
 		height={size}
 		viewBox='0 0 100 100'
 		className={className}
+		fill={color}
 	>
 		<path d='M31.19,30.43c2.04,3.1,1.18,7.26-1.92,9.3-3.1,2.04-7.26,1.18-9.3-1.92-2.04-3.1-1.18-7.26,1.92-9.3,3.1-2.04,7.26-1.18,9.3,1.92Z' />
 		<path d='M29.39,44.4c.41,6.7,9.8,21.67,13.15,20.21,3.04-1.15-2.83-20.64-5.56-23.41-2.59-2.62-7.59-2.02-7.59,3.2Z' />

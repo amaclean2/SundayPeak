@@ -1,20 +1,21 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { formatSeasons } from './utils'
 
 const SeasonList = ({ seasons }) => {
-	const seasonList = useRef(null)
 	const [inline, setInline] = useState(null)
 
 	useEffect(() => {
+		let seasonList
+
 		if (typeof seasons === 'string' && seasons.length) {
-			seasonList.current = JSON.parse(seasons)
+			seasonList = JSON.parse(seasons)
 		} else if ((typeof seasons === 'string' && !seasons.length) || !seasons) {
-			seasonList.current = []
+			seasonList = []
 		} else {
-			seasonList.currrent = seasons
+			seasonList = seasons
 		}
 
-		const formattedStr = formatSeasons({ seasonArray: seasonList.current })
+		const formattedStr = formatSeasons({ seasonArray: seasonList })
 		setInline(formattedStr)
 	}, [seasons])
 

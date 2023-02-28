@@ -7,6 +7,7 @@ import { useCreateNewAdventure } from './utils'
 import AdventurePins from './AdventurePins'
 
 import './styles.css'
+import { useTokenStateContext } from 'Providers/tokensProvider'
 
 const skyLayer = {
 	id: 'sky',
@@ -25,8 +26,8 @@ const ReactMap = () => {
 		if (ref) ref.trigger()
 	}, [])
 
-	const { allAdventures, mapboxToken, startPosition, flyTo, adventureDispatch, mapStyle } =
-		useAdventureStateContext()
+	const { allAdventures, startPosition, flyTo, adventureDispatch } = useAdventureStateContext()
+	const { mapboxToken, mapboxStyleKey } = useTokenStateContext()
 	const { refetchAdventures, getAllAdventures } = useGetAdventures()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 	const { displayCardBoolState, screenType } = useCardStateContext()
@@ -61,7 +62,7 @@ const ReactMap = () => {
 		}
 	}, [flyTo, adventureDispatch])
 
-	if (!(allAdventures && mapboxToken && mapStyle)) {
+	if (!(allAdventures && mapboxToken && mapboxStyleKey)) {
 		return null
 	}
 
@@ -70,7 +71,7 @@ const ReactMap = () => {
 		ref: mapRef,
 		reuseMaps: true,
 		mapboxAccessToken: mapboxToken,
-		mapStyle: `${mapStyle}?optimize=true`,
+		mapStyle: `${mapboxStyleKey}?optimize=true`,
 		initialViewState: startPosition,
 		maxPitch: 0,
 		minZoom: 3,
@@ -81,7 +82,10 @@ const ReactMap = () => {
 	}
 
 	return (
-		<div className={cx('map-container', displayCardBoolState && 'card-open')}>
+		<div
+			className={cx('map-container', displayCardBoolState && 'card-open')}
+			style={{ width: '100vw', height: '100vh' }}
+		>
 			<Map {...mapProps}>
 				<NavigationControl showCompass />
 				<GeolocateControl ref={getLocateControlRef} />

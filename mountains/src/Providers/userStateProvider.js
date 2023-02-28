@@ -63,16 +63,16 @@ export const UserStateProvider = ({ children }) => {
 				return { ...state, loginError: '', formFields: {} }
 			case 'toggleIsUserEditable':
 				return { ...state, isUserEditable: !state.isUserEditable }
+			case 'closeUser':
+				return { ...state, isUserEditable: false, listState: false }
 			case 'isUserEditable':
 				return { ...state, isUserEditable: action.payload }
 			case 'clearFriends':
 				return { ...state, friends: null }
 			case 'friends':
 				return { ...state, friends: action.payload }
-			case 'toggleListState':
-				return { ...state, listState: !state.listState }
-			case 'resetListState':
-				return { ...state, listState: false }
+			case 'selectListState':
+				return { ...state, listState: action.payload }
 			default:
 				return state
 		}

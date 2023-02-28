@@ -47,41 +47,43 @@ export const LoginFlow = () => {
 			onClose={handleOnClose}
 			configuration={'center'}
 		>
-			<ProfileHeader className='signup-header'>
+			<ProfileHeader
+				className='signup-header'
+				configuration={'center'}
+			>
 				<FieldHeader
-					className='page-header signup-header-text'
+					className='signup-header-text'
+					pageHeader
 					text={`Login to ${title}`}
 				/>
 			</ProfileHeader>
-			<ProfileContent>
-				<div className='main-login-content'>
-					<div className='adventure-info flex-box login-form'>
-						<ErrorField form='login' />
-						<FormField
-							name='email'
-							label='Email'
-							type='email'
-							block
-							hideLabel
-							isEditable
-							autoComplete={'on'}
-							value={formFields.email}
-							onChange={onChange}
-						/>
-						<FormField
-							name='password'
-							label='Password'
-							type='password'
-							block
-							hideLabel
-							isEditable
-							autoComplete={'on'}
-							value={formFields.password}
-							onChange={onChange}
-						/>
-					</div>
+			<ProfileContent className={'main-login-content'}>
+				<div className='adventure-info flex-box login-form'>
+					<ErrorField form='login' />
+					<FormField
+						name='email'
+						label='Email'
+						type='email'
+						block
+						hideLabel
+						isEditable
+						autoComplete={'on'}
+						value={formFields.email}
+						onChange={onChange}
+					/>
+					<FormField
+						name='password'
+						label='Password'
+						type='password'
+						block
+						hideLabel
+						isEditable
+						autoComplete={'on'}
+						value={formFields.password}
+						onChange={onChange}
+					/>
 				</div>
-				<FooterButtons className='signup-buttons'>
+				<FooterButtons>
 					<Button
 						onClick={handleLogin}
 						id={'login-button'}

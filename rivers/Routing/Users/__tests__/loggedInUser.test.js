@@ -6,7 +6,7 @@ const {
   loginTestUser,
   USERS_PREFIX
 } = require('../../../__tests__')
-const db = require('../../../Config/db')
+const { db } = require('../../../Config/db')
 const app = require('../../../app')
 const errorTexts = require('../../../ResponseHandling/ResponseText/errors')
 const {

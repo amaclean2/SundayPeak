@@ -1,4 +1,4 @@
-import { AngleIcon, DistanceIcon, ElevationIcon } from '../../../Images/LabelIcons'
+import { AngleIcon, DistanceIcon, ElevationIcon } from '../../../Images/Symbols/LabelIcons'
 import { useAdventureStateContext, useUserStateContext } from '../../../Providers'
 import getContent from '../../../TextContent'
 import { Degrees, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from '../../Reusable'
@@ -87,6 +87,15 @@ const SkiViewer = () => {
 						</FieldValue>
 					</Field>
 				</FieldRow>
+				<FieldRow>
+					<Field>
+						<FieldHeader text='Created By' />
+						<FieldValue>
+							{`${currentAdventure.creator_first_name} ${currentAdventure.creator_last_name}`}
+						</FieldValue>
+					</Field>
+				</FieldRow>
+				<FieldRow></FieldRow>
 				{loggedInUser && <AdventureTickPanel />}
 			</FieldPage>
 		</div>

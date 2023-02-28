@@ -5,7 +5,7 @@ import { CARD_TYPES, useCardStateContext, useUserStateContext } from '../../Prov
 import { Button, FlexSpacer, MobileMenu } from '../Reusable'
 
 import './styles.css'
-import LogoInline from '../../Images/LogoInline'
+import LogoInline from '../../Images/Logos/LogoInline'
 import { Link } from 'react-router-dom'
 import MenuPanels from './MenuPanels'
 import getContent from '../../TextContent'
@@ -119,7 +119,7 @@ const ActivitiesButton = () => {
 }
 
 const ButtonBar = () => {
-	const { displayCardBoolState } = useCardStateContext()
+	const { displayCardBoolState, screenType } = useCardStateContext()
 	const { isLoggedIn } = useUserStateContext()
 
 	if (isLoggedIn === undefined) {
@@ -136,23 +136,24 @@ const ButtonBar = () => {
 						{isLoggedIn && <UserProfileButton />}
 						<ActivitiesButton />
 					</div>
-					<MobileMenu direction={'left'}>
+					<MobileMenu direction={'bottom'}>
 						{!isLoggedIn && <SignUpButton />}
 						{!isLoggedIn && <LoginButton />}
 						{isLoggedIn && <UserProfileButton />}
 						<ActivitiesButton />
 					</MobileMenu>
-					<FlexSpacer />
+					{!screenType.mobile && <FlexSpacer />}
 					<Link
 						id='home-redirect'
 						className={'secondary-button'}
 						to={'/about'}
 					>
 						<LogoInline
-							width={200}
-							color={window.screen.width >= 500 ? 'white' : 'green'}
+							width={screenType.mobile ? 150 : 200}
+							color={'white'}
 						/>
 					</Link>
+					{screenType.mobile && <FlexSpacer />}
 				</div>
 			)}
 			<MenuPanels />

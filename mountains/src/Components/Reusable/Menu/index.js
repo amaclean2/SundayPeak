@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 
-import { Meatball } from '../../../Images/Meatball'
+import { Meatball } from '../../../Images/UIGlyphs/Meatball'
 import { Button } from '../Button'
 
 import './styles.css'
@@ -17,6 +17,7 @@ const Menu = ({ className, fields = [] }) => {
 		action()
 	}
 
+	// this useEffect needs to be here because it needs to wait for the DOM to be loaded
 	useEffect(() => {
 		const position = menuRef.current.getBoundingClientRect().x
 		const menuWidth = 200

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { useFollowUser, useUserStateContext } from '../../Providers'
+import { useFollowUser, useUserStateContext } from 'Providers'
 import {
 	DisplayCard,
 	FieldHeader,
@@ -8,7 +8,7 @@ import {
 	HeaderSubtext,
 	ProfileContent,
 	ProfileHeader
-} from '../Reusable'
+} from 'Components/Reusable'
 import UserProfileButtons from './Buttons'
 
 import './styles.css'
@@ -22,7 +22,7 @@ const UserProfile = () => {
 
 	useEffect(() => {
 		getFriends({ userId: workingUser.id })
-	}, [workingUser.id])
+	}, [workingUser.id, getFriends])
 
 	if (!workingUser) {
 		return null
@@ -30,39 +30,35 @@ const UserProfile = () => {
 
 	const buildProfileHeader = () => {
 		if (workingUser) {
-			if (isUserEditable) {
-				return (
-					<ProfileHeader>
-						<FieldHeader className='page-header'>My Profile</FieldHeader>
-					</ProfileHeader>
-				)
-			} else {
-				return (
-					<ProfileHeader
-						image={workingUser.profile_picture_url}
-						className={'user-profile-header'}
-					>
-						<div>
-							<FieldHeader
-								className='page-header'
-								text={`${workingUser.first_name} ${workingUser.last_name}`}
-							/>
-							{workingUser.city?.length && <HeaderSubtext>{workingUser.city}</HeaderSubtext>}
-						</div>
-						<FlexSpacer />
-						<UserEditorMenu />
-					</ProfileHeader>
-				)
-			}
+			return isUserEditable ? (
+				<ProfileHeader
+					className={'edit-user-profile-header'}
+					slim
+				>
+					<FieldHeader pageHeader>My Profile</FieldHeader>
+				</ProfileHeader>
+			) : (
+				<ProfileHeader
+					locked
+					image={workingUser.profile_picture_url}
+					className={'user-profile-header'}
+				>
+					<div>
+						<FieldHeader
+							pageHeader
+							text={`${workingUser.first_name} ${workingUser.last_name}`}
+						/>
+						{workingUser.city?.length && <HeaderSubtext>{workingUser.city}</HeaderSubtext>}
+					</div>
+					<FlexSpacer />
+					<UserEditorMenu />
+				</ProfileHeader>
+			)
 		}
 	}
 
-	const handleCloseUser = () => {
-		userDispatch({ type: 'resetListState' })
-	}
-
 	return (
-		<DisplayCard onClose={handleCloseUser}>
+		<DisplayCard onClose={() => userDispatch({ type: 'closeUser' })}>
 			{buildProfileHeader()}
 			<ProfileContent>
 				<div className='main-user-content'>{isUserEditable ? <UserEditor /> : <UserViewer />}</div>

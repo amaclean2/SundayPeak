@@ -8,11 +8,12 @@ export const HeaderSubtext = ({ children }) => <span className='header-subtext'>
 export const ProfileHeader = ({
 	textContents,
 	configuration = 'left',
-	editFields: { isEditable, propName, onChange } = {},
+	editFields: { isEditable, propName, onChange, placeholder } = {},
 	children,
 	image = false,
 	className,
-	slim
+	slim,
+	locked
 }) => {
 	const renderEditHeader = () => (
 		<FormField
@@ -21,6 +22,7 @@ export const ProfileHeader = ({
 			name={propName}
 			className='card-header'
 			isEditable={isEditable}
+			placeholder={placeholder}
 			onChange={onChange}
 		/>
 	)
@@ -40,7 +42,8 @@ export const ProfileHeader = ({
 				configuration,
 				slim && 'slim',
 				className,
-				image && 'image-header'
+				image && 'image-header',
+				locked && 'header-locked'
 			)}
 		>
 			{isEditable && renderEditHeader()}

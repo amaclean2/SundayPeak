@@ -17,10 +17,61 @@
 	flex: 1;
 }
 
+.flex-spacer.one {
+	flex: 1;
+}
+
+.flex-spacer.two {
+	flex: 2;
+}
+
+.flex-spacer.three {
+	flex: 3;
+}
+
+.flex-spacer.four {
+	flex: 4;
+}
+
+.flex-spacer.five {
+	flex: 5;
+}
+
+.flex-spacer.six {
+	flex: 6;
+}
+
+.flex-spacer.seven {
+	flex: 7;
+}
+
+.flex-spacer.eight {
+	flex: 8;
+}
+
+.flex-spacer.nine {
+	flex: 9;
+}
+
+.flex-spacer.ten {
+	flex: 10;
+}
+
 .flex-box {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+}
+
+.content-container {
+	max-width: 50rem;
+	width: 100%;
+	padding: 0 2rem;
+	margin: auto;
+}
+
+.content-container p {
+	line-height: 1.4em;
 }
 
 * {

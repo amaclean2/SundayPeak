@@ -73,12 +73,21 @@ const errorTexts = {
     status: SERVER_ERROR
   },
   serverLoginUser: {
-    messageText: 'Server Error: Could not login user',
+    messageText: 'Server Error: Could not log in user',
     status: SERVER_ERROR
   },
   serverFollowUser: {
     messageText: 'Server Error: Could not follow this user',
     status: SERVER_ERROR
+  },
+  serverGetFriends: {
+    messageText: 'Server Error: Could not get users',
+    status: SERVER_ERROR
+  },
+  newPasswordRequired: {
+    messageText:
+      'A new password is required to meed the new security standards. Please click forgot my password.',
+    status: NOT_ACCEPTABLE
   },
   noAccountExists: {
     messageText: 'This account cannot be found. Please try again.',

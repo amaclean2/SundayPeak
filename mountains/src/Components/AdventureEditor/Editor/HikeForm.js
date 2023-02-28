@@ -7,16 +7,6 @@ import { LargeHikerIcon } from 'Images'
 const HikeForm = ({ onChange }) => {
 	const { currentAdventure } = useAdventureStateContext()
 
-	/**
-	 * id INT AUTO_INCREMENT,
-    difficulty INT,
-    elevation INT,
-    distance FLOAT,
-    season VARCHAR(100),
-    gain INT,
-    PRIMARY KEY(id)
-	 */
-
 	return (
 		<div className='adventure-info flex-box'>
 			<ErrorField form={'adventure'} />
@@ -112,7 +102,9 @@ const HikeForm = ({ onChange }) => {
 				type={'checkbox'}
 				isEditable
 				fullWidth
-				value={currentAdventure.public || true}
+				value={
+					![undefined, null].includes(currentAdventure.public) ? currentAdventure.public : true
+				}
 				onChange={onChange}
 			/>
 		</div>
