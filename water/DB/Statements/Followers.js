@@ -17,11 +17,14 @@ const getFriendsCountStatement =
   'SELECT COUNT(follower_id) FROM friends WHERE leader_id = ? OR follower_id = ?'
 const getIsFriendStatement =
   'SELECT * FROM friends WHERE follower_id = ? AND leader_id = ?'
+const deleteFriendStatement =
+  'DELETE FROM friends WHERE follower_id = ? OR leader_id = ?'
 
 module.exports = {
   followUserStatement,
   getFriendCredStatement,
   getFriendsStatement,
   getFriendsCountStatement,
-  getIsFriendStatement
+  getIsFriendStatement,
+  deleteFriendStatement
 }

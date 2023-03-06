@@ -96,9 +96,20 @@ const selectAdventureByIdGroup = {
 const addKeywordStatement =
   'REPLACE INTO searchable_adventures (searchable_text, adventure_id) VALUES (?, ?)'
 const searchAdventureStatement =
-  'SELECT a.adventure_name, a.id, a.adventure_type, a.nearest_city FROM adventures AS a INNER JOIN searchable_adventures AS s ON a.id = s.adventure_id WHERE s.searchable_text LIKE ?'
-const getKeywordsStatement =
-  'SELECT a.adventure_name, a.adventure_type, a.bio, CONCAT(u.first_name, u.last_name) AS creator_name, a.nearest_city FROM adventures AS a INNER JOIN users AS u ON a.creator_id = u.id WHERE a.id = ?'
+  'SELECT a.adventure_name, a.id, a.adventure_type, a.nearest_city FROM adventures AS a INNER JOIN searchable_adventures AS sa ON sa.adventure_id = a.id WHERE sa.searchable_text LIKE ?'
+
+const getKeywordsStatement = `SELECT
+a.adventure_name,
+a.adventure_type,
+a.bio,
+CONCAT(u.first_name, u.last_name) AS creator_name,
+a.nearest_city,
+a.coordinates_lat,
+a.coordinates_lng,
+a.public
+FROM adventures AS a
+INNER JOIN users AS u ON a.creator_id = u.id
+WHERE a.id = ?`
 
 const selectAdventuresInRangeStatement = `SELECT id, adventure_name, adventure_type, public, coordinates_lat, coordinates_lng
     FROM adventures WHERE adventure_type = ? AND public = 1`
@@ -163,11 +174,11 @@ const updateAdventureStatements = {
 }
 
 const deleteSkiStatement =
-  'DELETE sa.*, a.*, s.* FROM searchable_adventures AS sa, adventures AS a, ski AS s WHERE sa.adventure_id = a.id AND s.id = a.adventure_ski_id AND a.id = ?'
+  'DELETE s.* FROM ski AS s INNER JOIN adventures AS a ON a.adventure_ski_id = s.id WHERE s.id = a.adventure_ski_id AND a.id = ?'
 const deleteClimbStatement =
-  'DELETE sa.*, a.*, c.* FROM searchable_adventures AS sa, adventures AS a, climb AS c WHERE sa.adventure_id = a.id AND c.id = a.adventure_climb_id AND a.id = ?'
+  'DELETE c.* FROM climb AS c INNER JOIN adventures AS a ON a.adventure_climb_id = c.id WHERE c.id = a.adventure_climb_id AND a.id = ?'
 const deleteHikeStatement =
-  'DELETE sa.*, a.*, h.* FROM searchable_adventures AS sa, adventures AS a, hike AS h WHERE sa.adventure_id = a.id AND h.id = a.adventure_hike_id AND a.id = ?'
+  'DELETE h.* FROM hike AS h INNER JOIN adventures AS a ON a.adventure_hike_id = h.id WHERE h.id = a.adventure_hike_id AND a.id = ?'
 
 module.exports = {
   createNewSkiAdventureStatement,

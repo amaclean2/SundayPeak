@@ -20,7 +20,7 @@ CREATE TABLE searchable_users(
     user_id INT NOT NULL UNIQUE,
     searchable_text TEXT,
     PRIMARY KEY(user_id),
-    FOREIGN KEY(user_id) REFERENCES users(id)
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE friends(
@@ -29,8 +29,8 @@ CREATE TABLE friends(
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
     PRIMARY KEY(follower_id, leader_id),
-    FOREIGN KEY(follower_id) REFERENCES users(id),
-    FOREIGN KEY(leader_id) REFERENCES users(id)
+    FOREIGN KEY(follower_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(leader_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE ski(
@@ -87,10 +87,10 @@ CREATE TABLE adventures(
     public TINYINT NOT NULL,
     rating FLOAT,
     PRIMARY KEY(id),
-    FOREIGN KEY(creator_id) REFERENCES users(id),
-    FOREIGN KEY(adventure_ski_id) REFERENCES ski(id),
-    FOREIGN KEY(adventure_climb_id) REFERENCES climb(id),
-    FOREIGN KEY(adventure_hike_id) REFERENCES hike(id),
+    FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(adventure_ski_id) REFERENCES ski(id) ON DELETE CASCADE,
+    FOREIGN KEY(adventure_climb_id) REFERENCES climb(id) ON DELETE CASCADE,
+    FOREIGN KEY(adventure_hike_id) REFERENCES hike(id) ON DELETE CASCADE,
     CHECK ((adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_climb_id IS NOT NULL)
     OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_hike_id IS NOT NULL)
     OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_ski_id IS NOT NULL))
@@ -100,7 +100,7 @@ CREATE TABLE searchable_adventures(
     adventure_id INT NOT NULL UNIQUE,
     searchable_text TEXT,
     PRIMARY KEY(adventure_id),
-    FOREIGN KEY(adventure_id) REFERENCES adventures(id)
+    FOREIGN KEY(adventure_id) REFERENCES adventures(id) ON DELETE CASCADE
 );
 
 CREATE TABLE todo_adventures(
@@ -109,8 +109,8 @@ CREATE TABLE todo_adventures(
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
     PRIMARY KEY(creator_id, adventure_id),
-    FOREIGN KEY(creator_id) REFERENCES users(id),
-    FOREIGN KEY(adventure_id) REFERENCES adventures(id)
+    FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(adventure_id) REFERENCES adventures(id) ON DELETE CASCADE
 );
 
 CREATE TABLE completed_adventures(
@@ -119,8 +119,8 @@ CREATE TABLE completed_adventures(
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
     PRIMARY KEY(creator_id, adventure_id),
-    FOREIGN KEY(creator_id) REFERENCES users(id),
-    FOREIGN KEY(adventure_id) REFERENCES adventures(id)
+    FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(adventure_id) REFERENCES adventures(id) ON DELETE CASCADE
 );
 
 CREATE TABLE images(
@@ -129,7 +129,9 @@ CREATE TABLE images(
     adventure_id INT,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
-    PRIMARY KEY(file_name)
+    PRIMARY KEY(file_name),
+    FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(adventure_id) REFERENCES adventures(id) ON DELETE CASCADE
 );
 
 CREATE TABLE conversations(
@@ -142,8 +144,8 @@ CREATE TABLE conversation_interactions(
     user_id INT,
     conversation_id INT,
     PRIMARY KEY(user_id, conversation_id),
-    FOREIGN KEY(user_id) REFERENCES users(id),
-    FOREIGN KEY(conversation_id) REFERENCES conversations(id)
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
 );
 
 CREATE TABLE messages(
@@ -153,8 +155,8 @@ CREATE TABLE messages(
     message_text TEXT,
     data_reference VARCHAR(255),
     PRIMARY KEY(id),
-    FOREIGN KEY(conversation_id) REFERENCES conversations(id),
-    FOREIGN KEY(sender_id) REFERENCES users(id)
+    FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
+    FOREIGN KEY(sender_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE INDEX user_conversation_index ON conversation_interactions (user_id);
