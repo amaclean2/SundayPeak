@@ -1,5 +1,4 @@
 const SundayService = require('..')
-const logger = require('../Config/logger')
 const {
   createStatements,
   deleteStatements
@@ -27,6 +26,7 @@ describe('adventure service layer testing', () => {
     const { user } = await serviceHandler.userService.addNewUser({
       email: 'user@123.com',
       password: 'skiing',
+      confirmPassword: 'skiing',
       firstName: 'Jeremy',
       lastName: 'Clarkson'
     })
@@ -190,7 +190,7 @@ describe('adventure service layer testing', () => {
   })
 
   test("can edit an adventure's specific fields", async () => {
-    const summitElevation = '8500'
+    const summitElevation = 8500
     await serviceHandler.adventureService.editAdventure({
       field: {
         name: 'summit_elevation',

@@ -1,5 +1,4 @@
 const Water = require('.')
-const logger = require('../Config/logger')
 
 const stopWords = [
   'a',

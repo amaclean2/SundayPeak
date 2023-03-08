@@ -1,5 +1,4 @@
-const DataLayer = require('.')
-const logger = require('../Config/logger')
+const DataLayer = require('..')
 const {
   createUserStatement,
   selectUserIdStatement,
@@ -15,8 +14,15 @@ const {
   findFromFriendsStatement,
   insertSearchableStatement,
   getSearchFields,
-  getPasswordHashStatement
-} = require('./Statements')
+  getPasswordHashStatement,
+  getIsFriendStatement
+} = require('../Statements')
+const {
+  failedInsertion,
+  failedQuery,
+  failedUpdate,
+  failedDeletion
+} = require('../utils')
 
 class UserDataLayer extends DataLayer {
   /**
@@ -36,10 +42,7 @@ class UserDataLayer extends DataLayer {
       password
     ])
       .then(([{ insertId }]) => insertId)
-      .catch((error) => {
-        logger.error('DATABASE_INSERTION_FAILED', error)
-        throw error
-      })
+      .catch(failedInsertion)
   }
 
   /**
@@ -51,10 +54,7 @@ class UserDataLayer extends DataLayer {
   checkIfUserExistsByEmail({ email }) {
     return this.sendQuery(selectUserIdStatement, [email])
       .then(([results]) => !!results.length)
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -66,10 +66,7 @@ class UserDataLayer extends DataLayer {
   getUserByEmail({ email }) {
     return this.sendQuery(getUserWithEmailStatement, [email])
       .then(([results]) => (!results.length ? null : results[0]))
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -81,10 +78,7 @@ class UserDataLayer extends DataLayer {
   getUserById({ userId }) {
     return this.sendQuery(getUserByIdStatement, [userId])
       .then(([results]) => (!results.length ? null : results[0]))
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -98,10 +92,7 @@ class UserDataLayer extends DataLayer {
       .then(([results]) => {
         return !results.length ? null : results[0].password
       })
-      .catch((error) => {
-        logger.error('DATABASE_RETRIEVAL_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -119,10 +110,7 @@ class UserDataLayer extends DataLayer {
       .then((result) => {
         return result ? result[0][0] : false
       })
-      .catch((error) => {
-        logger.error('DATABASE_INSERTION_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -137,10 +125,7 @@ class UserDataLayer extends DataLayer {
       `%${resetToken}`,
       newHashedPassword,
       userId
-    ]).catch((error) => {
-      logger.error('DATABASE_UPDATE_FAILED', error)
-      throw error
-    })
+    ]).catch(failedUpdate)
   }
 
   /**
@@ -151,12 +136,24 @@ class UserDataLayer extends DataLayer {
    * @returns {Promise} the new following relationship id
    */
   createUserFollowing({ followerId, leaderId }) {
-    return this.sendQuery(followUserStatement, [followerId, leaderId, true])
-      .then(([results]) => results.insertId)
-      .catch((error) => {
-        logger.error('DATABASE_INSERTION_FAILED', error)
-        throw error
+    return this.sendQuery(getIsFriendStatement, [
+      followerId,
+      leaderId,
+      leaderId,
+      followerId
+    ])
+      .then(([results]) => {
+        if (results.length) {
+          throw 'user already friended'
+        } else {
+          return true
+        }
       })
+      .then(() =>
+        this.sendQuery(followUserStatement, [followerId, leaderId, true])
+      )
+      .then(([results]) => results.insertId)
+      .catch(failedInsertion)
   }
 
   /**
@@ -167,7 +164,9 @@ class UserDataLayer extends DataLayer {
    * @returns {Promise} void
    */
   updateSearchUserKeywords({ keyword, userId }) {
-    return this.sendQuery(insertSearchableStatement, [keyword, userId])
+    return this.sendQuery(insertSearchableStatement, [keyword, userId]).catch(
+      failedInsertion
+    )
   }
 
   /**
@@ -179,10 +178,7 @@ class UserDataLayer extends DataLayer {
   searchDatabaseForUserString({ keyword }) {
     return this.sendQuery(findNewFriendStatement, [`%${keyword}%`])
       .then(([results]) => results)
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -199,10 +195,7 @@ class UserDataLayer extends DataLayer {
       `%${keywords}%`
     ])
       .then(([results]) => results)
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -228,10 +221,7 @@ class UserDataLayer extends DataLayer {
               }
         )
       )
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -246,10 +236,7 @@ class UserDataLayer extends DataLayer {
     return this.sendQuery(updateUserStatements[fieldName], [fieldValue, userId])
       .then(() => this.sendQuery(getSearchFields, [userId]))
       .then(([[result]]) => result)
-      .catch((error) => {
-        logger.error('DATABASE_UPDATE_FAILED', error)
-        throw error
-      })
+      .catch(failedUpdate)
   }
 
   /**
@@ -259,10 +246,7 @@ class UserDataLayer extends DataLayer {
    * @return {Promise} void
    */
   databaseDeleteUser({ userId }) {
-    return this.sendQuery(deleteUserStatement, [userId]).catch((error) => {
-      logger.error('DATABASE_DELETION_FAILED', error)
-      throw error
-    })
+    return this.sendQuery(deleteUserStatement, [userId]).catch(failedDeletion)
   }
 }
 

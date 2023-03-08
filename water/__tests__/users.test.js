@@ -1,5 +1,4 @@
 const SundayService = require('..')
-const logger = require('../Config/logger')
 const {
   deleteStatements,
   createStatements
@@ -37,11 +36,13 @@ describe('user service layer testing', () => {
     const newUser = await serviceHandler.userService.addNewUser({
       email: 'user@123.com',
       password: 'skiing',
+      confirmPassword: 'skiing',
       firstName: 'Jeremy',
       lastName: 'Clarkson'
     })
 
     expect(newUser.user).toBeDefined()
+    expect(newUser.access_token).toBeDefined()
   })
 
   test('can log into that user', async () => {
@@ -103,6 +104,7 @@ describe('user service layer testing', () => {
     const secondUser = await serviceHandler.userService.addNewUser({
       email: 'adam@123.org',
       password: 'economics',
+      confirmPassword: 'economics',
       firstName: 'Adam',
       lastName: 'Smith'
     })
@@ -219,15 +221,5 @@ describe('user service layer testing', () => {
       .catch((error) => {
         expect(error).toBe(`an account couldn't be found`)
       })
-  })
-
-  test('can complete an adventure', () => {
-    // an adventure needs to be created first
-    expect(true).toBe(true)
-  })
-
-  test('can todo an adventure', () => {
-    // an adventure needs to be created first
-    expect(true).toBe(true)
   })
 })

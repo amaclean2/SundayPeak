@@ -1,5 +1,3 @@
-const logger = require('../../Config/logger')
-
 const formatAdventureForGeoJSON = (adventure) => {
   const newAdventure = {
     type: 'Feature',
@@ -25,10 +23,10 @@ const getSkiSpecificFields = (adventure) => {
     adventure.max_angle || 0,
     adventure.approach_distance || '',
     adventure.aspect || 'N',
-    adventure.difficulty || '',
-    adventure.summit_elevation || '',
-    adventure.base_elevation || '',
-    adventure.exposure || '',
+    adventure.difficulty || 0,
+    adventure.summit_elevation || 0,
+    adventure.base_elevation || 0,
+    adventure.exposure || 0,
     adventure.gear || '',
     adventure.season || ''
   ]

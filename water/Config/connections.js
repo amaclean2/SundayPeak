@@ -1,5 +1,3 @@
-const logger = require('./logger')
-
 /**
  *
  * @param {Object} connectionObject
@@ -11,17 +9,12 @@ const logger = require('./logger')
  * @returns {Object} a connection object
  */
 const getDBConnectionObject = (connectionObject) => {
-  logger.info(connectionObject)
-
   return connectionObject
 }
-
-const getMapboxAccessToken = () => process.env.MAPBOX_ACCESS_TOKEN
 
 const isLocal = ['dev', 'text'].includes(process.env.NODE_ENV)
 
 module.exports = {
   getDBConnectionObject,
-  getMapboxAccessToken,
   isLocal
 }

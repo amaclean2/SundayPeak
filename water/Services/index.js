@@ -1,12 +1,14 @@
 const AdventureDataLayer = require('../DB/DatabaseAdventures')
 const CompletedAdventureDataLayer = require('../DB/DatabaseAdventures/CompletedAdventure')
 const TodoAdventureDataLayer = require('../DB/DatabaseAdventures/TodoAdventure')
-const UserDataLayer = require('../DB/User')
+const UserDataLayer = require('../DB/DatabaseUsers')
+const MessageDataLayer = require('../DB/DatabaseUsers/messages')
 const AuthService = require('./auth.service')
 
 class Water {
   constructor(sqlDependencies, jwtSecret) {
     this.userDB = new UserDataLayer(sqlDependencies)
+    this.messageDB = new MessageDataLayer(sqlDependencies)
     this.adventureDB = new AdventureDataLayer(sqlDependencies)
     this.completedDB = new CompletedAdventureDataLayer(sqlDependencies)
     this.todoDB = new TodoAdventureDataLayer(sqlDependencies)
@@ -21,7 +23,7 @@ class Water {
    * @returns {Promise} either with a new body object with the user id or a boolean
    */
   validate({ originalUrl, token }) {
-    return this.auth.validate({ originalUrl, authorizationHeader, body })
+    return this.auth.validate({ originalUrl, token })
   }
 }
 

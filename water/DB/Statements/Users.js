@@ -35,23 +35,10 @@ const updateUserStatements = {
 }
 const getSearchFields =
   'SELECT first_name, last_name, bio, email, city FROM users WHERE id = ?'
-const findNewFriendStatement = `
-SELECT
-CONCAT(first_name, ' ', last_name) AS display_name, id, email, profile_picture_url
-FROM users AS u
-INNER JOIN searchable_users AS s
-ON s.user_id = u.id
-WHERE s.searchable_text LIKE ?
-`
-const findFromFriendsStatement = `SELECT
-CONCAT(u.first_name, ' ', u.last_name) AS display_name, u.email, u.profile_picture_url, u.id AS id
-FROM users AS u
-INNER JOIN friends AS f
-ON (f.follower_id != ? AND f.follower_id = u.id)
-OR (f.leader_id != ? AND f.leader_id = u.id)
-INNER JOIN searchable_users AS su
-ON su.user_id = u.id
-WHERE su.searchable_text LIKE ?`
+const findNewFriendStatement =
+  "SELECT CONCAT(first_name, ' ', last_name) AS display_name, id, email, profile_picture_url FROM users AS u INNER JOIN searchable_users AS s ON s.user_id = u.id WHERE s.searchable_text LIKE ?"
+const findFromFriendsStatement =
+  "SELECT CONCAT(u.first_name, ' ', u.last_name) AS display_name, u.email, u.profile_picture_url, u.id AS id FROM users AS u INNER JOIN friends AS f ON (f.follower_id != ? AND f.follower_id = u.id) OR (f.leader_id != ? AND f.leader_id = u.id) INNER JOIN searchable_users AS su ON su.user_id = u.id WHERE su.searchable_text LIKE ?"
 const deleteUserStatement = 'DELETE FROM users WHERE id = ?'
 const deleteSearchableStatement = `DELETE FROM searchable_users WHERE user_id = ?`
 

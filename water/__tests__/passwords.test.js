@@ -1,5 +1,4 @@
 const SundayService = require('..')
-const logger = require('../Config/logger')
 const {
   createStatements,
   deleteStatements
@@ -30,6 +29,7 @@ describe('password service layer testing', () => {
     const { user } = await serviceHandler.userService.addNewUser({
       email: 'user@123.com',
       password: 'skiing',
+      confirmPassword: 'skiing',
       firstName: 'Jeremy',
       lastName: 'Clarkson'
     })

@@ -1,10 +1,12 @@
 const { getDBConnectionObject } = require('./Config/connections')
+const SQLString = require('sqlstring')
 const mysql = require('mysql2/promise')
 const Water = require('./Services')
 const AdventureService = require('./Services/adventure.service')
 const PasswordService = require('./Services/password.service')
 const SearchService = require('./Services/search.service')
 const UserService = require('./Services/user.service')
+const MessagingService = require('./Services/messages.service')
 
 /**
  * @class
@@ -30,8 +32,9 @@ class SundayService {
      * @param {string[]|number[]} queryParameters
      * @returns {Promise<*>} the response from the sql query
      */
-    this.sendQuery = (queryStatement, queryParameters) => {
-      return pool.execute(queryStatement, queryParameters)
+    this.sendQuery = (sqlStatement, sqlValues) => {
+      const formattedStatement = SQLString.format(sqlStatement, sqlValues)
+      return pool.execute(formattedStatement)
     }
 
     this.userService = new UserService(this.sendQuery, jwtSecret)
@@ -39,6 +42,7 @@ class SundayService {
     this.passwordService = new PasswordService(this.sendQuery, jwtSecret)
     this.validationService = new Water(this.sendQuery, jwtSecret)
     this.searchService = new SearchService(this.sendQuery, jwtSecret)
+    this.messagingService = new MessagingService(this.sendQuery, jwtSecret)
   }
 }
 

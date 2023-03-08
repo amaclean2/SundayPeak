@@ -1,11 +1,11 @@
 const DataLayer = require('..')
-const logger = require('../../Config/logger')
 const {
   selectActivitiesByAdventureStatement,
   getCompletedAdventureByUserStatement,
   createActivityStatement,
   getCompletedData
 } = require('../Statements')
+const { failedQuery, failedInsertion } = require('../utils')
 
 class CompletedAdventureDataLayer extends DataLayer {
   /**
@@ -17,10 +17,7 @@ class CompletedAdventureDataLayer extends DataLayer {
   getCompletedUsers({ adventureId }) {
     return this.sendQuery(selectActivitiesByAdventureStatement, [adventureId])
       .then(([results]) => results)
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -32,10 +29,7 @@ class CompletedAdventureDataLayer extends DataLayer {
   getCompletedAdventures({ userId }) {
     return this.sendQuery(getCompletedAdventureByUserStatement, [userId])
       .then(([results]) => results)
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -73,10 +67,7 @@ class CompletedAdventureDataLayer extends DataLayer {
           adventureCompleted: adventureCompletedObject
         }
       })
-      .catch((error) => {
-        logger.error('DATABASE_INSERTION_FAILED', error)
-        throw error
-      })
+      .catch(failedInsertion)
   }
 }
 

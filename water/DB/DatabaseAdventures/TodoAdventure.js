@@ -1,5 +1,4 @@
 const DataLayer = require('..')
-const logger = require('../../Config/logger')
 const {
   selectTicksByAdventureStatement,
   createTickStatement,
@@ -7,6 +6,7 @@ const {
   selectTodoAdventuresByUserStatement,
   getTodoData
 } = require('../Statements')
+const { failedQuery, failedInsertion, failedDeletion } = require('../utils')
 
 class TodoAdventureDataLayer extends DataLayer {
   /**
@@ -18,10 +18,7 @@ class TodoAdventureDataLayer extends DataLayer {
   getAdventureTodoList({ adventureId }) {
     return this.sendQuery(selectTicksByAdventureStatement, [adventureId])
       .then(([results]) => results)
-      .catch((error) => {
-        logger.error('DATABASE_RETRIEVAL_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -33,10 +30,7 @@ class TodoAdventureDataLayer extends DataLayer {
   getTodoAdventuresByUser({ userId }) {
     return this.sendQuery(selectTodoAdventuresByUserStatement, [userId])
       .then(([results]) => results)
-      .catch((error) => {
-        logger.error('DATABASE_RETRIEVAL_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -67,10 +61,7 @@ class TodoAdventureDataLayer extends DataLayer {
 
         return { userTodo: userTodoObject, adventureTodo: adventureTodoObject }
       })
-      .catch((error) => {
-        logger.error('DATABASE_INSERTION_FAILED', error)
-        throw error
-      })
+      .catch(failedInsertion)
   }
 
   /**
@@ -82,10 +73,7 @@ class TodoAdventureDataLayer extends DataLayer {
    */
   removeTodoAdventure({ adventureId, userId }) {
     return this.sendQuery(deleteTickStatement, [adventureId, userId]).catch(
-      (error) => {
-        logger.error('DATABASE_DELETION_FAILED', error)
-        throw error
-      }
+      failedDeletion
     )
   }
 }

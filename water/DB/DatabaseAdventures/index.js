@@ -1,5 +1,4 @@
 const DataLayer = require('..')
-const logger = require('../../Config/logger')
 const { deleteAdventurePictures, getAdventurePictures } = require('../Pictures')
 const { AdventureObject } = require('../../TypeDefs/adventures')
 const {
@@ -17,8 +16,6 @@ const {
   deleteClimbStatement,
   deleteHikeStatement,
   getKeywordsStatement,
-  deleteTodosByAdventureStatement,
-  deleteCompletedByAdventureStatement,
   selectAdventureByIdGroup
 } = require('../Statements')
 const {
@@ -30,6 +27,12 @@ const {
   adventureTemplates,
   getStatementKey
 } = require('./utils')
+const {
+  failedInsertion,
+  failedQuery,
+  failedUpdate,
+  failedDeletion
+} = require('../utils')
 
 // if everything is working right, the only time a cache is out of date is
 // when a new adventure gets added or updated and then we update the cache
@@ -88,10 +91,7 @@ class AdventureDataLayer extends DataLayer {
         )
       })
       .then(([{ insertId }]) => insertId)
-      .catch((error) => {
-        logger.error('DATABASE_INSERTION_FAILED', error)
-        throw error
-      })
+      .catch(failedInsertion)
   }
 
   /**
@@ -106,10 +106,7 @@ class AdventureDataLayer extends DataLayer {
       adventureId
     ])
       .then(([[selectedAdventure]]) => selectedAdventure)
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -131,10 +128,7 @@ class AdventureDataLayer extends DataLayer {
           features: formattedResults
         }
       })
-      .catch((error) => {
-        logger.error('DATABASE_QUERY_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -158,10 +152,7 @@ class AdventureDataLayer extends DataLayer {
       ])
         .then(() => this.sendQuery(getKeywordsStatement, [field.adventure_id]))
         .then(([[result]]) => result)
-        .catch((error) => {
-          logger.error('DATABASE_UPDATE_FAILED', error)
-          throw error
-        })
+        .catch(failedUpdate)
     } else {
       // if we are updating one of the specific adventure fields then we just do that
       return this.sendQuery(
@@ -171,10 +162,7 @@ class AdventureDataLayer extends DataLayer {
         [field.value, field.adventure_id]
       )
         .then(([result]) => result)
-        .catch((error) => {
-          logger.error('DATABASE_UPDATE_FAILED', error)
-          throw error
-        })
+        .catch(failedUpdate)
     }
   }
 
@@ -186,7 +174,9 @@ class AdventureDataLayer extends DataLayer {
    * @returns {Promise} void
    */
   updateSearchAdventureKeywords({ keyword, adventureId }) {
-    return this.sendQuery(addKeywordStatement, [keyword, adventureId])
+    return this.sendQuery(addKeywordStatement, [keyword, adventureId]).catch(
+      failedUpdate
+    )
   }
 
   /**
@@ -198,10 +188,7 @@ class AdventureDataLayer extends DataLayer {
   searchDatabaseForAdventureString({ search }) {
     return this.sendQuery(searchAdventureStatement, [`%${search}%`])
       .then(([allResults]) => allResults)
-      .catch((error) => {
-        logger.error('DATABASE_RETRIEVAL_FAILED', error)
-        throw error
-      })
+      .catch(failedQuery)
   }
 
   /**
@@ -236,10 +223,7 @@ class AdventureDataLayer extends DataLayer {
         ])
       })
       .then(([result]) => result)
-      .catch((error) => {
-        logger.error('DATABASE_DELETION_FAILED', error)
-        throw error
-      })
+      .catch(failedDeletion)
   }
 }
 

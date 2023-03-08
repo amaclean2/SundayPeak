@@ -40,8 +40,8 @@ CREATE TABLE ski(
     approach_distance VARCHAR(50),
     aspect VARCHAR(3),
     difficulty INT,
-    summit_elevation VARCHAR(50),
-    base_elevation VARCHAR(50),
+    summit_elevation INT,
+    base_elevation INT,
     exposure INT,
     gear VARCHAR(50),
     season VARCHAR(100),
@@ -143,6 +143,7 @@ CREATE TABLE conversations(
 CREATE TABLE conversation_interactions(
     user_id INT,
     conversation_id INT,
+    unread TINYINT,
     PRIMARY KEY(user_id, conversation_id),
     FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
@@ -152,7 +153,7 @@ CREATE TABLE messages(
     id INT AUTO_INCREMENT,
     conversation_id INT,
     sender_id INT,
-    message_text TEXT,
+    message_body TEXT,
     data_reference VARCHAR(255),
     PRIMARY KEY(id),
     FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,

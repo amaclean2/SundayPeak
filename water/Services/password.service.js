@@ -1,5 +1,5 @@
 const Water = require('.')
-const logger = require('../Config/logger')
+const { failedUpdate } = require('../DB/utils')
 const { hashPassword } = require('./utils/crypto')
 const { handleEmailReset } = require('./utils/email')
 
@@ -49,10 +49,7 @@ class PasswordService extends Water {
         }
       })
       .then(() => 'password has been updated')
-      .catch((error) => {
-        logger.info('password update failed', error)
-        throw `password update failed, ${error}`
-      })
+      .catch(failedUpdate)
   }
 }
 

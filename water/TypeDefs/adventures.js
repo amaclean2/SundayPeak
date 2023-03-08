@@ -7,6 +7,8 @@
  * @property {string} creator_id
  * @property {string} coordinates_lat
  * @property {string} coordinates_lng
+ * @property {AdventureTodo[]} todo_users
+ * @property {AdventureTodo[]} completed_users
  */
 
 /**

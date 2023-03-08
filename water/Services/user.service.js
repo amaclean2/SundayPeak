@@ -1,8 +1,5 @@
 const Water = require('.')
-const {
-  sendUserFollowedMessage,
-  handleEmailUserFollowed
-} = require('./utils/email')
+const { handleEmailUserFollowed } = require('./utils/email')
 const SearchService = require('./search.service')
 const { comparePassword, hashPassword } = require('./utils/crypto')
 
@@ -89,11 +86,19 @@ class UserService extends Water {
    * @param {Object} params
    * @param {string} params.email | user email
    * @param {string} params.password | user password
+   * @param {string} params.confirmPassword | verify intentional password
    * @param {string} params.firstName | user first_name
    * @param {string} params.lastName | user last_name
-   * @returns {Promise} an object containing a new user and a token
+   * @returns {Promise<NewUserResponse>} an object containing a new user and a token
    */
-  addNewUser({ email, password, firstName, lastName }) {
+  addNewUser({ email, password, confirmPassword, firstName, lastName }) {
+    if (password !== confirmPassword) {
+      throw 'passwords do not match'
+    }
+    if (password.length < 5 || password.length > 50) {
+      throw 'password length must be between 5 and 50 characters'
+    }
+
     const hashedPassword = hashPassword(password)
     return this.userDB
       .checkIfUserExistsByEmail({ email })
@@ -130,21 +135,15 @@ class UserService extends Water {
           searchableFields: user,
           userId: user.id
         })
-        return { user, token: this.auth.issue({ id: user.id }) }
+        return { user, access_token: this.auth.issue({ id: user.id }) }
       })
   }
-
-  /**
-   * @typedef {Object} LoginReturnObject
-   * @property {UserObject} user
-   * @property {string} token
-   */
 
   /**
    * @param {Object} params
    * @param {string} params.password
    * @param {string} params.email
-   * @returns {Promise<LoginReturnObject>} an object with the user and a token
+   * @returns {Promise<NewUserResponse>} an object with the user and a token
    */
   async loginWithEmailAndPassword({ email, password }) {
     const user = await this.#buildUserObject({
@@ -158,7 +157,7 @@ class UserService extends Water {
   /**
    * @param {Object} params
    * @param {string} params.url
-   * @param {string} params.userId
+   * @param {string} params.token
    * @returns {Promise<UserObject>}
    */
   getPresignedInUser({ url, token }) {
@@ -185,10 +184,10 @@ class UserService extends Water {
   /**
    * @param {*} params
    * @param {string} params.searchString | the string to use in the search
-   * @returns {Promise<Object>} | an array of users that match the search text
+   * @returns {Promise<UserObject[]>} | an array of users that match the search text
    */
   searchForUsers({ searchString }) {
-    if (!searchString.length) return []
+    if (!searchString?.length) return []
 
     return this.search.userSearch({ keystring: searchString })
   }
@@ -197,10 +196,10 @@ class UserService extends Water {
    * @param {*} params
    * @param {string} params.searchString | the string to use in the search
    * @param {number} params.userId | the is of the user to search for friends of
-   * @returns {Promise<Object>} an array of friends that match the search text
+   * @returns {Promise<UserObject[]>} an array of friends that match the search text
    */
   searchForFriends({ searchString, userId }) {
-    if (!searchString.length) return []
+    if (!searchString?.length) return []
 
     return this.search.userSearch({ keystring: searchString, userId })
   }

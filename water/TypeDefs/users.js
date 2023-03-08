@@ -58,3 +58,39 @@
  * @property {UserTodo} userCompleted
  * @property {AdventureTodo} adventureCompleted
  */
+
+/**
+ * @typedef {Object} NewUserResponse
+ * @property {UserObject} user
+ * @property {string} access_token
+ */
+
+/**
+ * @typedef {Object} MessageObject
+ * @property {string} body
+ * @property {number} sender
+ * @property {number} id
+ * @property {number} conversation
+ * @property {string} data
+ */
+
+/**
+ * @typedef {Object} NewConversationReturnType
+ * @property {number} conversationId
+ * @property {string} conversationName
+ */
+
+/**
+ * @typedef {Object} ConversationUserType
+ * @property {string} display_name
+ * @property {number} user_id
+ * @property {string} profile_picture_url
+ */
+
+/**
+ * @typedef {Object} ConversationResponseType
+ * @property {ConversationUserType[]} users
+ * @property {string} conversation_name
+ * @property {number} conversation_id
+ * @property {boolean} unread
+ */

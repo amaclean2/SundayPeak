@@ -85,7 +85,7 @@ class AdventureService extends Water {
    *
    * @param {Object} params
    * @param {AdventureObject} params.AdventureObject
-   * @returns {Promise<CreateAdventureResponse>}
+   * @returns {Promise<CreateAdventureResponse>} | an object containing the adventure and the geojson list
    */
   async createAdventure({ adventureObject }) {
     const adventureId = await this.adventureDB.addAdventure(adventureObject)
@@ -143,7 +143,7 @@ class AdventureService extends Water {
    * @returns {Promise<AdventureObject[]>} a list of adventures
    */
   searchForAdventures({ search }) {
-    if (!search.length) return []
+    if (!search?.length) return []
 
     return this.search.handleAdventureSearch({ search })
   }
@@ -200,7 +200,7 @@ class AdventureService extends Water {
    * @param {Object} params
    * @param {number} params.adventureId | the id of the adventure to delete
    * @param {string} params.adventureType | the type of the adventure to delete
-   * @returns {Promise<DeletionResponse>}
+   * @returns {Promise<DeletionResponse>} | an object containing affectedRows
    */
   deleteAdventure({ adventureId, adventureType }) {
     return this.adventureDB.databaseDeleteAdventure({
