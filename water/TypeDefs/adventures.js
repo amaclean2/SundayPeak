@@ -12,8 +12,22 @@
  */
 
 /**
+ * @typedef {Object} GeoJsonAdventure
+ * @property {string} type
+ * @property {Object} geometry
+ * @property {string} geometry.type
+ * @property {number[]} geometry.coordinates
+ * @property {Object} properties
+ * @property {number} properties.id
+ * @property {string} properties.adventure_name
+ * @property {string} properties.adventure_type
+ * @property {boolean} properties.public
+ */
+
+/**
  * @typedef {Object} AdventureGeoJsonObject
  * @property {string} type
+ * @property {GeoJsonAdventure[]} features
  */
 
 /**

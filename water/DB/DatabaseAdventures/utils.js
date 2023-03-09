@@ -6,7 +6,9 @@ const formatAdventureForGeoJSON = (adventure) => {
       coordinates: [adventure.coordinates_lng, adventure.coordinates_lat]
     },
     properties: {
-      ...adventure,
+      adventure_name: adventure.adventure_name,
+      adventure_type: adventure.adventure_type,
+      id: adventure.id,
       public: !!adventure.public
     }
   }

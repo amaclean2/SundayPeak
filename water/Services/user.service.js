@@ -135,7 +135,7 @@ class UserService extends Water {
           searchableFields: user,
           userId: user.id
         })
-        return { user, access_token: this.auth.issue({ id: user.id }) }
+        return { user, token: this.auth.issue({ id: user.id }) }
       })
   }
 
@@ -178,7 +178,12 @@ class UserService extends Water {
    * @returns {Promise<UserObject>}
    */
   getUserFromId({ userId }) {
-    return this.#buildUserObject({ initiation: { id: userId } })
+    return this.#buildUserObject({ initiation: { id: userId } }).then(
+      (user) => {
+        delete user.phone
+        return user
+      }
+    )
   }
 
   /**

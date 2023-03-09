@@ -62,7 +62,7 @@
 /**
  * @typedef {Object} NewUserResponse
  * @property {UserObject} user
- * @property {string} access_token
+ * @property {string} token
  */
 
 /**

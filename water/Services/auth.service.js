@@ -17,7 +17,7 @@ class AuthService {
         res(true)
       }
 
-      if (token === undefined) {
+      if (token === undefined || token === 'undefined') {
         rej('there was no autorization token provided')
       } else {
         jwt.verify(token, this.jwtSecret, {}, (error, decoded) => {

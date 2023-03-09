@@ -78,7 +78,7 @@ class AdventureService extends Water {
   /**
    * @typedef {Object} CreateAdventureResponse
    * @property {AdventureObject} adventure
-   * @property {AdventureGeoJsonObject} newAdventureList
+   * @property {AdventureGeoJsonObject} adventureList
    */
 
   /**
@@ -118,7 +118,7 @@ class AdventureService extends Water {
    *
    * @param {Object} params
    * @param {string} params.adventureType | the adventure type to get
-   * @returns {Promise<AdventureListObject>} a list of adventures formatted as geoJson
+   * @returns {Promise<AdventureGeoJsonObject>} a list of adventures formatted as geoJson
    */
   getAdventureList({ adventureType }) {
     // if there is already a cached adventure list, just return that

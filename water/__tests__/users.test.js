@@ -34,7 +34,7 @@ describe('user service layer testing', () => {
     })
 
     expect(newUser.user).toBeDefined()
-    expect(newUser.access_token).toBeDefined()
+    expect(newUser.token).toBeDefined()
   })
 
   test('can log into that user', async () => {
