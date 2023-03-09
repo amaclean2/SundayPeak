@@ -1,6 +1,6 @@
 const { body } = require('express-validator')
 
-const createValidator = () => {
+const createTodoValidator = () => {
   return [
     body('id_from_token')
       .not()
@@ -9,7 +9,10 @@ const createValidator = () => {
       .customSanitizer((value, { req }) => {
         req.body.user_id = value
       }),
-    body('adventure_id').not().isEmpty(),
+    body('adventure_id')
+      .not()
+      .isEmpty()
+      .withMessage('invalidTickActivityFields'),
     body('public')
       .isBoolean()
       .customSanitizer((value) => {
@@ -19,5 +22,5 @@ const createValidator = () => {
 }
 
 module.exports = {
-  createValidator
+  createTodoValidator
 }

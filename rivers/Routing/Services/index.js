@@ -1,26 +1,21 @@
 const { Router } = require('express')
 const { getAppStats } = require('../../Handlers/General')
-const { getLoggedInUser } = require('../../Handlers/Users')
 const { sendResponse } = require('../../ResponseHandling')
 const { NOT_FOUND, SUCCESS } = require('../../ResponseHandling/statuses')
-const { getAccessoryInformation } = require('../../Services/utils')
 
 const router = Router()
 
 router.get('/verify', getAppStats)
 router.get('/initial', (req, res) => {
-  if (req.body.id_from_token) return getLoggedInUser(req, res)
-  else {
-    return sendResponse({
-      req,
-      res,
-      data: {
-        user: false,
-        ...getAccessoryInformation({ user: false })
-      },
-      status: SUCCESS
-    })
-  }
+  return sendResponse({
+    req,
+    res,
+    data: {
+      mapbox_token: process.env.MAPBOX_ACCESS_TOKEN,
+      map_style: 'mapbox://styles/mapbox/outdoors-v12'
+    },
+    status: SUCCESS
+  })
 })
 
 router.use('/', (req, res) => {

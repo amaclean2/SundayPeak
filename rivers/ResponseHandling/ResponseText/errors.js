@@ -57,7 +57,7 @@ const errorTexts = {
     status: NOT_ACCEPTABLE
   },
   passwordOutOfRange: {
-    messageText: 'Password length must be between 5 and 30 characters.',
+    messageText: 'Password length must be between 5 and 50 characters.',
     status: NOT_ACCEPTABLE
   },
   nonMatchingPasswords: {
@@ -119,33 +119,14 @@ const errorTexts = {
   },
 
   // adventure errors
-  adventureType: {
-    messageText: 'adventure_type is required',
-    status: NOT_ACCEPTABLE
-  },
-  adventureName: {
-    messageText: 'adventure_name is required',
-    status: NOT_ACCEPTABLE
-  },
-  creatorId: {
-    messageText: 'creator_id is required',
-    status: NOT_ACCEPTABLE
-  },
-  publicFieldMissing: {
-    messageText: 'public field is required',
-    status: NOT_ACCEPTABLE
-  },
-  nearestCityFieldMissing: {
-    messageText: 'nearest_city field is required',
+  missingAdventureProperty: {
+    messageText:
+      'An adventure object must be provided in the request body. The adventure object must contain properties adventure_type, adventure_name, coordinates: {lat, lng}, nearest_city, and public.',
     status: NOT_ACCEPTABLE
   },
   coordinates: {
     messageText: 'coordinates_lat and coordinates_lng are required',
     status: NOT_ACCEPTABLE
-  },
-  coordinates_obj: {
-    messageText:
-      'there must be a coordinates object present with "lat" and "lng" properties'
   },
   serverGetAdventures: {
     messageText: 'Server Error: Could not get adeventures',
@@ -160,11 +141,11 @@ const errorTexts = {
     status: SERVER_ERROR
   },
   serverDeleteAdventure: {
-    messageText: 'Server Error: Could not delete this adventre',
+    messageText: 'Server Error: Could not delete this adventure',
     status: SERVER_ERROR
   },
   adventureIdFieldRequired: {
-    messageText: 'The id field is required',
+    messageText: 'The id and type query parameters are required',
     status: NOT_ACCEPTABLE
   },
   boundingBox: {
@@ -190,7 +171,8 @@ const errorTexts = {
     status: SERVER_ERROR
   },
   invalidTickActivityFields: {
-    messageText: 'user_id, adventure_id, and public fields are required',
+    messageText:
+      'adventure_id, and public fields are required in the request body',
     status: NOT_ACCEPTABLE
   },
 

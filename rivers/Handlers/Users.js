@@ -1,35 +1,14 @@
 const { validationResult } = require('express-validator')
 const { returnError } = require('../ResponseHandling')
 const {
-  CREATED,
   NO_CONTENT,
   SUCCESS,
-  ACCEPTED
+  ACCEPTED,
+  CREATED
 } = require('../ResponseHandling/statuses')
-const cryptoHandlers = require('../Crypto')
-const authService = require('../Services/auth.service')
-const queries = require('../DB')
-const { buildUserObject } = require('../Services/user.service')
-const logger = require('../Config/logger')
 const { sendResponse } = require('../ResponseHandling/success')
-const {
-  updateUser,
-  getFriendsLookup,
-  updatePassword,
-  getFriendCreds,
-  searchUsers,
-  searchFriends
-} = require('../DB')
-const { uploadPictureToStorage } = require('../Services/multer.service')
-const {
-  sendResetPasswordMessage,
-  sendUserFollowedMessage
-} = require('../Services/email.service')
-const { getAccessoryInformation } = require('../Services/utils')
-const {
-  firebaseLogin,
-  firebaseSignup
-} = require('../Services/firebase.service')
+
+const serviceHandler = require('../Config/services')
 
 const createUser = async (req, res) => {
   try {
@@ -38,45 +17,17 @@ const createUser = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    const firebaseAuth = await firebaseSignup(req.body)
-    logger.debug(firebaseAuth)
+    const { email, password, first_name, last_name, password_2 } = req.body
 
-    const newUser = req.body
-
-    const newUserId = await queries.addUser(newUser)
-    const { publicUrl: defaultProfilePicture } = await uploadPictureToStorage(
-      req,
-      res,
-      false,
-      true
-    )
-
-    await updateUser({
-      fields: [
-        {
-          field_name: 'profile_picture_url',
-          field_value: defaultProfilePicture,
-          user_id: newUserId
-        }
-      ]
+    const newUserResponse = await serviceHandler.userService.addNewUser({
+      email,
+      password,
+      confirmPassword: password_2,
+      firstName: first_name,
+      lastName: last_name
     })
 
-    const userObject = await buildUserObject({
-      req,
-      res,
-      initiation: { id: newUserId }
-    })
-
-    const { id } = userObject
-    const token = authService.issue({ id })
-    delete userObject.password
-
-    return sendResponse({
-      req,
-      res,
-      data: { user: userObject, token },
-      status: CREATED
-    })
+    return sendResponse({ req, res, data: newUserResponse, status: CREATED })
   } catch (error) {
     return returnError({ req, res, message: 'serverCreateUser', error })
   }
@@ -86,37 +37,20 @@ const loginUser = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      return returnError({ req, res, error: errors.array()[0] })
+      throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    const { email } = req.body
+    const { email, password } = req.body
 
-    const firebaseAuth = await firebaseLogin(req.body)
-    logger.debug(firebaseAuth)
+    const loginUserResponse =
+      await serviceHandler.userService.loginWithEmailAndPassword({
+        email,
+        password
+      })
 
-    const user = await buildUserObject({ req, res, initiation: { email } })
-
-    delete user.password
-    const token = authService.issue({ id: user.id })
-
-    logger.info('USER_LOGGED_IN', user, token)
-    return sendResponse({ req, res, data: { user, token }, status: SUCCESS })
+    return sendResponse({ req, res, data: loginUserResponse, status: SUCCESS })
   } catch (error) {
-    if (error.code === 'auth/user-not-found') {
-      return firebaseSignup(req.body)
-        .then((resp) => {
-          const { user } = resp
-          return user
-        })
-        .catch((error) => {
-          if (error.code === 'auth/weak-password')
-            return returnError({ req, res, message: 'newPasswordRequired' })
-        })
-    } else if (error.code === 'auth/wrong-password') {
-      return returnError({ req, res, message: 'invalidField', error })
-    } else {
-      return returnError({ req, res, message: 'serverLoginUser', error })
-    }
+    returnError({ req, res, message: 'serverLoginUser', error })
   }
 }
 
@@ -125,17 +59,14 @@ const getUserById = async (req, res) => {
     const { id } = req.query
     if (!id) throw returnError({ req, res, message: 'idQueryRequired' })
 
-    const userObject = await buildUserObject({
-      req,
-      res,
-      initiation: { id: Number(id) }
+    const retrievedUser = await serviceHandler.userService.getUserFromId({
+      userId: id
     })
-    delete userObject.password
 
     return sendResponse({
       req,
       res,
-      data: { user: userObject },
+      data: { user: retrievedUser },
       status: SUCCESS
     })
   } catch (error) {
@@ -143,58 +74,28 @@ const getUserById = async (req, res) => {
   }
 }
 
-const refetchUser = async (req, res) => {
+const getLoggedInUser = async (req, res) => {
   try {
-    const { id_from_token } = req.body
-    const userObject = await buildUserObject({
-      req,
-      res,
-      initiation: { id: id_from_token }
+    const authToken = req.headers?.authorization || ''
+    const bearerToken = authToken.split(' ').pop()
+
+    if (!bearerToken) {
+      throw 'token not found'
+    }
+
+    const loggedInUser = await serviceHandler.userService.getPresignedInUser({
+      url: req.originalUrl,
+      token: bearerToken
     })
-    delete userObject.password
 
     return sendResponse({
       req,
       res,
-      data: { user: userObject },
+      data: { user: loggedInUser },
       status: SUCCESS
     })
   } catch (error) {
-    throw returnError({ req, res, message: 'serverLoginUser', error })
-  }
-}
-
-const getLoggedInUser = async (req, res) => {
-  try {
-    const { id_from_token } = req.body
-
-    if (id_from_token) {
-      const userObject = await buildUserObject({
-        req,
-        res,
-        initiation: { id: id_from_token }
-      })
-      delete userObject.password
-
-      return sendResponse({
-        req,
-        res,
-        data: {
-          user: userObject,
-          ...getAccessoryInformation({ user: true })
-        },
-        status: SUCCESS
-      })
-    } else {
-      throw returnError({ req, res, message: 'notLoggedIn' })
-    }
-  } catch (error) {
-    return returnError({
-      req,
-      res,
-      message: 'serverLoginUser',
-      error
-    })
+    return returnError({ req, res, message: 'serverLoginUser', error })
   }
 }
 
@@ -205,18 +106,12 @@ const resetPassword = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
     const { email } = req.body
-    const { password: resetToken } = await buildUserObject({
-      req,
-      res,
-      initiation: { email }
-    })
-
-    sendResetPasswordMessage({ email, resetToken })
+    await serviceHandler.passwordService.sendPasswordResetEmail({ email })
 
     return sendResponse({
       req,
       res,
-      data: {},
+      data: { message: 'password reset email sent successfully' },
       status: NO_CONTENT
     })
   } catch (error) {
@@ -231,19 +126,18 @@ const savePasswordReset = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    const { user_id, password } = req.body
-
-    const updatePasswordResponse = await updatePassword({
-      newPassword: password,
-      userId: user_id
-    })
-
-    logger.info(updatePasswordResponse)
+    const { user_id, password, reset_token } = req.body
+    const updatePasswordResponse =
+      await serviceHandler.passwordService.saveNewPassword({
+        newPassword: password,
+        userId: user_id,
+        resetToken: reset_token
+      })
 
     return sendResponse({
       req,
       res,
-      data: {},
+      data: { message: updatePasswordResponse },
       status: NO_CONTENT
     })
   } catch (error) {
@@ -251,51 +145,18 @@ const savePasswordReset = async (req, res) => {
   }
 }
 
-const getFriends = async (req, res) => {
+const searchAmongUsers = async (req, res) => {
   try {
-    const { user_id } = req.query
+    const { search } = req.query
 
-    const friendsList = await getFriendsLookup({ userId: user_id })
-
-    return sendResponse({
-      req,
-      res,
-      data: { friends: friendsList, id: user_id },
-      status: SUCCESS
-    })
-  } catch (error) {
-    return returnError({
-      req,
-      res,
-      message: 'friends cannot be fetched at this time',
-      error
-    })
-  }
-}
-
-const searchForFriends = async (req, res) => {
-  try {
-    const { queryString } = req.query
-    const { id_from_token } = req.body
-
-    if (!queryString || !queryString.length) {
-      return sendResponse({
-        req,
-        res,
-        data: { users: [], string: queryString },
-        status: SUCCESS
-      })
-    }
-
-    const matches = await searchUsers({
-      keywords: queryString,
-      userId: id_from_token
+    const users = await serviceHandler.userService.searchForUsers({
+      searchString: search
     })
 
     return sendResponse({
       req,
       res,
-      data: { users: matches, string: queryString },
+      data: { users, search },
       status: SUCCESS
     })
   } catch (error) {
@@ -305,27 +166,18 @@ const searchForFriends = async (req, res) => {
 
 const searchAmongFriends = async (req, res) => {
   try {
-    const { queryString } = req.query
+    const { search } = req.query
     const { id_from_token } = req.body
 
-    if (!queryString || !queryString.length) {
-      return sendResponse({
-        req,
-        res,
-        data: { users: [], string: queryString },
-        status: SUCCESS
-      })
-    }
-
-    const matches = await searchFriends({
-      keywords: queryString,
+    const users = await serviceHandler.userService.searchForFriends({
+      searchString: search,
       userId: id_from_token
     })
 
     return sendResponse({
       req,
       res,
-      data: { users: matches, string: queryString },
+      data: { users, search },
       status: SUCCESS
     })
   } catch (error) {
@@ -335,40 +187,19 @@ const searchAmongFriends = async (req, res) => {
 
 const followUser = async (req, res) => {
   try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
-    }
+    const { id_from_token } = req.body
+    const { leader_id } = req.query
 
-    const { id_from_token, leader_id } = req.body
-
-    await queries.followUser({ followerId: id_from_token, leaderId: leader_id })
-    const newUserObject = await buildUserObject({
-      req,
-      res,
-      initiation: { id: id_from_token }
-    })
-
-    // sends an email to the followed user that someone wants to be friends
-    const {
-      email: followedEmail,
-      first_name: leaderFirstName,
-      last_name: leaderLastName
-    } = await getFriendCreds({
-      followedId: leader_id
-    })
-    await sendUserFollowedMessage({
-      email: followedEmail,
-      followingUserName: `${newUserObject.first_name} ${newUserObject.last_name}`
+    const followResponse = await serviceHandler.userService.friendUser({
+      leaderId: Number(leader_id),
+      followerId: id_from_token
     })
 
     return sendResponse({
       req,
       res,
       data: {
-        user: newUserObject,
-        leader_id,
-        leader_name: `${leaderFirstName} ${leaderLastName}`,
+        user: followResponse,
         followed: true
       },
       status: ACCEPTED
@@ -385,29 +216,27 @@ const editUser = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
-    const { id_from_token, fields } = req.body
+    const {
+      id_from_token: userId,
+      field: { name: fieldName, value: fieldValue }
+    } = req.body
 
-    const formattedFields = fields.map((field) => ({
-      field_name: field.name,
-      field_value: field.value,
-      user_id: id_from_token
-    }))
-
-    logger.info({ formattedFields, fields })
-
-    const updates = await updateUser({ fields: formattedFields })
-    updates.forEach(logger.debug)
+    await serviceHandler.userService.editUser({
+      userId,
+      fieldName,
+      fieldValue
+    })
 
     return sendResponse({ req, res, data: {}, status: NO_CONTENT })
   } catch (error) {
-    return returnError({ req, res, message: 'serverValidationError', error })
+    return returnError({ req, res, message: 'serverValidateUser', error })
   }
 }
 
 const deleteUser = async (req, res) => {
   try {
     const { id_from_token } = req.body
-    await queries.deleteUser(id_from_token)
+    await serviceHandler.userService.deleteUser({ userId: id_from_token })
 
     res.status(NO_CONTENT).json({
       data: {}
@@ -420,13 +249,11 @@ const deleteUser = async (req, res) => {
 module.exports = {
   loginUser,
   getUserById,
-  refetchUser,
   getLoggedInUser,
   resetPassword,
   createUser,
   savePasswordReset,
-  getFriends,
-  searchForFriends,
+  searchAmongUsers,
   searchAmongFriends,
   followUser,
   editUser,

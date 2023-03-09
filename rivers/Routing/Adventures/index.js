@@ -11,15 +11,15 @@ const {
   getAdventureDetails,
   getAllAdventures,
   editAdventure,
-  searchAdventureNames
+  searchAdventures
 } = require('../../Handlers/Adventures')
 const { NOT_FOUND } = require('../../ResponseHandling/statuses')
 
 const router = Router()
 
 router.get('/details', getAdventureDetails)
-router.get('/search', searchAdventureNames)
-router.post('/all', adventuresGetValidator(), getAllAdventures)
+router.get('/search', searchAdventures)
+router.get('/all', adventuresGetValidator(), getAllAdventures)
 router.post('/create', adventureCreateValidator(), createNewAdventure)
 router.put('/edit', adventureEditValidator(), editAdventure)
 router.delete('/delete', deleteAdventure)

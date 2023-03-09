@@ -11,16 +11,11 @@ const exemptQueries = [
   '/users/newPassword'
 ]
 
-const isPath = (req, query) => {
-  return req.originalUrl.includes(query)
-}
-
 const isExempt = (req) => {
   return exemptQueries.some((query) => req.originalUrl.includes(query))
 }
 
 module.exports = {
   exemptQueries,
-  isPath,
   isExempt
 }

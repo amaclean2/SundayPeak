@@ -16,11 +16,9 @@ const {
   loginUser,
   resetPassword,
   savePasswordReset,
-  refetchUser,
   editUser,
-  getFriends,
-  searchForFriends,
-  searchAmongFriends
+  searchAmongFriends,
+  searchAmongUsers
 } = require('../../Handlers/Users')
 const { Router } = require('express')
 
@@ -28,16 +26,15 @@ const router = Router()
 
 router.get('/id', getUserById)
 router.get('/loggedIn', getLoggedInUser)
-router.get('/refetch', refetchUser)
-router.get('/friends', getFriends)
-router.get('/search', searchForFriends)
+router.get('/search', searchAmongUsers)
 router.get('/friendSearch', searchAmongFriends)
+router.get('/follow', followUser)
 
-router.post('/follow', userFollowValidator(), followUser)
 router.post('/login', userLoginValidator(), loginUser)
 router.post('/passwordResetLink', passwordResetValidator(), resetPassword)
 router.post('/create', userCreateValidator(), createUser)
 router.post('/newPassword', newPasswordValidator(), savePasswordReset)
+
 router.put('/edit', userEditValidator(), editUser)
 router.delete('/delete', deleteUser)
 
