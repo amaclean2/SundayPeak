@@ -7,6 +7,10 @@ const PasswordService = require('./Services/password.service')
 const SearchService = require('./Services/search.service')
 const UserService = require('./Services/user.service')
 const MessagingService = require('./Services/messages.service')
+const {
+  createStatements,
+  deleteStatements
+} = require('./DB/Statements/testStatements')
 
 /**
  * @class
@@ -35,6 +39,17 @@ class SundayService {
     this.sendQuery = (sqlStatement, sqlValues) => {
       const formattedStatement = SQLString.format(sqlStatement, sqlValues)
       return pool.execute(formattedStatement)
+    }
+
+    this.createTables = async () => {
+      for (const statement of createStatements) {
+        await this.sendQuery(statement)
+      }
+    }
+    this.removeTables = async () => {
+      for (const statement of deleteStatements) {
+        await this.sendQuery(statement)
+      }
     }
 
     this.userService = new UserService(this.sendQuery, jwtSecret)

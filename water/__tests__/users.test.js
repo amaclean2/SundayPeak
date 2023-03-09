@@ -1,8 +1,4 @@
 const SundayService = require('..')
-const {
-  deleteStatements,
-  createStatements
-} = require('../DB/Statements/testStatements')
 
 let serviceHandler, token, userId, secondUserId, newAdventure
 
@@ -19,17 +15,13 @@ describe('user service layer testing', () => {
       'secret'
     )
 
-    for (const statement of createStatements) {
-      await serviceHandler.sendQuery(statement)
-    }
+    await serviceHandler.createTables()
   })
   afterAll(async () => {
     // adding data to searchable users and searchable adventures happens asynchronously
     // not waiting to delete the tables was deleting the tables before the query could finish
     setTimeout(async () => {
-      for (const statement of deleteStatements) {
-        await serviceHandler.sendQuery(statement)
-      }
+      await serviceHandler.removeTables()
     })
   })
   test('can add a new user', async () => {

@@ -1,8 +1,4 @@
 const SundayService = require('..')
-const {
-  createStatements,
-  deleteStatements
-} = require('../DB/Statements/testStatements')
 
 let serviceHandler, firstUser, secondUser, thirdUser, firstConversationId
 
@@ -19,9 +15,7 @@ describe('message service layer testing', () => {
       'secret'
     )
 
-    for (const statement of createStatements) {
-      await serviceHandler.sendQuery(statement)
-    }
+    await serviceHandler.createTables()
 
     let newUser = await serviceHandler.userService.addNewUser({
       email: 'andrew@email.com',
@@ -54,9 +48,7 @@ describe('message service layer testing', () => {
     // adding data to searchable users and searchable adventures happens asynchronously
     // not waiting to delete the tables was deleting the tables before the query could finish
     setTimeout(async () => {
-      for (const statement of deleteStatements) {
-        await serviceHandler.sendQuery(statement)
-      }
+      await serviceHandler.removeTables()
     })
   })
 
