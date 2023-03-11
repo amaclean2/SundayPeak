@@ -156,6 +156,9 @@ class AdventureService extends Water {
    * @returns {Promise<AdventureObject>}
    */
   getSpecificAdventure({ adventureId, adventureType }) {
+    if (!adventureId || !adventureType) {
+      throw 'The adventureId and adventureType fields are required to be non-falsy. Please supply the missing field(s).'
+    }
     return this.#buildAdventureObject({ id: adventureId, type: adventureType })
   }
 

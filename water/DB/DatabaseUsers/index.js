@@ -49,11 +49,11 @@ class UserDataLayer extends DataLayer {
    *
    * @param {Object} params
    * @param {string} params.email
-   * @returns {Promise} a boolean if the email exists
+   * @returns {Promise<number|boolean>} a boolean if the email exists
    */
   checkIfUserExistsByEmail({ email }) {
     return this.sendQuery(selectUserIdStatement, [email])
-      .then(([results]) => !!results.length)
+      .then(([results]) => (!!results.length ? results[0].id : false))
       .catch(failedQuery)
   }
 

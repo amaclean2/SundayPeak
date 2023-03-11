@@ -92,7 +92,8 @@ class MessageDataLayer extends DataLayer {
               {
                 display_name: result.user_display_name,
                 user_id: result.user_id,
-                profile_picture_url: result.profile_picture_url
+                profile_picture_url: result.profile_picture_url,
+                conversation_id: result.conversation_id
               }
             ]
 
@@ -105,7 +106,8 @@ class MessageDataLayer extends DataLayer {
                 {
                   display_name: result.user_display_name,
                   user_id: result.user_id,
-                  profile_picture_url: result.profile_picture_url
+                  profile_picture_url: result.profile_picture_url,
+                  conversation_id: result.conversation_id
                 }
               ],
               conversation_name: result.conversation_name,

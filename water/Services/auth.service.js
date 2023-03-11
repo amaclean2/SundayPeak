@@ -13,7 +13,7 @@ class AuthService {
 
   validate({ originalUrl, token }) {
     return new Promise((res, rej) => {
-      if (isExempt(originalUrl)) {
+      if (originalUrl && isExempt(originalUrl)) {
         res(true)
       }
 

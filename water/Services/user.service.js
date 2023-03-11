@@ -2,6 +2,7 @@ const Water = require('.')
 const { handleEmailUserFollowed } = require('./utils/email')
 const SearchService = require('./search.service')
 const { comparePassword, hashPassword } = require('./utils/crypto')
+const logger = require('../Config/logger')
 
 class UserService extends Water {
   constructor(sendQuery, jwtSecret) {
@@ -103,10 +104,11 @@ class UserService extends Water {
     return this.userDB
       .checkIfUserExistsByEmail({ email })
       .then((userExists) => {
+        logger.info({ userExists })
         if (!userExists) {
           return true
         } else {
-          throw 'this email already exists'
+          throw 'An account with this email aready exists. Please try a different email or login with that account.'
         }
       })
       .then(() =>
@@ -146,8 +148,13 @@ class UserService extends Water {
    * @returns {Promise<NewUserResponse>} an object with the user and a token
    */
   async loginWithEmailAndPassword({ email, password }) {
+    const checkUser = await this.userDB.checkIfUserExistsByEmail({ email })
+
+    if (!checkUser)
+      throw 'There was no user found with that email. Please try again or create a new user.'
+
     const user = await this.#buildUserObject({
-      initiation: { email },
+      initiation: { id: checkUser },
       password
     })
     const token = this.auth.issue({ id: user.id })

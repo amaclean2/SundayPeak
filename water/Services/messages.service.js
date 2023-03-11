@@ -26,7 +26,8 @@ class MessagingService extends Water {
   /**
    * @param {Object} params
    * @param {number} params.userId
-   * @param {}
+   * @returns {Promise<ConversationResponseType>} | an object of conversations where the key
+   * is the conversation id and the value is the conversation details
    */
   getConversationsPerUser({ userId }) {
     // look through the conversation_interactions table and find all the conversations for the current user
