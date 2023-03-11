@@ -53,46 +53,34 @@ describe('message service layer testing', () => {
   })
 
   test('creates a new conversation', async () => {
-    let conversationName = 'Andrew and Mark'
     let newConversationResponse =
       await serviceHandler.messagingService.createConversation({
-        userIds: [firstUser.id, secondUser.id],
-        conversationName
+        userIds: [firstUser.id, secondUser.id]
       })
 
-    expect(newConversationResponse.conversationName).toBeDefined()
-    expect(newConversationResponse.conversationName).toBe(conversationName)
+    expect(newConversationResponse.conversationId).toBeDefined()
     firstConversationId = newConversationResponse.conversationId
 
-    conversationName = 'Mark and Jessee'
     newConversationResponse =
       await serviceHandler.messagingService.createConversation({
-        userIds: [secondUser.id, thirdUser.id],
-        conversationName
+        userIds: [secondUser.id, thirdUser.id]
       })
 
-    expect(newConversationResponse.conversationName).toBeDefined()
-    expect(newConversationResponse.conversationName).toBe(conversationName)
+    expect(newConversationResponse.conversationId).toBeDefined()
 
-    conversationName = 'Andrew and Jessee'
     newConversationResponse =
       await serviceHandler.messagingService.createConversation({
-        userIds: [firstUser.id, thirdUser.id],
-        conversationName
+        userIds: [firstUser.id, thirdUser.id]
       })
 
-    expect(newConversationResponse.conversationName).toBeDefined()
-    expect(newConversationResponse.conversationName).toBe(conversationName)
+    expect(newConversationResponse.conversationId).toBeDefined()
 
-    conversationName = 'Andrew and Mark and Jessee'
     newConversationResponse =
       await serviceHandler.messagingService.createConversation({
-        userIds: [firstUser.id, secondUser.id, thirdUser.id],
-        conversationName
+        userIds: [firstUser.id, secondUser.id, thirdUser.id]
       })
 
-    expect(newConversationResponse.conversationName).toBeDefined()
-    expect(newConversationResponse.conversationName).toBe(conversationName)
+    expect(newConversationResponse.conversationId).toBeDefined()
   })
 
   test('gets all the conversations relevant to a user', async () => {
@@ -108,6 +96,7 @@ describe('message service layer testing', () => {
       expect(
         value.users.find((user) => user.user_id !== firstUser.id)
       ).toBeTruthy()
+      expect(value.last_message).toBeDefined()
       expect(value.unread).toBe(false)
     })
   })
@@ -147,6 +136,16 @@ describe('message service layer testing', () => {
     }
   })
 
+  test('the last_message property of the conversation should be the last message sent', async () => {
+    const userId = secondUser.id
+    const conversationResponse =
+      await serviceHandler.messagingService.getConversationsPerUser({ userId })
+
+    expect(conversationResponse[firstConversationId].last_message).toBe(
+      'Hi Andrew!'
+    )
+  })
+
   test('gets all the messages for a conversation', async () => {
     const userId = secondUser.id
     const conversationId = firstConversationId
@@ -157,5 +156,16 @@ describe('message service layer testing', () => {
       })
 
     expect(messagesResponse.length).toBe(2)
+  })
+  test('creating a new conversation returns the id of the already made conversation if one exists between those users', async () => {
+    let newConversationResponse =
+      await serviceHandler.messagingService.createConversation({
+        userIds: [firstUser.id, secondUser.id]
+      })
+
+    expect(newConversationResponse.conversation_exists).toBe(true)
+    expect(newConversationResponse.conversation).toBeDefined()
+    expect(newConversationResponse.conversation.conversation_id).toBe(1)
+    expect(newConversationResponse.conversation.last_message).toBeDefined()
   })
 })

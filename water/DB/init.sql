@@ -136,7 +136,8 @@ CREATE TABLE images(
 
 CREATE TABLE conversations(
     id INT AUTO_INCREMENT,
-    name VARCHAR(255),
+    last_message TEXT,
+    conversation_name VARCHAR(255),
     PRIMARY KEY(id)
 );
 

@@ -104,7 +104,6 @@ class UserService extends Water {
     return this.userDB
       .checkIfUserExistsByEmail({ email })
       .then((userExists) => {
-        logger.info({ userExists })
         if (!userExists) {
           return true
         } else {

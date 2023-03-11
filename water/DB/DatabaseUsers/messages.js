@@ -6,7 +6,9 @@ const {
   getUserConversationsStatement,
   setUnreadStatement,
   getConversationMessagesStatement,
-  clearUnreadStatement
+  clearUnreadStatement,
+  findConversationStatement,
+  setLastMessageStatement
 } = require('../Statements/Messages')
 const { failedInsertion, failedQuery, failedUpdate } = require('../utils')
 
@@ -49,6 +51,19 @@ class MessageDataLayer extends DataLayer {
     )
   }
 
+  /**
+   * @param {Object} params
+   * @param {string} params.lastMessage
+   * @param {number} params.conversationId
+   * @returns {Promise<void>}
+   */
+  setLastMessage({ lastMessage, conversationId }) {
+    return this.sendQuery(setLastMessageStatement, [
+      lastMessage,
+      conversationId
+    ]).catch(failedUpdate)
+  }
+
   clearUnreadConversation({ userId, conversationId }) {
     return this.sendQuery(clearUnreadStatement, [userId, conversationId]).catch(
       failedUpdate
@@ -58,21 +73,34 @@ class MessageDataLayer extends DataLayer {
   /**
    * @param {Object} params
    * @param {number[]} params.userIds
-   * @param {string} params.conversationName
    * @returns {Promise<NewConversationReturnType>} | an object containing the
-   * conversationId and the conversationName of the new conversation
+   * conversationId of the new conversation
    */
-  saveNewConversation({ userIds, conversationName = '' }) {
+  saveNewConversation({ userIds }) {
     let scopedId
-    return this.sendQuery(createNewConversationStatement, [conversationName])
+    return this.sendQuery(createNewConversationStatement)
       .then(([{ insertId: conversationId }]) => {
         scopedId = conversationId
         return this.sendQuery(createNewInteractionsStatement, [
           userIds.map((userId) => [userId, conversationId, false])
         ])
       })
-      .then(() => ({ conversationId: scopedId, conversationName }))
+      .then(() => ({ conversationId: scopedId }))
       .catch(failedInsertion)
+  }
+
+  /**
+   * @param {Object} params
+   * @param {number[]} params.userIds
+   * @returns {Promise<number|boolean>} | the conversation_id if the two users are in a conversation otherwise false
+   */
+  findConversation({ userIds }) {
+    return this.sendQuery(findConversationStatement, [
+      [userIds],
+      userIds.length
+    ])
+      .then(([results]) => (results.length ? results[0] : false))
+      .catch(failedQuery)
   }
 
   /**
@@ -92,8 +120,7 @@ class MessageDataLayer extends DataLayer {
               {
                 display_name: result.user_display_name,
                 user_id: result.user_id,
-                profile_picture_url: result.profile_picture_url,
-                conversation_id: result.conversation_id
+                profile_picture_url: result.profile_picture_url
               }
             ]
 
@@ -106,11 +133,11 @@ class MessageDataLayer extends DataLayer {
                 {
                   display_name: result.user_display_name,
                   user_id: result.user_id,
-                  profile_picture_url: result.profile_picture_url,
-                  conversation_id: result.conversation_id
+                  profile_picture_url: result.profile_picture_url
                 }
               ],
-              conversation_name: result.conversation_name,
+              conversation_id: result.conversation_id,
+              last_message: result.last_message,
               ...(result.user_id === userId && { unread: !!result.unread })
             }
           }

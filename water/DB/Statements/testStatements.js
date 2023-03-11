@@ -27,7 +27,7 @@ const createStatements = [
   `CREATE TABLE todo_adventures( creator_id INT, adventure_id INT, date_created DATETIME DEFAULT CURRENT_TIMESTAMP, public TINYINT, PRIMARY KEY(creator_id, adventure_id), FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(adventure_id) REFERENCES adventures(id) ON DELETE CASCADE );`,
   `CREATE TABLE completed_adventures( creator_id INT, adventure_id INT, date_created DATETIME DEFAULT CURRENT_TIMESTAMP, public TINYINT, PRIMARY KEY(creator_id, adventure_id), FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(adventure_id) REFERENCES adventures(id) ON DELETE CASCADE );`,
   `CREATE TABLE images( file_name VARCHAR(150), creator_id INT, adventure_id INT, date_created DATETIME DEFAULT CURRENT_TIMESTAMP, public TINYINT, PRIMARY KEY(file_name), FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(adventure_id) REFERENCES adventures(id) ON DELETE CASCADE );`,
-  `CREATE TABLE conversations( id INT AUTO_INCREMENT, name VARCHAR(255), PRIMARY KEY(id) );`,
+  `CREATE TABLE conversations( id INT AUTO_INCREMENT, conversation_name VARCHAR(255), last_message TEXT, PRIMARY KEY(id) );`,
   `CREATE TABLE conversation_interactions( user_id INT, conversation_id INT, unread TINYINT, PRIMARY KEY(user_id, conversation_id), FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE, FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE );`,
   `CREATE TABLE messages( id INT AUTO_INCREMENT, conversation_id INT, unread TINYINT, sender_id INT, message_body TEXT, data_reference VARCHAR(255), PRIMARY KEY(id), FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE, FOREIGN KEY(sender_id) REFERENCES users(id) ON DELETE CASCADE );`
 ]

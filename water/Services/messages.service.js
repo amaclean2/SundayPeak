@@ -10,17 +10,26 @@ class MessagingService extends Water {
   /**
    * @param {Object} params
    * @param {number[]} params.userIds
-   * @param {string} params.conversationName
    * @returns {Promise<NewConversationReturnType>} | an object containing the
-   * conversationId and conversationName of the new conversation
+   * conversationId of the new conversation
    */
-  createConversation({ userIds, conversationName }) {
+  createConversation({ userIds }) {
     // create a new row in the conversations table
     // create new rows in the conversation_interactions table for each user in the conversation
-    return this.messageDB.saveNewConversation({
-      userIds,
-      conversationName
-    })
+    return this.messageDB
+      .findConversation({ userIds })
+      .then((conversationExists) => {
+        if (conversationExists) {
+          return {
+            conversation_exists: true,
+            conversation: conversationExists
+          }
+        } else {
+          return this.messageDB.saveNewConversation({
+            userIds
+          })
+        }
+      })
   }
 
   /**
@@ -79,7 +88,16 @@ class MessagingService extends Water {
         }
       })
       .then(() =>
-        this.messageDB.updateUnread({ userId: senderId, conversationId })
+        this.messageDB.updateUnread({
+          userId: senderId,
+          conversationId
+        })
+      )
+      .then(() =>
+        this.messageDB.setLastMessage({
+          lastMessage: messageBody,
+          conversationId
+        })
       )
       .then(() => responseBody)
   }
