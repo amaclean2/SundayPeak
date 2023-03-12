@@ -110,10 +110,10 @@ describe('message service layer testing', () => {
         messageBody: messageText
       })
 
-    expect(messageSendResponse.body).toBeDefined()
-    expect(messageSendResponse.body).toBe(messageText)
-    expect(messageSendResponse.sender).toBe(firstUser.id)
-    expect(messageSendResponse.conversation).toBe(firstConversationId)
+    expect(messageSendResponse.message_body).toBeDefined()
+    expect(messageSendResponse.message_body).toBe(messageText)
+    expect(messageSendResponse.user_id).toBe(firstUser.id)
+    expect(messageSendResponse.conversation_id).toBe(firstConversationId)
 
     await serviceHandler.messagingService.sendMessage({
       conversationId: firstConversationId,

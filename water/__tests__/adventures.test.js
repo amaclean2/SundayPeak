@@ -204,11 +204,64 @@ describe('adventure service layer testing', () => {
       expect(adventureResponse.summit_elevation).toBe(summitElevation)
     })
 
+    test('can bulk add adventures', async () => {
+      const adventures = [
+        {
+          adventure_type: 'ski',
+          adventure_name: 'Ski Descent 2',
+          nearest_city: 'New City',
+          public: true,
+          creator_id: creator.id,
+          coordinates_lat: 12,
+          coordinates_lng: 12.1
+        },
+        {
+          adventure_type: 'ski',
+          adventure_name: 'Ski Descent 3',
+          nearest_city: 'New City',
+          public: true,
+          creator_id: creator.id,
+          coordinates_lat: 12.2,
+          coordinates_lng: 12.05
+        },
+        {
+          adventure_type: 'hike',
+          adventure_name: 'Hiking Trail',
+          nearest_city: 'New City',
+          public: true,
+          creator_id: creator.id,
+          coordinates_lat: 10.2,
+          coordinates_lng: 12.1
+        },
+        {
+          adventure_type: 'climb',
+          adventure_name: 'Big Mountain',
+          nearest_city: 'New City',
+          public: true,
+          creator_id: creator.id,
+          coordinates_lat: 11.2,
+          coordinates_lng: 12.5
+        }
+      ]
+
+      await serviceHandler.adventureService.bulkAdventureCreation({
+        adventures
+      })
+
+      const adventureList =
+        await serviceHandler.adventureService.getAdventureList({
+          adventureType: 'ski'
+        })
+
+      expect(adventureList?.features?.length).toBe(3)
+    })
+
     test('can delete an adventure', async () => {
       const adventureDetails = {
         id: newAdventure.id,
         type: newAdventure.adventure_type
       }
+
       const deletionResponse =
         await serviceHandler.adventureService.deleteAdventure({
           adventureId: adventureDetails.id,

@@ -3,6 +3,8 @@ const SearchService = require('./search.service')
 const { Cache } = require('memory-cache')
 const { updateAdventureCache } = require('./utils/caching')
 
+const CACHE_TIMEOUT = 1000 * 360
+
 /**
  * @class
  * @param {function} sendQuery | function to make a database call
@@ -30,6 +32,7 @@ class AdventureService extends Water {
         id,
         todo_users: [],
         completed_users: [],
+        images: [],
         coordinates: {
           lat: providedObject.coordinates_lat,
           lng: providedObject.coordinates_lng
@@ -104,7 +107,11 @@ class AdventureService extends Water {
       adventureObject: { ...adventureObject, id: adventureId }
     })
 
-    this.adventureCache.put(adventureObject.adventure_type, updatedCacheObject)
+    this.adventureCache.put(
+      adventureObject.adventure_type,
+      updatedCacheObject,
+      CACHE_TIMEOUT
+    )
 
     this.search.saveAdventureKeywords({
       searchableFields: adventure,
@@ -112,6 +119,15 @@ class AdventureService extends Water {
     })
 
     return { adventure, adventureList: updatedCacheObject }
+  }
+
+  /**
+   * @param {Object} params
+   * @param {AdventureObject[]} params.adventures
+   * @returns {Promise<void>} | there's too much stuff to return
+   */
+  bulkAdventureCreation({ adventures }) {
+    return this.adventureDB.bulkAddAdventures({ adventures })
   }
 
   /**
@@ -131,7 +147,7 @@ class AdventureService extends Water {
     return this.adventureDB
       .databaseGetTypedAdventures({ adventureType })
       .then((adventures) => {
-        this.adventureCache.put(adventureType, adventures)
+        this.adventureCache.put(adventureType, adventures, CACHE_TIMEOUT)
         return adventures
       })
   }
@@ -178,17 +194,8 @@ class AdventureService extends Water {
       .then((adventureKeywords) => {
         // we need to rebuild the cached adventure list. Since we can do this with data we already have,
         // it doesn't require another round trip to the database
-        const updatedCacheObject = updateAdventureCache({
-          cacheObject: {
-            ...this.adventureCache.get(adventureKeywords.adventure_type)
-          },
-          adventureObject: adventureKeywords
-        })
 
-        this.adventureCache.put(
-          adventureKeywords.adventure_type,
-          updatedCacheObject
-        )
+        this.adventureCache.del(adventureKeywords.adventure_type)
 
         if (this.search.adventureKeywordLibrary.includes(field.name)) {
           this.search.saveAdventureKeywords({
@@ -206,10 +213,49 @@ class AdventureService extends Water {
    * @returns {Promise<DeletionResponse>} | an object containing affectedRows
    */
   deleteAdventure({ adventureId, adventureType }) {
-    return this.adventureDB.databaseDeleteAdventure({
-      adventureId,
-      adventureType
+    return this.adventureDB
+      .databaseDeleteAdventure({
+        adventureId,
+        adventureType
+      })
+      .then((resp) => {
+        this.adventureCache.del(adventureType)
+        return resp
+      })
+  }
+
+  /**
+   * @param {Object} params
+   * @param {string} csvString
+   * @returns {Object} a JSON object of all the adventures
+   */
+  processCSVToAdventure({ csvString }) {
+    if (!csvString.length) throw 'There was no data to process'
+
+    const data = csvString.split('\n')
+    if (data.length < 2) throw 'The data was formatted incorrectly'
+
+    const [keys, ...values] = data
+    const strippedKeys = keys.replace(/"/g, '').split(',')
+
+    const newData = values.map((value) => {
+      const strippedValue = value.split('","')
+      const assembledObject = strippedValue.reduce(
+        (object, value, idx) => ({ ...object, [strippedKeys[idx]]: value }),
+        {}
+      )
+      assembledObject.id = Number(assembledObject.id.replace('"', ''))
+      assembledObject['coordinates.lat'] = Number(
+        assembledObject['coordinates.lat'].replace('"', '')
+      )
+      assembledObject['coordinates.lng'] = Number(
+        assembledObject['coordinates.lng'].replace('"', '')
+      )
+      assembledObject.creator_id = Number(assembledObject.creator_id)
+      return assembledObject
     })
+
+    return newData
   }
 }
 

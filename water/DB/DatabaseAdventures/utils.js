@@ -1,3 +1,12 @@
+const {
+  createNewSkiStatement,
+  createNewSkiAdventureStatement,
+  createNewClimbStatement,
+  createNewClimbAdventureStatement,
+  createNewHikeStatement,
+  createNewHikeAdventureStatement
+} = require('../Statements')
+
 const formatAdventureForGeoJSON = (adventure) => {
   const newAdventure = {
     type: 'Feature',
@@ -19,43 +28,37 @@ const formatAdventureForGeoJSON = (adventure) => {
   return newAdventure
 }
 
-const getSkiSpecificFields = (adventure) => {
-  return [
-    adventure.avg_angle || 0,
-    adventure.max_angle || 0,
-    adventure.approach_distance || '',
-    adventure.aspect || 'N',
-    adventure.difficulty || 0,
-    adventure.summit_elevation || 0,
-    adventure.base_elevation || 0,
-    adventure.exposure || 0,
-    adventure.gear || '',
-    adventure.season || ''
-  ]
-}
+const getSkiSpecificFields = (adventure) => [
+  adventure.avg_angle || 0,
+  adventure.max_angle || 0,
+  adventure.approach_distance || '',
+  adventure.aspect || 'N',
+  adventure.difficulty || 0,
+  adventure.summit_elevation || 0,
+  adventure.base_elevation || 0,
+  adventure.exposure || 0,
+  adventure.gear || '',
+  adventure.season || ''
+]
 
-const getClimbSpecificFields = (adventure) => {
-  return [
-    adventure.grade || '',
-    adventure.pitches || 0,
-    adventure.protection || '',
-    adventure.climb_type || '',
-    adventure.light_times || '',
-    adventure.season || '',
-    adventure.approach || '',
-    adventure.first_ascent || ''
-  ]
-}
+const getClimbSpecificFields = (adventure) => [
+  adventure.grade || '',
+  adventure.pitches || 0,
+  adventure.protection || '',
+  adventure.climb_type || '',
+  adventure.light_times || '',
+  adventure.season || '',
+  adventure.approach || '',
+  adventure.first_ascent || ''
+]
 
-const getHikeSpecificFields = (adventure) => {
-  return [
-    adventure.difficulty || 0,
-    adventure.summit_elevation || 0,
-    adventure.base_elevation || 0,
-    adventure.duration || 0,
-    adventure.season || ''
-  ]
-}
+const getHikeSpecificFields = (adventure) => [
+  adventure.difficulty || 0,
+  adventure.summit_elevation || 0,
+  adventure.base_elevation || 0,
+  adventure.distance || 0,
+  adventure.season || ''
+]
 
 const getGeneralFields = (adventure) => {
   return [
@@ -131,6 +134,66 @@ const getStatementKey = (name, type) => {
   }
 }
 
+const getPropsToImport = (adventure) => {
+  const { adventure_type } = adventure
+  const adventureProperties = {}
+
+  switch (adventure_type) {
+    case 'ski':
+      adventureProperties.createNewSpecificStatement = createNewSkiStatement
+      adventureProperties.createNewGeneralStatement =
+        createNewSkiAdventureStatement
+      adventureProperties.specificFields = getSkiSpecificFields(adventure)
+      adventureProperties.specificIdType = 'adventure_ski_id'
+      break
+    case 'climb':
+      adventureProperties.createNewSpecificStatement = createNewClimbStatement
+      adventureProperties.createNewGeneralStatement =
+        createNewClimbAdventureStatement
+      adventureProperties.specificFields = getClimbSpecificFields(adventure)
+      adventureProperties.specificIdType = 'adventure_climb_id'
+      break
+    case 'hike':
+      adventureProperties.createNewSpecificStatement = createNewHikeStatement
+      adventureProperties.createNewGeneralStatement =
+        createNewHikeAdventureStatement
+      adventureProperties.specificFields = getHikeSpecificFields(adventure)
+      adventureProperties.specificIdType = 'adventure_hike_id'
+  }
+
+  return adventureProperties
+}
+
+const parseAdventures = (adventures) => {
+  const parsedAdventures = {}
+  parsedAdventures.ski = adventures.filter(
+    ({ adventure_type }) => adventure_type === 'ski'
+  )
+  parsedAdventures.climb = adventures.filter(
+    ({ adventure_type }) => adventure_type === 'climb'
+  )
+  parsedAdventures.hike = adventures.filter(
+    ({ adventure_type }) => adventure_type === 'hike'
+  )
+
+  return parsedAdventures
+}
+
+const createSpecificProperties = (parsedAdventures) => {
+  const specificProperties = {}
+  specificProperties.ski = parsedAdventures.ski.map((adventure) =>
+    getSkiSpecificFields(adventure)
+  )
+  specificProperties.climb = parsedAdventures.climb.map((adventure) =>
+    getClimbSpecificFields(adventure)
+  )
+  specificProperties.hike = parsedAdventures.hike.map((adventure) =>
+    getHikeSpecificFields(adventure)
+  )
+
+  return specificProperties
+}
+
 module.exports = {
   formatAdventureForGeoJSON,
   getSkiSpecificFields,
@@ -138,5 +201,8 @@ module.exports = {
   getHikeSpecificFields,
   getGeneralFields,
   getStatementKey,
+  getPropsToImport,
+  parseAdventures,
+  createSpecificProperties,
   adventureTemplates
 }

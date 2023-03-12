@@ -51,7 +51,7 @@ class UserService extends Water {
     }
 
     if (password && !comparePassword(password, userObject.password)) {
-      throw 'the email or password cannot be found'
+      throw 'passwordNotFound'
     }
 
     delete userObject.password

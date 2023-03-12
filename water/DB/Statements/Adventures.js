@@ -1,15 +1,15 @@
 const createNewSkiAdventureStatement =
-  'INSERT INTO adventures (adventure_ski_id, adventure_name, adventure_type, bio, coordinates_lat, coordinates_lng, creator_id, nearest_city, public, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  'INSERT INTO adventures (adventure_ski_id, adventure_name, adventure_type, bio, coordinates_lat, coordinates_lng, creator_id, nearest_city, public, rating) VALUES ?'
 const createNewClimbAdventureStatement =
-  'INSERT INTO adventures (adventure_climb_id, adventure_name, adventure_type, bio, coordinates_lat, coordinates_lng, creator_id, nearest_city, public, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  'INSERT INTO adventures (adventure_climb_id, adventure_name, adventure_type, bio, coordinates_lat, coordinates_lng, creator_id, nearest_city, public, rating) VALUES ?'
 const createNewHikeAdventureStatement =
-  'INSERT INTO adventures (adventure_hike_id, adventure_name, adventure_type, bio, coordinates_lat, coordinates_lng, creator_id, nearest_city, public, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  'INSERT INTO adventures (adventure_hike_id, adventure_name, adventure_type, bio, coordinates_lat, coordinates_lng, creator_id, nearest_city, public, rating) VALUES ?'
 const createNewSkiStatement =
-  'INSERT INTO ski (avg_angle, max_angle, approach_distance, aspect, difficulty, summit_elevation, base_elevation, exposure, gear, season) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  'INSERT INTO ski (avg_angle, max_angle, approach_distance, aspect, difficulty, summit_elevation, base_elevation, exposure, gear, season) VALUES ?'
 const createNewClimbStatement =
-  'INSERT INTO climb (grade, pitches, protection, climb_type, light_times, season, approach, first_ascent) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+  'INSERT INTO climb (grade, pitches, protection, climb_type, light_times, season, approach, first_ascent) VALUES ?'
 const createNewHikeStatement =
-  'INSERT INTO hike (difficulty, summit_elevation, base_elevation, distance, season) VALUES (?, ?, ?, ?, ?)'
+  'INSERT INTO hike (difficulty, summit_elevation, base_elevation, distance, season) VALUES ?'
 
 const getAdventureTypeStatement =
   'SELECT adventure_type FROM adventures WHERE id = ?'

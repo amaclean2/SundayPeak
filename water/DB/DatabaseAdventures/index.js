@@ -4,28 +4,28 @@ const { AdventureObject } = require('../../TypeDefs/adventures')
 const {
   selectAdventuresInRangeStatement,
   updateAdventureStatements,
-  createNewSkiStatement,
-  createNewSkiAdventureStatement,
-  createNewClimbStatement,
-  createNewClimbAdventureStatement,
-  createNewHikeStatement,
-  createNewHikeAdventureStatement,
   searchAdventureStatement,
   addKeywordStatement,
   deleteSkiStatement,
   deleteClimbStatement,
   deleteHikeStatement,
   getKeywordsStatement,
-  selectAdventureByIdGroup
+  selectAdventureByIdGroup,
+  createNewClimbStatement,
+  createNewHikeStatement,
+  createNewSkiStatement,
+  createNewSkiAdventureStatement,
+  createNewClimbAdventureStatement,
+  createNewHikeAdventureStatement
 } = require('../Statements')
 const {
   formatAdventureForGeoJSON,
-  getSkiSpecificFields,
-  getClimbSpecificFields,
-  getHikeSpecificFields,
   getGeneralFields,
   adventureTemplates,
-  getStatementKey
+  getStatementKey,
+  getPropsToImport,
+  parseAdventures,
+  createSpecificProperties
 } = require('./utils')
 const {
   failedInsertion,
@@ -45,38 +45,13 @@ class AdventureDataLayer extends DataLayer {
    * @returns {Promise} the new adventure id
    */
   addAdventure(adventure) {
-    const { adventure_type } = adventure
-    const adventureProperties = {}
-
-    switch (adventure_type) {
-      case 'ski':
-        adventureProperties.createNewSpecificStatement = createNewSkiStatement
-        adventureProperties.createNewGeneralStatement =
-          createNewSkiAdventureStatement
-        adventureProperties.specificFields = getSkiSpecificFields(adventure)
-        adventureProperties.specificIdType = 'adventure_ski_id'
-        break
-      case 'climb':
-        adventureProperties.createNewSpecificStatement = createNewClimbStatement
-        adventureProperties.createNewGeneralStatement =
-          createNewClimbAdventureStatement
-        adventureProperties.specificFields = getClimbSpecificFields(adventure)
-        adventureProperties.specificIdType = 'adventure_climb_id'
-        break
-      case 'hike':
-        adventureProperties.createNewSpecificStatement = createNewHikeStatement
-        adventureProperties.createNewGeneralStatement =
-          createNewHikeAdventureStatement
-        adventureProperties.specificFields = getHikeSpecificFields(adventure)
-        adventureProperties.specificIdType = 'adventure_hike_id'
-    }
+    const adventureProperties = getPropsToImport(adventure)
 
     // there are two tables that need to get updated, the specific adventure values, (ski, climb, hike)
     // and the general adventures table. This statement updates the specific one and gets the specific id
-    return this.sendQuery(
-      adventureProperties.createNewSpecificStatement,
-      adventureProperties.specificFields
-    )
+    return this.sendQuery(adventureProperties.createNewSpecificStatement, [
+      [adventureProperties.specificFields]
+    ])
       .then(([{ insertId: specificId }]) =>
         getGeneralFields({
           ...adventure,
@@ -85,13 +60,55 @@ class AdventureDataLayer extends DataLayer {
       )
       .then((fields) => {
         // this is the last query to update the general adventures table and it returns the id of the adventure
-        return this.sendQuery(
-          adventureProperties.createNewGeneralStatement,
-          fields
-        )
+        return this.sendQuery(adventureProperties.createNewGeneralStatement, [
+          [fields]
+        ])
       })
       .then(([{ insertId }]) => insertId)
       .catch(failedInsertion)
+  }
+
+  async bulkAddAdventures({ adventures }) {
+    const parsedAdventures = parseAdventures(adventures)
+    const specificProperties = createSpecificProperties(parsedAdventures)
+    const ids = {}
+    const generalProperties = {}
+
+    const createNewSpecificStatements = {
+      ski: createNewSkiStatement,
+      climb: createNewClimbStatement,
+      hike: createNewHikeStatement
+    }
+
+    const createNewGeneralStatements = {
+      ski: createNewSkiAdventureStatement,
+      climb: createNewClimbAdventureStatement,
+      hike: createNewHikeAdventureStatement
+    }
+
+    return Promise.all(
+      ['ski', 'climb', 'hike'].map((type) => {
+        if (!parsedAdventures[type].length) {
+          return true
+        }
+
+        return this.sendQuery(createNewSpecificStatements[type], [
+          specificProperties[type]
+        ]).then(([{ insertId }]) => {
+          ids[type] = parsedAdventures[type].map((_, idx) => insertId + idx)
+          generalProperties[type] = parsedAdventures[type].map(
+            (adventure, idx) =>
+              getGeneralFields({
+                ...adventure,
+                [`adventure_${type}_id`]: ids[type][idx]
+              })
+          )
+          return this.sendQuery(createNewGeneralStatements[type], [
+            generalProperties[type]
+          ])
+        })
+      })
+    )
   }
 
   /**

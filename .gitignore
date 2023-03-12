@@ -12,5 +12,9 @@ rivers/.env.dev
 rivers/google-cloud-key.json
 rivers/.DS_Store
 
+water/.env.dev
+water/node_modules
+water/coverage
+
 .DS_Store
 .dispatch.yaml.swp

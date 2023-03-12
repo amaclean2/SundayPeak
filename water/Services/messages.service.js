@@ -78,13 +78,12 @@ class MessagingService extends Water {
         messageBody,
         dataReference
       })
-      .then(({ insertId }) => {
+      .then(() => {
         responseBody = {
-          body: messageBody,
-          sender: senderId,
-          id: insertId,
-          conversation: conversationId,
-          data: dataReference
+          message_body: messageBody,
+          user_id: senderId,
+          conversation_id: conversationId,
+          data_reference: dataReference
         }
       })
       .then(() =>
