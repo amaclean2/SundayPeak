@@ -127,7 +127,12 @@ class AdventureService extends Water {
    * @returns {Promise<void>} | there's too much stuff to return
    */
   bulkAdventureCreation({ adventures }) {
-    return this.adventureDB.bulkAddAdventures({ adventures })
+    return this.adventureDB
+      .bulkAddAdventures({ adventures })
+      .then((response) => {
+        this.adventureCache.clear()
+        return response
+      })
   }
 
   /**
