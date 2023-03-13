@@ -10,18 +10,16 @@
 }
 
 .create-account-cta {
-	flex-basis: 100%;
-	margin-top: 10px;
-	font-size: 14px;
-	margin-left: 5px;
+	margin: 0;
+	font-size: 0.9rem;
 	text-align: center;
-	width: 25rem;
 }
 
 .new-account-button.button {
 	font-size: inherit;
 	padding: 5px;
 	width: auto;
+	display: inline-flex;
 }
 
 .signup-form.flex-box,
@@ -30,18 +28,11 @@
 	align-items: center;
 	flex-wrap: nowrap;
 	flex-direction: column;
-	gap: 1.2rem;
+	gap: 0;
 }
 
 .login-form {
 	margin-bottom: 180px;
-}
-
-.signup-form .form-field-container,
-.login-form .form-field-container {
-	display: flex;
-	justify-content: flex-start;
-	width: 25rem;
 }
 
 .main-login-content,
@@ -75,35 +66,7 @@
 	flex-direction: column;
 }
 
-.reset-form .form-field-container {
-	max-width: 400px;
-	width: 100%;
-}
-
-.reset-buttons {
-	flex-direction: column;
-}
-
-.reset-buttons .button {
-	max-width: 400px;
-	width: 100%;
-	justify-content: center;
-}
-
-@media screen and (max-width: 500px) {
-	.signup-form.flex-box,
-	.login-form.flex-box {
-		gap: 0;
-	}
-
-	.signup-form .form-field-container,
-	.login-form .form-field-container {
-		display: flex;
-		justify-content: flex-start;
-		width: 100%;
-	}
-
-	.create-account-cta {
-		width: 100%;
-	}
+.desc {
+	font-weight: 500;
+	margin: 0;
 }

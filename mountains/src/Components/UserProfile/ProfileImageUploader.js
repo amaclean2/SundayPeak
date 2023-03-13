@@ -1,7 +1,8 @@
 import cx from 'classnames'
 
-import { useUserPictures, useUserStateContext } from '../../Providers'
-import { Button } from '../Reusable'
+import { Button } from 'Components/Reusable'
+import { useUserPictures } from 'Hooks'
+import { useUserStateContext } from 'Hooks/Providers'
 
 const ProfileImageUploader = () => {
 	const { updateProfilePicture, deletePicture } = useUserPictures()

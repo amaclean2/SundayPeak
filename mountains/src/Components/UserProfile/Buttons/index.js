@@ -1,15 +1,9 @@
-import {
-	useCardStateContext,
-	useEditUser,
-	useFollowUser,
-	useUserStateContext
-} from '../../../Providers'
-import getContent from '../../../TextContent'
-import { Button, FooterButtons } from '../../Reusable'
+import { useCardStateContext, useEditUser, useUserStateContext } from 'Providers'
+import getContent from 'TextContent'
+import { Button, FooterButtons } from 'Components/Reusable'
 
 const UserProfileButtons = () => {
-	const { workingUser, loggedInUser, isUserEditable, userDispatch, activeWorkingUser } =
-		useUserStateContext()
+	const { workingUser, isUserEditable, userDispatch, activeWorkingUser } = useUserStateContext()
 	const { cardDispatch } = useCardStateContext()
 	const { handleSaveEditUser } = useEditUser()
 

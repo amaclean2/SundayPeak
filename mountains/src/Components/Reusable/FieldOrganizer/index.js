@@ -30,16 +30,10 @@ export const FieldImage = ({ src, className }) => (
 	</div>
 )
 
-export const FieldHeader = ({
-	text,
-	children,
-	className,
-	pageHeader = false,
-	onClick = () => {}
-}) => (
+export const FieldHeader = ({ text, children, className, onClick = () => {} }) => (
 	<h3
 		onClick={onClick}
-		className={cx(className, 'field-header flex-box', pageHeader && 'page-header')}
+		className={cx(className, 'field-header flex-box')}
 	>
 		{text || children}
 	</h3>

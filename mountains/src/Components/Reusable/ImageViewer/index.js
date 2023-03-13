@@ -1,6 +1,6 @@
-import { FlexSpacer } from '..'
-import { useCardStateContext, useUserPictures } from '../../../Providers'
-import { Button } from '../Button'
+import { useUserPictures } from 'Hooks'
+import { useCardStateContext } from 'Hooks/Providers'
+import { Button, FlexSpacer } from '..'
 
 import './styles.css'
 

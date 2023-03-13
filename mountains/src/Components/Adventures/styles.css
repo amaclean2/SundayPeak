@@ -1,0 +1,101 @@
+.adventure-info {
+	margin: 0;
+	flex-wrap: wrap;
+	width: 38rem;
+	max-width: 100vw;
+	gap: 1rem;
+}
+
+.main-adventure-content.flex-box {
+	align-items: flex-start;
+	flex-direction: column;
+}
+
+.adventure-tick-panel.flex-box {
+	margin: 0 10px;
+	padding-top: 20px;
+	min-width: 400px;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.adventure-gallery {
+	width: 100%;
+	height: 200px;
+	background-color: #eee;
+	display: block;
+}
+
+.adventure-bio.flex-box {
+	align-self: flex-start;
+	padding: 0.5rem 0 2rem;
+}
+
+.adventure-viewer {
+	flex-direction: column;
+	width: 38rem;
+	padding: 0 1rem;
+}
+
+.user-image {
+	width: 35px;
+	height: 35px;
+	background-color: #ddd;
+	margin-right: 0.8rem;
+}
+
+.user-image img {
+	width: 100%;
+	height: 100%;
+}
+
+.mail-icon {
+	width: 25px;
+	height: 15px;
+	background-color: #ddd;
+}
+
+.header-subtext {
+	font-size: 0.85rem;
+}
+
+.new-adventure-brief {
+	width: auto;
+	max-width: 30rem;
+	line-height: 1.5rem;
+}
+
+.adventure-display-grid {
+	width: 35rem;
+}
+
+.import-adventures-button input {
+	display: none;
+}
+
+@media screen and (max-width: 500px) {
+	.adventure-info {
+		gap: 0rem;
+	}
+
+	.main-adventure-content.flex-box {
+		width: 100%;
+		min-height: 0;
+	}
+
+	.adventure-viewer {
+		margin: 0;
+		padding: 0;
+		max-width: 100%;
+	}
+
+	.no-edit {
+		padding: 0;
+	}
+
+	.editor-climber,
+	.editor-skier,
+	.editor-hiker {
+		height: 2.5rem;
+	}
+}

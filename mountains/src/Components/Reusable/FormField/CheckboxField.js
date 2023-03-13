@@ -32,7 +32,7 @@ CheckboxField.propTypes = {
 	name: PropTypes.string,
 	value: PropTypes.bool,
 	onChange: PropTypes.func,
-	label: PropTypes.string
+	label: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
 }
 
 export default CheckboxField

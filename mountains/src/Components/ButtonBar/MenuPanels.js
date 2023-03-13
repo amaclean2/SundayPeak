@@ -3,7 +3,7 @@ import PrivacyPolicy from 'PrivacyPolicy'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { CARD_TYPES, useCardStateContext, useUserStateContext } from '../../Providers'
-import AdventureEditor from '../AdventureEditor'
+import AdventureEditor from '../Adventures'
 import { LoginFlow, NewPassword, PasswordResetCapture, SignupFlow } from '../SignupFlow'
 import UserProfile from '../UserProfile'
 

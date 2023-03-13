@@ -1,25 +1,24 @@
-import React, { useEffect, useRef } from 'react'
+import { Outlet } from 'react-router-dom'
 
-import { useGetUser } from './Providers'
+import { ProvidersWrapper } from 'index'
+import ReactMap from 'Components/Mapping/ReactMap'
+import { ImageViewer } from 'Components/Reusable'
+import Alert from 'Components/Reusable/Alert'
 
 import './App.css'
 import './variables.css'
-import AppRouter from './Router'
 
 export const title = 'Sunday Peak'
 
 const App = () => {
-	const { getInitialCall } = useGetUser()
-	const loadingRef = useRef(false)
-
-	useEffect(() => {
-		if (!loadingRef.current) {
-			loadingRef.current = true
-			getInitialCall()
-		}
-	}, [])
-
-	return <AppRouter />
+	return (
+		<ProvidersWrapper>
+			<ReactMap />
+			<Outlet />
+			<ImageViewer />
+			<Alert />
+		</ProvidersWrapper>
+	)
 }
 
 export default App

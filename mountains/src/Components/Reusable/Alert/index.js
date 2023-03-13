@@ -1,6 +1,7 @@
 import cx from 'classnames'
 import { useEffect, useState } from 'react'
-import { useCardStateContext } from '../../../Providers'
+
+import { useCardStateContext } from 'Hooks/Providers'
 
 import './styles.css'
 

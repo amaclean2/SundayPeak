@@ -1,26 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { title } from '../../App'
-import {
-	CARD_TYPES,
-	useCardStateContext,
-	useCreateUser,
-	useUserStateContext
-} from '../../Providers'
 
-import {
-	FormField,
-	DisplayCard,
-	ProfileHeader,
-	ErrorField,
-	Button,
-	FieldHeader,
-	FooterButtons,
-	ProfileContent
-} from '../Reusable'
+import { title } from 'App'
+
+import { FormField, DisplayCard, ErrorField, Button, FooterButtons } from 'Components/Reusable'
+import { useUserStateContext } from 'Hooks/Providers'
+import { useCreateUser } from 'Hooks'
+import { useEffect } from 'react'
 
 export const SignupFlow = () => {
-	const { formFields, userDispatch } = useUserStateContext()
-	const { cardDispatch } = useCardStateContext()
+	const { formFields, userDispatch, loggedInUser } = useUserStateContext()
 	const { signupUser } = useCreateUser()
 	const navigate = useNavigate()
 
@@ -34,122 +22,106 @@ export const SignupFlow = () => {
 		})
 	}
 
-	const onClose = () => {
-		userDispatch({ type: 'clearForm' })
-		navigate('/discover')
-	}
-
-	const handleSignup = () => {
-		signupUser().then(() => navigate('/discover'))
-	}
+	useEffect(() => {
+		if (loggedInUser) {
+			navigate('/discover')
+		}
+	}, [])
 
 	return (
 		<DisplayCard
-			onClose={onClose}
 			configuration={'center'}
+			title={`Sign up with ${title}`}
+			onClose={() => navigate('/discover')}
 		>
-			<ProfileHeader
-				className='signup-header'
-				configuration={'center'}
-			>
-				<FieldHeader
-					pageHeader
-					className='signup-header-text'
-					text={`Sign up with ${title}`}
-				/>
-			</ProfileHeader>
-			<ProfileContent className='main-signup-content'>
-				<div className='adventure-info flex-box signup-form'>
-					<ErrorField
-						form='login'
-						className='signup-error'
-					/>
-					<FormField
-						onChange={onChange}
-						type='text'
-						name='first_name'
-						label='First Name'
-						isEditable
-						hideLabel
-						block
-						value={formFields.first_name}
-					/>
-					<FormField
-						onChange={onChange}
-						type='text'
-						name='last_name'
-						label='Last Name'
-						hideLabel
-						isEditable
-						block
-						value={formFields.last_name}
-					/>
-					<FormField
-						type='email'
-						name='email'
-						label='Email'
-						hideLabel
-						isEditable
-						block
-						value={formFields.email}
-						onChange={onChange}
-					/>
-					<FormField
-						name='password'
-						label='Password'
-						type='password'
-						hideLabel
-						block
-						isEditable
-						value={formFields.password}
-						onChange={onChange}
-					/>
-					<FormField
-						name='password_2'
-						label='Confirm Password'
-						type='password'
-						hideLabel
-						block
-						isEditable
-						value={formFields.password_2}
-						onChange={onChange}
-					/>
-					<FormField
-						type='checkbox'
-						name='legal'
-						value={formFields.legal}
-						label={
-							<span>
-								I agree with the {title} <Link to='/privacy'>Privacy Policy</Link>
-							</span>
-						}
-						isEditable
-						onChange={onChange}
-					/>
-				</div>
-				<FooterButtons>
+			<ErrorField
+				form='login'
+				className='signup-error'
+			/>
+			<FormField
+				onChange={onChange}
+				type='text'
+				name='first_name'
+				label='First Name'
+				isEditable
+				hideLabel
+				block
+				value={formFields.first_name}
+			/>
+			<FormField
+				onChange={onChange}
+				type='text'
+				name='last_name'
+				label='Last Name'
+				hideLabel
+				isEditable
+				block
+				value={formFields.last_name}
+			/>
+			<FormField
+				type='email'
+				name='email'
+				label='Email'
+				hideLabel
+				isEditable
+				block
+				value={formFields.email}
+				onChange={onChange}
+			/>
+			<FormField
+				name='password'
+				label='Password'
+				type='password'
+				hideLabel
+				block
+				isEditable
+				value={formFields.password}
+				onChange={onChange}
+			/>
+			<FormField
+				name='password_2'
+				label='Confirm Password'
+				type='password'
+				hideLabel
+				block
+				isEditable
+				value={formFields.password_2}
+				onChange={onChange}
+			/>
+			<FormField
+				type='checkbox'
+				name='legal'
+				value={formFields.legal}
+				label={
+					<span>
+						I agree with the {title} <Link to='/privacy'>Privacy Policy</Link>
+					</span>
+				}
+				isEditable
+				onChange={onChange}
+			/>
+			<FooterButtons>
+				<Button
+					onClick={signupUser}
+					id={'create-account-button'}
+					className='cta-button'
+				>
+					Create Account
+				</Button>
+				<div className='create-account-cta'>
+					<span>Already have an account?</span>
 					<Button
-						onClick={handleSignup}
-						id={'create-account-button'}
-						className='cta-button'
+						className='secondary-button new-account-button'
+						id={'switch-to-login-button'}
+						onClick={() => {
+							userDispatch({ type: 'loginError', payload: '' })
+							navigate('/login')
+						}}
 					>
-						Create Account
+						Login to {title}
 					</Button>
-					<div className='create-account-cta'>
-						<span>Already have an account?</span>
-						<Button
-							className='secondary-button new-account-button'
-							id={'switch-to-login-button'}
-							onClick={() => {
-								cardDispatch({ type: 'switchCard', payload: CARD_TYPES.login })
-								navigate('/discover')
-							}}
-						>
-							Login to {title}
-						</Button>
-					</div>
-				</FooterButtons>
-			</ProfileContent>
+				</div>
+			</FooterButtons>
 		</DisplayCard>
 	)
 }

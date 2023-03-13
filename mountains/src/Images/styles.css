@@ -1,9 +1,3 @@
-.angle-icon,
-.elevation-icon,
-.distance-icon {
-	margin-right: 20px;
-}
-
 .aspect-icon.north {
 	transform: rotate(-90deg);
 }

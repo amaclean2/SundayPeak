@@ -1,24 +1,35 @@
+import { RouterProvider } from 'react-router-dom'
 import React from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom/client'
 
-import App from './App'
+import { router } from 'Router'
 import reportWebVitals from './reportWebVitals'
+import {
+	AdventureStateProvider,
+	CardStateProvider,
+	MessagingStateProvider,
+	TokenStateProvider,
+	UserStateProvider
+} from 'Hooks/Providers'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { AdventureStateProvider, CardStateProvider, UserStateProvider } from 'Providers'
-import { TokenStateProvider } from 'Providers/tokensProvider'
 
-const ProvidersWrapper = () => (
+export const ProvidersWrapper = ({ children }) => (
 	<TokenStateProvider>
 		<CardStateProvider>
 			<UserStateProvider>
 				<AdventureStateProvider>
-					<App />
+					<MessagingStateProvider>{children}</MessagingStateProvider>
 				</AdventureStateProvider>
 			</UserStateProvider>
 		</CardStateProvider>
 	</TokenStateProvider>
 )
+
+ProvidersWrapper.propTypes = {
+	children: PropTypes.node
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
@@ -28,7 +39,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 // 	</React.StrictMode>
 // )
 
-root.render(<ProvidersWrapper />)
+root.render(<RouterProvider router={router} />)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

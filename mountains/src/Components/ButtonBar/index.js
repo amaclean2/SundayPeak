@@ -1,162 +1,87 @@
-import cx from 'classnames'
+import { Link } from 'react-router-dom'
 
-import { Skier, Profile } from '../../Images'
-import { CARD_TYPES, useCardStateContext, useUserStateContext } from '../../Providers'
-import { Button, FlexSpacer, MobileMenu } from '../Reusable'
+import { useUserStateContext } from 'Hooks/Providers'
+import { FlexSpacer } from 'Components/Reusable'
+import getContent from 'TextContent'
+import LogoInline from 'Images/Logos/LogoInline'
 
 import './styles.css'
-import LogoInline from '../../Images/Logos/LogoInline'
-import { Link } from 'react-router-dom'
-import MenuPanels from './MenuPanels'
-import getContent from '../../TextContent'
 
-const LoginButton = () => {
-	const { cardDispatch } = useCardStateContext()
-	const { screenType } = useCardStateContext()
+const LoginButton = () => (
+	<Link
+		id='login-button-adventures'
+		className={'secondary-button button flex-box'}
+		to={'/login'}
+	>
+		{getContent('buttonText.login')}
+	</Link>
+)
 
-	if (screenType.mobile) {
-		return (
-			<Button
-				className={'mobile-menu-button'}
-				onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.login })}
-			>
-				{getContent('buttonText.login')}
-			</Button>
-		)
-	}
+const SignUpButton = () => (
+	<Link
+		className={'secondary-button button flex-box'}
+		to={'/signup'}
+		id={'signup-button-adventures'}
+	>
+		{getContent('buttonText.signup')}
+	</Link>
+)
 
-	return (
-		<Button
-			id='login-button-adventures'
-			className={cx('button-bar-button', 'login-button')}
-			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.login })}
-		>
-			{getContent('buttonText.login')}
-		</Button>
-	)
-}
+const ChatButton = () => (
+	<Link
+		id={'open-conversations-mobile'}
+		className={'secondary-button button flex-box'}
+		to={'/conversations'}
+	>
+		Conversations
+	</Link>
+)
 
-const SignUpButton = () => {
-	const { cardDispatch } = useCardStateContext()
-	const { screenType } = useCardStateContext()
+const UserProfileButton = () => (
+	<Link
+		className='secondary-button button flex-box'
+		id='user-profile-button'
+		to={'/user'}
+	>
+		{getContent('buttonText.profile')}
+	</Link>
+)
 
-	if (screenType.mobile) {
-		return (
-			<Button
-				className={'mobile-menu-button'}
-				onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })}
-			>
-				{getContent('buttonText.signup')}
-			</Button>
-		)
-	}
-
-	return (
-		<Button
-			className={cx('button-bar-button', 'signup-button')}
-			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.signup })}
-			id={'signup-button-adventures'}
-		>
-			{getContent('buttonText.signup')}
-		</Button>
-	)
-}
-
-const UserProfileButton = () => {
-	const { cardDispatch, screenType } = useCardStateContext()
-	const { userDispatch, loggedInUser } = useUserStateContext()
-
-	const handleProfileButton = () => {
-		userDispatch({ type: 'workingUser', payload: loggedInUser })
-		cardDispatch({ type: 'openCard', payload: CARD_TYPES.profile })
-	}
-
-	if (screenType.mobile) {
-		return (
-			<Button
-				className={'mobile-menu-button'}
-				onClick={() => handleProfileButton()}
-			>
-				{getContent('buttonText.profile')}
-			</Button>
-		)
-	}
-
-	return (
-		<Button
-			className='button-bar-button'
-			id='user-profile-button'
-			onClick={() => handleProfileButton()}
-		>
-			<Profile />
-		</Button>
-	)
-}
-
-const ActivitiesButton = () => {
-	const { cardDispatch, screenType } = useCardStateContext()
-
-	if (screenType.mobile) {
-		return (
-			<Button
-				className={'mobile-menu-button'}
-				onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })}
-			>
-				{getContent('buttonText.adventures')}
-			</Button>
-		)
-	}
-
-	return (
-		<Button
-			className='button-bar-button'
-			id='activities-button-adventures'
-			onClick={() => cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })}
-		>
-			<Skier />
-		</Button>
-	)
-}
+const AdventuresButton = () => (
+	<Link
+		className='secondary-button button flex-box'
+		id='button-adventures'
+		to={'/adventure'}
+	>
+		{getContent('buttonText.adventures')}
+	</Link>
+)
 
 const ButtonBar = () => {
-	const { displayCardBoolState, screenType } = useCardStateContext()
-	const { isLoggedIn } = useUserStateContext()
-
-	if (isLoggedIn === undefined) {
-		return null
-	}
+	const { loggedInUser } = useUserStateContext()
+	const isLoggedIn = !!loggedInUser?.id
 
 	return (
 		<>
-			{!displayCardBoolState && (
-				<div className='button-bar flex-box'>
-					<div className='regular-buttons flex-box'>
-						{!isLoggedIn && <SignUpButton />}
-						{!isLoggedIn && <LoginButton />}
-						{isLoggedIn && <UserProfileButton />}
-						<ActivitiesButton />
-					</div>
-					<MobileMenu direction={'bottom'}>
-						{!isLoggedIn && <SignUpButton />}
-						{!isLoggedIn && <LoginButton />}
-						{isLoggedIn && <UserProfileButton />}
-						<ActivitiesButton />
-					</MobileMenu>
-					{!screenType.mobile && <FlexSpacer />}
-					<Link
-						id='home-redirect'
-						className={'secondary-button'}
-						to={'/about'}
-					>
-						<LogoInline
-							width={screenType.mobile ? 150 : 200}
-							color={'white'}
-						/>
-					</Link>
-					{screenType.mobile && <FlexSpacer />}
+			<div className='button-bar flex-box'>
+				<div className='regular-buttons flex-box'>
+					{!isLoggedIn && <SignUpButton />}
+					{!isLoggedIn && <LoginButton />}
+					<AdventuresButton />
+					{isLoggedIn && <UserProfileButton />}
+					{isLoggedIn && <ChatButton />}
 				</div>
-			)}
-			<MenuPanels />
+				<FlexSpacer />
+				<Link
+					id='home-redirect'
+					to={'/about'}
+				>
+					<LogoInline
+						width={200}
+						color={'white'}
+					/>
+				</Link>
+			</div>
 		</>
 	)
 }

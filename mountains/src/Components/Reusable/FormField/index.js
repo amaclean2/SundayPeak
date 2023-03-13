@@ -83,8 +83,6 @@ export const FormField = (props) => {
 		isEditable = false,
 		className = '',
 		hideLabel = false,
-		fullWidth = false,
-		block = false,
 		onChange
 	} = props
 
@@ -113,8 +111,7 @@ export const FormField = (props) => {
 			id={id || name}
 			className={cx(
 				'form-field-container',
-				fullWidth && 'wide',
-				block && 'block',
+				'full-width',
 				!isEditable && 'static',
 				type === 'noedit' && 'no-edit'
 			)}
@@ -123,7 +120,7 @@ export const FormField = (props) => {
 				<CheckboxField
 					className={className}
 					name={name}
-					value={[null, undefined].includes(value) ? '' : value}
+					value={[null, undefined].includes(value) ? false : value}
 					onChange={onChange}
 					label={label}
 				/>

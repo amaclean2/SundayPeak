@@ -1,5 +1,5 @@
-import { useCardStateContext, useUserPictures, useUserStateContext } from '../../../Providers'
-import getContent from '../../../TextContent'
+import { useCardStateContext, useUserPictures, useUserStateContext } from 'Providers'
+import getContent from 'TextContent'
 import './styles.css'
 
 export const PhotoGallery = () => {

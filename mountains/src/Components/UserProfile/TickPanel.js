@@ -1,42 +1,40 @@
 import cx from 'classnames'
-import {
-	CARD_TYPES,
-	useCardStateContext,
-	useGetAdventure,
-	useUserStateContext
-} from '../../Providers'
-import { FieldHeader, FlexSpacer } from '../Reusable'
+import { useNavigate } from 'react-router-dom'
 
-const Tick = ({ onClick, tick }) => (
+import { useGetAdventure } from 'Hooks'
+import { useUserStateContext } from 'Hooks/Providers'
+import { FieldHeader } from 'Components/Reusable'
+
+const TodoAdventure = ({ onClick, tick }) => (
 	<li
 		onClick={onClick}
 		className='tick drop-list-item flex-box'
 	>
-		{tick.adventure_name}
+		<span className={'main-text'}>{tick.adventure_name}</span>
 		<span className='drop-list-subtext'>{tick.adventure_type}</span>
 	</li>
 )
 
-const UserTickPanel = ({ className }) => {
+const UserTodoPanel = ({ className }) => {
 	const { workingUser } = useUserStateContext()
-	const { cardDispatch } = useCardStateContext()
 	const { getAdventure } = useGetAdventure()
+	const navigate = useNavigate()
 
-	const openAdventure = (adventureId) => {
-		return getAdventure({ id: adventureId }).then(() => {
-			cardDispatch({ type: 'switchCard', payload: CARD_TYPES.adventures })
-		})
+	const openAdventure = (adventureId, adventureType) => {
+		return getAdventure({ id: adventureId, type: adventureType }).then(() =>
+			navigate(`/adventure/${adventureType}/${adventureId}`)
+		)
 	}
 
 	return (
 		<div className={cx(className, 'tick-list-container flex-box')}>
-			<FieldHeader className='label-field'>Hit List</FieldHeader>
+			<FieldHeader className='label-field'>Todo List</FieldHeader>
 			<ul className='tick-list flex-box'>
-				{workingUser.ticks?.map((tick, key) => (
-					<Tick
-						onClick={() => openAdventure(tick.adventure_id)}
-						tick={tick}
-						key={`user_tick_${key}`}
+				{workingUser.todo_adventures?.map((adventure, key) => (
+					<TodoAdventure
+						onClick={() => openAdventure(adventure.adventure_id, adventure.adventure_type)}
+						tick={adventure}
+						key={`user_todo_adventure_${key}`}
 					/>
 				))}
 			</ul>
@@ -44,4 +42,4 @@ const UserTickPanel = ({ className }) => {
 	)
 }
 
-export default UserTickPanel
+export default UserTodoPanel

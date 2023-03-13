@@ -1,18 +1,17 @@
 .display-card {
 	margin: 10px;
 	min-width: 28rem;
-	border-radius: 1rem;
-	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-	display: none;
+	border-radius: 0.5rem;
+	box-shadow: 0 5px 10px var(--box-shadow-opacity);
 	flex-direction: column;
 	overflow: hidden;
 	transition: opacity 0.3s ease-in-out;
 	pointer-events: auto;
-	opacity: 0;
 	position: relative;
+	background-color: var(--main-light);
 }
 
-.display-card-container {
+.display-card-container.flex-box {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -22,10 +21,8 @@
 	pointer-events: none;
 }
 
-.display-card-container.opening .display-card,
-.display-card-container.open .display-card,
-.display-card-container.closing .display-card {
-	display: inline-flex;
+.display-card-container.left {
+	justify-content: flex-start;
 }
 
 .display-card-container.open .display-card {
@@ -45,6 +42,16 @@
 	background-color: #ffffff22;
 	background: var(--header-gradient-light);
 	z-index: 2;
+	color: var(--main-light);
+	font-size: 1.3rem;
+	font-weight: 500;
+	padding-left: 1rem;
+}
+
+.display-card-header-contents {
+	margin: 0;
+	font-weight: inherit;
+	font-size: inherit;
 }
 
 .display-header-spacer {
@@ -75,34 +82,16 @@
 	background-color: #eee2;
 }
 
-.display-content {
+.display-content.flex-box {
 	flex: 1;
-	overflow: hidden;
+	overflow: auto;
 	transition: all 0.3s ease-in-out;
 	flex-direction: column;
-	max-height: 96vh;
-}
-
-.action-buttons.flex-box {
-	padding: 10px;
-	align-items: center;
-	justify-content: flex-end;
-	flex-direction: column;
-	width: 100%;
-	background-color: var(--main-light);
-	box-shadow: 0 0 50px 30px var(--main-light);
-}
-
-.action-buttons .button {
-	display: inline-flex;
-	width: 25rem;
-	justify-content: center;
-}
-
-.action-buttons.cta-buttons {
-	flex-direction: column;
-	align-items: flex-start;
-	padding-top: 5px;
+	max-height: 89vh;
+	padding: 0.8rem;
+	align-items: stretch;
+	justify-content: flex-start;
+	gap: 1.2rem;
 }
 
 .profile-content {
@@ -129,45 +118,59 @@ h3.label-field {
 	padding: 0 0.8em 0 0;
 }
 
-.profile-header {
-	background: var(--header-gradient);
-	color: var(--main-off-white);
+.action-buttons.flex-box {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.tick-list {
 	width: 100%;
-	min-height: 5rem;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
 }
 
-.profile-header.header-locked {
-	position: sticky;
-	top: 0;
-	z-index: 1;
+.tick-list.flex-box {
+	flex-direction: column;
+	font-size: 1rem;
+	align-items: flex-start;
 }
 
-.profile-header.slim {
-	min-height: 3.5rem;
+.tick-list-header {
+	margin: 0;
+	font-weight: 600;
+	font-size: 1rem;
 }
 
-.profile-header .field.flex-box {
-	flex-direction: row;
-	align-items: center;
+.tick.flex-box {
+	padding: 0.8rem;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	width: 100%;
+	border-bottom: 1px solid var(--border-color);
+	border-left: none;
+	justify-content: space-between;
 }
 
-.profile-header.center .field {
-	justify-content: center;
+.main-text {
+	max-width: 12rem;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.tick.multi-field-tick {
+	justify-content: space-between;
+	padding: 1rem 0;
+}
+
+.tick:hover {
+	background-color: var(--main-off-white);
 }
 
 @media screen and (max-width: 500px) {
-	.display-content {
-		max-height: 100vh;
-		position: relative;
-		overflow-y: scroll;
-		margin-bottom: 6rem;
-		overscroll-behavior: none;
-	}
-
-	.field-header.page-header.flex-box {
-		font-size: 1.4rem;
-	}
-
 	.display-card-container .display-card {
 		height: 100vh;
 		min-width: 100vw;
@@ -178,26 +181,5 @@ h3.label-field {
 
 	.profile-content {
 		height: 100%;
-	}
-
-	.action-buttons.flex-box {
-		flex-direction: column;
-		align-items: stretch;
-		border-top: 1px solid var(--border-color);
-		box-shadow: none;
-		gap: 0.5rem;
-	}
-
-	.action-buttons .button {
-		width: 100%;
-		margin: 0;
-		justify-content: center;
-		background-color: transparent;
-		color: var(--primary-accent-color);
-	}
-
-	.action-buttons .cta-button {
-		background-color: var(--primary-accent-color);
-		color: var(--main-off-white);
 	}
 }

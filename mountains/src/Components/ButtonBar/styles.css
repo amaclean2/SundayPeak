@@ -1,23 +1,10 @@
-.button-bar-button {
-	width: 3.2rem;
-	height: 3.2rem;
-	background-color: var(--main-light);
-	border-radius: 0.7rem;
-	border: none;
-	outline: none;
-	box-shadow: 0 5px 10px var(--box-shadow-opacity);
-	transition: all 0.2s ease-in-out;
-	cursor: pointer;
-	margin: 0;
-	padding: 0;
-}
-
 .button-bar .regular-buttons {
-	gap: 0.8rem;
+	gap: 0.5rem;
 }
 
 .button-bar-button:hover {
 	background-color: var(--main-off-white);
+	color: var(--main-dark);
 }
 
 .button-bar {
@@ -31,33 +18,9 @@
 	align-items: center;
 }
 
-.signup-button,
-.login-button {
-	width: auto;
-	border-radius: 15px;
-	height: 2rem;
-	padding: 0 1.5rem;
-	background-color: var(--primary-accent-color);
-	font-size: 1rem;
-	color: var(--main-off-white);
-}
-
-.signup-button:hover {
-	background-color: var(--primary-accent-color-opacity);
-}
-
-.login-button {
-	background-color: var(--main-light);
-	color: var(--main-dark);
-}
-
 @media screen and (max-width: 500px) {
 	.button-bar {
 		padding: 1rem;
 		padding-bottom: 0.5rem;
-	}
-
-	.button-bar .regular-buttons {
-		display: none;
 	}
 }
