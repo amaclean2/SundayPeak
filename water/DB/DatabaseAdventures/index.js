@@ -105,7 +105,12 @@ class AdventureDataLayer extends DataLayer {
           )
           return this.sendQuery(createNewGeneralStatements[type], [
             generalProperties[type]
-          ])
+          ]).then(([{ insertId: adventureId }]) => {
+            return parsedAdventures[type].map((adventure, idx) => ({
+              ...adventure,
+              id: adventureId + idx
+            }))
+          })
         })
       })
     )

@@ -2,6 +2,7 @@ const Water = require('.')
 const SearchService = require('./search.service')
 const { Cache } = require('memory-cache')
 const { updateAdventureCache } = require('./utils/caching')
+const logger = require('../Config/logger')
 
 const CACHE_TIMEOUT = 1000 * 360
 
@@ -130,8 +131,23 @@ class AdventureService extends Water {
     return this.adventureDB
       .bulkAddAdventures({ adventures })
       .then((response) => {
+        const allAdventures = response.reduce(
+          (adventureList, adventureType) => [
+            ...adventureList,
+            ...adventureType
+          ],
+          []
+        )
+
+        for (const adventure in allAdventures) {
+          this.search.saveAdventureKeywords({
+            searchableFields: allAdventures[adventure],
+            id: allAdventures[adventure].id
+          })
+        }
+
         this.adventureCache.clear()
-        return response
+        return allAdventures
       })
   }
 
@@ -237,26 +253,50 @@ class AdventureService extends Water {
   processCSVToAdventure({ csvString }) {
     if (!csvString.length) throw 'There was no data to process'
 
-    const data = csvString.split('\n')
+    const data = csvString.split('\r\n')
     if (data.length < 2) throw 'The data was formatted incorrectly'
 
     const [keys, ...values] = data
-    const strippedKeys = keys.replace(/"/g, '').split(',')
+    const strippedKeys = keys.replace(/["|\r]/g, '').split(',')
 
     const newData = values.map((value) => {
-      const strippedValue = value.split('","')
+      value = value.replace(/(".*?")|,/g, (...m) => m[1] || '|')
+      const strippedValue = value.split('|')
+
       const assembledObject = strippedValue.reduce(
         (object, value, idx) => ({ ...object, [strippedKeys[idx]]: value }),
         {}
       )
-      assembledObject.id = Number(assembledObject.id.replace('"', ''))
-      assembledObject['coordinates.lat'] = Number(
+      if (assembledObject.id) {
+        assembledObject.id = Number(assembledObject.id.replace('"', ''))
+      }
+
+      assembledObject['coordinates_lat'] = Number(
         assembledObject['coordinates.lat'].replace('"', '')
       )
-      assembledObject['coordinates.lng'] = Number(
+      assembledObject['coordinates_lng'] = Number(
         assembledObject['coordinates.lng'].replace('"', '')
       )
+      assembledObject.public = [true, 'true', 'TRUE'].includes(
+        assembledObject.public
+      )
+        ? 1
+        : 0
       assembledObject.creator_id = Number(assembledObject.creator_id)
+
+      if (
+        assembledObject.adventure_type === 'ski' &&
+        assembledObject.gear &&
+        assembledObject.season
+      ) {
+        assembledObject.gear = assembledObject.gear.replaceAll('"', '')
+        assembledObject.season = assembledObject.season.replaceAll('"', '')
+      }
+
+      assembledObject.nearest_city = assembledObject.nearest_city.replaceAll(
+        '"',
+        ''
+      )
       return assembledObject
     })
 

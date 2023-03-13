@@ -244,9 +244,14 @@ describe('adventure service layer testing', () => {
         }
       ]
 
-      await serviceHandler.adventureService.bulkAdventureCreation({
-        adventures
-      })
+      const bulkInsertResponse =
+        await serviceHandler.adventureService.bulkAdventureCreation({
+          adventures
+        })
+
+      expect(bulkInsertResponse.length).toBe(4)
+      expect(bulkInsertResponse[0].id).toBeDefined()
+      expect(bulkInsertResponse[0].adventure_type).toBeDefined()
 
       const adventureList =
         await serviceHandler.adventureService.getAdventureList({
