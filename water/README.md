@@ -4,6 +4,7 @@ This library doesn't really need to be public facing. If you come across it, you
 
 ## If you still care, here's how this works
 
+- To initialize, there's a class called SundayService. Create an instance of this and initialize with your sql parameters and a jwt secret, then you're good to go
 - There's a layer called `services` that handles all the formatting and grouping requests into a cohesive request/response
 - `Services` has a few classes that handles the majority of the traffic coming to the backend
 - Those send requests to the database layer: `DB/.` to store or retrieve the information from the database
