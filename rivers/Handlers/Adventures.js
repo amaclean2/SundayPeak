@@ -1,8 +1,57 @@
 const { validationResult } = require('express-validator')
+const logger = require('../Config/logger')
 
 const serviceHandler = require('../Config/services')
 const { returnError, sendResponse } = require('../ResponseHandling')
 const { SUCCESS, NO_CONTENT, CREATED } = require('../ResponseHandling/statuses')
+
+const createNewAdventure = async (req, res) => {
+  try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      throw returnError({ req, res, error: errors.array()[0] })
+    }
+
+    const { adventure, adventureList } =
+      await serviceHandler.adventureService.createAdventure({
+        adventureObject: req.body
+      })
+
+    return sendResponse({
+      req,
+      res,
+      data: { adventure, all_adventures: adventureList },
+      status: CREATED
+    })
+  } catch (error) {
+    return returnError({ req, res, message: 'serverCreateAdventure', error })
+  }
+}
+
+const importBulkData = async (req, res) => {
+  try {
+    const { adventures } = req.body
+
+    if (!adventures)
+      throw 'an object with the key "adventures" needs to be provided'
+
+    await serviceHandler.adventureService.bulkAdventureCreation({ adventures })
+
+    return sendResponse({
+      req,
+      res,
+      data: { message: 'data imported successfully' },
+      status: CREATED
+    })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'The import of your data failed. Hope something here can help',
+      error
+    })
+  }
+}
 
 const getAllAdventures = async (req, res) => {
   try {
@@ -58,6 +107,8 @@ const getAdventureDetails = async (req, res) => {
       throw returnError({ req, res, message: 'adventureIdFieldRequired' })
     }
 
+    logger.info({ id, type })
+
     const adventure =
       await serviceHandler.adventureService.getSpecificAdventure({
         adventureId: id,
@@ -75,29 +126,6 @@ const getAdventureDetails = async (req, res) => {
   }
 }
 
-const createNewAdventure = async (req, res) => {
-  try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      throw returnError({ req, res, error: errors.array()[0] })
-    }
-
-    const { adventure, adventureList } =
-      await serviceHandler.adventureService.createAdventure({
-        adventureObject: req.body
-      })
-
-    return sendResponse({
-      req,
-      res,
-      data: { adventure, all_adventures: adventureList },
-      status: CREATED
-    })
-  } catch (error) {
-    return returnError({ req, res, message: 'serverCreateAdventure', error })
-  }
-}
-
 const editAdventure = async (req, res) => {
   try {
     const errors = validationResult(req)
@@ -110,6 +138,28 @@ const editAdventure = async (req, res) => {
     return sendResponse({ req, res, data: {}, status: NO_CONTENT })
   } catch (error) {
     return returnError({ req, res, message: 'serverValidateUser', error })
+  }
+}
+
+const processCSV = async (req, res) => {
+  try {
+    const { csvString } = req.body
+    const jsonAdventureObject =
+      await serviceHandler.adventureService.processCSVToAdventure({ csvString })
+
+    return sendResponse({
+      req,
+      res,
+      data: { adventures: jsonAdventureObject },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({
+      req,
+      res,
+      message: 'could not process this data',
+      error
+    })
   }
 }
 
@@ -131,7 +181,9 @@ const deleteAdventure = async (req, res) => {
 module.exports = {
   getAllAdventures,
   searchAdventures,
+  processCSV,
   getAdventureDetails,
+  importBulkData,
   createNewAdventure,
   editAdventure,
   deleteAdventure

@@ -9,6 +9,7 @@ const {
 const { sendResponse } = require('../ResponseHandling/success')
 
 const serviceHandler = require('../Config/services')
+const logger = require('../Config/logger')
 
 const createUser = async (req, res) => {
   try {
@@ -50,7 +51,16 @@ const loginUser = async (req, res) => {
 
     return sendResponse({ req, res, data: loginUserResponse, status: SUCCESS })
   } catch (error) {
-    returnError({ req, res, message: 'serverLoginUser', error })
+    if (error === 'passwordNotFound') {
+      return returnError({
+        req,
+        res,
+        message:
+          'There was no account found with the email and password you provided. Please try again or create a new account.',
+        error
+      })
+    }
+    return returnError({ req, res, message: 'serverLoginUser', error })
   }
 }
 

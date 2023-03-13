@@ -57,7 +57,7 @@ const errorTexts = {
     status: NOT_ACCEPTABLE
   },
   passwordOutOfRange: {
-    messageText: 'Password length must be between 5 and 50 characters.',
+    messageText: 'Passwords must be between 5 and 50 characters.',
     status: NOT_ACCEPTABLE
   },
   nonMatchingPasswords: {

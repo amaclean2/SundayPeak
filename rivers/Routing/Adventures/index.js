@@ -11,7 +11,9 @@ const {
   getAdventureDetails,
   getAllAdventures,
   editAdventure,
-  searchAdventures
+  searchAdventures,
+  importBulkData,
+  processCSV
 } = require('../../Handlers/Adventures')
 const { NOT_FOUND } = require('../../ResponseHandling/statuses')
 
@@ -20,7 +22,9 @@ const router = Router()
 router.get('/details', getAdventureDetails)
 router.get('/search', searchAdventures)
 router.get('/all', adventuresGetValidator(), getAllAdventures)
+router.post('/processCsv', processCSV)
 router.post('/create', adventureCreateValidator(), createNewAdventure)
+router.post('/bulkImport', importBulkData)
 router.put('/edit', adventureEditValidator(), editAdventure)
 router.delete('/delete', deleteAdventure)
 
