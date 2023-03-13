@@ -4,6 +4,7 @@ mountains/package-lock.json
 mountains/build
 mountains/src/.DS_Store
 mountinas/.DS_Store
+mountains/ui-debug.log
 
 rivers/node_modules
 rivers/package-lock.json
@@ -11,10 +12,18 @@ rivers/app.yaml
 rivers/.env.dev
 rivers/google-cloud-key.json
 rivers/.DS_Store
+rivers/coverage
 
 water/.env.dev
+water/.env.test
 water/node_modules
 water/coverage
+water/package-lock.json
+
+couloirs/node_modules
+couloirs/coverage
+couloirs/.env.dev
+couloirs/package-lock.json
 
 .DS_Store
 .dispatch.yaml.swp
