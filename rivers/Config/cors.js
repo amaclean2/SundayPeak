@@ -3,6 +3,7 @@ const errorTexts = require('../ResponseHandling/ResponseText/errors')
 const allowedOrigins = [
   'http://localhost:5000',
   'http://localhost:3000',
+  'http://localhost:19000',
   'http://sundaypeak.local:3000',
   'https://sundaypeak.com',
   'http://sundaypeak.com'

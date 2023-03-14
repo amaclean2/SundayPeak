@@ -25,5 +25,9 @@ couloirs/coverage
 couloirs/.env.dev
 couloirs/package-lock.json
 
+cliffs/node_modules
+cliffs/package-lock.json
+cliffs/ios
+
 .DS_Store
 .dispatch.yaml.swp
