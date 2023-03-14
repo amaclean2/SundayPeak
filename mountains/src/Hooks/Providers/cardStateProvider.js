@@ -27,7 +27,6 @@ export const CARD_TYPES = {
 export const CardStateProvider = ({ children }) => {
 	const initialCardState = {
 		displayCardBoolState: true,
-		workingCard: '',
 		viewingImage: null,
 		showAlert: false,
 		alertContent: '',
@@ -36,16 +35,6 @@ export const CardStateProvider = ({ children }) => {
 
 	const cardReducer = (state, action) => {
 		switch (action.type) {
-			case 'openCard':
-				return {
-					...state,
-					workingCard: action.payload,
-					displayCardBoolState: true
-				}
-			case 'switchCard':
-				return { ...state, workingCard: action.payload, displayCardBoolState: true }
-			case 'closeCard':
-				return { ...state, workingCard: '', displayCardBoolState: false }
 			case 'closeCardMessage':
 				return {
 					...state,
@@ -54,8 +43,6 @@ export const CardStateProvider = ({ children }) => {
 					showAlert: true,
 					alertContent: action.payload
 				}
-			case 'workingCard':
-				return { ...state, workingCard: action.payload }
 			case 'viewingImage':
 				return { ...state, viewingImage: action.payload }
 			case 'openAlert':
