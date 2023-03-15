@@ -29,5 +29,10 @@ cliffs/node_modules
 cliffs/package-lock.json
 cliffs/ios
 
+treewells/node_modules
+treewells/coverage
+treewells/dist
+treewells/package-lock.json
+
 .DS_Store
 .dispatch.yaml.swp
