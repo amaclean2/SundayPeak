@@ -25,7 +25,7 @@ export const LoginFlow = () => {
 	}
 
 	useEffect(() => {
-		if (loggedInUser) {
+		if (loggedInUser?.id) {
 			navigate('/discover')
 		}
 	}, [])

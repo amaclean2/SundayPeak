@@ -23,7 +23,7 @@ export const SignupFlow = () => {
 	}
 
 	useEffect(() => {
-		if (loggedInUser) {
+		if (loggedInUser?.id) {
 			navigate('/discover')
 		}
 	}, [])
