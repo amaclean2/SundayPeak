@@ -1,6 +1,6 @@
 {
 	"name": "sundaypeak-treewells",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "A react hooks library for SundayPeak",
 	"main": "dist/cjs/index.js",
 	"repository": {
