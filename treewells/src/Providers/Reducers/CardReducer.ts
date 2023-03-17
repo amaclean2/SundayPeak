@@ -1,0 +1,28 @@
+import { CardAction, CardState } from '../../Types/Cards'
+import { getScreenType } from '../../utils'
+
+export const initialCardState: CardState = {
+	galleryImage: null,
+	showAlert: false,
+	alertContent: '',
+	screenType: getScreenType()
+}
+
+export const cardReducer = (state: CardState, action: CardAction) => {
+	switch (action.type) {
+		case 'closeCardMessage':
+			return {
+				...state,
+				showAlert: true,
+				alertContent: action.payload
+			}
+		case 'setGalleryImage':
+			return { ...state, galleryImage: action.payload }
+		case 'openAlert':
+			return { ...state, showAlert: true, alertContent: action.payload }
+		case 'closeAlert':
+			return { ...state, showAlert: false }
+		default:
+			return state
+	}
+}
