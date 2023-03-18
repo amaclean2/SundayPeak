@@ -96,7 +96,7 @@ type SetAllAdventuresType = {
 }
 
 type SetNewAdventureView = {
-	type: 'setNewAdventure'
+	type: 'addNewAdventure'
 	payload: {
 		adventures: AdventureList
 		currentAdventure: AdventureType
@@ -118,11 +118,14 @@ type CloseAdventureView = {
 
 type EditAdventure = {
 	type: 'editAdventure'
-	payload: AdventureType
+	payload: {
+		name: string
+		value: string
+	}
 }
 
 type ChangeAdventureEditState = {
-	type: 'changeIsAdventureEditable'
+	type: 'switchIsAdventureEditable'
 }
 
 type SetAdventureError = {
@@ -131,7 +134,7 @@ type SetAdventureError = {
 }
 
 type SetDeletePageState = {
-	type: 'setDeletePageOpen'
+	type: 'switchIsDeletePageOpen'
 }
 
 type DeleteAdventure = {
@@ -139,7 +142,12 @@ type DeleteAdventure = {
 }
 
 type AdventureTypeView = {
-	type: 'setAdventureTypeView'
+	type: 'setGlobalAdventureType'
+	payload: AdventureChoiceType
+}
+
+type NewAdventureProcess = {
+	type: 'startNewAdventureProcess'
 	payload: AdventureChoiceType
 }
 
@@ -155,6 +163,7 @@ export type AdventureAction =
 	| SetDeletePageState
 	| DeleteAdventure
 	| AdventureTypeView
+	| NewAdventureProcess
 
 export type AdventureState = {
 	allAdventures: AdventureList | null
@@ -167,8 +176,8 @@ export type AdventureState = {
 		longitude: number
 		zoom: number
 	}
-	deletePageOpen: boolean
-	adventureTypeViewer: AdventureChoiceType
+	isDeletePageOpen: boolean
+	globalAdventureType: AdventureChoiceType
 }
 
 export type AdventureContext = AdventureState & { adventureDispatch: Dispatch<AdventureAction> }

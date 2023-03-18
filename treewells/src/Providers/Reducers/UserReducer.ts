@@ -43,10 +43,14 @@ export const userReducer = (state: UserState, action: UserAction): UserState => 
 			localStorage.clear()
 			return { ...state, loggedInUser: {} as UserType }
 		case 'setFormFields':
-			return { ...state, formFields: action.payload, loginError: null }
+			return {
+				...state,
+				formFields: { ...state.formFields, [action.payload.name]: action.payload.value },
+				loginError: null
+			}
 		case 'clearForm':
 			return { ...state, loginError: null, formFields: {} }
-		case 'changeIsUserEditable':
+		case 'switchIsUserEditable':
 			return { ...state, userEditState: !state.userEditState }
 		case 'changeStatState':
 			return { ...state, statState: action.payload }

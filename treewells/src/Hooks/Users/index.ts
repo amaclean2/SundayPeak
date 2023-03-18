@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react'
 
 import { useUserStateContext } from '../../Providers/UserStateProvider'
+import { UserStatType } from '../../Types/User'
 import { fetcher, useDebounce } from '../../utils'
 import { users } from '../Apis'
 import { useHandleUserResponses } from './handleResponses'
@@ -33,7 +34,8 @@ export const useCreateUser = () => {
 				})
 					.then(({ data }) => handleCreateUserResponse(data))
 					.catch(({ error }) => {
-						userDispatch({ type: 'setLoginError', payload: error.message })
+						console.log('error', error)
+						userDispatch({ type: 'setLoginError', payload: error.message || error.code_error })
 
 						return error
 					})
@@ -89,7 +91,7 @@ export const useCreateUser = () => {
 }
 
 export const useGetUser = () => {
-	const { userDispatch, formFields } = useUserStateContext()
+	const { userDispatch, formFields, loggedInUser } = useUserStateContext()
 	const { handleLoginUserResponse } = useHandleUserResponses()
 
 	// fetch a user's information that isn't the logged in user
@@ -137,11 +139,26 @@ export const useGetUser = () => {
 		}
 	}
 
+	const setLoginError = (loginError: string) => {
+		return userDispatch({ type: 'setLoginError', payload: loginError })
+	}
+
+	const setWorkingUserToCurrentUser = () => {
+		return userDispatch({ type: 'setWorkingUser', payload: loggedInUser })
+	}
+
+	const logoutUser = () => {
+		return userDispatch({ type: 'logout' })
+	}
+
 	return {
 		getNonLoggedInUser,
 		loginUser,
+		setLoginError,
 		searchForUsers,
-		searchForFriends
+		searchForFriends,
+		setWorkingUserToCurrentUser,
+		logoutUser
 	}
 }
 
@@ -163,8 +180,23 @@ export const useEditUser = () => {
 		return handleEditRequest({ name: event.target.name, value: event.target.value })
 	}
 
+	const changeUserStatState = (newUserStatState: UserStatType) => {
+		return userDispatch({ type: 'changeStatState', payload: newUserStatState })
+	}
+
+	const editFormFields = (field: { name: string; value: string | number }) => {
+		return userDispatch({ type: 'setFormFields', payload: field })
+	}
+
+	const toggleUserEditState = () => {
+		return userDispatch({ type: 'switchIsUserEditable' })
+	}
+
 	return {
-		editUser
+		editUser,
+		editFormFields,
+		changeUserStatState,
+		toggleUserEditState
 	}
 }
 

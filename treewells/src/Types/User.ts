@@ -22,6 +22,8 @@ type FriendType = {
 	id: number
 }
 
+export type UserStatType = 'friends' | 'completed'
+
 export type UserType = {
 	bio?: string
 	city?: string
@@ -67,7 +69,7 @@ type FormFieldsType = {
 	type: 'setFormFields'
 	payload: {
 		name: string
-		value: string
+		value: string | number
 	}
 }
 
@@ -76,12 +78,12 @@ type ClearFormType = {
 }
 
 type IsUserEditableType = {
-	type: 'changeIsUserEditable'
+	type: 'switchIsUserEditable'
 }
 
 type ChangeStatType = {
 	type: 'changeStatState'
-	payload: 'friends' | 'completed'
+	payload: UserStatType
 }
 
 export type UserAction =

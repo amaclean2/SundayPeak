@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode, useContext, useEffect, useReducer } from 'react'
+import { users } from '../Hooks/Apis'
 import { UserContext } from '../Types/User'
 import { fetcher } from '../utils'
 import { initialUserState, userReducer } from './Reducers/UserReducer'
@@ -20,7 +21,7 @@ export const UserStateProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		if (localStorage.getItem('token')) {
-			fetcher('users/loggedIn')
+			fetcher(users.getLoggedIn.url, { method: users.getLoggedIn.method })
 				.then(({ data }) => {
 					if (data.user) {
 						userDispatch({ type: 'setLoggedInUser', payload: data.user })

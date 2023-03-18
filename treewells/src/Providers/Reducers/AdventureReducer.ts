@@ -1,4 +1,9 @@
-import { AdventureAction, AdventureChoiceType, AdventureState } from '../../Types/Adventures'
+import {
+	AdventureAction,
+	AdventureChoiceType,
+	AdventureState,
+	AdventureType
+} from '../../Types/Adventures'
 
 const getStartPos = () => {
 	const stringifiedStartPos = localStorage.getItem('startPos')
@@ -18,8 +23,8 @@ export const initialAdventureState = {
 	adventureEditState: false,
 	adventureError: null,
 	startPosition: getStartPos(),
-	deletePageOpen: false,
-	adventureTypeViewer: (localStorage.getItem('adventureTypeViewer') as AdventureChoiceType) || 'ski'
+	isDeletePageOpen: false,
+	globalAdventureType: (localStorage.getItem('globalAdventureType') as AdventureChoiceType) || 'ski'
 }
 
 export const adventureReducer = (state: AdventureState, action: AdventureAction) => {
@@ -29,7 +34,7 @@ export const adventureReducer = (state: AdventureState, action: AdventureAction)
 				...state,
 				allAdventures: action.payload.adventures
 			}
-		case 'setNewAdventure':
+		case 'addNewAdventure':
 			return {
 				...state,
 				allAdventures: action.payload.adventures,
@@ -52,19 +57,29 @@ export const adventureReducer = (state: AdventureState, action: AdventureAction)
 		case 'editAdventure':
 			return {
 				...state,
-				currentAdventure: action.payload
+				currentAdventure: {
+					...(state.currentAdventure as AdventureType),
+					[action.payload.name]: action.payload.value
+				}
 			}
-		case 'changeIsAdventureEditable':
+		case 'startNewAdventureProcess':
+			localStorage.setItem('globalAdventureType', action.payload)
+			return {
+				...state,
+				globalAdventureType: action.payload,
+				adventureAddState: true
+			}
+		case 'switchIsAdventureEditable':
 			return { ...state, adventureEditState: !state.adventureEditState }
 		case 'setAdventureError':
 			return { ...state, adventureError: action.payload }
-		case 'setDeletePageOpen':
-			return { ...state, deletePageOpen: !state.deletePageOpen }
+		case 'switchIsDeletePageOpen':
+			return { ...state, isDeletePageOpen: !state.isDeletePageOpen }
 		case 'deleteAdventure':
-			return { ...state, deletePageOpen: !state.deletePageOpen, currentAdventure: null }
-		case 'setAdventureTypeView':
-			localStorage.setItem('adventureTypeViewer', action.payload)
-			return { ...state, adventureTypeViewer: action.payload }
+			return { ...state, isDeletePageOpen: !state.isDeletePageOpen, currentAdventure: null }
+		case 'setGlobalAdventureType':
+			localStorage.setItem('globalAdventureType', action.payload)
+			return { ...state, globalAdventureType: action.payload }
 		default:
 			return state
 	}

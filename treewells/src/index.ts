@@ -14,4 +14,6 @@ export { useSaveCompletedAdventure } from './Hooks/Adventures/CompletedAdventure
 export { useSaveTodo } from './Hooks/Adventures/TodoAdventures'
 export { useCreateUser, useGetUser, useEditUser, useFollowUser } from './Hooks/Users'
 export { useMessages } from './Hooks/Users/Messages'
+export { useManipulateFlows } from './Hooks/App'
 export { SundayPeakServerUrls } from './config'
+export { useDebounce } from './utils'

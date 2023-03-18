@@ -26,7 +26,7 @@ export const AdventureStateProvider = ({ children }: { children: ReactNode }) =>
 	}, [adventureState?.startPosition])
 
 	useEffect(() => {
-		fetcher(`${adventures.getAllAdventures.url}?type=${adventureState.adventureTypeViewer}`, {
+		fetcher(`${adventures.getAllAdventures.url}?type=${adventureState.globalAdventureType}`, {
 			method: adventures.getAllAdventures.method
 		})
 			.then(({ data: { adventures } }) => {

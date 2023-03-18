@@ -1,11 +1,12 @@
 import { useAdventureStateContext } from '../../Providers/AdventureStateProvider'
+import { useCardStateContext } from '../../Providers/CardStateProvider'
 import { AdventureChoiceType, AdventureType } from '../../Types/Adventures'
 import { fetcher, useDebounce } from '../../utils'
 import { adventures } from '../Apis'
 import { EventChoiceTypes } from '../Users'
 
 export const useGetAdventures = () => {
-	const { adventureDispatch, adventureTypeViewer } = useAdventureStateContext()
+	const { adventureDispatch, globalAdventureType } = useAdventureStateContext()
 
 	const getAdventure = async ({ id, type }: { id: number; type: AdventureChoiceType }) => {
 		if (!id || !type) throw new Error('id and type fields are required')
@@ -32,45 +33,12 @@ export const useGetAdventures = () => {
 	// }
 
 	const changeAdventureType = ({ type }: { type: AdventureChoiceType }) => {
-		adventureDispatch({ type: 'setAdventureTypeView', payload: type })
+		adventureDispatch({ type: 'startNewAdventureProcess', payload: type })
 		getAllAdventures({ type })
 	}
 
-	const createNewDefaultAdventure = ({
-		longitude,
-		latitude
-	}: {
-		longitude: number
-		latitude: number
-	}) => {
-		const newDefaultAdventure = {
-			adventure_name: 'New Adventure',
-			adventure_type: adventureTypeViewer,
-			public: true,
-			nearest_city: 'New City',
-			coordinates: {
-				lng: longitude,
-				lat: latitude
-			}
-		}
-
-		return fetcher(adventures.create.url, {
-			method: adventures.create.method,
-			body: newDefaultAdventure
-		})
-			.then(({ data }) => data)
-			.catch(console.error)
-	}
-
-	const insertBulkAdventures = ({ adventuresObject }: { adventuresObject: AdventureType[] }) => {
-		return fetcher(adventures.builkImport.url, {
-			method: adventures.builkImport.method,
-			body: { adventures: adventuresObject }
-		}).catch(console.error)
-	}
-
 	const getAllAdventures = ({ type }: { type: AdventureChoiceType }) => {
-		return fetcher(`${adventures.getAllAdventures.url}?type=${type || adventureTypeViewer}`, {
+		return fetcher(`${adventures.getAllAdventures.url}?type=${type || globalAdventureType}`, {
 			method: adventures.getAllAdventures.method
 		})
 			.then(({ data: { adventures } }) => {
@@ -102,14 +70,12 @@ export const useGetAdventures = () => {
 		getAllAdventures,
 		searchAdventures,
 		changeAdventureType,
-		createNewDefaultAdventure,
-		processCsvAdventures,
-		insertBulkAdventures
+		processCsvAdventures
 	}
 }
 
 export const useSaveAdventure = () => {
-	const { adventureDispatch, currentAdventure } = useAdventureStateContext()
+	const { adventureDispatch, currentAdventure, globalAdventureType } = useAdventureStateContext()
 
 	const saveEditAdventure = useDebounce(({ name, value }) => {
 		return fetcher(adventures.editAdventure.url, {
@@ -128,40 +94,99 @@ export const useSaveAdventure = () => {
 	const editAdventure = (event: EventChoiceTypes) => {
 		adventureDispatch({
 			type: 'editAdventure',
-			payload: { ...(currentAdventure as AdventureType), [event.target.name]: event.target.value }
+			payload: {
+				name: event.target.name,
+				value: event.target.value
+			}
 		})
 		return saveEditAdventure({ name: event.target.name, value: event.target.value })
 	}
 
+	const createNewDefaultAdventure = ({
+		longitude,
+		latitude
+	}: {
+		longitude: number
+		latitude: number
+	}) => {
+		const newDefaultAdventure = {
+			adventure_name: 'New Adventure',
+			adventure_type: globalAdventureType,
+			public: true,
+			nearest_city: 'New City',
+			coordinates: {
+				lng: longitude,
+				lat: latitude
+			}
+		}
+
+		return fetcher(adventures.create.url, {
+			method: adventures.create.method,
+			body: newDefaultAdventure
+		})
+			.then(({ data }) => {
+				const { adventure, all_adventures } = data
+				adventureDispatch({
+					type: 'addNewAdventure',
+					payload: {
+						adventures: all_adventures,
+						currentAdventure: adventure
+					}
+				})
+				return adventure
+			})
+			.catch(console.error)
+	}
+
+	const insertBulkAdventures = ({ adventuresObject }: { adventuresObject: AdventureType[] }) => {
+		return fetcher(adventures.builkImport.url, {
+			method: adventures.builkImport.method,
+			body: { adventures: adventuresObject }
+		}).catch(console.error)
+	}
+
 	return {
-		editAdventure
+		editAdventure,
+		createNewDefaultAdventure,
+		insertBulkAdventures
 	}
 }
 
 export const useDeleteAdventure = () => {
 	const { getAllAdventures } = useGetAdventures()
-	const { adventureDispatch, adventureTypeViewer } = useAdventureStateContext()
+	const { adventureDispatch, globalAdventureType } = useAdventureStateContext()
+	const { cardDispatch } = useCardStateContext()
 
 	const deleteAdventure = ({
 		adventureId,
-		adventureType
+		adventureType,
+		adventureName
 	}: {
 		adventureId: number
 		adventureType: AdventureChoiceType
+		adventureName: string
 	}) => {
+		cardDispatch({
+			type: 'openAlert',
+			payload: `${adventureName} has been deleted.`
+		})
 		return fetcher(
 			`${adventures.deleteAdventure.url}?adventure_id=${adventureId}&adventure_type=${adventureType}`,
 			{ method: adventures.deleteAdventure.method }
 		)
 			.then(() => {
-				getAllAdventures({ type: adventureTypeViewer }).then(() =>
+				getAllAdventures({ type: globalAdventureType }).then(() =>
 					adventureDispatch({ type: 'deleteAdventure' })
 				)
 			})
 			.catch(console.error)
 	}
 
-	return deleteAdventure
+	const toggleDeletePage = () => {
+		adventureDispatch({ type: 'switchIsDeletePageOpen' })
+	}
+
+	return { deleteAdventure, toggleDeletePage }
 }
 
 export const useSubmitAdventurePicture = () => {
