@@ -1,21 +1,19 @@
-import { useCardStateContext, useEditUser, useUserStateContext } from 'Providers'
+import { useEditUser, useUserStateContext, useManipulateFlows } from 'sundaypeak-treewells'
+
 import getContent from 'TextContent'
 import { Button, FooterButtons } from 'Components/Reusable'
 
 const UserProfileButtons = () => {
-	const { workingUser, isUserEditable, userDispatch, activeWorkingUser } = useUserStateContext()
-	const { cardDispatch } = useCardStateContext()
-	const { handleSaveEditUser } = useEditUser()
+	const { workingUser, isUserEditable, activeWorkingUser } = useUserStateContext()
+	const { openAlert } = useManipulateFlows()
+	const { handleSaveEditUser, toggleUserEditState } = useEditUser()
 
 	const handleEdit = () => {
 		if (isUserEditable) {
 			handleSaveEditUser()
-			cardDispatch({
-				type: 'openAlert',
-				payload: `${workingUser.first_name} ${workingUser.last_name}'s profile has been updated`
-			})
+			openAlert(`${workingUser.first_name} ${workingUser.last_name}'s profile has been updated`)
 		}
-		userDispatch({ type: 'toggleIsUserEditable' })
+		toggleUserEditState()
 	}
 
 	if (!isUserEditable) {
@@ -38,7 +36,7 @@ const UserProfileButtons = () => {
 					{isUserEditable && (
 						<Button
 							id='profile-edit-cancel-button'
-							onClick={() => userDispatch({ type: 'toggleIsUserEditable' })}
+							onClick={toggleUserEditState}
 						>
 							Cancel
 						</Button>

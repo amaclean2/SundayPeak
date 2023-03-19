@@ -47,3 +47,7 @@ html {
 	margin-bottom: 0.5rem;
 	border-bottom: 0.1rem solid var(--border-color);
 }
+
+.no-padding {
+	padding: 0 !important;
+}

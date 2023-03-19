@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom'
+import { useEditUser, useFollowUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
 
 import getContent from 'TextContent'
-import { useUserStateContext } from 'Hooks/Providers'
-import { useFollowUser } from 'Hooks'
 
 export const useUserEditorMenu = () => {
-	const { workingUser, loggedInUser, userDispatch } = useUserStateContext()
+	const { workingUser, loggedInUser } = useUserStateContext()
+	const { toggleUserEditState } = useEditUser()
+	const { logoutUser } = useGetUser()
 	const { friendUser } = useFollowUser()
 	const navigate = useNavigate()
 
@@ -20,7 +21,7 @@ export const useUserEditorMenu = () => {
 			menuFields.push({
 				action: () => {
 					navigate(`/user/edit`)
-					userDispatch({ type: 'toggleIsUserEditable' })
+					toggleUserEditState()
 				},
 				id: 'edit-user-button',
 				text: getContent('buttonText.editUser')
@@ -40,7 +41,7 @@ export const useUserEditorMenu = () => {
 
 			menuFields.push({
 				action: () => {
-					userDispatch({ type: 'logout' })
+					logoutUser()
 					navigate('/discover')
 				},
 				id: 'logout-button',

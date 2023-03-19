@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import {
 	Button,
@@ -16,12 +17,13 @@ import {
 	seasonOptions
 } from 'Components/Adventures/utils'
 import { LargeClimberIcon } from 'Images'
-import { Link } from 'react-router-dom'
+
 import DeletePage from './DeletePage'
-import { useAdventureStateContext } from 'Hooks/Providers'
+import { useAdventureStateContext, useDeleteAdventure } from 'sundaypeak-treewells'
 
 const ClimbForm = ({ onChange }) => {
-	const { currentAdventure, adventureDispatch, isDeletePage } = useAdventureStateContext()
+	const { currentAdventure, isDeletePageOpen } = useAdventureStateContext()
+	const { toggleDeletePage } = useDeleteAdventure()
 
 	return (
 		<DisplayCard title={currentAdventure.adventure_name}>
@@ -151,12 +153,12 @@ const ClimbForm = ({ onChange }) => {
 				<Button
 					className={'delete-button'}
 					id={'adventure-delete-button'}
-					onClick={() => adventureDispatch({ type: 'toggleDeletePage' })}
+					onClick={toggleDeletePage}
 				>
 					Delete
 				</Button>
 			</FooterButtons>
-			{isDeletePage && <DeletePage />}
+			{isDeletePageOpen && <DeletePage />}
 		</DisplayCard>
 	)
 }

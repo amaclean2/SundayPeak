@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useAdventureStateContext, useDeleteAdventure } from 'sundaypeak-treewells'
 
 import {
 	Button,
@@ -12,10 +13,10 @@ import getContent from 'TextContent'
 import { directionSelectOptions, gearOptions, seasonOptions } from 'Components/Adventures/utils'
 import { LargeSkierIcon } from 'Images'
 import DeletePage from './DeletePage'
-import { useAdventureStateContext } from 'Hooks/Providers'
 
 const SkiForm = ({ onChange }) => {
-	const { currentAdventure, isDeletePage, adventureDispatch } = useAdventureStateContext()
+	const { currentAdventure, isDeletePageOpen } = useAdventureStateContext()
+	const { toggleDeletePage } = useDeleteAdventure()
 
 	return (
 		<DisplayCard title={currentAdventure.adventure_name || 'New Adventure'}>
@@ -189,12 +190,12 @@ const SkiForm = ({ onChange }) => {
 				<Button
 					className={'delete-button'}
 					id={'adventure-delete-button'}
-					onClick={() => adventureDispatch({ type: 'toggleDeletePage' })}
+					onClick={toggleDeletePage}
 				>
 					Delete
 				</Button>
 			</FooterButtons>
-			{isDeletePage && <DeletePage />}
+			{isDeletePageOpen && <DeletePage />}
 		</DisplayCard>
 	)
 }

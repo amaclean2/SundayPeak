@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-
-import { useGetAdventures } from 'Hooks'
+import { useGetAdventures } from 'sundaypeak-treewells'
 
 const allowedExtensions = ['csv']
 

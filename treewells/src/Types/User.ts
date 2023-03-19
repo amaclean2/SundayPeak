@@ -1,7 +1,7 @@
 import { Dispatch } from 'react'
 import { AdventureChoiceType } from './Adventures'
 
-type CompletedAdventureForUserType = {
+export type CompletedAdventureForUserType = {
 	adventure_id: number
 	adventure_name: string
 	adventure_type: AdventureChoiceType

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react'
 import cx from 'classnames'
 import Linkify from 'linkify-react'
+import { useMessagingStateContext, useUserStateContext } from 'sundaypeak-treewells'
 
-import { useMessagingStateContext, useUserStateContext } from 'Hooks/Providers'
 import { FlexSpacer } from 'Components/Reusable'
 
 const MessageBody = () => {

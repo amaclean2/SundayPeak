@@ -1,23 +1,23 @@
 import cx from 'classnames'
 import { useEffect, useState } from 'react'
-
-import { useCardStateContext } from 'Hooks/Providers'
+import { useCardStateContext, useManipulateFlows } from 'sundaypeak-treewells'
 
 import './styles.css'
 
 const Alert = ({ className, type }) => {
-	const { showAlert, alertContent, cardDispatch } = useCardStateContext()
+	const { showAlert, alertContent } = useCardStateContext()
+	const { closeAlert } = useManipulateFlows()
 	const [displayState, setDisplayState] = useState(0)
 
 	useEffect(() => {
 		if (showAlert) {
 			setDisplayState(1)
 			setTimeout(() => {
-				cardDispatch({ type: 'closeAlert', payload: '' })
+				closeAlert()
 				setDisplayState(2)
 			}, 5000)
 		}
-	}, [showAlert, cardDispatch])
+	}, [showAlert])
 
 	const handleEndTransition = () => {
 		displayState === 2 && setDisplayState(0)

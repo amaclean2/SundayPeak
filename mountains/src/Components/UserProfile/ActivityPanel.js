@@ -1,8 +1,6 @@
 import cx from 'classnames'
 import { useNavigate } from 'react-router-dom'
-
-import { useGetAdventure } from 'Hooks'
-import { useUserStateContext } from 'Hooks/Providers'
+import { useGetAdventures, useUserStateContext } from 'sundaypeak-treewells'
 
 import { FieldHeader } from '../Reusable'
 
@@ -18,7 +16,7 @@ const CompletedAdventure = ({ activity, onClick }) => (
 
 const ActivityPanel = ({ className }) => {
 	const { workingUser } = useUserStateContext()
-	const { getAdventure } = useGetAdventure()
+	const { getAdventure } = useGetAdventures()
 	const navigate = useNavigate()
 
 	const openAdventure = (adventureId, adventureType) => {

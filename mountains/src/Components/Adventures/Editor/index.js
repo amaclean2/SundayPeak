@@ -1,15 +1,14 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAdventureStateContext, useGetAdventures, useSaveAdventure } from 'sundaypeak-treewells'
 
 import ClimbForm from './ClimbForm'
 import HikeForm from './HikeForm'
 import SkiForm from './SkiForm'
-import { useAdventureStateContext } from 'Hooks/Providers'
-import { useGetAdventure, useSaveAdventure } from 'Hooks'
 
 const AdventureEditorForm = () => {
 	const { currentAdventure } = useAdventureStateContext()
-	const { getAdventure } = useGetAdventure()
+	const { getAdventure } = useGetAdventures()
 	const { editAdventure } = useSaveAdventure()
 	const { adventureId, adventureType } = useParams()
 

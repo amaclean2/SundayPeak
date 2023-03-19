@@ -1,21 +1,16 @@
 import { useState } from 'react'
+import { useGetAdventures } from 'sundaypeak-treewells'
 
 import { FormField } from 'Components/Reusable'
-import { useGetAdventures } from 'Hooks'
-import { useAdventureStateContext } from 'Hooks/Providers'
 import { ImportAdventuresButton } from '../Buttons/ImportAdventuresButton'
 
 const AdventureTypeSelector = () => {
 	const { changeAdventureType } = useGetAdventures()
-	const { adventureDispatch } = useAdventureStateContext()
 	const [localAdventureType, setLocalAdventureType] = useState(null)
 
 	const handleChange = (event) => {
-		const newAdventureType = event.target.value
-
-		setLocalAdventureType(newAdventureType)
-		changeAdventureType({ type: newAdventureType })
-		adventureDispatch({ type: 'enableMapToAddAdventure' })
+		setLocalAdventureType(event.target.value)
+		changeAdventureType({ type: event.target.value })
 	}
 
 	return (

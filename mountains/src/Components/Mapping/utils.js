@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom'
-
-import { useAdventureStateContext } from 'Hooks/Providers'
-import { useGetAdventure, useGetAdventures } from 'Hooks'
+import { useAdventureStateContext, useGetAdventures, useSaveAdventure } from 'sundaypeak-treewells'
 
 export const useCreateNewAdventure = () => {
-	const { adventureAddState, adventureDispatch } = useAdventureStateContext()
-	const { createNewDefaultAdventure } = useGetAdventures()
-	const { getAdventure } = useGetAdventure()
+	const { adventureAddState } = useAdventureStateContext()
+	const { getAdventure } = useGetAdventures()
+	const { createNewDefaultAdventure } = useSaveAdventure()
 	const navigate = useNavigate()
 
 	const handleCreateNewAdventure = (event) => {
@@ -19,16 +17,7 @@ export const useCreateNewAdventure = () => {
 		return createNewDefaultAdventure({
 			longitude: event.lngLat.lng,
 			latitude: event.lngLat.lat
-		}).then(({ adventure, all_adventures }) => {
-			adventureDispatch({
-				type: 'openNewAdventureView',
-				payload: {
-					adventures: all_adventures,
-					currentAdventure: adventure
-				}
-			})
-			return navigate(`/adventure/edit/${adventure.adventure_type}/${adventure.id}`)
-		})
+		}).then((adventure) => navigate(`/adventure/edit/${adventure.adventure_type}/${adventure.id}`))
 	}
 
 	const viewMore = ({ id, type }) => {

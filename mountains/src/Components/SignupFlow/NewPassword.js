@@ -1,14 +1,12 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useCreateUser, useGetUser } from 'sundaypeak-treewells'
 
 import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
-import { CARD_TYPES, useCardStateContext, useUserStateContext } from 'Hooks/Providers'
-import { useCreateUser } from 'Hooks'
 
 export const NewPassword = () => {
-	const { cardDispatch } = useCardStateContext()
-	const { userDispatch } = useUserStateContext()
 	const { updateNewPassword } = useCreateUser()
+	const { setLoginError } = useGetUser()
 	const { search } = useLocation()
 	const navigate = useNavigate()
 
@@ -25,10 +23,7 @@ export const NewPassword = () => {
 			await updateNewPassword({ newPassword: newPasswordObject.password, resetToken })
 			navigate('/discover')
 		} else {
-			userDispatch({
-				type: 'loginError',
-				payload: 'Your password and confirm password fields have to match'
-			})
+			setLoginError('Your password and confirm password fields have to match')
 		}
 	}
 

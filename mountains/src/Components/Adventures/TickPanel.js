@@ -1,8 +1,8 @@
+import { useNavigate } from 'react-router-dom'
 import cx from 'classnames'
+import { useAdventureStateContext } from 'sundaypeak-treewells'
 
 import { FieldHeader, FlexSpacer } from 'Components/Reusable'
-import { useGetUser } from 'Hooks'
-import { useAdventureStateContext } from 'Hooks/Providers'
 
 const UserImage = ({ url }) => (
 	<div className='user-image'>
@@ -17,9 +17,9 @@ const MailIcon = () => <div className='mail-icon' />
 
 const AdventureTickPanel = () => {
 	const { currentAdventure } = useAdventureStateContext()
-	const { getOtherUser } = useGetUser()
+	const navigate = useNavigate()
 
-	const todos = currentAdventure?.todo_users || []
+	const todos = currentAdventure?.todo_users
 
 	if (!todos || !todos.length) {
 		return null
@@ -33,7 +33,7 @@ const AdventureTickPanel = () => {
 					<li
 						key={`user_${key}`}
 						className={'tick drop-list-item flex-box'}
-						onClick={() => getOtherUser({ userId: todo.user_id, profileSwitch: true })}
+						onClick={() => navigate(`/user/${todo.user_id}`)}
 					>
 						<UserImage url={todo.profile_picture_url} />
 						{todo.display_name}

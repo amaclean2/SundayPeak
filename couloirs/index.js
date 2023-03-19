@@ -5,6 +5,7 @@ import { parseMessage } from './Messages/index.js'
 const wss = new WebSocketServer({ port: 4000 })
 
 const connectedUsers = new Set()
+// activeConversations are all the conversations currently happening
 const activeConversations = {}
 
 wss.on('connection', (ws) => {
@@ -13,6 +14,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     parseMessage({ message, userId: user?.userId })
       .then((result) => {
+        logger.info({ result })
         if (result?.userJoined) {
           // connect the user to the websocket and send a connected message
           user = {
@@ -44,9 +46,9 @@ wss.on('connection', (ws) => {
           ws.send(JSON.stringify(result))
         } else if (result.conversations) {
           // subscribe the user to each conversation once they are connected
-          userConversations = Object.keys(result.conversations)
+          const userConversationKeys = Object.keys(result.conversations)
 
-          Object.keys(result.conversations).forEach((convo) => {
+          userConversationKeys.forEach((convo) => {
             if (activeConversations[convo]) {
               activeConversations[convo].add(user)
             } else {

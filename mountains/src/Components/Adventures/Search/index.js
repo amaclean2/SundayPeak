@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useDebounce, useGetAdventures } from 'sundaypeak-treewells'
 
-import { useDebounce } from 'Hooks/Providers/utils'
-import { useGetAdventures } from 'Hooks'
 import { FlexSpacer, FormField } from 'Components/Reusable'
 
 import './styles.css'

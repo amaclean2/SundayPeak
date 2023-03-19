@@ -1,17 +1,15 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAdventureStateContext, useGetAdventures } from 'sundaypeak-treewells'
 import { useAdventureMenu } from '../Buttons/utils'
 import ClimbViewer from './ClimbViewer'
 import HikeViewer from './HikeViewer'
 import SkiViewer from './SkiViewer'
-import { useAdventureStateContext } from 'Hooks/Providers'
-import { useGetAdventure, useGetAdventures } from 'Hooks'
 
 const AdventureViewer = () => {
-	const { currentAdventure, adventureTypeViewer } = useAdventureStateContext()
+	const { currentAdventure, globalAdventureType } = useAdventureStateContext()
 	const { adventureId, adventureType } = useParams()
-	const { getAdventure } = useGetAdventure()
-	const { changeAdventureType } = useGetAdventures()
+	const { changeAdventureType, getAdventure } = useGetAdventures()
 	const buildAdventureMenu = useAdventureMenu()
 
 	useEffect(() => {
@@ -19,7 +17,7 @@ const AdventureViewer = () => {
 			// fetch the new adventure from the adventureId
 			changeAdventureType({ type: adventureType })
 			getAdventure({ id: adventureId, type: adventureType })
-		} else if (currentAdventure.adventure_type !== adventureTypeViewer) {
+		} else if (currentAdventure.adventure_type !== globalAdventureType) {
 			changeAdventureType({ type: currentAdventure.adventure_type })
 		}
 	}, [adventureId])

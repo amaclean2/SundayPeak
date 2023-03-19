@@ -1,34 +1,28 @@
 import { useNavigate } from 'react-router-dom'
+import { useEditUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
+import { useEffect } from 'react'
 
 import { title } from 'App'
-import { useGetUser } from 'Hooks'
-import { useUserStateContext } from 'Hooks/Providers'
 import { ErrorField, DisplayCard, FormField, Button, FooterButtons } from '../Reusable'
 
 import './styles.css'
-import { useEffect } from 'react'
 
 export const LoginFlow = () => {
-	const { formFields, userDispatch, loggedInUser } = useUserStateContext()
+	const { formFields, loggedInUser } = useUserStateContext()
 
-	const { loginUser } = useGetUser()
+	const { loginUser, setLoginError } = useGetUser()
+	const { editFormFields } = useEditUser()
 	const navigate = useNavigate()
 
-	const onChange = (e) => {
-		userDispatch({
-			type: 'formFields',
-			payload: {
-				...formFields,
-				[e.target.name]: e.target.value
-			}
-		})
+	const onChange = (event) => {
+		editFormFields({ name: event.target.name, value: event.target.value })
 	}
 
 	useEffect(() => {
 		if (loggedInUser?.id) {
 			navigate('/discover')
 		}
-	}, [])
+	}, [loggedInUser])
 
 	return (
 		<DisplayCard
@@ -81,7 +75,7 @@ export const LoginFlow = () => {
 						className='secondary-button new-account-button'
 						id={'switch-to-create-button'}
 						onClick={() => {
-							userDispatch({ type: 'loginError', payload: '' })
+							setLoginError('')
 							navigate('/signup')
 						}}
 					>

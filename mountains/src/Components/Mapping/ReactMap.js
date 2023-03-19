@@ -9,14 +9,18 @@ import Map, {
 } from 'react-map-gl'
 
 import { useCreateNewAdventure } from './utils'
-import { useTokenStateContext } from 'Hooks/Providers/tokenStateProvider'
-import { useAdventureStateContext } from 'Hooks/Providers'
 
 import skier from 'Images/Activities/SkierIcon.png'
 import hiker from 'Images/Activities/HikerIcon.png'
 import climber from 'Images/Activities/ClimberIcon.png'
 
 import './styles.css'
+import {
+	useAdventureStateContext,
+	useDebounce,
+	useManipulateFlows,
+	useTokenStateContext
+} from 'sundaypeak-treewells'
 
 const ReactMap = () => {
 	const mapRef = useRef()
@@ -25,10 +29,11 @@ const ReactMap = () => {
 		if (ref) ref.trigger()
 	}, [])
 
-	const { allAdventures, startPosition, currentAdventure, adventureTypeViewer } =
+	const { allAdventures, startPosition, currentAdventure, globalAdventureType } =
 		useAdventureStateContext()
 	const { mapboxToken, mapboxStyleKey } = useTokenStateContext()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
+	const { updateStartPosition } = useManipulateFlows()
 	const navigate = useNavigate()
 
 	const onLoad = () => {
@@ -58,9 +63,15 @@ const ReactMap = () => {
 		})
 	}
 
-	// refetchAdventures has to be wrapped in a callback so the debouncer can work
-	const onMove = () => {
+	const establishNewStartPosition = useDebounce((mapPosition) => updateStartPosition(mapPosition))
+
+	const onMove = (event) => {
 		// set the new start position
+		establishNewStartPosition({
+			latitude: event.viewState.latitude,
+			longitude: event.viewState.longitude,
+			zoom: 12
+		})
 	}
 
 	useEffect(() => {
@@ -87,9 +98,7 @@ const ReactMap = () => {
 		initialViewState: startPosition,
 		maxPitch: 0,
 		minZoom: 3,
-		onDblClick: (event) => {
-			handleCreateNewAdventure(event)
-		},
+		onDblClick: handleCreateNewAdventure,
 		onClick: (event) => {
 			if (!event.features.length) return
 
@@ -144,7 +153,7 @@ const ReactMap = () => {
 						type={'symbol'}
 						source={'adventures'}
 						layout={{
-							'icon-image': adventureTypeViewer,
+							'icon-image': globalAdventureType,
 							'icon-size': 0.4
 						}}
 					/>

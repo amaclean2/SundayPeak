@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
+import { useMessages } from 'sundaypeak-treewells'
 
-import { useMessagingConnection } from 'Hooks'
 import MessagingContianer from './MessagingContainer'
+
 import './styles.css'
 
 const Chat = () => {
-	const { initiateConnection } = useMessagingConnection()
+	const { initiateConnection } = useMessages()
 
 	useEffect(() => {
 		initiateConnection()

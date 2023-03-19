@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewells'
 
 import { DistanceIcon, ElevationIcon } from 'Images/Symbols/LabelIcons'
 import getContent from 'TextContent'
@@ -16,7 +17,6 @@ import AdventureGallery from '../Gallery'
 import AdventureTickPanel from '../TickPanel'
 import { formatSeasons, pitchClimbs } from '../utils'
 import { DifficultyViewer } from './Symbols'
-import { useAdventureStateContext, useUserStateContext } from 'Hooks/Providers'
 import { Pin } from 'Images'
 
 const HikeViewer = ({ menuContents }) => {
@@ -39,7 +39,7 @@ const HikeViewer = ({ menuContents }) => {
 					</Field>
 				</FieldRow>
 				<FieldRow className='adventure-bio'>
-					<Field className={'view-location'}>{currentAdventure.bio}</Field>
+					<Field className={'no-padding'}>{currentAdventure.bio}</Field>
 				</FieldRow>
 				<FieldRow borderBottom>
 					<Field borderRight>
@@ -78,11 +78,13 @@ const HikeViewer = ({ menuContents }) => {
 					<Field>
 						<FieldHeader text={getContent('adventurePanel.fields.bestSeason')} />
 						<FieldValue>
-							{formatSeasons({
-								seasonArray: currentAdventure.season.length
-									? JSON.parse(currentAdventure.season)
-									: []
-							})}
+							{currentAdventure.season?.length
+								? formatSeasons({
+										seasonArray: currentAdventure.season.length
+											? JSON.parse(currentAdventure.season)
+											: []
+								  })
+								: ''}
 						</FieldValue>
 					</Field>
 				</FieldRow>

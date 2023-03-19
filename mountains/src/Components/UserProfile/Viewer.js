@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useGetUser, useUserStateContext } from 'sundaypeak-treewells'
 
 import { DisplayCard, FlexSpacer } from 'Components/Reusable'
 import ActivityPanel from './ActivityPanel'
@@ -9,26 +10,24 @@ import FriendsViewer from './FriendsViewer'
 import UserProfileGallery from './Gallery'
 import Stats from './Stats'
 import UserBio from './UserBio'
-import { useUserStateContext } from 'Hooks/Providers'
-import { useGetUser } from 'Hooks'
 
 import './styles.css'
 
 const UserViewer = () => {
-	const { workingUser, listState, loggedInUser, userDispatch } = useUserStateContext()
+	const { workingUser, statState, loggedInUser } = useUserStateContext()
 	const { userId } = useParams()
 	const navigate = useNavigate()
 	const buildEditorMenu = useUserEditorMenu()
-	const { getOtherUser } = useGetUser()
+	const { setWorkingUserToCurrentUser, getNonLoggedInUser } = useGetUser()
 
 	useEffect(() => {
 		const numberId = Number(userId)
 		if (loggedInUser && numberId === loggedInUser.id) {
 			navigate('/user')
 		} else if (numberId && numberId !== workingUser?.id) {
-			getOtherUser({ userId: numberId })
+			getNonLoggedInUser({ userId: numberId })
 		} else if (!numberId && loggedInUser) {
-			userDispatch({ type: 'workingUser', payload: loggedInUser })
+			setWorkingUserToCurrentUser()
 		}
 	}, [userId, loggedInUser])
 
@@ -37,22 +36,22 @@ const UserViewer = () => {
 	return (
 		<DisplayCard
 			menu={buildEditorMenu()}
-			title={`${workingUser.first_name} ${workingUser.last_name}`}
+			title={`${workingUser?.first_name} ${workingUser?.last_name}`}
 			onClose={() => navigate('/discover')}
 		>
 			<UserProfileGallery />
 			<UserBio />
 			<Stats />
 			<div className='user-adventure-viewer flex-box'>
-				{listState === 'friends' ? (
+				{statState === 'friends' ? (
 					<>
 						<FriendsViewer />
 						<FlexSpacer />
 					</>
 				) : (
 					<>
-						{workingUser.todo_adventures.length > 0 && <UserTodoPanel />}
-						{workingUser.completed_adventures.length > 0 && <ActivityPanel />}
+						{workingUser.todo_adventures?.length > 0 && <UserTodoPanel />}
+						{workingUser.completed_adventures?.length > 0 && <ActivityPanel />}
 					</>
 				)}
 			</div>

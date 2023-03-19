@@ -1,17 +1,17 @@
 import cx from 'classnames'
 import { useNavigate } from 'react-router-dom'
+import { useMessages } from 'sundaypeak-treewells'
 
 import { DisplayCard } from 'Components/Reusable'
 import MessageBody from './MessageBody'
 import ConversationSelector from './ConversationSelector'
 import MessageBar from './MessageBar'
-import { useMessagingConnection } from 'Hooks'
 
 import './styles.css'
 
 const MessagingContianer = () => {
 	const navigate = useNavigate()
-	const { closeConnection } = useMessagingConnection()
+	const { closeConnection } = useMessages()
 
 	return (
 		<DisplayCard

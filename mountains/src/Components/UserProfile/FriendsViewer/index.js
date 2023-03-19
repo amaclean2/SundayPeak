@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useDebounce, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
 
 import { FieldHeader, FormField } from 'Components/Reusable'
-import { useDebounce } from 'Hooks/Providers/utils'
 import { Friend } from './Friend'
-import { useUserStateContext } from 'Hooks/Providers'
-import { useGetUser } from 'Hooks'
 
 const FriendsViewer = ({ className }) => {
-	const { friends } = useUserStateContext()
-	const { searchUsers } = useGetUser()
+	const { workingUser } = useUserStateContext()
+	const { searchForUsers } = useGetUser()
 	const navigate = useNavigate()
 
 	const [searchText, setSearchText] = useState('')
@@ -21,7 +19,7 @@ const FriendsViewer = ({ className }) => {
 	const getSearchResults = useDebounce((search) => {
 		if (search.length <= 3) return setSearchResults(null)
 
-		searchUsers({ search }).then((users) => {
+		searchForUsers({ search }).then((users) => {
 			setSearchResults(users)
 		})
 	})
@@ -44,9 +42,9 @@ const FriendsViewer = ({ className }) => {
 				autoComplete={'off'}
 				type={'text'}
 			/>
-			{friends || searchResults?.length ? (
+			{workingUser.friends || searchResults?.length ? (
 				<ul className='tick-list flex-box friend-list'>
-					{((searchResults?.length && searchResults) || friends).map((friend, key) => (
+					{((searchResults?.length && searchResults) || workingUser.friends).map((friend, key) => (
 						<Friend
 							onClick={() => {
 								setSearchText('')

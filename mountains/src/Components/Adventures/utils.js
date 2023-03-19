@@ -157,6 +157,13 @@ export const rangeValues = {
 
 export const formatSeasons = ({ seasonArray }) => {
 	let lastValue
+
+	if (seasonArray.every((month) => month)) {
+		return 'All year'
+	} else if (seasonArray.every((month) => !month)) {
+		return 'Never'
+	}
+
 	const inlineList = seasonArray.reduce((newList, value, idx) => {
 		if (!value) {
 			return newList

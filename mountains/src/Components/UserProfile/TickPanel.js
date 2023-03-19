@@ -1,8 +1,7 @@
 import cx from 'classnames'
 import { useNavigate } from 'react-router-dom'
+import { useGetAdventures, useUserStateContext } from 'sundaypeak-treewells'
 
-import { useGetAdventure } from 'Hooks'
-import { useUserStateContext } from 'Hooks/Providers'
 import { FieldHeader } from 'Components/Reusable'
 
 const TodoAdventure = ({ onClick, tick }) => (
@@ -17,7 +16,7 @@ const TodoAdventure = ({ onClick, tick }) => (
 
 const UserTodoPanel = ({ className }) => {
 	const { workingUser } = useUserStateContext()
-	const { getAdventure } = useGetAdventure()
+	const { getAdventure } = useGetAdventures()
 	const navigate = useNavigate()
 
 	const openAdventure = (adventureId, adventureType) => {

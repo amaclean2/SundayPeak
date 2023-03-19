@@ -1,8 +1,7 @@
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
-
-import { useAdventureStateContext, useUserStateContext } from 'Hooks/Providers'
+import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewells'
 
 import './styles.css'
 

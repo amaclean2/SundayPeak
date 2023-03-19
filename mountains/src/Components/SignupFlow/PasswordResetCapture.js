@@ -1,21 +1,17 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useCreateUser, useManipulateFlows } from 'sundaypeak-treewells'
 
 import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
-import { useCardStateContext } from 'Hooks/Providers'
-import { useCreateUser } from 'Hooks'
 
 export const PasswordResetCapture = () => {
-	const { cardDispatch } = useCardStateContext()
 	const [resetEmail, setResetEmail] = useState('')
 	const { sendPasswordResetLink } = useCreateUser()
+	const { closeCard } = useManipulateFlows()
 
 	const handleResetButton = () => {
 		sendPasswordResetLink({ email: resetEmail })
-		cardDispatch({
-			type: 'closeCardMessage',
-			payload: 'An email has been sent to reset your password'
-		})
+		closeCard('An email has been sent to reset your password')
 	}
 
 	return (

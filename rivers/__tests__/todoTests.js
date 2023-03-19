@@ -1,5 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
+const logger = require('../Config/logger')
 const { CREATED, SUCCESS } = require('../ResponseHandling')
 const runDefaultTests = require('./defaultTests')
 
@@ -41,6 +42,7 @@ const todoTests = () => {
     expect(data.todo).toBeDefined()
     expect(data.todo.user_todo_field).toBeDefined()
     expect(data.todo.adventure_todo_field).toBeDefined()
+    logger.info({ todo: data.todo })
   })
 
   test('the adventure has a todo field', async () => {

@@ -83,6 +83,9 @@ const createNewConversation = ({ userIds, name = '' }) => {
     .then((resp) => {
       return {
         conversation: {
+          users: userIds.map((id) => ({
+            user_id: id
+          })),
           conversation_id: resp.conversationId,
           conversation_name: name,
           last_message: '',
@@ -93,6 +96,7 @@ const createNewConversation = ({ userIds, name = '' }) => {
 }
 
 const sendMessage = ({ userId, conversationId, messageBody }) => {
+  logger.info({ receivedMessage: { conversationId, userId, messageBody } })
   return serviceHandler.messagingService
     .sendMessage({
       conversationId,
@@ -100,6 +104,7 @@ const sendMessage = ({ userId, conversationId, messageBody }) => {
       messageBody
     })
     .then((message) => {
+      logger.info({ message })
       return { message }
     })
 }

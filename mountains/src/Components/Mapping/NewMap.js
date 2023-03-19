@@ -1,13 +1,11 @@
 import mapboxgl from 'mapbox-gl'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { useAdventureStateContext, useTokenStateContext } from 'sundaypeak-treewells'
 
-import { useTokenStateContext } from 'Hooks/Providers/tokenStateProvider'
+import { useCreateNewAdventure } from './utils'
 
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { useEffect, useRef } from 'react'
-import { useAdventureStateContext } from 'Providers'
-
-import { useNavigate } from 'react-router-dom'
-import { useCreateNewAdventure } from './utils'
 
 const NewMap = () => {
 	const { mapboxToken, mapboxStyleKey } = useTokenStateContext()

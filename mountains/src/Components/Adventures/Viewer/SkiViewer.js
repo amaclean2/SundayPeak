@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewells'
 
 import { AngleIcon, DistanceIcon, ElevationIcon } from 'Images/Symbols/LabelIcons'
 import getContent from 'TextContent'
@@ -16,13 +17,14 @@ import AdventureGallery from '../Gallery'
 import AdventureTickPanel from '../TickPanel'
 import { formatGearList, formatSeasons } from '../utils'
 import { Aspect, DifficultyViewer, ExposureViewer } from './Symbols'
-import { useAdventureStateContext, useUserStateContext } from 'Hooks/Providers'
 import { Pin } from 'Images'
 
 const SkiViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 	const navigate = useNavigate()
+
+	console.log({ loggedInUser })
 
 	return (
 		<DisplayCard
@@ -39,7 +41,7 @@ const SkiViewer = ({ menuContents }) => {
 					</Field>
 				</FieldRow>
 				<FieldRow className='adventure-bio'>
-					<Field>{currentAdventure.bio}</Field>
+					<Field className={'no-padding'}>{currentAdventure.bio}</Field>
 				</FieldRow>
 				<FieldRow borderBottom>
 					<Field borderRight>
@@ -106,13 +108,13 @@ const SkiViewer = ({ menuContents }) => {
 					<Field>
 						<FieldHeader text={getContent('adventurePanel.fields.bestSeason')} />
 						<FieldValue>
-							{(currentAdventure.season &&
-								formatSeasons({
-									seasonArray: currentAdventure.season.length
-										? JSON.parse(currentAdventure.season)
-										: []
-								})) ||
-								''}
+							{currentAdventure.season?.length
+								? formatSeasons({
+										seasonArray: currentAdventure.season.length
+											? JSON.parse(currentAdventure.season)
+											: []
+								  })
+								: ''}
 						</FieldValue>
 					</Field>
 				</FieldRow>

@@ -1,5 +1,5 @@
-import { FieldHeader } from 'Components/Reusable'
-import { useUserStateContext } from 'Hooks/Providers'
+import { useUserStateContext } from 'sundaypeak-treewells'
+
 import { Pin } from 'Images'
 
 const UserBio = () => {
@@ -7,10 +7,12 @@ const UserBio = () => {
 
 	return (
 		<>
-			<div className={'view-location flex-box'}>
-				<Pin size={20} />
-				{workingUser.city}
-			</div>
+			{workingUser.city && (
+				<div className={'view-location flex-box'}>
+					<Pin size={20} />
+					{workingUser.city}
+				</div>
+			)}
 			<div className='user-bio'>{workingUser.bio}</div>
 		</>
 	)

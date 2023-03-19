@@ -1,16 +1,20 @@
 import { useState } from 'react'
 import cx from 'classnames'
+import {
+	useDebounce,
+	useGetUser,
+	useMessages,
+	useMessagingStateContext,
+	useUserStateContext
+} from 'sundaypeak-treewells'
 
 import { FlexSpacer, FormField } from 'Components/Reusable'
-import { useGetUser, useMessagingConnection } from 'Hooks'
-import { useMessagingStateContext, useUserStateContext } from 'Hooks/Providers'
-import { useDebounce } from 'Hooks/Providers/utils'
 
 const ConversationSelector = () => {
-	const { searchFriends } = useGetUser()
+	const { searchForFriends } = useGetUser()
 	const { conversations, currentConversationId } = useMessagingStateContext()
 	const { loggedInUser } = useUserStateContext()
-	const { addConversation, getConversation } = useMessagingConnection()
+	const { addConversation, getConversation } = useMessages()
 
 	const [searchList, setSearchList] = useState(null)
 	const [textSearch, setTextSearch] = useState('')
@@ -18,7 +22,7 @@ const ConversationSelector = () => {
 	const getSearchResults = useDebounce((search) => {
 		if (search.length <= 3) return setSearchList(null)
 
-		searchFriends({ search }).then((users) => {
+		searchForFriends({ search }).then((users) => {
 			setSearchList(users)
 		})
 	})

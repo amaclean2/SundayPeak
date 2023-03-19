@@ -1,14 +1,14 @@
+import { useAdventureStateContext, useDeleteAdventure } from 'sundaypeak-treewells'
+
 import { Button, FieldHeader, FooterButtons } from 'Components/Reusable'
 import ClickWrapper from 'Components/Reusable/ClickWrapper'
-import { useDeleteAdventure } from 'Hooks'
-import { useAdventureStateContext } from 'Hooks/Providers'
 
 const DeletePage = () => {
-	const { adventureDispatch, currentAdventure } = useAdventureStateContext()
-	const deleteAdventure = useDeleteAdventure()
+	const { currentAdventure } = useAdventureStateContext()
+	const { deleteAdventure, toggleDeletePage } = useDeleteAdventure()
 	return (
 		<div className={'click-wrapper flex-box'}>
-			<ClickWrapper onClick={() => adventureDispatch({ type: 'toggleDeletePage' })}>
+			<ClickWrapper onClick={toggleDeletePage}>
 				<div className={'delete-page flex-box'}>
 					<FieldHeader>{`Delete "${currentAdventure.adventure_name}"?`}</FieldHeader>
 					<p>
@@ -28,7 +28,7 @@ const DeletePage = () => {
 							Accept
 						</Button>
 						<Button
-							onClick={() => adventureDispatch({ type: 'toggleDeletePage' })}
+							onClick={toggleDeletePage}
 							id={'cancel-delete-adventure'}
 							className={'secondary-button'}
 						>

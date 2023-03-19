@@ -9,8 +9,7 @@ import {
 	MultiField
 } from 'Components/Reusable'
 import ProfileImageUploader from './ProfileImageUploader'
-import { useUserStateContext } from 'Hooks/Providers'
-import { useEditUser } from 'Hooks'
+import { useEditUser, useUserStateContext } from 'sundaypeak-treewells'
 
 const UserEditor = () => {
 	const { workingUser } = useUserStateContext()

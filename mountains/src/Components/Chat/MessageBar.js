@@ -1,12 +1,11 @@
 import { useState } from 'react'
+import { useMessages, useMessagingStateContext } from 'sundaypeak-treewells'
 
 import { Button, FormField } from 'Components/Reusable'
-import { useMessagingStateContext } from 'Hooks/Providers'
-import { useMessagingConnection } from 'Hooks'
 
 const MessageBar = () => {
 	const { currentConversationId } = useMessagingStateContext()
-	const { sendMessage } = useMessagingConnection()
+	const { sendMessage } = useMessages()
 	const [messageText, setMessageText] = useState('')
 
 	const handleEnter = () => {
@@ -14,11 +13,14 @@ const MessageBar = () => {
 		setMessageText('')
 	}
 
+	if (!currentConversationId) return null
+
 	return (
 		<div className='message-bar flex-box full-width'>
 			<FormField
 				name='message_bar'
 				value={messageText}
+				autoComplete={'off'}
 				onChange={(e) => setMessageText(e.target.value)}
 				isEditable
 				placeholder={'Message'}

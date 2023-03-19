@@ -1,18 +1,13 @@
-import { useUserPictures } from 'Hooks'
-import { useCardStateContext, useUserStateContext } from 'Hooks/Providers'
+import { useUserStateContext, useManipulateFlows } from 'sundaypeak-treewells'
 
 const UserProfileGallery = () => {
-	const { submitPicture } = useUserPictures()
-	const { cardDispatch } = useCardStateContext()
+	const { openImage } = useManipulateFlows()
 
 	const { workingUser, activeWorkingUser, images } = useUserStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
-		submitPicture({ data: files[0] })
-	}
-
-	const handleImageClick = (imageSource) => {
-		cardDispatch({ type: 'viewingImage', payload: imageSource })
+		console.log('picture submitted')
+		// submitPicture({ data: files[0] })
 	}
 
 	if (activeWorkingUser && !workingUser.imaages?.length) {
@@ -26,7 +21,7 @@ const UserProfileGallery = () => {
 					src={image}
 					alt={''}
 					key={`profile_image_${key}`}
-					onClick={() => handleImageClick(image)}
+					onClick={() => openImage(image)}
 				/>
 			))}
 			<label

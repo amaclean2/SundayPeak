@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
+import { useUserStateContext } from 'sundaypeak-treewells'
 
 import { DisplayCard } from 'Components/Reusable'
 
 import AdventureSearch from './Search'
 import MainAdventureSelector from './Search/MainAdventureSelector'
-import { useUserStateContext } from 'Hooks/Providers'
 
 import './styles.css'
 

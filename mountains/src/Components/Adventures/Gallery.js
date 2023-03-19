@@ -1,12 +1,16 @@
-import { useSubmitAdventurePicture } from 'Hooks'
-import { useAdventureStateContext, useCardStateContext } from 'Hooks/Providers'
+import {
+	useAdventureStateContext,
+	useManipulateFlows,
+	useSubmitAdventurePicture
+} from 'sundaypeak-treewells'
+
 import getContent from 'TextContent'
 
 import './styles.css'
 
 const PhotoGallery = () => {
 	const submitAdventurePicture = useSubmitAdventurePicture()
-	const { cardDispatch } = useCardStateContext()
+	const { openImage } = useManipulateFlows()
 	const { currentAdventure } = useAdventureStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
@@ -14,10 +18,6 @@ const PhotoGallery = () => {
 	}
 
 	const images = [...currentAdventure.images, 'new']
-
-	const handleImageClick = (imageSource) => {
-		cardDispatch({ type: 'viewingImage', payload: imageSource })
-	}
 
 	return (
 		<div className='scroller-container flex-box'>
@@ -44,7 +44,7 @@ const PhotoGallery = () => {
 						src={image}
 						alt={''}
 						key={`profile_image_${key}`}
-						onClick={() => handleImageClick(image)}
+						onClick={() => openImage(image)}
 					/>
 				)
 			})}

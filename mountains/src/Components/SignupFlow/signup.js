@@ -1,32 +1,27 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { useCreateUser, useEditUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
+import { useEffect } from 'react'
 
 import { title } from 'App'
 
 import { FormField, DisplayCard, ErrorField, Button, FooterButtons } from 'Components/Reusable'
-import { useUserStateContext } from 'Hooks/Providers'
-import { useCreateUser } from 'Hooks'
-import { useEffect } from 'react'
 
 export const SignupFlow = () => {
-	const { formFields, userDispatch, loggedInUser } = useUserStateContext()
-	const { signupUser } = useCreateUser()
+	const { formFields, loggedInUser } = useUserStateContext()
+	const { createNewUser } = useCreateUser()
+	const { editFormFields } = useEditUser()
+	const { setLoginError } = useGetUser()
 	const navigate = useNavigate()
 
-	const onChange = (e) => {
-		userDispatch({
-			type: 'formFields',
-			payload: {
-				...formFields,
-				[e.target.name]: e.target.value
-			}
-		})
+	const onChange = (event) => {
+		editFormFields({ name: event.target.name, value: event.target.value })
 	}
 
 	useEffect(() => {
 		if (loggedInUser?.id) {
 			navigate('/discover')
 		}
-	}, [])
+	}, [loggedInUser])
 
 	return (
 		<DisplayCard
@@ -102,7 +97,7 @@ export const SignupFlow = () => {
 			/>
 			<FooterButtons>
 				<Button
-					onClick={signupUser}
+					onClick={createNewUser}
 					id={'create-account-button'}
 					className='cta-button'
 				>
@@ -114,7 +109,7 @@ export const SignupFlow = () => {
 						className='secondary-button new-account-button'
 						id={'switch-to-login-button'}
 						onClick={() => {
-							userDispatch({ type: 'loginError', payload: '' })
+							setLoginError('')
 							navigate('/login')
 						}}
 					>

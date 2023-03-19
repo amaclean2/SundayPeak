@@ -1,13 +1,18 @@
 import { useNavigate } from 'react-router-dom'
+import {
+	useAdventureStateContext,
+	useGetAdventures,
+	useSaveCompletedAdventure,
+	useSaveTodo,
+	useUserStateContext
+} from 'sundaypeak-treewells'
 
 import getContent from 'TextContent'
-import { useAdventureStateContext, useUserStateContext } from 'Hooks/Providers'
-import { useGetAdventure, useSaveCompletedAdventure, useSaveTodo } from 'Hooks'
 
 export const useAdventureMenu = () => {
 	const { loggedInUser } = useUserStateContext()
 	const { currentAdventure } = useAdventureStateContext()
-	const { shareAdventure } = useGetAdventure()
+	const { shareAdventure } = useGetAdventures()
 	const saveTodo = useSaveTodo()
 	const saveCompletedAdventure = useSaveCompletedAdventure()
 
@@ -18,14 +23,14 @@ export const useAdventureMenu = () => {
 
 		const canAddTodo =
 			!loggedInUser?.todo_adventures
-				.map(({ adventure_id }) => adventure_id)
+				?.map(({ adventure_id }) => adventure_id)
 				.includes(currentAdventure?.id) &&
 			!loggedInUser?.completed_adventures
-				.map(({ adventure_id }) => adventure_id)
+				?.map(({ adventure_id }) => adventure_id)
 				.includes(currentAdventure?.id)
 
 		const canComplete = !loggedInUser?.completed_adventures
-			.map(({ adventure_id }) => adventure_id)
+			?.map(({ adventure_id }) => adventure_id)
 			.includes(currentAdventure?.id)
 
 		const fields = []

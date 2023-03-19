@@ -12,16 +12,3 @@ export const formatAdventureForExport = (oldObject, attachString = null) => {
 	}
 	return newObject
 }
-
-/**
- * {
- *  a: 1,
- *  b: 2,
- *  c: {
- *    d: 3,
- *    e: {
- *      f: 4
- *    }
- *  }
- * }
- */

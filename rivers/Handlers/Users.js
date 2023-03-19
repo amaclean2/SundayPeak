@@ -9,7 +9,6 @@ const {
 const { sendResponse } = require('../ResponseHandling/success')
 
 const serviceHandler = require('../Config/services')
-const logger = require('../Config/logger')
 
 const createUser = async (req, res) => {
   try {
@@ -30,7 +29,12 @@ const createUser = async (req, res) => {
 
     return sendResponse({ req, res, data: newUserResponse, status: CREATED })
   } catch (error) {
-    return returnError({ req, res, message: 'serverCreateUser', error })
+    return returnError({
+      req,
+      res,
+      message: typeof error === 'string' ? error : 'serverCreateUser',
+      error
+    })
   }
 }
 

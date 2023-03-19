@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
+import { SundayPeakProviders } from 'sundaypeak-treewells'
 
-import { ProvidersWrapper } from 'index'
 import ReactMap from 'Components/Mapping/ReactMap'
 import { ImageViewer } from 'Components/Reusable'
 import Alert from 'Components/Reusable/Alert'
@@ -12,12 +12,12 @@ export const title = 'Sunday Peak'
 
 const App = () => {
 	return (
-		<ProvidersWrapper>
+		<SundayPeakProviders>
 			<ReactMap />
 			<Outlet />
 			<ImageViewer />
 			<Alert />
-		</ProvidersWrapper>
+		</SundayPeakProviders>
 	)
 }
 
