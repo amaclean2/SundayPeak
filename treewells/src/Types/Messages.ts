@@ -31,14 +31,19 @@ type NewConnectionType = {
 	payload: WebSocket
 }
 
-type GetConversation = {
-	type: 'getConversation'
-	payload: number
+type ReceiveConversations = {
+	type: 'addNewConversation'
+	payload: ConversationType
 }
 
 type SetConversations = {
 	type: 'setConversations'
 	payload: { [key: number | string]: ConversationType }
+}
+
+type SetCurrentConversation = {
+	type: 'setCurrentConversation'
+	payload: number
 }
 
 type SetMessages = {
@@ -47,7 +52,7 @@ type SetMessages = {
 }
 
 type CreateMessage = {
-	type: 'createMessage'
+	type: 'receiveMessage'
 	payload: MessageType
 }
 
@@ -62,11 +67,12 @@ type SendMessage = {
 
 export type MessageAction =
 	| NewConnectionType
-	| GetConversation
+	| ReceiveConversations
 	| SetConversations
 	| SetMessages
 	| CreateMessage
 	| SendMessage
+	| SetCurrentConversation
 
 export type MessageState = {
 	conversations: { [key: number]: ConversationType } | null

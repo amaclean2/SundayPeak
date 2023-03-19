@@ -2,8 +2,8 @@ import { UserAction, UserState, UserType } from '../../Types/User'
 
 export const initialUserState: UserState = {
 	loginError: null,
-	workingUser: {} as UserType,
-	loggedInUser: {} as UserType,
+	workingUser: null,
+	loggedInUser: null,
 	formFields: {},
 	userEditState: false,
 	statState: 'completed',
@@ -19,11 +19,11 @@ export const userReducer = (state: UserState, action: UserAction): UserState => 
 			return {
 				...state,
 				loggedInUser: {
-					...state.loggedInUser,
+					...(state.loggedInUser as UserType),
 					[action.payload.name]: action.payload.value
 				},
 				workingUser: {
-					...state.workingUser,
+					...(state.workingUser as UserType),
 					[action.payload.name]: action.payload.value
 				},
 				formFields: {
@@ -41,7 +41,9 @@ export const userReducer = (state: UserState, action: UserAction): UserState => 
 			}
 		case 'logout':
 			localStorage.clear()
-			return { ...state, loggedInUser: {} as UserType }
+			return { ...state, loggedInUser: null }
+		case 'setLoginError':
+			return { ...state, loginError: action.payload }
 		case 'setFormFields':
 			return {
 				...state,

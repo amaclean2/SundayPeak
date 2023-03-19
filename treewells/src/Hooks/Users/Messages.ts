@@ -1,9 +1,8 @@
 import { SundayPeakServerUrls } from '../../config'
 import { useMessagingStateContext } from '../../Providers/MessageStateProvider'
-import { ConversationsType } from '../../Types/Messages'
 
 export const useMessages = () => {
-	const { messageDispatch, websocket, conversations } = useMessagingStateContext()
+	const { messageDispatch, websocket } = useMessagingStateContext()
 
 	const initiateConnection = () => {
 		if (websocket) {
@@ -26,25 +25,16 @@ export const useMessages = () => {
 			if (response.connected) {
 				localWebSocket.send(JSON.stringify({ type: 'getAllConversations' }))
 			} else if (response.conversations) {
-				messageDispatch({ type: 'getConversation', payload: response.conversations })
+				messageDispatch({ type: 'setConversations', payload: response.conversations })
 			} else if (response.messages) {
 				messageDispatch({ type: 'setMessages', payload: response.messages })
 			} else if (response.conversation) {
 				messageDispatch({
-					type: 'setConversations',
-					payload: {
-						...(conversations as ConversationsType),
-						[response.conversation_id]: {
-							last_message: '',
-							unread: false,
-							conversation_id: response.conversation_id,
-							users: [],
-							conversation_name: response.conversation.conversation_name
-						}
-					}
+					type: 'addNewConversation',
+					payload: response.conversation
 				})
 			} else if (response.message) {
-				messageDispatch({ type: 'createMessage', payload: response.message })
+				messageDispatch({ type: 'receiveMessage', payload: response.message })
 			}
 		}
 
@@ -70,8 +60,10 @@ export const useMessages = () => {
 	}
 
 	const getConversation = ({ conversationId }: { conversationId: number }) => {
+		// set the current conversation id and send a message to the websocket that we'd like all the messages
+		// for that conversation
+		messageDispatch({ type: 'setCurrentConversation', payload: conversationId })
 		websocket?.send(JSON.stringify({ type: 'getConversation', conversationId }))
-		messageDispatch({ type: 'getConversation', payload: conversationId })
 	}
 
 	const closeConnection = () => {

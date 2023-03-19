@@ -29,6 +29,12 @@ export const initialAdventureState = {
 
 export const adventureReducer = (state: AdventureState, action: AdventureAction) => {
 	switch (action.type) {
+		case 'updateStartPosition':
+			localStorage.setItem('startPos', JSON.stringify(action.payload))
+			return {
+				...state,
+				startPosition: action.payload
+			}
 		case 'setAllAdventures':
 			return {
 				...state,

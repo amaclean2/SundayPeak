@@ -2,6 +2,7 @@ import { useGetAdventures } from '.'
 import { useAdventureStateContext } from '../../Providers/AdventureStateProvider'
 import { useUserStateContext } from '../../Providers/UserStateProvider'
 import { AdventureChoiceType, AdventureType } from '../../Types/Adventures'
+import { TodoAdventureForUserType, UserType } from '../../Types/User'
 
 type HandleSaveTodoProps = {
 	todo: {
@@ -29,8 +30,11 @@ export const useHandleAdventureResponses = () => {
 		userDispatch({
 			type: 'setLoggedInUser',
 			payload: {
-				...loggedInUser,
-				todo_adventures: [...loggedInUser.todo_adventures, todo.user_todo_field]
+				...(loggedInUser as UserType),
+				todo_adventures: [
+					...(loggedInUser?.todo_adventures as TodoAdventureForUserType[]),
+					todo.user_todo_field
+				]
 			}
 		})
 

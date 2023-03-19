@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react'
 
 import { useUserStateContext } from '../../Providers/UserStateProvider'
-import { UserStatType } from '../../Types/User'
+import { UserStatType, UserType } from '../../Types/User'
 import { fetcher, useDebounce } from '../../utils'
 import { users } from '../Apis'
 import { useHandleUserResponses } from './handleResponses'
@@ -34,7 +34,6 @@ export const useCreateUser = () => {
 				})
 					.then(({ data }) => handleCreateUserResponse(data))
 					.catch(({ error }) => {
-						console.log('error', error)
 						userDispatch({ type: 'setLoginError', payload: error.message || error.code_error })
 
 						return error
@@ -144,7 +143,7 @@ export const useGetUser = () => {
 	}
 
 	const setWorkingUserToCurrentUser = () => {
-		return userDispatch({ type: 'setWorkingUser', payload: loggedInUser })
+		return userDispatch({ type: 'setWorkingUser', payload: loggedInUser as UserType })
 	}
 
 	const logoutUser = () => {

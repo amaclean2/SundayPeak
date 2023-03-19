@@ -9,7 +9,7 @@ type CompletedAdventureForUserType = {
 	nearest_city: string
 }
 
-type TodoAdventureForUserType = {
+export type TodoAdventureForUserType = {
 	adventure_id: number
 	adventure_name: string
 	adventure_type: AdventureChoiceType
@@ -99,8 +99,8 @@ export type UserAction =
 
 export type UserState = {
 	loginError: null | string
-	workingUser: UserType
-	loggedInUser: UserType
+	workingUser: UserType | null
+	loggedInUser: UserType | null
 	formFields: any
 	userEditState: boolean
 	statState: string

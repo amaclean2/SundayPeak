@@ -1,7 +1,10 @@
+import { useAdventureStateContext } from '../../Providers/AdventureStateProvider'
 import { useCardStateContext } from '../../Providers/CardStateProvider'
+import { MapPosition } from '../../Types/Adventures'
 
 export const useManipulateFlows = () => {
 	const { cardDispatch } = useCardStateContext()
+	const { adventureDispatch } = useAdventureStateContext()
 
 	const openImage = (image: string) => {
 		return cardDispatch({ type: 'setGalleryImage', payload: image })
@@ -19,10 +22,15 @@ export const useManipulateFlows = () => {
 		return cardDispatch({ type: 'closeCardMessage', payload: message })
 	}
 
+	const updateStartPosition = (startPosition: MapPosition) => {
+		return adventureDispatch({ type: 'updateStartPosition', payload: startPosition })
+	}
+
 	return {
 		openImage,
 		openAlert,
 		closeAlert,
-		closeCard
+		closeCard,
+		updateStartPosition
 	}
 }

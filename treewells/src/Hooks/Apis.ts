@@ -136,7 +136,7 @@ export const todoAdventures: TodoAdventureObject = {
 }
 export const completedAdventures: CompletedAdventureObject = {
 	create: {
-		url: '/created_adventures/create',
+		url: '/completed_adventures/create',
 		method: 'POST'
 	}
 }

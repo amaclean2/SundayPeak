@@ -89,6 +89,11 @@ type HikeAdventureType = BasicAdventureType & {
 }
 
 export type AdventureType = SkiAdventureType | ClimbAdventureType | HikeAdventureType
+export type MapPosition = {
+	longitude: number
+	latitude: number
+	zoom: number
+}
 
 type SetAllAdventuresType = {
 	type: 'setAllAdventures'
@@ -141,6 +146,11 @@ type DeleteAdventure = {
 	type: 'deleteAdventure'
 }
 
+type UpdateStartPosition = {
+	type: 'updateStartPosition'
+	payload: MapPosition
+}
+
 type AdventureTypeView = {
 	type: 'setGlobalAdventureType'
 	payload: AdventureChoiceType
@@ -164,6 +174,7 @@ export type AdventureAction =
 	| DeleteAdventure
 	| AdventureTypeView
 	| NewAdventureProcess
+	| UpdateStartPosition
 
 export type AdventureState = {
 	allAdventures: AdventureList | null
