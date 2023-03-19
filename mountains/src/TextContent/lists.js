@@ -23,5 +23,12 @@ export const lists = {
 		west: 'West',
 		northWest: 'North West'
 	},
-	gear: { rope: 'Rope', axe: 'Ice Axe', kit: 'Glacier Kit', skins: 'Skins', crampons: 'Crampons' }
+	gear: {
+		rope: 'Rope',
+		axe: 'Ice Axe',
+		kit: 'Glacier Kit',
+		skins: 'Skins',
+		crampons: 'Crampons',
+		skis: 'Skis/Snowboard'
+	}
 }

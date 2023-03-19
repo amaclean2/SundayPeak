@@ -1,55 +1,40 @@
-import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-import { useCardStateContext } from '../../../Providers'
 import DisplayHeader from './DisplayHeader'
+import { FieldProps } from '../Menu'
 
 import './styles.css'
 
 export const DisplayCard = ({
 	children,
-	onClose = () => {},
+	onClose,
 	configuration = 'left',
-	className
+	className,
+	title,
+	menu
 }) => {
-	const { displayCardBoolState, cardDispatch } = useCardStateContext()
-	const [displayState, setDisplayState] = useState(0)
-
-	useEffect(() => {
-		if (displayCardBoolState) {
-			setDisplayState(1)
-			setTimeout(() => {
-				setDisplayState(2)
-			}, 0)
-		} else {
-			setDisplayState(3)
-		}
-	}, [displayCardBoolState])
-
-	const handleFinishedTransition = () => {
-		if (displayState === 3) {
-			onClose()
-			cardDispatch({ type: 'closeCard' })
-			setDisplayState(0)
-		}
-	}
-
 	return (
-		<div
-			onTransitionEnd={handleFinishedTransition}
-			className={cx(
-				'display-card-container flex-box',
-				className,
-				configuration,
-				displayState === 1 && 'opening',
-				displayState === 2 && 'open',
-				displayState === 3 && 'closing'
-			)}
-		>
+		<div className={cx('display-card-container flex-box', className, configuration)}>
 			<div className={`display-card`}>
-				<DisplayHeader onClose={() => setDisplayState(3)} />
+				<DisplayHeader
+					title={title}
+					onClose={onClose}
+					menu={menu}
+				/>
 				<div className='display-content flex-box'>{children}</div>
 			</div>
 		</div>
 	)
+}
+
+DisplayCard.propTypes = {
+	children: PropTypes.node,
+	onClose: PropTypes.func,
+	configuration: PropTypes.oneOf(['left', 'right', 'center']),
+	className: PropTypes.string,
+	title: PropTypes.node,
+	menu: PropTypes.shape({
+		fields: FieldProps
+	})
 }

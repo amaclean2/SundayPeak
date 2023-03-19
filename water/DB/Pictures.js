@@ -6,7 +6,6 @@ const {
   deleteProfilePictureStatement,
   deletePictureByAdventureStatement
 } = require('./Statements')
-const { db } = require('../Config/db')
 
 const addUserPicture = async ({ fileName }) => {}
 

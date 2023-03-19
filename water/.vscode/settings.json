@@ -1,0 +1,53 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "askForPassword": true,
+      "driver": "MySQL",
+      "name": "MySQL",
+      "database": "friends",
+      "username": "root"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3306,
+      "askForPassword": true,
+      "driver": "MySQL",
+      "name": "friends",
+      "database": "friends",
+      "username": "byf"
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default"
+      },
+      "previewLimit": 50,
+      "server": "backyard-stage-db-do-user-6012695-0.b.db.ondigitalocean.com",
+      "port": 25060,
+      "driver": "MySQL",
+      "name": "stagedb",
+      "database": "friends",
+      "username": "byf",
+      "password": "AVNS_lM25mnEfowo3P0b7CEb",
+      "connectString": "mysql://doadmin:AVNS_Q-nFjkkcsY82qmRqx-C@backyard-stage-db-do-user-6012695-0.b.db.ondigitalocean.com:25060/defaultdb?ssl-mode=REQUIRED"
+    }
+  ],
+  "eslint.alwaysShowStatus": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.run": "onSave",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true
+}

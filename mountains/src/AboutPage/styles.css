@@ -112,10 +112,6 @@
 	border-bottom: 1px solid var(--main-off-white);
 }
 
-.landing-header .action-buttons .button {
-	width: auto;
-}
-
 @media screen and (max-width: 500px) {
 	.landing-header {
 		padding: 1rem 0.5rem;
@@ -124,10 +120,6 @@
 
 	.landing-header .mobile-button:hover {
 		background-color: var(--off-background-color);
-	}
-
-	.landing-header .action-buttons {
-		display: none;
 	}
 
 	.hero-panel {

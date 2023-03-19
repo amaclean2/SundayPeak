@@ -1,0 +1,82 @@
+.adventure-search.flex-box {
+	flex-direction: column;
+	width: 100%;
+	align-items: stretch;
+	border-bottom: 1px solid var(--border-color);
+	overflow: hidden;
+	overflow-y: auto;
+	gap: 1rem;
+}
+
+.results-container {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.results-container li {
+	padding: 0.4rem 0;
+	transition: all 0.3s ease-in-out;
+}
+
+.results-container li:hover {
+	background-color: var(--main-off-white);
+}
+
+.adventure-type-selector {
+	margin: 0 1rem;
+}
+
+.result-title {
+	font-weight: 500;
+}
+
+.current-adventure-type {
+	background-color: var(--primary-accent-color);
+	color: var(--main-off-white);
+}
+
+.current-adventure-type:hover {
+	background-color: var(--primary-accent-color-hover);
+}
+
+.adventure-pill-selector {
+	gap: 1rem;
+}
+
+.adventure-search-spacer {
+	height: 5rem;
+}
+
+.delete-page {
+	background-color: var(--main-light);
+	border-radius: 0.5rem;
+	box-shadow: 0 0.5rem 1rem var(--box-shadow-opacity);
+	z-index: 1;
+	padding: 0.8rem;
+	gap: 1rem;
+	flex-direction: column;
+	max-width: 20rem;
+	align-items: flex-start;
+}
+
+.delete-page .action-buttons {
+	margin-bottom: 0;
+}
+
+.results-container li {
+	padding: 0.5rem;
+}
+
+.adventure-result {
+	gap: 0.5rem;
+	color: inherit;
+}
+
+@media screen and (max-width: 500px) {
+	.adventure-search.flex-box {
+		max-height: 20rem;
+		padding-bottom: 1.2rem;
+		position: relative;
+	}
+}

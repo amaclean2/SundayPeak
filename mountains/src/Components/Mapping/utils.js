@@ -1,16 +1,11 @@
-import {
-	CARD_TYPES,
-	useAdventureStateContext,
-	useCardStateContext,
-	useGetAdventure,
-	useGetAdventures
-} from '../../Providers'
+import { useNavigate } from 'react-router-dom'
+import { useAdventureStateContext, useGetAdventures, useSaveAdventure } from 'sundaypeak-treewells'
 
 export const useCreateNewAdventure = () => {
-	const { adventureAddState, allAdventures, adventureDispatch } = useAdventureStateContext()
-	const { createNewDefaultAdventure } = useGetAdventures()
-	const { cardDispatch } = useCardStateContext()
-	const { getAdventure } = useGetAdventure()
+	const { adventureAddState } = useAdventureStateContext()
+	const { getAdventure } = useGetAdventures()
+	const { createNewDefaultAdventure } = useSaveAdventure()
+	const navigate = useNavigate()
 
 	const handleCreateNewAdventure = (event) => {
 		event.preventDefault()
@@ -19,26 +14,14 @@ export const useCreateNewAdventure = () => {
 			return
 		}
 
-		const newAdventure = createNewDefaultAdventure({
+		return createNewDefaultAdventure({
 			longitude: event.lngLat.lng,
 			latitude: event.lngLat.lat
-		})
-
-		adventureDispatch({
-			type: 'newAdventurePanel',
-			payload: { adventures: [...allAdventures, newAdventure], currentAdventure: newAdventure }
-		})
-
-		cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })
-		adventureDispatch({ type: 'toggleAdventureEditable' })
+		}).then((adventure) => navigate(`/adventure/edit/${adventure.adventure_type}/${adventure.id}`))
 	}
 
-	const viewMore = ({ id, boundingBox }) => {
-		adventureDispatch({ type: 'boundingBox', payload: boundingBox })
-
-		return getAdventure({ id }).then(() =>
-			cardDispatch({ type: 'openCard', payload: CARD_TYPES.adventures })
-		)
+	const viewMore = ({ id, type }) => {
+		return getAdventure({ id }).then(() => navigate(`/adventure/${type}/${id}`))
 	}
 
 	return {

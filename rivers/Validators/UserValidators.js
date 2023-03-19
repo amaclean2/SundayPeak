@@ -1,8 +1,4 @@
 const { body } = require('express-validator')
-const logger = require('../Config/logger')
-const { checkPasswordResetToken } = require('../DB')
-
-const queries = require('../DB')
 
 const userLoginValidator = () => {
   return [
@@ -17,13 +13,7 @@ const userLoginValidator = () => {
 }
 
 const passwordResetValidator = () => {
-  return [
-    body('email').custom(async (value) => {
-      const userExists = await queries.checkForUser({ email: value })
-      if (!userExists) throw 'noAccountExists'
-      return true
-    })
-  ]
+  return []
 }
 
 const newPasswordValidator = () => {
@@ -32,16 +22,6 @@ const newPasswordValidator = () => {
       const paramsExist = req?.body?.password && req?.body?.reset_token
 
       if (!paramsExist) throw 'invalidPasswordResetBody'
-      return true
-    }),
-    body('reset_token').custom(async (value, { req }) => {
-      const { id } = await checkPasswordResetToken({ token: value })
-
-      if (!id) {
-        throw 'noAccountExists'
-      }
-
-      req.body.user_id = id
       return true
     })
   ]
@@ -55,13 +35,6 @@ const userCreateValidator = () => {
         return true
       })
       .bail()
-      .custom(async (value) => {
-        const idExists = await queries.checkForUser({ email: value })
-
-        if (idExists) throw 'preexistingUser'
-        return true
-      })
-      .bail()
       .isEmail()
       .bail()
       .withMessage('invalidField'),
@@ -70,7 +43,7 @@ const userCreateValidator = () => {
       .isEmpty()
       .bail()
       .withMessage('missingFieldsCreateUser')
-      .isLength({ min: 5, max: 30 })
+      .isLength({ min: 5, max: 50 })
       .bail()
       .withMessage('passwordOutOfRange'),
     body('password_2')
@@ -118,56 +91,22 @@ const userCreateValidator = () => {
 
 const userEditValidator = () => {
   return [
-    body('fields')
-      .custom((fields) => {
-        logger.info({ fields })
-        const isCorrect = fields.every((field) => {
-          return field.name && field.value
-        })
+    body('field').custom((field) => {
+      if (!field) {
+        throw 'the field object must be present in the body with name and value properties'
+      }
 
-        if (!isCorrect) throw 'editFieldsFormat'
+      const isCorrect = field.name && field.value
+      if (!isCorrect) throw 'editFieldsFormat'
 
-        return true
-      })
-      .custom((fields) => {
-        for (const field in fields) {
-          if (
-            field.field_name === 'sex' &&
-            typeof field.field_value !== 'number'
-          ) {
-            throw 'editFieldsFormat'
-          }
-        }
-
-        return true
-      })
-  ]
-}
-
-const userFollowValidator = () => {
-  return [
-    body('leader_id')
-      .not()
-      .isEmpty()
-      .bail()
-      .withMessage('leaderRequired')
-      .custom(async (value, { req }) => {
-        const alreadyFollowed = await queries.getRelationship({
-          leader_id: value,
-          follower_id: req.body.id_from_token
-        })
-
-        if (alreadyFollowed.length) throw 'alreadyFollowed'
-
-        return true
-      })
+      return true
+    })
   ]
 }
 
 module.exports = {
   userLoginValidator,
   userCreateValidator,
-  userFollowValidator,
   userEditValidator,
   passwordResetValidator,
   newPasswordValidator

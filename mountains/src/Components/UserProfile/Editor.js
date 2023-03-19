@@ -1,24 +1,25 @@
-import { useUserStateContext } from 'Providers'
-import { ErrorField, FormField, MultiField } from 'Components/Reusable'
+import { useNavigate } from 'react-router-dom'
+
+import {
+	Button,
+	DisplayCard,
+	ErrorField,
+	FooterButtons,
+	FormField,
+	MultiField
+} from 'Components/Reusable'
 import ProfileImageUploader from './ProfileImageUploader'
-import { useTokenStateContext } from 'Providers/tokensProvider'
+import { useEditUser, useUserStateContext } from 'sundaypeak-treewells'
 
 const UserEditor = () => {
-	const { workingUser, editUser } = useUserStateContext()
-	const { mapboxStyles } = useTokenStateContext()
+	const { workingUser } = useUserStateContext()
+	const { editUser } = useEditUser()
+	const navigate = useNavigate()
 
-	const styles =
-		mapboxStyles &&
-		Object.keys(mapboxStyles).map((style, key) => ({
-			id: key,
-			value: mapboxStyles[style],
-			text: style
-		}))
-
-	if (!styles) return
+	if (!workingUser) return null
 
 	return (
-		<div className='adventure-info flex-box'>
+		<DisplayCard title={'My Profile'}>
 			<ProfileImageUploader />
 			<ErrorField form={'user'} />
 			<MultiField
@@ -108,18 +109,6 @@ const UserEditor = () => {
 				onChange={editUser}
 			/>
 			<FormField
-				type='select'
-				name='map_style'
-				label='Map Style'
-				isEditable
-				fullWidth
-				value={workingUser.map_style}
-				onChange={editUser}
-				options={{
-					selectOptions: styles
-				}}
-			/>
-			<FormField
 				name='bio'
 				label='Bio'
 				type='textarea'
@@ -128,7 +117,10 @@ const UserEditor = () => {
 				value={workingUser.bio || ''}
 				onChange={editUser}
 			/>
-		</div>
+			<FooterButtons>
+				<Button onClick={() => navigate('/user')}>Finish</Button>
+			</FooterButtons>
+		</DisplayCard>
 	)
 }
 

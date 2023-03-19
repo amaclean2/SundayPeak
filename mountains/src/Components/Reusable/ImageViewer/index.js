@@ -1,20 +1,20 @@
-import { FlexSpacer } from '..'
-import { useCardStateContext, useUserPictures } from '../../../Providers'
-import { Button } from '../Button'
+import { useManipulateFlows, useCardStateContext } from 'sundaypeak-treewells'
+
+import { Button, FlexSpacer } from '..'
 
 import './styles.css'
 
 export const ImageViewer = () => {
-	const { viewingImage, cardDispatch } = useCardStateContext()
-	const { deletePicture } = useUserPictures()
+	const { galleryImage } = useCardStateContext()
+	const { openImage } = useManipulateFlows()
 
-	const largeImage = viewingImage?.replace('/thumbs', '')
+	const largeImage = galleryImage?.replace('/thumbs', '')
 
 	const closeViewer = () => {
-		cardDispatch({ type: 'viewingImage', payload: null })
+		openImage(null)
 	}
 
-	if (!viewingImage) {
+	if (!galleryImage) {
 		return null
 	}
 
@@ -26,7 +26,7 @@ export const ImageViewer = () => {
 			<div className='image-viewer-header flex-box'>
 				<FlexSpacer />
 				<Button
-					onClick={() => deletePicture({ pictureRef: viewingImage })}
+					onClick={() => console.log('deleted')}
 					id={'image-delete-button'}
 					className='delete-button secondary-button'
 				>

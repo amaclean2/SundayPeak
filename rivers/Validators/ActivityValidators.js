@@ -18,11 +18,6 @@ const createValidator = () => {
   ]
 }
 
-const getValidatorByAdventure = () => {
-  return [body('adventure_id').not().isEmpty()]
-}
-
 module.exports = {
-  createValidator,
-  getValidatorByAdventure
+  createValidator
 }

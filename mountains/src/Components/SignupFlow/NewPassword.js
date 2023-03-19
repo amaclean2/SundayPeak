@@ -1,104 +1,77 @@
-import { useRef } from 'react'
+import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import {
-	CARD_TYPES,
-	useCardStateContext,
-	useCreateUser,
-	useUserStateContext
-} from '../../Providers'
-import {
-	Button,
-	DisplayCard,
-	ErrorField,
-	FieldHeader,
-	FooterButtons,
-	FormField,
-	ProfileContent,
-	ProfileHeader
-} from '../Reusable'
+import { useCreateUser, useGetUser } from 'sundaypeak-treewells'
+
+import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
 
 export const NewPassword = () => {
-	const { cardDispatch } = useCardStateContext()
-	const { userDispatch } = useUserStateContext()
 	const { updateNewPassword } = useCreateUser()
+	const { setLoginError } = useGetUser()
 	const { search } = useLocation()
 	const navigate = useNavigate()
 
-	const newPasswordObject = {
+	const initialNewPasswordObject = {
 		password: '',
 		confirmPassword: ''
 	}
 
-	const newPassword = useRef(newPasswordObject)
+	const [newPasswordObject, setNewPasswordObject] = useState(initialNewPasswordObject)
 
 	const confirmNewPassword = async () => {
-		if (newPassword.current.password === newPassword.current.confirmPassword) {
+		if (newPasswordObject.password === newPasswordObject.confirmPassword) {
 			const resetToken = search.split('resetToken=')?.[1]
-			await updateNewPassword({ newPassword: newPassword.current.password, resetToken })
+			await updateNewPassword({ newPassword: newPasswordObject.password, resetToken })
 			navigate('/discover')
 		} else {
-			userDispatch({
-				type: 'loginError',
-				payload: 'Your password and confirm password fields have to match'
-			})
+			setLoginError('Your password and confirm password fields have to match')
 		}
 	}
 
 	return (
-		<DisplayCard configuration='center'>
-			<ProfileHeader>
-				<FieldHeader
-					pageHeader
-					className={'signup-header-text'}
-					text={'Reset Your Password'}
-				/>
-			</ProfileHeader>
-			<ProfileContent>
-				<div className='main-login-content'>
-					<div className='adventure-info flex-box reset-form'>
-						<ErrorField form='login' />
-						<FormField
-							name='password'
-							label='New Password'
-							type='password'
-							hideLabel
-							isEditable
-							autoComplete={'on'}
-							value={newPassword.password}
-							onChange={(e) =>
-								(newPassword.current = { ...newPassword.current, password: e.target.value })
-							}
-						/>
-						<FormField
-							name='confirm'
-							label='Confirm Password'
-							type='password'
-							hideLabel
-							isEditable
-							autoComplete={'on'}
-							value={newPassword.confirmPassword}
-							onChange={(e) =>
-								(newPassword.current = { ...newPassword.current, confirmPassword: e.target.value })
-							}
-						/>
-					</div>
-				</div>
-				<FooterButtons className='reset-buttons'>
-					<Button
-						id={'confirm-new-password'}
-						onClick={confirmNewPassword}
-					>
-						Reset Password
-					</Button>
-					<Button
-						id='return-to-login'
-						className={'secondary-button'}
-						onClick={() => cardDispatch({ type: 'switchCard', payload: CARD_TYPES.login })}
-					>
-						Return to login
-					</Button>
-				</FooterButtons>
-			</ProfileContent>
+		<DisplayCard
+			configuration='center'
+			title={'Reset Your Password'}
+			onClose={() => navigate('/discover')}
+		>
+			<ErrorField form='login' />
+			<p className={'desc'}>Enter your new password to reset it</p>
+			<FormField
+				name='password'
+				label='New Password'
+				type='password'
+				hideLabel
+				isEditable
+				autoComplete={'on'}
+				value={newPasswordObject.password}
+				onChange={(e) => setNewPasswordObject({ ...newPasswordObject, password: e.target.value })}
+			/>
+			<FormField
+				name='confirm'
+				label='Confirm Password'
+				type='password'
+				hideLabel
+				isEditable
+				autoComplete={'on'}
+				value={newPasswordObject.confirmPassword}
+				onChange={(e) =>
+					setNewPasswordObject({ ...newPasswordObject, confirmPassword: e.target.value })
+				}
+			/>
+			<FooterButtons className='reset-buttons'>
+				<Button
+					id={'confirm-new-password'}
+					onClick={confirmNewPassword}
+				>
+					Reset Password
+				</Button>
+				<Button
+					id='return-to-login'
+					className={'secondary-button'}
+					onClick={() => navigate('/login')}
+				>
+					Return to login
+				</Button>
+			</FooterButtons>
 		</DisplayCard>
 	)
 }

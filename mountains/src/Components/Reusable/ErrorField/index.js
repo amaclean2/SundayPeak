@@ -1,8 +1,7 @@
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
-
-import { useAdventureStateContext, useUserStateContext } from '../../../Providers'
+import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewells'
 
 import './styles.css'
 
@@ -24,9 +23,9 @@ export const ErrorField = ({ form, className }) => {
 	}
 
 	return (
-		<span className={cx('error-field flex-box', className, !!error.current ? '' : 'collapsed')}>
+		<div className={cx('error-field flex-box', className, !!error.current ? '' : 'collapsed')}>
 			{error.current}
-		</span>
+		</div>
 	)
 }
 

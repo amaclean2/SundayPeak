@@ -1,21 +1,25 @@
 import cx from 'classnames'
-import { useUserStateContext } from '../../Providers'
+import { useEditUser, useUserStateContext } from 'sundaypeak-treewells'
+
 import StatTemplate from './StatTemplate'
 
 const Stats = ({ className }) => {
-	const { workingUser, userDispatch } = useUserStateContext()
+	const { workingUser, statState } = useUserStateContext()
+	const { changeUserStatState } = useEditUser()
 
 	return (
 		<div className={cx('stats-container', 'stats', 'flex-box', className)}>
 			<StatTemplate
 				statLabel={'Completed'}
-				statValue={workingUser?.activity_count}
-				onClick={() => userDispatch({ type: 'selectListState', payload: 'completed' })}
+				statValue={workingUser?.completed_adventures.length.toString()}
+				selected={statState === 'completed'}
+				onClick={() => changeUserStatState('completed')}
 			/>
 			<StatTemplate
 				statLabel={'Friends'}
-				statValue={workingUser?.friend_count}
-				onClick={() => userDispatch({ type: 'selectListState', payload: 'friends' })}
+				statValue={workingUser?.friends.length.toString()}
+				selected={statState === 'friends'}
+				onClick={() => changeUserStatState('friends')}
 			/>
 			<div className='flex-spacer' />
 		</div>

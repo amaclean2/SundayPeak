@@ -8,6 +8,7 @@
 	align-items: flex-start;
 	flex: 1;
 	padding: 0 0.8rem;
+	gap: 0.8rem;
 }
 
 .field-row.flex-box {
@@ -26,8 +27,7 @@
 .field-header {
 	font-size: 1.2rem;
 	margin: 0;
-	margin-bottom: 1rem;
-	font-weight: 600;
+	font-weight: 500;
 }
 
 .field-image {
@@ -38,6 +38,23 @@
 .field-image img {
 	width: 100%;
 	height: 100%;
+}
+
+.field-value.flex-box {
+	justify-content: flex-start;
+	gap: 0.5rem;
+}
+
+.view-location.flex-box {
+	justify-content: flex-start;
+	align-items: center;
+	gap: 0.5rem;
+	flex-direction: row;
+	padding: 0;
+}
+
+.location-row.flex-box {
+	padding: 0.5rem 0;
 }
 
 @media screen and (max-width: 500px) {

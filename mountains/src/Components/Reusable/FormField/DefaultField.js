@@ -33,7 +33,7 @@ const DefaultField = ({
 			autoComplete={autoComplete}
 			placeholder={placeholderDefinition({ placeholder, hideLabel, label })}
 			value={value}
-			onChange={onChange}
+			onChange={(event) => onChange(event)}
 			autoFocus={autoFocus}
 		/>
 	)

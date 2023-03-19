@@ -14,6 +14,7 @@ export * from './ImageViewer'
 export * from './Accordion'
 export * from './ConfirmationPage'
 export * from './MobileMenu'
+export * from './Menu'
 
-export const FlexSpacer = ({ size = 'one' }) => <div className={cx('flex-spacer', size)} />
-export const Degrees = () => <span>&#176;</span>
+export const FlexSpacer = () => <div className={'flex-spacer'} />
+export const Divider = () => <div className={'divider'} />

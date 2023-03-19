@@ -36,12 +36,6 @@
 	transition: all 0.3s ease-in-out;
 }
 
-.drop-list-item {
-	gap: 0.5rem;
-	align-items: flex-end;
-	cursor: default;
-}
-
 .drop-list-subtext {
 	font-size: 0.9rem;
 	color: var(--primary-accent-color);

@@ -1,4 +1,3 @@
-const { statsQuery } = require('../DB')
 const {
   sendResponse,
   returnError,
@@ -8,12 +7,12 @@ const {
 
 const getAppStats = async (req, res) => {
   try {
-    const data = await statsQuery()
+    const stats = {}
     return sendResponse({
       req,
       res,
       data: {
-        stats: data
+        stats
       },
       status: SUCCESS
     })

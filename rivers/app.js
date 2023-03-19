@@ -5,7 +5,9 @@ const { config } = require('dotenv')
 
 const router = require('./Routing')
 const { corsHandler } = require('./Config/cors')
-const authService = require('./Services/auth.service')
+const serviceHandler = require('./Config/services')
+const { returnError, NOT_ACCEPTABLE } = require('./ResponseHandling')
+const logger = require('./Config/logger')
 
 config()
 
@@ -26,6 +28,29 @@ app.use(
 )
 
 // public routes
-app.use(authService.validate, router)
+app.use((req, res, next) => {
+  const bearerToken = req.headers?.authorization?.split(' ').pop()
+  return serviceHandler.validationService
+    .validate({
+      originalUrl: req.originalUrl,
+      token: bearerToken?.replace(/"/g, '')
+    })
+    .then((validationResponse) => {
+      if (validationResponse === true) {
+        next()
+      } else {
+        if (req.body) {
+          req.body.id_from_token = validationResponse.idFromToken
+        } else {
+          req.body = { id_from_token: validationResponse.idFromToken }
+        }
+
+        next()
+      }
+    })
+    .catch((error) => {
+      return returnError({ req, res, status: NOT_ACCEPTABLE, message: error })
+    })
+}, router)
 
 module.exports = app

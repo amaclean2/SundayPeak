@@ -1,13 +1,43 @@
 import { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
+import { CSVLink } from 'react-csv'
+import { useAdventureStateContext } from 'sundaypeak-treewells'
 
-import { Meatball } from '../../../Images/UIGlyphs/Meatball'
+import { Meatball } from 'Images/UIGlyphs/Meatball'
 import { Button } from '../Button'
+import { formatAdventureForExport } from './utils'
 
 import './styles.css'
 
-const Menu = ({ className, fields = [] }) => {
+const Field = ({ field, onClick }) => {
+	const { currentAdventure } = useAdventureStateContext()
+
+	if (field.action === 'export') {
+		return (
+			<CSVLink
+				data={[formatAdventureForExport(currentAdventure)]}
+				filename={`${currentAdventure.adventure_name.replace(/ /g, '')}_data_export.csv`}
+				className={cx('menu-button button flex-box', field.className)}
+			>
+				{field.text}
+			</CSVLink>
+		)
+	} else {
+		return (
+			<Button
+				className={cx('menu-button', field.className)}
+				id={field.id || field.text.replaceAll(' ', '-').toLowerCase()}
+				disabled={field.disabled}
+				onClick={onClick}
+			>
+				{field.text}
+			</Button>
+		)
+	}
+}
+
+export const Menu = ({ className, fields }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [position, setPosition] = useState('left')
 	const menuRef = useRef()
@@ -43,31 +73,31 @@ const Menu = ({ className, fields = [] }) => {
 			/>
 			<div className={'menu-buttons'}>
 				{fields.map((field, key) => (
-					<Button
+					<Field
+						field={field}
 						key={`menu_button_${key}`}
-						className={cx('menu-button', field.className)}
-						id={field.id || field.text.replaceAll(' ', '-')}
-						disabled={field.disabled}
 						onClick={(e) => handleMenuButton(e, field.action)}
-					>
-						{field.text}
-					</Button>
+					/>
 				))}
 			</div>
 		</div>
 	)
 }
 
-Menu.propTypes = {
-	fields: PropTypes.arrayOf(
-		PropTypes.shape({
-			className: PropTypes.string,
-			id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-			text: PropTypes.string,
-			action: PropTypes.func
-		})
-	).isRequired,
-	className: PropTypes.string
+export const FieldProps = PropTypes.arrayOf(
+	PropTypes.shape({
+		className: PropTypes.string,
+		id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+		text: PropTypes.string.isRequired,
+		action: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired
+	})
+)
+
+const MenuFieldProps = {
+	fields: FieldProps
 }
 
-export default Menu
+Menu.propTypes = {
+	...MenuFieldProps,
+	className: PropTypes.string
+}

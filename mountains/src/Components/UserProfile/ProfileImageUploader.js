@@ -1,20 +1,20 @@
 import cx from 'classnames'
+import { useUserStateContext } from 'sundaypeak-treewells'
 
-import { useUserPictures, useUserStateContext } from '../../Providers'
-import { Button } from '../Reusable'
+import { Button } from 'Components/Reusable'
 
 const ProfileImageUploader = () => {
-	const { updateProfilePicture, deletePicture } = useUserPictures()
-	const { workingUser, userDispatch } = useUserStateContext()
+	const { workingUser } = useUserStateContext()
 
 	const handleUpload = ({ target: { files } }) => {
-		updateProfilePicture({ data: files[0] })
+		console.log('profile photo updated')
+		// updateProfilePicture({ data: files[0] })
 	}
 
 	const deleteProfileImage = () => {
-		deletePicture({ pictureRef: workingUser.profile_picture_url }).then(() => {
-			userDispatch({ type: 'workingUser', payload: { ...workingUser, profile_picture_url: '' } })
-		})
+		console.log('picture deleted')
+		// userDispatch({ type: 'workingUser', payload: { ...workingUser, profile_picture_url: '' } })
+		// deletePicture({ pictureRef: workingUser.profile_picture_url })
 	}
 
 	return (

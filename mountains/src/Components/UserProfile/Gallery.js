@@ -1,19 +1,13 @@
-import { useCardStateContext, useUserPictures, useUserStateContext } from '../../Providers'
+import { useUserStateContext, useManipulateFlows } from 'sundaypeak-treewells'
 
 const UserProfileGallery = () => {
-	const { submitPicture } = useUserPictures()
-	const { cardDispatch } = useCardStateContext()
+	const { openImage } = useManipulateFlows()
 
-	const { workingUser, activeWorkingUser } = useUserStateContext()
+	const { workingUser, activeWorkingUser, images } = useUserStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
-		submitPicture({ data: files[0] })
-	}
-
-	const userImages = !activeWorkingUser ? [...workingUser.images, 'new'] : workingUser.images
-
-	const handleImageClick = (imageSource) => {
-		cardDispatch({ type: 'viewingImage', payload: imageSource })
+		console.log('picture submitted')
+		// submitPicture({ data: files[0] })
 	}
 
 	if (activeWorkingUser && !workingUser.imaages?.length) {
@@ -22,33 +16,26 @@ const UserProfileGallery = () => {
 
 	return (
 		<div className='scroller-container flex-box'>
-			{userImages.map((image, key) => {
-				if (image === 'new') {
-					return (
-						<label
-							className='file-upload-container flex-box'
-							key={`profile_image_create`}
-						>
-							Add a new photo
-							<input
-								type='file'
-								name='image'
-								className='image-input'
-								onChange={changeHandler}
-							/>
-						</label>
-					)
-				}
-
-				return (
-					<img
-						src={image}
-						alt={''}
-						key={`profile_image_${key}`}
-						onClick={() => handleImageClick(image)}
-					/>
-				)
-			})}
+			{images.map((image, key) => (
+				<img
+					src={image}
+					alt={''}
+					key={`profile_image_${key}`}
+					onClick={() => openImage(image)}
+				/>
+			))}
+			<label
+				className='file-upload-container flex-box'
+				key={`profile_image_create`}
+			>
+				Add a new photo
+				<input
+					type='file'
+					name='image'
+					className='image-input'
+					onChange={changeHandler}
+				/>
+			</label>
 		</div>
 	)
 }

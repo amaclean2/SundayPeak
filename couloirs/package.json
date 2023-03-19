@@ -1,0 +1,24 @@
+{
+  "name": "couloirs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js"
+  },
+  "keywords": [],
+  "author": "Andrew Maclean",
+  "license": "ISC",
+  "dependencies": {
+    "byf-custom-logger": "^1.9.6",
+    "dotenv": "^16.0.3",
+    "env-cmd": "^10.1.0",
+    "sundaypeak-water": "^1.1.7",
+    "ws": "^8.12.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}

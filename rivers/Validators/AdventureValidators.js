@@ -1,18 +1,24 @@
 const { body } = require('express-validator')
-const logger = require('../Config/logger')
 
 const adventureCreateValidator = () => {
   return [
-    body('adventure_type').not().isEmpty().withMessage('adventureType'),
-    body('adventure_name').not().isEmpty().withMessage('adventureName'),
+    body('adventure_type')
+      .not()
+      .isEmpty()
+      .withMessage('missingAdventureProperty'),
+    body('adventure_name')
+      .not()
+      .isEmpty()
+      .withMessage('missingAdventureProperty'),
     body('coordinates')
       .not()
       .isEmpty()
-      .withMessage('coordinates_obj')
+      .withMessage('missingAdventureProperty')
       .custom((value, { req }) => {
-        if (!value) throw 'coordinates_obj'
+        if (!value) throw 'missingAdventureProperty'
 
-        const parsedCoordinates = JSON.parse(value)
+        const parsedCoordinates =
+          typeof value === 'string' ? JSON.parse(value) : value
 
         req.body.coordinates_lat = parsedCoordinates.lat
         req.body.coordinates_lng = parsedCoordinates.lng
@@ -20,12 +26,15 @@ const adventureCreateValidator = () => {
 
         return true
       }),
-    body('nearest_city').not().isEmpty().withMessage('nearestCityFieldMissing'),
-    body('public').not().isEmpty().withMessage('publicFieldMissing'),
+    body('nearest_city')
+      .not()
+      .isEmpty()
+      .withMessage('missingAdventureProperty'),
+    body('public').not().isEmpty().withMessage('missingAdventureProperty'),
     body('id_from_token')
       .not()
       .isEmpty()
-      .withMessage('creatorId')
+      .withMessage('missingAdventureProperty')
       .customSanitizer((value, { req }) => {
         req.body.creator_id = value
         delete req.body.id_from_token
@@ -35,18 +44,28 @@ const adventureCreateValidator = () => {
 
 const adventureEditValidator = () => {
   return [
-    body('fields').custom((fields) => {
-      logger.info({ fields })
-      const isCorrect = fields.every((field) => {
-        return field.name && field.value
-      })
+    body('field').custom((field, { req }) => {
+      if (!field) {
+        throw 'field object containing name, value, adventure_id, and adventure_type must be present in the body'
+      }
+
+      const isCorrect =
+        field.name && field.value && field.adventure_id && field.adventure_type
+
+      if (
+        [
+          'distance',
+          'difficulty',
+          'exposure',
+          'summit_elevation',
+          'base_elevation'
+        ].includes(field.name) &&
+        typeof field.value !== 'number'
+      ) {
+        req.body.field.value = parseInt(field.value)
+      }
 
       if (!isCorrect) throw 'editFieldsFormat'
-
-      return true
-    }),
-    body('adventure_id').custom((adventureId) => {
-      if (!adventureId) throw 'editAdventureIdMissing'
 
       return true
     })
@@ -54,15 +73,7 @@ const adventureEditValidator = () => {
 }
 
 const adventuresGetValidator = () => {
-  return [
-    body('bounding_box')
-      .custom((value) => typeof value === 'object')
-      .withMessage('boundingBoxType')
-      .custom((value) => 'NE' in value)
-      .withMessage('boundingBox')
-      .custom((value) => 'SW' in value)
-      .withMessage('boundingBox')
-  ]
+  return []
 }
 
 module.exports = {

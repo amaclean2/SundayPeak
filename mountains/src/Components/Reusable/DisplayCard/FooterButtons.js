@@ -1,11 +1,7 @@
-import cx from 'classnames';
+import cx from 'classnames'
 
 export const FooterButtons = ({ className, children }) => {
-    return (
-        <div className={cx(className, 'action-buttons flex-box')}>
-            { children }
-        </div>
-    );
-};
+	return <div className={cx(className, 'action-buttons flex-box full-width')}>{children}</div>
+}
 
-export default FooterButtons;
+export default FooterButtons

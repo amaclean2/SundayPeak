@@ -1,23 +1,18 @@
-import { useCardStateContext, useUserPictures, useUserStateContext } from '../../../Providers'
-import getContent from '../../../TextContent'
+import { useManipulateFlows, useUserStateContext } from 'sundaypeak-treewells'
+import getContent from 'TextContent'
 import './styles.css'
 
 export const PhotoGallery = () => {
-	const { submitPicture } = useUserPictures()
-
-	const { cardDispatch } = useCardStateContext()
+	const { openImage } = useManipulateFlows()
 
 	const { workingUser, activeWorkingUser } = useUserStateContext()
 
 	const changeHandler = ({ target: { files } }) => {
-		submitPicture({ data: files[0] })
+		console.log('picture submitted')
+		// submitPicture({ data: files[0] })
 	}
 
 	const userImages = !activeWorkingUser ? [...workingUser.images, 'new'] : workingUser.images
-
-	const handleImageClick = (imageSource) => {
-		cardDispatch({ type: 'viewingImage', payload: imageSource })
-	}
 
 	return (
 		<div className='scroller-container flex-box'>
@@ -44,7 +39,7 @@ export const PhotoGallery = () => {
 						src={image}
 						alt={''}
 						key={`profile_image_${key}`}
-						onClick={() => handleImageClick(image)}
+						onClick={() => openImage(image)}
 					/>
 				)
 			})}

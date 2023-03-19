@@ -1,70 +1,51 @@
-import { useRef } from 'react'
-import { CARD_TYPES, useCardStateContext, useCreateUser } from '../../Providers'
-import {
-	Button,
-	DisplayCard,
-	ErrorField,
-	FieldHeader,
-	FooterButtons,
-	FormField,
-	ProfileContent,
-	ProfileHeader
-} from '../Reusable'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useCreateUser, useManipulateFlows } from 'sundaypeak-treewells'
+
+import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
 
 export const PasswordResetCapture = () => {
-	const { cardDispatch } = useCardStateContext()
-	const resetEmail = useRef('')
+	const [resetEmail, setResetEmail] = useState('')
 	const { sendPasswordResetLink } = useCreateUser()
+	const { closeCard } = useManipulateFlows()
 
 	const handleResetButton = () => {
-		sendPasswordResetLink({ email: resetEmail.current })
-		cardDispatch({
-			type: 'closeCardMessage',
-			payload: 'An email has been sent to reset your password'
-		})
+		sendPasswordResetLink({ email: resetEmail })
+		closeCard('An email has been sent to reset your password')
 	}
 
 	return (
-		<DisplayCard configuration='center'>
-			<ProfileHeader>
-				<FieldHeader
-					pageHeader
-					className={'signup-header-text'}
-					text={'Reset Your Password'}
-				/>
-			</ProfileHeader>
-			<ProfileContent>
-				<div className='main-login-content'>
-					<div className='adventure-info flex-box reset-form'>
-						<ErrorField form='password-reset' />
-						<FormField
-							name='email'
-							label='Enter your email to get a reset link sent to you'
-							type='email'
-							placeholder={'email'}
-							isEditable
-							autoComplete={'on'}
-							value={resetEmail.current}
-							onChange={(e) => (resetEmail.current = e.target.value)}
-						/>
-					</div>
-				</div>
-				<FooterButtons className='reset-buttons'>
-					<Button
-						id={'send-reset-email'}
-						onClick={handleResetButton}
-					>
-						Send Reset Email
-					</Button>
-					<Button
-						id='return-to-login'
-						className={'secondary-button'}
-						onClick={() => cardDispatch({ type: 'switchCard', payload: CARD_TYPES.login })}
-					>
-						Return to login
-					</Button>
-				</FooterButtons>
-			</ProfileContent>
+		<DisplayCard
+			configuration='center'
+			title={'Reset Your Password'}
+		>
+			<ErrorField form='password-reset' />
+			<FormField
+				name='email'
+				label='Enter your email to get a reset link sent to you'
+				type='email'
+				placeholder={'email'}
+				isEditable
+				autoComplete={'on'}
+				value={resetEmail}
+				onChange={(e) => setResetEmail(e.target.value)}
+			/>
+			<FooterButtons className='reset-buttons'>
+				<Button
+					id={'send-reset-email'}
+					onClick={handleResetButton}
+					className={'cta-button'}
+				>
+					Send Reset Email
+				</Button>
+				<Link
+					id='return-to-login'
+					className={'secondary-button button flex-box'}
+					to={'/login'}
+				>
+					Return to login
+				</Link>
+			</FooterButtons>
 		</DisplayCard>
 	)
 }
