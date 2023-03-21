@@ -1,10 +1,10 @@
-import React, { createContext, ReactNode, useContext, useReducer } from 'react'
-import { CardContext } from '../Types/Cards'
+import React, { createContext, type ReactNode, useContext, useReducer } from 'react'
+import type { CardContext } from '../Types/Cards'
 import { cardReducer, initialCardState } from './Reducers/CardReducer'
 
-const CardStateContext = createContext<CardContext>({} as CardContext)
+const CardStateContext = createContext({} as CardContext)
 
-export const useCardStateContext = () => {
+export const useCardStateContext = (): CardContext => {
 	const context = useContext(CardStateContext)
 
 	if (context === undefined) {
@@ -14,7 +14,7 @@ export const useCardStateContext = () => {
 	return context
 }
 
-export const CardStateProvider = ({ children }: { children: ReactNode }) => {
+export const CardStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
 	const [cardState, cardDispatch] = useReducer(cardReducer, initialCardState)
 
 	return (

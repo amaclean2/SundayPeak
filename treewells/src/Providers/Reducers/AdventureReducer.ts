@@ -1,20 +1,10 @@
-import {
+import { Storage } from '../../config'
+import type {
 	AdventureAction,
 	AdventureChoiceType,
 	AdventureState,
 	AdventureType
 } from '../../Types/Adventures'
-
-const getStartPos = () => {
-	const stringifiedStartPos = localStorage.getItem('startPos')
-	return (
-		(typeof stringifiedStartPos === 'string' && JSON.parse(stringifiedStartPos)) || {
-			latitude: 39.347,
-			longitude: -120.194,
-			zoom: 10
-		}
-	)
-}
 
 export const initialAdventureState = {
 	allAdventures: null,
@@ -22,15 +12,28 @@ export const initialAdventureState = {
 	currentAdventure: null,
 	adventureEditState: false,
 	adventureError: null,
-	startPosition: getStartPos(),
+	startPosition: {
+		latitude: 0,
+		longitude: 0,
+		zoom: 10
+	},
 	isDeletePageOpen: false,
-	globalAdventureType: (localStorage.getItem('globalAdventureType') as AdventureChoiceType) || 'ski'
+	globalAdventureType: 'ski' as AdventureChoiceType
 }
 
-export const adventureReducer = (state: AdventureState, action: AdventureAction) => {
+export const adventureReducer = (
+	state: AdventureState,
+	action: AdventureAction
+): AdventureState => {
 	switch (action.type) {
+		case 'setInitialValues':
+			return {
+				...state,
+				startPosition: action.payload.startPosition,
+				globalAdventureType: action.payload.globalAdventureType
+			}
 		case 'updateStartPosition':
-			localStorage.setItem('startPos', JSON.stringify(action.payload))
+			void Storage.setItem('startPos', JSON.stringify(action.payload))
 			return {
 				...state,
 				startPosition: action.payload
@@ -58,7 +61,7 @@ export const adventureReducer = (state: AdventureState, action: AdventureAction)
 				adventureAddState: false,
 				currentAdventure: null,
 				adventureEditState: false,
-				deletePageOpen: false
+				isDeletePageOpen: false
 			}
 		case 'editAdventure':
 			return {
@@ -69,7 +72,7 @@ export const adventureReducer = (state: AdventureState, action: AdventureAction)
 				}
 			}
 		case 'startNewAdventureProcess':
-			localStorage.setItem('globalAdventureType', action.payload)
+			void Storage.setItem('globalAdventureType', action.payload)
 			return {
 				...state,
 				globalAdventureType: action.payload,
@@ -84,7 +87,7 @@ export const adventureReducer = (state: AdventureState, action: AdventureAction)
 		case 'deleteAdventure':
 			return { ...state, isDeletePageOpen: !state.isDeletePageOpen, currentAdventure: null }
 		case 'setGlobalAdventureType':
-			localStorage.setItem('globalAdventureType', action.payload)
+			void Storage.setItem('globalAdventureType', action.payload)
 			return { ...state, globalAdventureType: action.payload }
 		default:
 			return state

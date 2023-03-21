@@ -1,4 +1,4 @@
-import { CardAction, CardState } from '../../Types/Cards'
+import type { CardAction, CardState } from '../../Types/Cards'
 import { getScreenType } from '../../utils'
 
 export const initialCardState: CardState = {
@@ -8,7 +8,7 @@ export const initialCardState: CardState = {
 	screenType: getScreenType()
 }
 
-export const cardReducer = (state: CardState, action: CardAction) => {
+export const cardReducer = (state: CardState, action: CardAction): CardState => {
 	switch (action.type) {
 		case 'closeCardMessage':
 			return {

@@ -1,5 +1,5 @@
-import { Dispatch } from 'react'
-import { AdventureChoiceType } from './Adventures'
+import type { Dispatch } from 'react'
+import type { AdventureChoiceType } from './Adventures'
 
 export type CompletedAdventureForUserType = {
 	adventure_id: number

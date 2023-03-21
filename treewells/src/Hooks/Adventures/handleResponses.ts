@@ -1,8 +1,8 @@
 import { useGetAdventures } from '.'
 import { useAdventureStateContext } from '../../Providers/AdventureStateProvider'
 import { useUserStateContext } from '../../Providers/UserStateProvider'
-import { AdventureChoiceType, AdventureType } from '../../Types/Adventures'
-import { TodoAdventureForUserType, UserType } from '../../Types/User'
+import type { AdventureChoiceType, AdventureType } from '../../Types/Adventures'
+import type { TodoAdventureForUserType, UserType } from '../../Types/User'
 
 type HandleSaveTodoProps = {
 	todo: {
@@ -21,12 +21,14 @@ type HandleSaveTodoProps = {
 	}
 }
 
-export const useHandleAdventureResponses = () => {
+export const useHandleAdventureResponses = (): {
+	handleSaveTodo: ({ todo }: HandleSaveTodoProps) => Promise<AdventureType>
+} => {
 	const { userDispatch, loggedInUser } = useUserStateContext()
 	const { adventureDispatch, currentAdventure } = useAdventureStateContext()
 	const { getAdventure } = useGetAdventures()
 
-	const handleSaveTodo = ({ todo }: HandleSaveTodoProps) => {
+	const handleSaveTodo = async ({ todo }: HandleSaveTodoProps): Promise<AdventureType> => {
 		userDispatch({
 			type: 'setLoggedInUser',
 			payload: {
@@ -42,13 +44,14 @@ export const useHandleAdventureResponses = () => {
 			type: 'setCurrentAdventure',
 			payload: {
 				...(currentAdventure as AdventureType),
-				todo_users: currentAdventure?.todo_users
-					? [...currentAdventure.todo_users, todo.adventure_todo_field]
-					: [todo.adventure_todo_field]
+				todo_users:
+					currentAdventure?.todo_users !== undefined
+						? [...currentAdventure.todo_users, todo.adventure_todo_field]
+						: [todo.adventure_todo_field]
 			}
 		})
 
-		return getAdventure({
+		return await getAdventure({
 			id: todo.user_todo_field.adventure_id,
 			type: todo.user_todo_field.adventure_type
 		})

@@ -1,4 +1,4 @@
-import { TokenAction, TokenState } from '../../Types/Tokens'
+import type { TokenAction, TokenState } from '../../Types/Tokens'
 
 export const initialTokenState: TokenState = {
 	mapboxToken: null,
@@ -6,7 +6,7 @@ export const initialTokenState: TokenState = {
 	mapStyle: null
 }
 
-export const tokenReducer = (state: TokenState, action: TokenAction) => {
+export const tokenReducer = (state: TokenState, action: TokenAction): TokenState => {
 	switch (action.type) {
 		case 'setTokens':
 			return {

@@ -1,4 +1,5 @@
-import { UserAction, UserState, UserType } from '../../Types/User'
+import { Storage } from '../../config'
+import type { UserAction, UserState, UserType } from '../../Types/User'
 
 export const initialUserState: UserState = {
 	loginError: null,
@@ -40,7 +41,7 @@ export const userReducer = (state: UserState, action: UserAction): UserState => 
 				formFields: {}
 			}
 		case 'logout':
-			localStorage.clear()
+			void Storage.clear()
 			return { ...state, loggedInUser: null }
 		case 'setLoginError':
 			return { ...state, loginError: action.payload }

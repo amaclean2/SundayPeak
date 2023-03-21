@@ -1,4 +1,4 @@
-import { Dispatch } from 'react'
+import type { Dispatch } from 'react'
 
 export type AdventureChoiceType = 'ski' | 'climb' | 'hike'
 
@@ -156,6 +156,14 @@ type AdventureTypeView = {
 	payload: AdventureChoiceType
 }
 
+type SetInitialValues = {
+	type: 'setInitialValues'
+	payload: {
+		startPosition: MapPosition
+		globalAdventureType: AdventureChoiceType
+	}
+}
+
 type NewAdventureProcess = {
 	type: 'startNewAdventureProcess'
 	payload: AdventureChoiceType
@@ -175,6 +183,7 @@ export type AdventureAction =
 	| AdventureTypeView
 	| NewAdventureProcess
 	| UpdateStartPosition
+	| SetInitialValues
 
 export type AdventureState = {
 	allAdventures: AdventureList | null

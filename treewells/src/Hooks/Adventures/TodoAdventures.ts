@@ -1,28 +1,40 @@
-import { AdventureChoiceType } from '../../Types/Adventures'
+import type { AdventureChoiceType, AdventureType } from '../../Types/Adventures'
 import { fetcher } from '../../utils'
 import { todoAdventures } from '../Apis'
 import { useHandleAdventureResponses } from './handleResponses'
 
-export const useSaveTodo = () => {
-	const { handleSaveTodo } = useHandleAdventureResponses()
-
-	const saveTodo = ({
+export const useSaveTodo = (): {
+	saveTodo: ({
 		adventureId,
 		adventureType
 	}: {
 		adventureId: number
 		adventureType: AdventureChoiceType
-	}) => {
-		fetcher(todoAdventures.create.url, {
+	}) => Promise<AdventureType>
+} => {
+	const { handleSaveTodo } = useHandleAdventureResponses()
+
+	const saveTodo = async ({
+		adventureId,
+		adventureType
+	}: {
+		adventureId: number
+		adventureType: AdventureChoiceType
+	}): Promise<AdventureType> => {
+		const {
+			data: { todo }
+		} = await fetcher(todoAdventures.create.url, {
 			method: todoAdventures.create.method,
 			body: {
 				adventure_id: adventureId,
 				public: false
 			}
 		})
-			.then(({ data: { todo } }) => handleSaveTodo({ todo }))
-			.catch(console.error)
+
+		return await handleSaveTodo({ todo })
 	}
 
-	return saveTodo
+	return {
+		saveTodo
+	}
 }

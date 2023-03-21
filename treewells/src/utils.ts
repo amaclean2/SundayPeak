@@ -1,5 +1,6 @@
 import { useRef } from 'react'
-import { SundayPeakServerUrls } from './config'
+
+import { Connections, Storage } from './config'
 
 type HeaderType = {
 	name: string
@@ -17,11 +18,11 @@ const BEST_DELAY = 700
 export const useDebounce = (
 	callback: (...calbackargs: any[]) => any,
 	delay: number = BEST_DELAY
-) => {
+): any => {
 	// timeout won't change with component reloads
 	const timeout = useRef<NodeJS.Timeout>()
 
-	return (...args: any) => {
+	return (...args: any): void => {
 		clearTimeout(timeout.current)
 
 		timeout.current = setTimeout(() => {
@@ -30,15 +31,22 @@ export const useDebounce = (
 	}
 }
 
-export const getScreenType = () => {
-	const screenWidth = window.screen.width
-	let screenType = {
+type ScrenType = {
+	mobile: boolean
+	tablet: boolean
+	browser: boolean
+}
+
+export const getScreenType = (): ScrenType => {
+	const screenWidth = window?.screen?.width
+
+	const screenType: ScrenType = {
 		mobile: false,
 		tablet: false,
 		browser: false
 	}
 
-	if (screenWidth < 420) {
+	if (screenWidth !== undefined && screenWidth < 420) {
 		screenType.mobile = true
 	} else if (screenWidth < 1300) {
 		screenType.tablet = true
@@ -49,8 +57,8 @@ export const getScreenType = () => {
 	return screenType
 }
 
-export const fetcher = (url: string, options?: OptionsType) => {
-	const token = localStorage.getItem('token')
+export const fetcher = async (url: string, options?: OptionsType): Promise<any> => {
+	const token = (await Storage.getItem('token')) as string
 	const headers = new Headers()
 
 	let body = null
@@ -59,17 +67,17 @@ export const fetcher = (url: string, options?: OptionsType) => {
 		headers.append(header.name, header.value)
 	})
 
-	if (token) {
+	if (token !== undefined) {
 		headers.append('authorization', `Bearer ${token}`)
 	}
 
-	if (!headers.get('content-type')) {
+	if (headers.get('content-type') === null) {
 		headers.append('content-type', 'application/json')
 	}
 
-	if (options?.body && headers.get('content-type') === 'application/json') {
+	if (options?.body !== undefined && headers.get('content-type') === 'application/json') {
 		body = JSON.stringify(options.body)
-	} else if (headers.get('content-type') !== 'application/json' && options?.body) {
+	} else if (headers.get('content-type') !== 'application/json' && options?.body !== undefined) {
 		body = options.body
 	}
 
@@ -77,28 +85,17 @@ export const fetcher = (url: string, options?: OptionsType) => {
 		headers.delete('content-type')
 	}
 
-	const request = new Request(`${SundayPeakServerUrls.serverUrl}${url}`, {
-		...(!!body && { body }),
+	const request = new Request(`${Connections.restUrl}${url}`, {
+		...(body !== undefined && { body }),
 		headers,
-		method: options?.method || 'GET'
+		method: options?.method ?? 'GET'
 	})
 
-	return fetch(request)
-		.then((resp) => {
-			if (resp.status !== 204) {
-				return resp.json()
-			} else {
-				return resp
-			}
-		})
-		.then((data) => {
-			if (data.statusCode - 200 >= 100) {
-				throw data
-			}
+	const responseData = await (await fetch(request)).json()
 
-			return data
-		})
-		.catch((error) => {
-			throw error
-		})
+	if (responseData.statusCode - 200 >= 100) {
+		throw responseData
+	} else {
+		return responseData
+	}
 }

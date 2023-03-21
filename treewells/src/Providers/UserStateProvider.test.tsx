@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react'
-import { render, screen } from '@testing-library/react'
+import React, { type ReactNode } from 'react'
+import { render, type RenderResult, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 import { Consumer } from '../Testing/TestConsumer'
 import { UserStateProvider } from './UserStateProvider'
 
-const customRender = (element: ReactNode, renderOptions?: any) => {
+const customRender = (element: ReactNode, renderOptions?: any): RenderResult => {
 	return render(<UserStateProvider>{element}</UserStateProvider>, renderOptions)
 }
 
