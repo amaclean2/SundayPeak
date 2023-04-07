@@ -1,8 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useCreateUser, useEditUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
 import { useEffect } from 'react'
 
-import { title } from 'App'
+import { title } from 'Router/AppContent'
 
 import { FormField, DisplayCard, ErrorField, Button, FooterButtons } from 'Components/Reusable'
 
@@ -89,7 +89,7 @@ export const SignupFlow = () => {
 				value={formFields.legal}
 				label={
 					<span>
-						I agree with the {title} <Link to='/privacy'>Privacy Policy</Link>
+						I agree with the {title} <Button direction='/privacy'>Privacy Policy</Button>
 					</span>
 				}
 				isEditable

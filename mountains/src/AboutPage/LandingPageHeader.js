@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom'
-import { Button, FlexSpacer, MobileMenu } from '../Components/Reusable'
+import { Button, FlexSpacer } from '../Components/Reusable'
 import LogoInline from '../Images/Logos/LogoInline'
 import getContent from '../TextContent'
 
@@ -8,37 +7,32 @@ import './styles.css'
 const LandingPageHeader = () => {
 	return (
 		<header className='flex-box landing-header'>
-			<Link
+			<Button
 				className='landing-header-logo'
-				to='/discover'
+				type='link'
+				direction='/discover'
 			>
 				<LogoInline
 					width={200}
 					color={'green'}
 				/>
-			</Link>
+			</Button>
 			<FlexSpacer />
-			<MobileMenu>
-				<Link
-					className='mobile-menu-button'
-					to='/login'
+			<div className='action-buttons'>
+				<Button
+					type='link'
+					direction='/login'
+					className='secondary-button'
 				>
 					{getContent('buttonText.login')}
-				</Link>
-				<Link
-					className='mobile-menu-button'
-					to='/signup'
+				</Button>
+				<Button
+					type='link'
+					direction='/signup'
+					className='secondary-button'
 				>
 					{getContent('buttonText.signup')}
-				</Link>
-			</MobileMenu>
-			<div className='action-buttons'>
-				<Link to='/login'>
-					<Button className='secondary-button'>{getContent('buttonText.login')}</Button>
-				</Link>
-				<Link to='/signup'>
-					<Button className='secondary-button'>{getContent('buttonText.signup')}</Button>
-				</Link>
+				</Button>
 			</div>
 		</header>
 	)

@@ -1,7 +1,13 @@
-import { Link } from 'react-router-dom'
 import { useAdventureStateContext } from 'sundaypeak-treewells'
 
-import { DisplayCard, ErrorField, FooterButtons, FormField, MultiField } from 'Components/Reusable'
+import {
+	Button,
+	DisplayCard,
+	ErrorField,
+	FooterButtons,
+	FormField,
+	MultiField
+} from 'Components/Reusable'
 import getContent from 'TextContent'
 import { seasonOptions } from 'Components/Adventures/utils'
 import { LargeHikerIcon } from 'Images'
@@ -115,12 +121,9 @@ const HikeForm = ({ onChange }) => {
 				onChange={onChange}
 			/>
 			<FooterButtons>
-				<Link
-					className={'button flex-box'}
-					to={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}
-				>
+				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>
 					Finish
-				</Link>
+				</Button>
 			</FooterButtons>
 		</DisplayCard>
 	)

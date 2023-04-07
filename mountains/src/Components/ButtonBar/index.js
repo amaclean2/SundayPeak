@@ -1,60 +1,59 @@
-import { Link } from 'react-router-dom'
 import { useUserStateContext } from 'sundaypeak-treewells'
 
-import { FlexSpacer } from 'Components/Reusable'
+import { Button, FlexSpacer } from 'Components/Reusable'
 import getContent from 'TextContent'
 import LogoInline from 'Images/Logos/LogoInline'
 
 import './styles.css'
 
 const LoginButton = () => (
-	<Link
+	<Button
 		id='login-button-adventures'
-		className={'secondary-button button flex-box'}
-		to={'/login'}
+		className={'secondary-button'}
+		direction='/login'
 	>
 		{getContent('buttonText.login')}
-	</Link>
+	</Button>
 )
 
 const SignUpButton = () => (
-	<Link
-		className={'secondary-button button flex-box'}
-		to={'/signup'}
+	<Button
+		className={'secondary-button'}
+		direction={'/signup'}
 		id={'signup-button-adventures'}
 	>
 		{getContent('buttonText.signup')}
-	</Link>
+	</Button>
 )
 
 const ChatButton = () => (
-	<Link
+	<Button
 		id={'open-conversations-mobile'}
-		className={'secondary-button button flex-box'}
-		to={'/conversations'}
+		className={'secondary-button'}
+		direction={'/conversations'}
 	>
 		Conversations
-	</Link>
+	</Button>
 )
 
 const UserProfileButton = () => (
-	<Link
-		className='secondary-button button flex-box'
+	<Button
+		secondaryButton
 		id='user-profile-button'
-		to={'/user'}
+		direction={'/user'}
 	>
 		{getContent('buttonText.profile')}
-	</Link>
+	</Button>
 )
 
 const AdventuresButton = () => (
-	<Link
-		className='secondary-button button flex-box'
+	<Button
+		secondaryButton
 		id='button-adventures'
-		to={'/adventure'}
+		direction={'/adventure'}
 	>
 		{getContent('buttonText.adventures')}
-	</Link>
+	</Button>
 )
 
 const ButtonBar = () => {
@@ -72,15 +71,15 @@ const ButtonBar = () => {
 					{isLoggedIn && <ChatButton />}
 				</div>
 				<FlexSpacer />
-				<Link
+				<Button
 					id='home-redirect'
-					to={'/about'}
+					direction={'/about'}
 				>
 					<LogoInline
 						width={200}
 						color={'white'}
 					/>
-				</Link>
+				</Button>
 			</div>
 		</>
 	)

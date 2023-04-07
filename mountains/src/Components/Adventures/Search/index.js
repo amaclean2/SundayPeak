@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useDebounce, useGetAdventures } from 'sundaypeak-treewells'
 
-import { FlexSpacer, FormField } from 'Components/Reusable'
+import { Button, FlexSpacer, FormField } from 'Components/Reusable'
 
 import './styles.css'
 
@@ -42,15 +41,15 @@ const AdventureSearch = () => {
 								key={`search_result_${key}`}
 								className={'drop-list-item'}
 							>
-								<Link
-									to={`/adventure/${result.adventure_type}/${result.id}`}
-									className={'flex-box adventure-result'}
+								<Button
+									direction={`/adventure/${result.adventure_type}/${result.id}`}
+									className={'adventure-result'}
 								>
 									<span className='result-title'>{result.adventure_name}</span>
 									<span className='drop-list-subtext'>{result.adventure_type}</span>
 									<FlexSpacer />
 									<span className='drop-list-secondary'>{result.nearest_city}</span>
-								</Link>
+								</Button>
 							</li>
 						))}
 					</ul>

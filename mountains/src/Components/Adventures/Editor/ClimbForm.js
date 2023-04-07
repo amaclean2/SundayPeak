@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { useAdventureStateContext, useDeleteAdventure } from 'sundaypeak-treewells'
 
 import {
 	Button,
@@ -19,7 +19,6 @@ import {
 import { LargeClimberIcon } from 'Images'
 
 import DeletePage from './DeletePage'
-import { useAdventureStateContext, useDeleteAdventure } from 'sundaypeak-treewells'
 
 const ClimbForm = ({ onChange }) => {
 	const { currentAdventure, isDeletePageOpen } = useAdventureStateContext()
@@ -144,12 +143,9 @@ const ClimbForm = ({ onChange }) => {
 				onChange={onChange}
 			/>
 			<FooterButtons>
-				<Link
-					className={'button flex-box'}
-					to={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}
-				>
+				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>
 					Finish
-				</Link>
+				</Button>
 				<Button
 					className={'delete-button'}
 					id={'adventure-delete-button'}

@@ -1,24 +1,26 @@
-import { Outlet } from 'react-router-dom'
-import { SundayPeakProviders } from 'sundaypeak-treewells'
+import { RouterProvider } from 'react-router-dom'
+import { Connections } from 'sundaypeak-treewells'
 
-import ReactMap from 'Components/Mapping/ReactMap'
-import { ImageViewer } from 'Components/Reusable'
-import Alert from 'Components/Reusable/Alert'
+const { router } = require('Router')
 
-import './App.css'
-import './variables.css'
+let restUrl, websocketUrl
 
-export const title = 'Sunday Peak'
-
-const App = () => {
-	return (
-		<SundayPeakProviders>
-			<ReactMap />
-			<Outlet />
-			<ImageViewer />
-			<Alert />
-		</SundayPeakProviders>
-	)
+switch (process.env.NODE_ENV) {
+	case 'production':
+		restUrl = 'http://api.sundaypeak.com'
+		websocketUrl = 'ws://api.sundaypeak.com:4000'
+		break
+	case 'test':
+		restUrl = 'http://sundaypeak.local:2000'
+		websocketUrl = 'ws://sundaypeak.local:2100'
+		break
+	default:
+		restUrl = 'http://sundaypeak.local:5000'
+		websocketUrl = 'ws://sundaypeak.local:4000'
 }
+
+Connections.setConnections({ restUrl, websocketUrl }, localStorage)
+
+const App = () => <RouterProvider router={router} />
 
 export default App

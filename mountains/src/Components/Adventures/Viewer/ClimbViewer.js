@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewells'
 
 import getContent from 'TextContent'
 import {
+	Button,
 	DisplayCard,
 	Field,
 	FieldHeader,
@@ -85,9 +86,9 @@ const ClimbViewer = ({ menuContents }) => {
 					<Field>
 						<FieldHeader text='Created By' />
 						<FieldValue>
-							<Link to={`/user/${currentAdventure.creator_id}`}>
+							<Button direction={`/user/${currentAdventure.creator_id}`}>
 								{currentAdventure.creator_name}
-							</Link>
+							</Button>
 						</FieldValue>
 					</Field>
 				</FieldRow>

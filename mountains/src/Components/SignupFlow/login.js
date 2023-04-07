@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEditUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
 import { useEffect } from 'react'
 
-import { title } from 'App'
+import { title } from 'Router/AppContent'
 import { ErrorField, DisplayCard, FormField, Button, FooterButtons } from '../Reusable'
 
 import './styles.css'

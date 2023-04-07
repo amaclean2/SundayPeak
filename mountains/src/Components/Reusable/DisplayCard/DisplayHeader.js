@@ -19,7 +19,7 @@ const DisplayHeader = ({ className, onClose, title, menu }) => {
 			{menu && <Menu fields={menu.fields} />}
 			<Button
 				id='display-back-button'
-				className='display-back-button flex-box'
+				className='display-back-button'
 				onClick={localOnClose}
 			>
 				<CarretIcon color={'#FFFFFF'} />
