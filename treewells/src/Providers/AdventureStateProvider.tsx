@@ -1,5 +1,5 @@
 import React, { createContext, type ReactNode, useContext, useEffect, useReducer } from 'react'
-import { Storage } from '../config'
+import { Connections, Storage } from '../config'
 import { adventures } from '../Hooks/Apis'
 import type { AdventureChoiceType, AdventureContext, MapPosition } from '../Types/Adventures'
 import { fetcher } from '../utils'
@@ -39,7 +39,7 @@ export const AdventureStateProvider = ({ children }: { children: ReactNode }): J
 
 	// update the local browser state of the new start position when it changes
 	useEffect(() => {
-		if (adventureState.startPosition !== undefined) {
+		if (adventureState.startPosition !== undefined && Connections.isReady) {
 			void Storage.setItem('startPos', JSON.stringify(adventureState.startPosition))
 		} else {
 			getStartPos()
@@ -54,7 +54,7 @@ export const AdventureStateProvider = ({ children }: { children: ReactNode }): J
 				})
 				.catch(console.error)
 		}
-	}, [adventureState.startPosition])
+	}, [adventureState.startPosition, Connections.isReady])
 
 	useEffect(() => {
 		fetcher(`${adventures.getAllAdventures.url}?type=${adventureState.globalAdventureType}`, {

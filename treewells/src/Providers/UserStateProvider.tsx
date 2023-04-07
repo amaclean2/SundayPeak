@@ -1,5 +1,5 @@
 import React, { createContext, type ReactNode, useContext, useEffect, useReducer } from 'react'
-import { Storage } from '../config'
+import { Connections, Storage } from '../config'
 import { users } from '../Hooks/Apis'
 import { type UserContext } from '../Types/User'
 import { fetcher } from '../utils'
@@ -21,24 +21,26 @@ export const UserStateProvider = ({ children }: { children: ReactNode }): JSX.El
 	const [userState, userDispatch] = useReducer(userReducer, initialUserState)
 
 	useEffect(() => {
-		Storage.getItem('token')
-			.then((token) => {
-				if (token !== null) {
-					fetcher(users.getLoggedIn.url, { method: users.getLoggedIn.method })
-						.then(({ data }) => {
-							if (data.user !== undefined) {
-								userDispatch({ type: 'setLoggedInUser', payload: data.user })
-							} else {
+		if (Connections.isReady) {
+			Storage.getItem('token')
+				.then((token) => {
+					if (token !== null) {
+						fetcher(users.getLoggedIn.url, { method: users.getLoggedIn.method })
+							.then(({ data }) => {
+								if (data.user !== undefined) {
+									userDispatch({ type: 'setLoggedInUser', payload: data.user })
+								} else {
+									void Storage.removeItem('token')
+								}
+							})
+							.catch(() => {
 								void Storage.removeItem('token')
-							}
-						})
-						.catch(() => {
-							void Storage.removeItem('token')
-						})
-				}
-			})
-			.catch(console.error)
-	}, [])
+							})
+					}
+				})
+				.catch(console.error)
+		}
+	}, [Connections.isReady])
 
 	return (
 		<UserStateContext.Provider
