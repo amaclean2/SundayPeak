@@ -1,0 +1,7 @@
+FROM mysql
+
+ENV MYSQL_USER 'byf'
+ENV MYSQL_PASSWORD 'backyard'
+ENV MYSQL_DATABASE 'friends'
+
+EXPOSE 3306

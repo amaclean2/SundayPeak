@@ -14,7 +14,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "byf-custom-logger": "^1.9.6",
+    "byf-custom-logger": "^2.0.4",
     "dotenv": "^16.0.3",
     "jsonwebtoken": "^9.0.0",
     "memory-cache": "^0.2.0",

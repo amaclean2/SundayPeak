@@ -10,12 +10,16 @@ const allowedOrigins = [
 ]
 
 const corsHandler = (origin, cb) => {
-  if (!origin) return cb(null, true)
-  else if (allowedOrigins.indexOf(origin) === -1) {
-    return cb(new Error(errorTexts.corsError.messageText({ origin })), false)
-  } else {
-    return cb(null, true)
-  }
+  // we're going to allow all origins for now
+  return cb(null, true)
+
+
+  // if (!origin) return cb(null, true)
+  // else if (allowedOrigins.indexOf(origin) === -1) {
+  //   return cb(new Error(errorTexts.corsError.messageText({ origin })), false)
+  // } else {
+  //   return cb(null, true)
+  // }
 }
 
 module.exports = {
