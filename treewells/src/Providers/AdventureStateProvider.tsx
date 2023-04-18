@@ -39,20 +39,22 @@ export const AdventureStateProvider = ({ children }: { children: ReactNode }): J
 
 	// update the local browser state of the new start position when it changes
 	useEffect(() => {
-		if (adventureState.startPosition !== undefined && Connections.isReady) {
-			void Storage.setItem('startPos', JSON.stringify(adventureState.startPosition))
-		} else {
-			getStartPos()
-				.then(({ position, adventureType }) => {
-					adventureDispatch({
-						type: 'setInitialValues',
-						payload: {
-							startPosition: position,
-							globalAdventureType: adventureType
-						}
+		if (Connections.isReady) {
+			if (adventureState.startPosition !== null) {
+				Storage.setItem('startPos', JSON.stringify(adventureState.startPosition))
+			} else {
+				getStartPos()
+					.then(({ position, adventureType }) => {
+						adventureDispatch({
+							type: 'setInitialValues',
+							payload: {
+								startPosition: position,
+								globalAdventureType: adventureType
+							}
+						})
 					})
-				})
-				.catch(console.error)
+					.catch(console.error)
+			}
 		}
 	}, [adventureState.startPosition, Connections.isReady])
 
@@ -63,7 +65,7 @@ export const AdventureStateProvider = ({ children }: { children: ReactNode }): J
 			.then(({ data: { adventures } }) => {
 				adventureDispatch({
 					type: 'setAllAdventures',
-					payload: { adventures }
+					payload: adventures
 				})
 
 				return adventures

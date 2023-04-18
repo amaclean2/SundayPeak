@@ -2,8 +2,7 @@ import type { TokenAction, TokenState } from '../../Types/Tokens'
 
 export const initialTokenState: TokenState = {
 	mapboxToken: null,
-	mapboxStyleKey: null,
-	mapStyle: null
+	mapboxStyleKey: null
 }
 
 export const tokenReducer = (state: TokenState, action: TokenAction): TokenState => {

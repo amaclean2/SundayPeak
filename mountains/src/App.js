@@ -10,10 +10,6 @@ switch (process.env.NODE_ENV) {
 		restUrl = 'http://api.sundaypeak.com'
 		websocketUrl = 'ws://api.sundaypeak.com:4000'
 		break
-	case 'test':
-		restUrl = 'http://sundaypeak.local:2000'
-		websocketUrl = 'ws://sundaypeak.local:2100'
-		break
 	default:
 		restUrl = 'http://sundaypeak.local:5000'
 		websocketUrl = 'ws://sundaypeak.local:4000'

@@ -16,4 +16,4 @@ export { useCreateUser, useGetUser, useEditUser, useFollowUser } from './Hooks/U
 export { useMessages } from './Hooks/Users/Messages'
 export { useManipulateFlows } from './Hooks/App'
 export { Connections } from './config'
-export { useDebounce } from './utils'
+export { useDebounce, fetcher } from './utils'

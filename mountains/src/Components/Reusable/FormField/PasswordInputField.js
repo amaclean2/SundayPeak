@@ -14,6 +14,7 @@ const PasswordInputField = ({
 	placeholder,
 	value,
 	onChange,
+	testId,
 	autoComplete = 'off',
 	autoFocus = false
 }) => {
@@ -28,6 +29,7 @@ const PasswordInputField = ({
 		>
 			<input
 				className={'password-input-field'}
+				data-testid={testId}
 				type={passwordShown ? 'text' : 'password'}
 				name={name}
 				id={name}

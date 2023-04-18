@@ -59,7 +59,7 @@ type BasicAdventureType = {
 
 type SkiAdventureType = BasicAdventureType & {
 	approach_distance: string
-	aspenct: string
+	aspect: string
 	avg_angle: number
 	max_angle: number
 	base_elevation: number
@@ -97,7 +97,7 @@ export type MapPosition = {
 
 type SetAllAdventuresType = {
 	type: 'setAllAdventures'
-	payload: any
+	payload: AdventureList
 }
 
 type SetNewAdventureView = {
@@ -195,7 +195,7 @@ export type AdventureState = {
 		latitude: number
 		longitude: number
 		zoom: number
-	}
+	} | null
 	isDeletePageOpen: boolean
 	globalAdventureType: AdventureChoiceType
 }

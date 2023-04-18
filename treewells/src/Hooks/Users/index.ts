@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react'
 
 import { useUserStateContext } from '../../Providers/UserStateProvider'
-import type { UserStatType, UserType } from '../../Types/User'
+import type { FormFieldNameOptions, UserStatType, UserType } from '../../Types/User'
 import { fetcher, useDebounce } from '../../utils'
 import { users } from '../Apis'
 import { useHandleUserResponses } from './handleResponses'
@@ -193,8 +193,8 @@ export const useGetUser = (): {
 
 export const useEditUser = (): {
 	editUser: (event: EventChoiceTypes) => Promise<void>
-	editFormFields: (field: { name: string; value: string | number }) => void
-	changeUserStatState: (newUserStatState: UserStatType) => void
+	editFormFields: (field: { name: FormFieldNameOptions; value: string | number | boolean }) => void
+	changeUserStatView: (newUserStatView: UserStatType) => void
 	toggleUserEditState: () => void
 } => {
 	const { userDispatch } = useUserStateContext()
@@ -216,11 +216,14 @@ export const useEditUser = (): {
 		return handleEditRequest({ name: event.target.name, value: event.target.value })
 	}
 
-	const changeUserStatState = (newUserStatState: UserStatType): void => {
-		userDispatch({ type: 'changeStatState', payload: newUserStatState })
+	const changeUserStatView = (newUserStatView: UserStatType): void => {
+		userDispatch({ type: 'changeStatView', payload: newUserStatView })
 	}
 
-	const editFormFields = (field: { name: string; value: string | number }): void => {
+	const editFormFields = (field: {
+		name: FormFieldNameOptions
+		value: string | number | boolean
+	}): void => {
 		userDispatch({ type: 'setFormFields', payload: field })
 	}
 
@@ -231,7 +234,7 @@ export const useEditUser = (): {
 	return {
 		editUser,
 		editFormFields,
-		changeUserStatState,
+		changeUserStatView,
 		toggleUserEditState
 	}
 }

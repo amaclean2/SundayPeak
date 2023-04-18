@@ -13,7 +13,6 @@ export type TokenAction = SetTokenState
 export type TokenState = {
 	mapboxToken: string | null
 	mapboxStyleKey: string | null
-	mapStyle: string | null
 }
 
 export type TokenContext = TokenState & { tokenDispatch: Dispatch<TokenAction> }

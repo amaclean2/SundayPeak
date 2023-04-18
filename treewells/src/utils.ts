@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-
 import { Connections, Storage } from './config'
 
 type HeaderType = {
@@ -38,6 +37,14 @@ type ScrenType = {
 }
 
 export const getScreenType = (): ScrenType => {
+	if (window === undefined || window === null) {
+		return {
+			mobile: true,
+			tablet: false,
+			browser: false
+		}
+	}
+
 	const screenWidth = window?.screen?.width
 
 	const screenType: ScrenType = {
@@ -85,13 +92,17 @@ export const fetcher = async (url: string, options?: OptionsType): Promise<any> 
 		headers.delete('content-type')
 	}
 
-	const request = new Request(`${Connections.restUrl}${url}`, {
+	const response = await fetch(`${Connections.restUrl}${url}`, {
 		...(body !== undefined && { body }),
 		headers,
 		method: options?.method ?? 'GET'
 	})
 
-	const responseData = await (await fetch(request)).json()
+	if (response?.json === undefined) {
+		throw new Error(`'response' is not of a readable type`)
+	}
+
+	const responseData = await response.json()
 
 	if (responseData.statusCode - 200 >= 100) {
 		throw responseData

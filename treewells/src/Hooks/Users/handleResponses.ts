@@ -16,12 +16,12 @@ export const useHandleUserResponses = (): {
 			payload: `User ${user.first_name} ${user.last_name} created!\nGet started with a new adventure.`
 		})
 		userDispatch({ type: 'setLoggedInUser', payload: user })
-		void Storage.setItem('token', token)
+		Storage.setItem('token', token)
 	}
 
 	const handleLoginUserResponse = ({ user, token }: { user: UserType; token: string }): void => {
 		userDispatch({ type: 'setLoggedInUser', payload: user })
-		void Storage.setItem('token', token)
+		Storage.setItem('token', token)
 	}
 
 	return {

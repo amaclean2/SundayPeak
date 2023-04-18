@@ -1,7 +1,6 @@
 {
 	"name": "mapbox-ui",
 	"version": "0.1.0",
-	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.6.6",
 		"@testing-library/jest-dom": "^5.16.4",
@@ -12,6 +11,7 @@
 		"env-cmd": "^10.1.0",
 		"firebase": "^9.14.0",
 		"graphql": "^16.5.0",
+		"jsdom": "^21.1.1",
 		"linkify-react": "^4.0.2",
 		"mapbox-gl": "^2.13.0",
 		"react": "^18.2.0",
@@ -21,7 +21,7 @@
 		"react-router-dom": "^6.3.0",
 		"react-scripts": "^5.0.1",
 		"serve": "^14.1.2",
-		"sundaypeak-treewells": "^0.0.31",
+		"sundaypeak-treewells": "^0.0.32",
 		"throttle-debounce": "^5.0.0",
 		"web-vitals": "^2.1.4",
 		"worker-loader": "^3.0.8",

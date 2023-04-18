@@ -83,7 +83,8 @@ export const FormField = (props) => {
 		isEditable = false,
 		className = '',
 		hideLabel = false,
-		onChange
+		onChange,
+		testId
 	} = props
 
 	const renderNonCheckbox = () => (
@@ -121,6 +122,7 @@ export const FormField = (props) => {
 					className={className}
 					name={name}
 					value={[null, undefined].includes(value) ? false : value}
+					testId={testId}
 					onChange={onChange}
 					label={label}
 				/>
@@ -155,6 +157,7 @@ FormField.propTypes = {
 		PropTypes.bool,
 		PropTypes.node
 	]),
+	testId: PropTypes.string,
 	isEditable: PropTypes.bool.isRequired,
 	className: PropTypes.string,
 	hideLabel: PropTypes.bool,

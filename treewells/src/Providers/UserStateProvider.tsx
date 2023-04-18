@@ -30,11 +30,12 @@ export const UserStateProvider = ({ children }: { children: ReactNode }): JSX.El
 								if (data.user !== undefined) {
 									userDispatch({ type: 'setLoggedInUser', payload: data.user })
 								} else {
-									void Storage.removeItem('token')
+									Storage.removeItem('token')
 								}
 							})
-							.catch(() => {
-								void Storage.removeItem('token')
+							.catch((error) => {
+								console.error(error)
+								Storage.removeItem('token')
 							})
 					}
 				})

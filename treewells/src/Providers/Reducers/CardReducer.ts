@@ -21,7 +21,7 @@ export const cardReducer = (state: CardState, action: CardAction): CardState => 
 		case 'openAlert':
 			return { ...state, showAlert: true, alertContent: action.payload }
 		case 'closeAlert':
-			return { ...state, showAlert: false }
+			return { ...state, showAlert: false, alertContent: '' }
 		default:
 			return state
 	}

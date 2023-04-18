@@ -12,11 +12,7 @@ export const initialAdventureState = {
 	currentAdventure: null,
 	adventureEditState: false,
 	adventureError: null,
-	startPosition: {
-		latitude: 0,
-		longitude: 0,
-		zoom: 10
-	},
+	startPosition: null,
 	isDeletePageOpen: false,
 	globalAdventureType: 'ski' as AdventureChoiceType
 }
@@ -27,13 +23,14 @@ export const adventureReducer = (
 ): AdventureState => {
 	switch (action.type) {
 		case 'setInitialValues':
+			Storage.setItem('startPos', JSON.stringify(action.payload.startPosition))
 			return {
 				...state,
 				startPosition: action.payload.startPosition,
 				globalAdventureType: action.payload.globalAdventureType
 			}
 		case 'updateStartPosition':
-			void Storage.setItem('startPos', JSON.stringify(action.payload))
+			Storage.setItem('startPos', JSON.stringify(action.payload))
 			return {
 				...state,
 				startPosition: action.payload
@@ -41,7 +38,7 @@ export const adventureReducer = (
 		case 'setAllAdventures':
 			return {
 				...state,
-				allAdventures: action.payload.adventures
+				allAdventures: action.payload
 			}
 		case 'addNewAdventure':
 			return {
@@ -72,7 +69,7 @@ export const adventureReducer = (
 				}
 			}
 		case 'startNewAdventureProcess':
-			void Storage.setItem('globalAdventureType', action.payload)
+			Storage.setItem('globalAdventureType', action.payload)
 			return {
 				...state,
 				globalAdventureType: action.payload,
@@ -87,7 +84,7 @@ export const adventureReducer = (
 		case 'deleteAdventure':
 			return { ...state, isDeletePageOpen: !state.isDeletePageOpen, currentAdventure: null }
 		case 'setGlobalAdventureType':
-			void Storage.setItem('globalAdventureType', action.payload)
+			Storage.setItem('globalAdventureType', action.payload)
 			return { ...state, globalAdventureType: action.payload }
 		default:
 			return state

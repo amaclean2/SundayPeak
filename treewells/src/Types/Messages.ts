@@ -77,6 +77,7 @@ export type MessageState = {
 	messages: MessageType[] | null
 	currentConversationId: number | null
 	websocket: WebSocket | null
+	error: string | null
 }
 
 export type MessageContext = MessageState & { messageDispatch: Dispatch<MessageAction> }

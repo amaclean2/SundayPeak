@@ -10,7 +10,10 @@ import './styles.css'
 const DefaultAdventureView = () => {
 	const { loggedInUser } = useUserStateContext()
 	return (
-		<DisplayCard title={'Adventures'}>
+		<DisplayCard
+			title={'Adventures'}
+			testId={'main-adventure-view'}
+		>
 			<MainAdventureSelector />
 			<AdventureSearch />
 			{loggedInUser?.id && (

@@ -29,6 +29,7 @@ const AdventureSearch = () => {
 					className={'adventure-search-field'}
 					value={adventureText}
 					isEditable
+					testId={'adventure-search-field'}
 					fullWidth
 					autoComplete={'off'}
 					placeholder={'Find an adventure'}

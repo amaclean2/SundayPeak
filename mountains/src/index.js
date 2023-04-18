@@ -7,6 +7,10 @@ import App from 'App'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
+if (process.env.NODE_ENV === 'development') {
+	const { worker } = require('./Mocks/browser')
+	worker.start()
+}
 
 root.render(<App />)
 

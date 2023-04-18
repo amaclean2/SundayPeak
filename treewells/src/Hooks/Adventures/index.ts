@@ -46,7 +46,7 @@ export const useGetAdventures = (): {
 
 	const changeAdventureType = ({ type }: { type: AdventureChoiceType }): void => {
 		adventureDispatch({ type: 'startNewAdventureProcess', payload: type })
-		void getAllAdventures({ type })
+		getAllAdventures({ type })
 	}
 
 	const getAllAdventures = async ({
@@ -60,7 +60,7 @@ export const useGetAdventures = (): {
 			method: adventures.getAllAdventures.method
 		})
 
-		adventureDispatch({ type: 'setAllAdventures', payload: { responseAdventures } })
+		adventureDispatch({ type: 'setAllAdventures', payload: responseAdventures })
 
 		return responseAdventures
 	}
@@ -118,7 +118,7 @@ export const useSaveAdventure = (): {
 
 	const saveEditAdventure = useDebounce(
 		({ name, value }: { name: string; value: string | number }): void => {
-			void fetcher(adventures.editAdventure.url, {
+			fetcher(adventures.editAdventure.url, {
 				method: adventures.editAdventure.method,
 				body: {
 					field: {
@@ -133,7 +133,7 @@ export const useSaveAdventure = (): {
 	)
 
 	const editAdventure = (event: EventChoiceTypes): void => {
-		void saveEditAdventure({ name: event.target.name, value: event.target.value })
+		saveEditAdventure({ name: event.target.name, value: event.target.value })
 		adventureDispatch({
 			type: 'editAdventure',
 			payload: {
@@ -189,7 +189,7 @@ export const useSaveAdventure = (): {
 		adventuresObject: AdventureType[]
 	}): Promise<void> => {
 		try {
-			void fetcher(adventures.builkImport.url, {
+			fetcher(adventures.builkImport.url, {
 				method: adventures.builkImport.method,
 				body: { adventures: adventuresObject }
 			})
