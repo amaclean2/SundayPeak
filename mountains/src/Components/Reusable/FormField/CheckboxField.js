@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-const CheckboxField = ({ className, name, value, onChange, label }) => {
+const CheckboxField = ({ className, name, value, onChange, label, testId }) => {
 	const handleChange = (e) => {
 		onChange({
 			target: {
@@ -12,7 +12,10 @@ const CheckboxField = ({ className, name, value, onChange, label }) => {
 	}
 
 	return (
-		<label className={cx('checkbox', className, 'label-field')}>
+		<label
+			className={cx('checkbox', className, 'label-field')}
+			data-testid={testId}
+		>
 			<input
 				className={'hidden-checkbox'}
 				type='checkbox'

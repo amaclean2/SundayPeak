@@ -1,12 +1,13 @@
-import React, { createContext, ReactNode, useContext, useEffect, useReducer } from 'react'
+import React, { createContext, type ReactNode, useContext, useEffect, useReducer } from 'react'
+import { Connections, Storage } from '../config'
 import { users } from '../Hooks/Apis'
-import { UserContext } from '../Types/User'
+import { type UserContext } from '../Types/User'
 import { fetcher } from '../utils'
 import { initialUserState, userReducer } from './Reducers/UserReducer'
 
-const UserStateContext = createContext<UserContext>({} as UserContext)
+const UserStateContext = createContext({} as UserContext)
 
-export const useUserStateContext = () => {
+export const useUserStateContext = (): UserContext => {
 	const context = useContext(UserStateContext)
 
 	if (context === undefined) {
@@ -16,24 +17,31 @@ export const useUserStateContext = () => {
 	return context
 }
 
-export const UserStateProvider = ({ children }: { children: ReactNode }) => {
+export const UserStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
 	const [userState, userDispatch] = useReducer(userReducer, initialUserState)
 
 	useEffect(() => {
-		if (localStorage.getItem('token')) {
-			fetcher(users.getLoggedIn.url, { method: users.getLoggedIn.method })
-				.then(({ data }) => {
-					if (data.user) {
-						userDispatch({ type: 'setLoggedInUser', payload: data.user })
-					} else {
-						delete localStorage.token
+		if (Connections.isReady) {
+			Storage.getItem('token')
+				.then((token) => {
+					if (token !== null) {
+						fetcher(users.getLoggedIn.url, { method: users.getLoggedIn.method })
+							.then(({ data }) => {
+								if (data.user !== undefined) {
+									userDispatch({ type: 'setLoggedInUser', payload: data.user })
+								} else {
+									Storage.removeItem('token')
+								}
+							})
+							.catch((error) => {
+								console.error(error)
+								Storage.removeItem('token')
+							})
 					}
 				})
-				.catch(() => {
-					delete localStorage.token
-				})
+				.catch(console.error)
 		}
-	}, [])
+	}, [Connections.isReady])
 
 	return (
 		<UserStateContext.Provider

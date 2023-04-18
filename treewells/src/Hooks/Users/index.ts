@@ -1,7 +1,7 @@
-import { ChangeEvent } from 'react'
+import type { ChangeEvent } from 'react'
 
 import { useUserStateContext } from '../../Providers/UserStateProvider'
-import { UserStatType, UserType } from '../../Types/User'
+import type { FormFieldNameOptions, UserStatType, UserType } from '../../Types/User'
 import { fetcher, useDebounce } from '../../utils'
 import { users } from '../Apis'
 import { useHandleUserResponses } from './handleResponses'
@@ -11,14 +11,27 @@ export type EventChoiceTypes =
 	| ChangeEvent<HTMLSelectElement>
 	| ChangeEvent<HTMLTextAreaElement>
 
-export const useCreateUser = () => {
+export const useCreateUser = (): {
+	createNewUser: () => Promise<void>
+	sendPasswordResetLinkToEmail: ({ email }: { email: string }) => Promise<void>
+	saveUpdatedPassword: ({
+		newPassword,
+		resetToken
+	}: {
+		newPassword: string
+		resetToken: string
+	}) => Promise<void>
+} => {
 	const { userDispatch, formFields } = useUserStateContext()
 	const { handleCreateUserResponse } = useHandleUserResponses()
 
-	const createNewUser = () => {
+	const createNewUser = async (): Promise<void> => {
 		const { email, first_name, last_name, password, password_2, legal } = formFields
-		if (email && password && password_2 && first_name && last_name) {
-			if (legal) {
+		const allDefined = [email, password, password_2, first_name, last_name].every(
+			(field) => field !== undefined && field !== null
+		)
+		if (allDefined) {
+			if (legal !== undefined) {
 				const newUserObject = {
 					email,
 					password,
@@ -28,16 +41,20 @@ export const useCreateUser = () => {
 					legal
 				}
 
-				return fetcher(users.create.url, {
-					method: users.create.method,
-					body: newUserObject
-				})
-					.then(({ data }) => handleCreateUserResponse(data))
-					.catch(({ error }) => {
-						userDispatch({ type: 'setLoginError', payload: error.message || error.code_error })
-
-						return error
+				try {
+					const { data } = await fetcher(users.create.url, {
+						method: users.create.method,
+						body: newUserObject
 					})
+
+					handleCreateUserResponse(data)
+				} catch (error: any) {
+					if (error?.message !== undefined) {
+						userDispatch({ type: 'setLoginError', payload: error.message })
+					} else if (error?.code_error !== undefined) {
+						userDispatch({ type: 'setLoginError', payload: error.code_error })
+					}
+				}
 			} else {
 				userDispatch({
 					type: 'setLoginError',
@@ -52,34 +69,29 @@ export const useCreateUser = () => {
 		}
 	}
 
-	const sendPasswordResetLinkToEmail = ({ email }: { email: string }) => {
-		return fetcher(users.sendPasswordResetLink.url, {
+	const sendPasswordResetLinkToEmail = async ({ email }: { email: string }): Promise<void> => {
+		const { data } = await fetcher(users.sendPasswordResetLink.url, {
 			method: users.sendPasswordResetLink.method,
 			body: { email }
-		}).then(({ data }) => {
-			console.log('RESET_LINK_SENT', data)
 		})
+
+		console.log('RESET_LINK_SENT', data)
 	}
 
 	// save the new password entered by the user
-	const saveUpdatedPassword = ({
+	const saveUpdatedPassword = async ({
 		newPassword,
 		resetToken
 	}: {
 		newPassword: string
 		resetToken: string
-	}) => {
-		return fetcher(users.createNewPassword.url, {
+	}): Promise<void> => {
+		await fetcher(users.createNewPassword.url, {
 			method: users.createNewPassword.method,
 			body: { password: newPassword, reset_token: resetToken }
 		})
-			.then(() => {
-				// return cardDispatch({
-				// 	type: 'closeCardMessage',
-				// 	payload: 'Thank you! You can now log in with your new password.'
-				// })
-			})
-			.catch(console.error)
+
+		console.log('new password created')
 	}
 
 	return {
@@ -89,47 +101,65 @@ export const useCreateUser = () => {
 	}
 }
 
-export const useGetUser = () => {
+export const useGetUser = (): {
+	getNonLoggedInUser: ({ userId }: { userId: number }) => Promise<void>
+	loginUser: () => Promise<void>
+	setLoginError: (loginError: string) => void
+	searchForUsers: ({ search }: { search: string }) => Promise<UserType[]>
+	searchForFriends: ({ search }: { search: string }) => Promise<UserType[]>
+	setWorkingUserToCurrentUser: () => void
+	logoutUser: () => void
+} => {
 	const { userDispatch, formFields, loggedInUser } = useUserStateContext()
 	const { handleLoginUserResponse } = useHandleUserResponses()
 
 	// fetch a user's information that isn't the logged in user
-	const getNonLoggedInUser = ({ userId }: { userId: number }) => {
-		return fetcher(`${users.getById.url}?id=${userId}`, { method: users.getById.method }).then(
-			({ data: { user } }) => {
-				return userDispatch({ type: 'setWorkingUser', payload: user })
-			}
-		)
+	const getNonLoggedInUser = async ({ userId }: { userId: number }): Promise<void> => {
+		const {
+			data: { user }
+		} = await fetcher(`${users.getById.url}?id=${userId}`, { method: users.getById.method })
+		userDispatch({ type: 'setWorkingUser', payload: user })
 	}
 
-	const searchForUsers = ({ search }: { search: string }) => {
-		return fetcher(`${users.searchForUser.url}?search=${search}`, {
+	const searchForUsers = async ({ search }: { search: string }): Promise<UserType[]> => {
+		const {
+			data: { users: responseUsers }
+		} = await fetcher(`${users.searchForUser.url}?search=${search}`, {
 			method: users.searchForUser.method
-		}).then(({ data: { users } }) => users)
+		})
+
+		return responseUsers
 	}
 
-	const searchForFriends = ({ search }: { search: string }) => {
-		return fetcher(`${users.searchForFriend.url}?search=${search}`, {
+	const searchForFriends = async ({ search }: { search: string }): Promise<UserType[]> => {
+		const {
+			data: { users: responseUsers }
+		} = await fetcher(`${users.searchForFriend.url}?search=${search}`, {
 			method: users.searchForFriend.method
-		}).then(({ data: { users } }) => users)
+		})
+
+		return responseUsers
 	}
 
-	const loginUser = async () => {
+	const loginUser = async (): Promise<void> => {
 		const loginBody = {
 			email: formFields.email,
 			password: formFields.password
 		}
 
-		if (formFields.email && formFields.password) {
-			return fetcher(users.login.url, {
-				method: users.login.method,
-				body: loginBody
-			})
-				.then(({ data }) => handleLoginUserResponse(data))
-				.catch(({ error }) => {
-					userDispatch({ type: 'setLoginError', payload: error.message })
-					return error
+		if (formFields.email !== undefined && formFields.password !== undefined) {
+			try {
+				const { data } = await fetcher(users.login.url, {
+					method: users.login.method,
+					body: loginBody
 				})
+
+				handleLoginUserResponse(data)
+			} catch (error: any) {
+				if (error.message !== undefined) {
+					userDispatch({ type: 'setLoginError', payload: error.message })
+				}
+			}
 		} else {
 			userDispatch({
 				type: 'setLoginError',
@@ -138,16 +168,16 @@ export const useGetUser = () => {
 		}
 	}
 
-	const setLoginError = (loginError: string) => {
-		return userDispatch({ type: 'setLoginError', payload: loginError })
+	const setLoginError = (loginError: string): void => {
+		userDispatch({ type: 'setLoginError', payload: loginError })
 	}
 
-	const setWorkingUserToCurrentUser = () => {
-		return userDispatch({ type: 'setWorkingUser', payload: loggedInUser as UserType })
+	const setWorkingUserToCurrentUser = (): void => {
+		userDispatch({ type: 'setWorkingUser', payload: loggedInUser as UserType })
 	}
 
-	const logoutUser = () => {
-		return userDispatch({ type: 'logout' })
+	const logoutUser = (): void => {
+		userDispatch({ type: 'logout' })
 	}
 
 	return {
@@ -161,17 +191,24 @@ export const useGetUser = () => {
 	}
 }
 
-export const useEditUser = () => {
+export const useEditUser = (): {
+	editUser: (event: EventChoiceTypes) => Promise<void>
+	editFormFields: (field: { name: FormFieldNameOptions; value: string | number | boolean }) => void
+	changeUserStatView: (newUserStatView: UserStatType) => void
+	toggleUserEditState: () => void
+} => {
 	const { userDispatch } = useUserStateContext()
 
-	const handleEditRequest = useDebounce(({ name, value }: { name: string; value: string }) => {
-		return fetcher(users.edit.url, {
-			method: users.edit.method,
-			body: { field: { name, value } }
-		})
-	})
+	const handleEditRequest = useDebounce(
+		async ({ name, value }: { name: string; value: string }): Promise<void> => {
+			return await fetcher(users.edit.url, {
+				method: users.edit.method,
+				body: { field: { name, value } }
+			})
+		}
+	)
 
-	const editUser = (event: EventChoiceTypes) => {
+	const editUser = async (event: EventChoiceTypes): Promise<void> => {
 		userDispatch({
 			type: 'setUserEditFields',
 			payload: { name: event.target.name, value: event.target.value }
@@ -179,37 +216,46 @@ export const useEditUser = () => {
 		return handleEditRequest({ name: event.target.name, value: event.target.value })
 	}
 
-	const changeUserStatState = (newUserStatState: UserStatType) => {
-		return userDispatch({ type: 'changeStatState', payload: newUserStatState })
+	const changeUserStatView = (newUserStatView: UserStatType): void => {
+		userDispatch({ type: 'changeStatView', payload: newUserStatView })
 	}
 
-	const editFormFields = (field: { name: string; value: string | number }) => {
-		return userDispatch({ type: 'setFormFields', payload: field })
+	const editFormFields = (field: {
+		name: FormFieldNameOptions
+		value: string | number | boolean
+	}): void => {
+		userDispatch({ type: 'setFormFields', payload: field })
 	}
 
-	const toggleUserEditState = () => {
-		return userDispatch({ type: 'switchIsUserEditable' })
+	const toggleUserEditState = (): void => {
+		userDispatch({ type: 'switchIsUserEditable' })
 	}
 
 	return {
 		editUser,
 		editFormFields,
-		changeUserStatState,
+		changeUserStatView,
 		toggleUserEditState
 	}
 }
 
-export const useFollowUser = () => {
+export const useFollowUser = (): {
+	friendUser: ({ leaderId }: { leaderId: number }) => Promise<void>
+} => {
 	const { userDispatch } = useUserStateContext()
 
-	const friendUser = ({ leaderId }: { leaderId: number }) => {
-		return fetcher(`${users.followUser.url}?leader_id=${leaderId}`, {
-			method: users.followUser.method
-		})
-			.then(({ data: { user } }) => {
-				return userDispatch({ type: 'setLoggedInUser', payload: user })
+	const friendUser = async ({ leaderId }: { leaderId: number }): Promise<void> => {
+		try {
+			const {
+				data: { user }
+			} = await fetcher(`${users.followUser.url}?leader_id=${leaderId}`, {
+				method: users.followUser.method
 			})
-			.catch(console.error)
+
+			userDispatch({ type: 'setLoggedInUser', payload: user })
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
 	return { friendUser }

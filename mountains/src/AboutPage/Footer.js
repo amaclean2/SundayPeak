@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
 import LogoInline from '../Images/Logos/LogoInline'
 import getContent from '../TextContent'
+import { Button } from 'Components/Reusable'
 
 const AboutFooter = () => {
 	return (
@@ -16,13 +16,28 @@ const AboutFooter = () => {
 					<h3>{getContent('aboutPage.footerMap')}</h3>
 					<ul>
 						<li>
-							<Link to='/about'>{getContent('aboutPage.footerAbout')}</Link>
+							<Button
+								type={'link'}
+								direction='/about'
+							>
+								{getContent('aboutPage.footerAbout')}
+							</Button>
 						</li>
 						<li>
-							<Link to='/privacy'>{getContent('aboutPage.footerPrivacy')}</Link>
+							<Button
+								type={'link'}
+								direction='/privacy'
+							>
+								{getContent('aboutPage.footerPrivacy')}
+							</Button>
 						</li>
 						<li>
-							<Link to='/discover'>{getContent('aboutPage.footerUseApp')}</Link>
+							<Button
+								type={'link'}
+								direction='/discover'
+							>
+								{getContent('aboutPage.footerUseApp')}
+							</Button>
 						</li>
 					</ul>
 				</div>
@@ -30,7 +45,12 @@ const AboutFooter = () => {
 					<h3>{getContent('aboutPage.footerFollow')}</h3>
 					<ul>
 						<li>
-							<Link to='https://instagram.com'>{getContent('aboutPage.footerIG')}</Link>
+							<Button
+								type='link'
+								direction='https://instagram.com'
+							>
+								{getContent('aboutPage.footerIG')}
+							</Button>
 						</li>
 					</ul>
 				</div>

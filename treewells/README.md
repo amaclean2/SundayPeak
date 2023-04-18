@@ -5,10 +5,7 @@ This library is supposed to abstract out all of the hooks and serverside calls f
 To set it up first set:
 
 ```Javascript
-SundayPeakServerUrls = {
-  serverUrl // points to your server
-  websocketUrl // points to your websocket
-}
+Connections.setConnections({ restUrl, websocketUrl}, storageApi)
 ```
 
 Providers should be able to be accesses through `<SundayPeakProviders />` which takes `{children}` as a parameter

@@ -1,8 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { useCreateUser, useEditUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
+import { useNavigate } from 'react-router-dom'
+import {
+	Connections,
+	useCreateUser,
+	useEditUser,
+	useGetUser,
+	useUserStateContext
+} from 'sundaypeak-treewells'
 import { useEffect } from 'react'
 
-import { title } from 'App'
+import { title } from 'Router/AppContent'
 
 import { FormField, DisplayCard, ErrorField, Button, FooterButtons } from 'Components/Reusable'
 
@@ -25,16 +31,19 @@ export const SignupFlow = () => {
 
 	return (
 		<DisplayCard
+			testId={'signup-page'}
 			configuration={'center'}
 			title={`Sign up with ${title}`}
 			onClose={() => navigate('/discover')}
 		>
 			<ErrorField
 				form='login'
+				testId='signup-error-field'
 				className='signup-error'
 			/>
 			<FormField
 				onChange={onChange}
+				testId='first-name'
 				type='text'
 				name='first_name'
 				label='First Name'
@@ -45,6 +54,7 @@ export const SignupFlow = () => {
 			/>
 			<FormField
 				onChange={onChange}
+				testId='last-name'
 				type='text'
 				name='last_name'
 				label='Last Name'
@@ -55,6 +65,7 @@ export const SignupFlow = () => {
 			/>
 			<FormField
 				type='email'
+				testId='email'
 				name='email'
 				label='Email'
 				hideLabel
@@ -67,6 +78,7 @@ export const SignupFlow = () => {
 				name='password'
 				label='Password'
 				type='password'
+				testId='password'
 				hideLabel
 				block
 				isEditable
@@ -77,6 +89,7 @@ export const SignupFlow = () => {
 				name='password_2'
 				label='Confirm Password'
 				type='password'
+				testId='confirm-password'
 				hideLabel
 				block
 				isEditable
@@ -86,10 +99,11 @@ export const SignupFlow = () => {
 			<FormField
 				type='checkbox'
 				name='legal'
+				testId='legal-check'
 				value={formFields.legal}
 				label={
 					<span>
-						I agree with the {title} <Link to='/privacy'>Privacy Policy</Link>
+						I agree with the {title} <Button direction='/privacy'>Privacy Policy</Button>
 					</span>
 				}
 				isEditable

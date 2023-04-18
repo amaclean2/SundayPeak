@@ -7,6 +7,13 @@ import Map, {
 	NavigationControl,
 	Source
 } from 'react-map-gl'
+import {
+	Connections,
+	useAdventureStateContext,
+	useDebounce,
+	useManipulateFlows,
+	useTokenStateContext
+} from 'sundaypeak-treewells'
 
 import { useCreateNewAdventure } from './utils'
 
@@ -15,12 +22,6 @@ import hiker from 'Images/Activities/HikerIcon.png'
 import climber from 'Images/Activities/ClimberIcon.png'
 
 import './styles.css'
-import {
-	useAdventureStateContext,
-	useDebounce,
-	useManipulateFlows,
-	useTokenStateContext
-} from 'sundaypeak-treewells'
 
 const ReactMap = () => {
 	const mapRef = useRef()
@@ -75,6 +76,11 @@ const ReactMap = () => {
 	}
 
 	useEffect(() => {
+		fetch(`${Connections.restUrl}/services/initial`)
+			.then((resp) => resp.json())
+			.then((data) => console.log({ data }))
+			.catch((error) => console.log({ error }))
+
 		if (!currentAdventure || !mapRef.current) {
 			return
 		}
@@ -85,8 +91,15 @@ const ReactMap = () => {
 		})
 	}, [currentAdventure?.id, mapRef.current])
 
+	console.log({ allAdventures, mapboxToken, mapboxStyleKey })
+
 	if (!(allAdventures && mapboxToken && mapboxStyleKey)) {
-		return null
+		return (
+			<div
+				className={'map-container placeholder'}
+				data-testid={'map-container-placeholder'}
+			/>
+		)
 	}
 
 	// extracted the props for the <Map /> component to here so it doesn't clutter the jsx
@@ -113,6 +126,7 @@ const ReactMap = () => {
 	return (
 		<div
 			className={'map-container'}
+			data-testid='map-container'
 			style={{ width: '100vw', height: '100vh', top: 0, left: 0, position: 'fixed' }}
 		>
 			<Map

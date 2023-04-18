@@ -16,3 +16,35 @@ This layer is seperated from Water because both `Rivers` and `Couloirs` talks to
 - I really want to make all of these layers TypeScript so that I'm not constantly going back and forth looking up what the parameters for some method is
 - A little bit of organization couldn't hurt
 - Mostly I'm pretty happy with how this layer is organized right now
+
+### When Saving Changes
+
+1. Push to Github
+2. Push to Dockerhub from `rivers`
+
+```shell
+docker build --platform linux/amd64 -t amacleanjs/sunday-service .
+docker push amacleanjs/sunday-service
+```
+
+### Deployment
+
+Make sure the Dockerfile has the correct command to run the service in production
+
+```shell
+docker run -dp 80:5000 amacleanjs/sunday-service
+```
+
+### Run locally
+
+if the repo exists locally
+
+```shell
+docker run --name rivers -p 80:5000 -v /Users/andrewmaclean/BackyardFriends/rivers/:/home/app rivers
+```
+
+otherwise need to set up another container with mysql first. If you do this all data will be removed. Make sure this is what you want.
+
+```shell
+docker run -dp 80:5000 amacleanjs/sunday-service
+```

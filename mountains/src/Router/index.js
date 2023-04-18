@@ -12,7 +12,6 @@ import {
 // import PrivacyPolicy from 'PrivacyPolicy'
 import ButtonBar from 'Components/ButtonBar'
 import { LoginFlow, NewPassword, PasswordResetCapture, SignupFlow } from 'Components/SignupFlow'
-import App from 'App'
 import UserViewer from 'Components/UserProfile/Viewer'
 import UserEditor from 'Components/UserProfile/Editor'
 import Chat from 'Components/Chat'
@@ -20,6 +19,7 @@ import DefaultAdventureView from 'Components/Adventures'
 import CreateNewAdventure from 'Components/Adventures/CreateNewAdventure'
 import AdventureEditorForm from 'Components/Adventures/Editor'
 import AdventureViewer from 'Components/Adventures/Viewer'
+import AppContent from 'Router/AppContent'
 
 export const title = 'Sunday Peak'
 
@@ -29,7 +29,7 @@ export const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route
 			path={'/'}
-			element={<App />}
+			element={<AppContent />}
 		>
 			<Route
 				index

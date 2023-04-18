@@ -6,6 +6,8 @@ mountains/src/.DS_Store
 mountinas/.DS_Store
 mountains/ui-debug.log
 
+data
+
 rivers/node_modules
 rivers/package-lock.json
 rivers/app.yaml

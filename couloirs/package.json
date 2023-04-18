@@ -12,7 +12,7 @@
   "author": "Andrew Maclean",
   "license": "ISC",
   "dependencies": {
-    "byf-custom-logger": "^1.9.6",
+    "byf-custom-logger": "^2.0.4",
     "dotenv": "^16.0.3",
     "env-cmd": "^10.1.0",
     "sundaypeak-water": "^1.1.7",

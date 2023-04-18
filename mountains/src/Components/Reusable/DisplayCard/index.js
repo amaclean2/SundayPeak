@@ -12,10 +12,14 @@ export const DisplayCard = ({
 	configuration = 'left',
 	className,
 	title,
-	menu
+	menu,
+	testId
 }) => {
 	return (
-		<div className={cx('display-card-container flex-box', className, configuration)}>
+		<div
+			className={cx('display-card-container flex-box', className, configuration)}
+			data-testid={testId}
+		>
 			<div className={`display-card`}>
 				<DisplayHeader
 					title={title}

@@ -1,10 +1,10 @@
-import React, { createContext, ReactNode, useContext, useReducer } from 'react'
-import { MessageContext } from '../Types/Messages'
+import React, { createContext, type ReactNode, useContext, useReducer } from 'react'
+import type { MessageContext } from '../Types/Messages'
 import { initialMessagingState, messageReducer } from './Reducers/MessageReducer'
 
-const MessagingStateContext = createContext<MessageContext>({} as MessageContext)
+const MessagingStateContext = createContext({} as MessageContext)
 
-export const useMessagingStateContext = () => {
+export const useMessagingStateContext = (): MessageContext => {
 	const context = useContext(MessagingStateContext)
 
 	if (context === undefined) {
@@ -13,7 +13,7 @@ export const useMessagingStateContext = () => {
 	return context
 }
 
-export const MessagingStateProvider = ({ children }: { children: ReactNode }) => {
+export const MessagingStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
 	const [messageState, messageDispatch] = useReducer(messageReducer, initialMessagingState)
 
 	return (

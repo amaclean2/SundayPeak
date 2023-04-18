@@ -7,7 +7,6 @@ const router = require('./Routing')
 const { corsHandler } = require('./Config/cors')
 const serviceHandler = require('./Config/services')
 const { returnError, NOT_ACCEPTABLE } = require('./ResponseHandling')
-const logger = require('./Config/logger')
 
 config()
 

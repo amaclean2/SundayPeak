@@ -1,4 +1,4 @@
-import { Dispatch } from 'react'
+import type { Dispatch } from 'react'
 
 type ConversationUser = {
 	display_name: string
@@ -22,9 +22,7 @@ export type MessageType = {
 	conversation_id: number
 }
 
-export type ConversationsType = {
-	[key: number | string]: ConversationType
-}
+export type ConversationsType = Record<string | number, ConversationType>
 
 type NewConnectionType = {
 	type: 'initiateConnection'
@@ -38,7 +36,7 @@ type ReceiveConversations = {
 
 type SetConversations = {
 	type: 'setConversations'
-	payload: { [key: number | string]: ConversationType }
+	payload: ConversationsType | null
 }
 
 type SetCurrentConversation = {
@@ -75,10 +73,11 @@ export type MessageAction =
 	| SetCurrentConversation
 
 export type MessageState = {
-	conversations: { [key: number]: ConversationType } | null
+	conversations: ConversationsType | null
 	messages: MessageType[] | null
 	currentConversationId: number | null
 	websocket: WebSocket | null
+	error: string | null
 }
 
 export type MessageContext = MessageState & { messageDispatch: Dispatch<MessageAction> }

@@ -1,4 +1,7 @@
-import { Dispatch } from 'react'
+import type { Dispatch } from 'react'
+
+type URLSuffixs = '.com' | '.net' | '.co.uk' | '.org' | '.gov' | '.cz' | ''
+export type URLType = `${'http://' | 'https://' | 'ws://'}${string}${URLSuffixs}`
 
 type CloseMessage = {
 	type: 'closeCardMessage'
@@ -7,7 +10,7 @@ type CloseMessage = {
 
 type SetGalleryImage = {
 	type: 'setGalleryImage'
-	payload: string
+	payload: URLType
 }
 
 type OpenAlert = {
@@ -22,7 +25,7 @@ type CloseAlert = {
 export type CardAction = CloseMessage | SetGalleryImage | OpenAlert | CloseAlert
 
 export type CardState = {
-	galleryImage: string | null
+	galleryImage: URLType | null
 	showAlert: boolean
 	alertContent: string
 	screenType: {

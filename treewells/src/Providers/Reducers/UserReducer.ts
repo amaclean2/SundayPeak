@@ -1,4 +1,5 @@
-import { UserAction, UserState, UserType } from '../../Types/User'
+import { Storage } from '../../config'
+import type { UserAction, UserState, UserType } from '../../Types/User'
 
 export const initialUserState: UserState = {
 	loginError: null,
@@ -6,7 +7,7 @@ export const initialUserState: UserState = {
 	loggedInUser: null,
 	formFields: {},
 	userEditState: false,
-	statState: 'completed',
+	statView: 'completed', // the toggle between friends and stats view
 	searchList: null,
 	images: []
 }
@@ -40,7 +41,7 @@ export const userReducer = (state: UserState, action: UserAction): UserState => 
 				formFields: {}
 			}
 		case 'logout':
-			localStorage.clear()
+			Storage.clear()
 			return { ...state, loggedInUser: null }
 		case 'setLoginError':
 			return { ...state, loginError: action.payload }
@@ -54,8 +55,8 @@ export const userReducer = (state: UserState, action: UserAction): UserState => 
 			return { ...state, loginError: null, formFields: {} }
 		case 'switchIsUserEditable':
 			return { ...state, userEditState: !state.userEditState }
-		case 'changeStatState':
-			return { ...state, statState: action.payload }
+		case 'changeStatView':
+			return { ...state, statView: action.payload }
 		default:
 			return state
 	}

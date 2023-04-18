@@ -5,7 +5,7 @@ import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewe
 
 import './styles.css'
 
-export const ErrorField = ({ form, className }) => {
+export const ErrorField = ({ form, className, testId }) => {
 	const { loginError } = useUserStateContext()
 	const { adventureError } = useAdventureStateContext()
 
@@ -23,7 +23,10 @@ export const ErrorField = ({ form, className }) => {
 	}
 
 	return (
-		<div className={cx('error-field flex-box', className, !!error.current ? '' : 'collapsed')}>
+		<div
+			className={cx('error-field flex-box', className, !!error.current ? '' : 'collapsed')}
+			data-testid={testId}
+		>
 			{error.current}
 		</div>
 	)
@@ -31,5 +34,6 @@ export const ErrorField = ({ form, className }) => {
 
 ErrorField.propTypes = {
 	form: PropTypes.string.isRequired,
-	className: PropTypes.string
+	className: PropTypes.string,
+	testId: PropTypes.string
 }

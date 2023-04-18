@@ -1,4 +1,4 @@
-import { Dispatch } from 'react'
+import type { Dispatch } from 'react'
 
 export type AdventureChoiceType = 'ski' | 'climb' | 'hike'
 
@@ -59,7 +59,7 @@ type BasicAdventureType = {
 
 type SkiAdventureType = BasicAdventureType & {
 	approach_distance: string
-	aspenct: string
+	aspect: string
 	avg_angle: number
 	max_angle: number
 	base_elevation: number
@@ -97,7 +97,7 @@ export type MapPosition = {
 
 type SetAllAdventuresType = {
 	type: 'setAllAdventures'
-	payload: any
+	payload: AdventureList
 }
 
 type SetNewAdventureView = {
@@ -156,6 +156,14 @@ type AdventureTypeView = {
 	payload: AdventureChoiceType
 }
 
+type SetInitialValues = {
+	type: 'setInitialValues'
+	payload: {
+		startPosition: MapPosition
+		globalAdventureType: AdventureChoiceType
+	}
+}
+
 type NewAdventureProcess = {
 	type: 'startNewAdventureProcess'
 	payload: AdventureChoiceType
@@ -175,6 +183,7 @@ export type AdventureAction =
 	| AdventureTypeView
 	| NewAdventureProcess
 	| UpdateStartPosition
+	| SetInitialValues
 
 export type AdventureState = {
 	allAdventures: AdventureList | null
@@ -186,7 +195,7 @@ export type AdventureState = {
 		latitude: number
 		longitude: number
 		zoom: number
-	}
+	} | null
 	isDeletePageOpen: boolean
 	globalAdventureType: AdventureChoiceType
 }

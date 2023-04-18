@@ -1,12 +1,12 @@
-import React, { createContext, ReactNode, useContext, useEffect, useReducer } from 'react'
+import React, { createContext, type ReactNode, useContext, useEffect, useReducer } from 'react'
 import { tokens } from '../Hooks/Apis'
-import { TokenContext } from '../Types/Tokens'
+import { type TokenContext } from '../Types/Tokens'
 import { fetcher } from '../utils'
 import { initialTokenState, tokenReducer } from './Reducers/TokenReducer'
 
-const TokenStateContext = createContext<TokenContext>({} as TokenContext)
+const TokenStateContext = createContext({} as TokenContext)
 
-export const useTokenStateContext = () => {
+export const useTokenStateContext = (): TokenContext => {
 	const context = useContext(TokenStateContext)
 
 	if (context === undefined) {
@@ -15,13 +15,13 @@ export const useTokenStateContext = () => {
 	return context
 }
 
-export const TokenStateProvider = ({ children }: { children: ReactNode }) => {
+export const TokenStateProvider = ({ children }: { children: ReactNode }): JSX.Element => {
 	const [tokenState, tokenDispatch] = useReducer(tokenReducer, initialTokenState)
 
 	// get tokens for the app
 	useEffect(() => {
-		fetcher(tokens.getInitialCall.url, { method: tokens.getInitialCall.method }).then(
-			({ data }: { data: any }) => {
+		fetcher(tokens.getInitialCall.url, { method: tokens.getInitialCall.method })
+			.then(({ data }: { data: any }) => {
 				tokenDispatch({
 					type: 'setTokens',
 					payload: {
@@ -29,8 +29,8 @@ export const TokenStateProvider = ({ children }: { children: ReactNode }) => {
 						mapboxStyleKey: data.map_style
 					}
 				})
-			}
-		)
+			})
+			.catch(console.error)
 	}, [])
 
 	return (

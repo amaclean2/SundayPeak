@@ -1,0 +1,35 @@
+services:
+  mountains:
+    container_name: mountains
+    image: mountains
+    build: ./mountains
+    restart: on-failure
+    ports:
+      - '80:3000'
+    volumes:
+      - ./mountains:/home/app
+      - /home/app/node_modules
+  rivers:
+    container_name: rivers
+    image: rivers
+    build: ./rivers
+    restart: on-failure
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./rivers:/home/app
+      - /home/app/node_modules
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    restart: on-failure
+    environment:
+      - MYSQL_DATABASE=friends
+      - MYSQL_USER=byf
+      - MYSQL_PASSWORD=backyard
+      - MYSQL_RANDOM_ROOT_PASSWORD=123
+    ports:
+      - '3300:3306'
+    volumes:
+      - ./data/:/var/lib/mysql
+      - ./water/DB/init.sql:/docker-entrypoint-initdb.d/init.sql

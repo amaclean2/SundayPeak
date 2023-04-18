@@ -13,6 +13,7 @@ const DefaultField = ({
 	value,
 	options,
 	placeholder,
+	testId,
 	onChange,
 	autoFocus = false
 }) => {
@@ -25,6 +26,7 @@ const DefaultField = ({
 	return (
 		<input
 			className={cx(type || 'text', 'form-field', className)}
+			data-testid={testId}
 			pattern={options?.pattern || null}
 			type={type}
 			name={name}

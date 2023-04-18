@@ -1,5 +1,5 @@
-import { Dispatch } from 'react'
-import { AdventureChoiceType } from './Adventures'
+import type { Dispatch } from 'react'
+import type { AdventureChoiceType } from './Adventures'
 
 export type CompletedAdventureForUserType = {
 	adventure_id: number
@@ -65,11 +65,23 @@ type LogoutType = {
 	type: 'logout'
 }
 
+export type FormFieldNameOptions =
+	| 'first_name'
+	| 'last_name'
+	| 'email'
+	| 'city'
+	| 'bio'
+	| 'password'
+	| 'password_2'
+	| 'phone'
+	| 'user_site'
+	| 'legal'
+
 type FormFieldsType = {
 	type: 'setFormFields'
 	payload: {
-		name: string
-		value: string | number
+		name: FormFieldNameOptions
+		value: string | number | boolean
 	}
 }
 
@@ -82,7 +94,7 @@ type IsUserEditableType = {
 }
 
 type ChangeStatType = {
-	type: 'changeStatState'
+	type: 'changeStatView'
 	payload: UserStatType
 }
 
@@ -103,7 +115,7 @@ export type UserState = {
 	loggedInUser: UserType | null
 	formFields: any
 	userEditState: boolean
-	statState: string
+	statView: string
 	searchList: null
 	images: string[]
 }

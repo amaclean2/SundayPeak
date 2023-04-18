@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useCreateUser, useManipulateFlows } from 'sundaypeak-treewells'
 
 import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
@@ -38,13 +37,13 @@ export const PasswordResetCapture = () => {
 				>
 					Send Reset Email
 				</Button>
-				<Link
+				<Button
 					id='return-to-login'
-					className={'secondary-button button flex-box'}
-					to={'/login'}
+					className={'secondary-button'}
+					direction={'/login'}
 				>
 					Return to login
-				</Link>
+				</Button>
 			</FooterButtons>
 		</DisplayCard>
 	)

@@ -1,20 +1,21 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "files.defaultLanguage": "javascript",
-  "prettier.endOfLine": "auto",
-  "prettier.jsxSingleQuote": true,
-  "prettier.printWidth": 100,
-  "prettier.semi": false,
-  "prettier.singleAttributePerLine": true,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "none",
-  "prettier.useTabs": true,
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "editor.tabSize": 2,
-  "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml"
-  }
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"files.defaultLanguage": "javascript",
+	"prettier.endOfLine": "auto",
+	"prettier.jsxSingleQuote": true,
+	"prettier.printWidth": 100,
+	"prettier.semi": false,
+	"prettier.singleAttributePerLine": true,
+	"prettier.singleQuote": true,
+	"prettier.trailingComma": "none",
+	"prettier.useTabs": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"editor.tabSize": 2,
+	"[xml]": {
+		"editor.defaultFormatter": "redhat.vscode-xml"
+	},
+	"jest.rootPath": "src/__tests__"
 }
