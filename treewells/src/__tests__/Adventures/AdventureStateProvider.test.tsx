@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { mockFetch } from '../../setupJest'
 import { AdventureTestApp } from '../../__mocks__/TestApp'
-import { type AdventureList } from '../../Types/Adventures'
+import { mockGetAdventures } from '../__utils__/Adventures'
 
 const renderApp = async (): Promise<void> => {
 	mockFetch.mockResolvedValue({
@@ -95,6 +95,10 @@ describe('testing the adventure state provider', () => {
 		fireEvent.click(setAdventureTypeButton)
 
 		expect(screen.getByText(/Adventure type view/i).textContent).toBe('Adventure type view: climb')
+
+		await waitFor(() => {
+			expect(mockFetch).toHaveBeenCalledTimes(2)
+		})
 	})
 
 	test('Can set initial values', async () => {
@@ -108,6 +112,10 @@ describe('testing the adventure state provider', () => {
 		expect(screen.getByText(/Adventure type view/i).textContent).toBe('Adventure type view: hike')
 		expect(screen.getByText(/Start position view/i).textContent).toBe('Start position view: 12')
 		expect(localStorage.getItem('startPos')).toContain('"zoom":12')
+
+		await waitFor(() => {
+			expect(mockFetch).toHaveBeenCalledTimes(2)
+		})
 	})
 
 	test('Can edit an adventure', async () => {
@@ -183,33 +191,14 @@ describe('testing the adventure state provider', () => {
 			'Adventure add state view: true'
 		)
 		expect(screen.getByText(/Adventure type view/i).textContent).toBe('Adventure type view: hike')
+
+		await waitFor(() => {
+			expect(mockFetch).toHaveBeenCalledTimes(2)
+		})
 	})
 
 	test('Initial call to get all adventures gets a list of adventures', async () => {
-		mockFetch.mockResolvedValue({
-			json: async () => ({
-				data: {
-					adventures: {
-						type: 'FeatureCollection',
-						features: [
-							{
-								type: 'Feature',
-								geometry: {
-									type: 'Point',
-									coordinates: [5, 10]
-								},
-								properties: {
-									adventure_name: 'My Adventure',
-									adventure_type: 'ski',
-									id: 1,
-									public: true
-								}
-							}
-						]
-					} as AdventureList
-				}
-			})
-		})
+		mockGetAdventures()
 		render(<AdventureTestApp />)
 
 		await waitFor(() => {
@@ -231,12 +220,18 @@ describe('testing the adventure state provider', () => {
 			})
 		)
 		localStorage.setItem('globalAdventureType', 'hike')
+		mockGetAdventures()
 
 		render(<AdventureTestApp />)
 		await waitFor(() => {
 			expect(screen.getByText(/Start position view/i).textContent).toBe('Start position view: 10')
 		})
 		expect(screen.getByText(/Adventure type view/i).textContent).toBe('Adventure type view: hike')
+
+		await waitFor(() => {
+			expect(mockFetch).toHaveBeenCalledTimes(1)
+		})
+		console.log(mockFetch.mock.calls)
 	})
 
 	test('The map can be enabled for adding a new adventure', async () => {

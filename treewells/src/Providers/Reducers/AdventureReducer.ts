@@ -1,10 +1,5 @@
 import { Storage } from '../../config'
-import type {
-	AdventureAction,
-	AdventureChoiceType,
-	AdventureState,
-	AdventureType
-} from '../../Types/Adventures'
+import type { AdventureAction, AdventureState, AdventureType } from '../../Types/Adventures'
 
 export const initialAdventureState = {
 	allAdventures: null,
@@ -14,7 +9,7 @@ export const initialAdventureState = {
 	adventureError: null,
 	startPosition: null,
 	isDeletePageOpen: false,
-	globalAdventureType: 'ski' as AdventureChoiceType
+	globalAdventureType: null
 }
 
 export const adventureReducer = (

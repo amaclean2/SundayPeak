@@ -99,6 +99,7 @@ export const fetcher = async (url: string, options?: OptionsType): Promise<any> 
 	})
 
 	if (response?.json === undefined) {
+		console.log({ response, url })
 		throw new Error(`'response' is not of a readable type`)
 	}
 

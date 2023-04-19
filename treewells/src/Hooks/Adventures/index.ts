@@ -46,7 +46,8 @@ export const useGetAdventures = (): {
 
 	const changeAdventureType = ({ type }: { type: AdventureChoiceType }): void => {
 		adventureDispatch({ type: 'startNewAdventureProcess', payload: type })
-		getAllAdventures({ type })
+		// I'm replacing getAllAdventures here with a watcher in adventureStateContext
+		// that calls getAllAdventures anytime the globalAdventureState changes
 	}
 
 	const getAllAdventures = async ({

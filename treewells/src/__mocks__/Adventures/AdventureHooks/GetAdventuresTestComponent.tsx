@@ -11,7 +11,7 @@ Connections.setConnections(
 
 const GetAdventuresTestComponent = (): JSX.Element => {
 	const { allAdventures } = useAdventureStateContext()
-	const { getAllAdventures } = useGetAdventures()
+	const { getAllAdventures, changeAdventureType } = useGetAdventures()
 
 	return (
 		<div>
@@ -22,7 +22,15 @@ const GetAdventuresTestComponent = (): JSX.Element => {
 			>
 				Get All Adventures
 			</button>
+			<button
+				onClick={() => {
+					changeAdventureType({ type: 'hike' })
+				}}
+			>
+				Change Adventure Type
+			</button>
 			<span>Proof of adventures: {allAdventures?.type}</span>
+			<span>Adventure count: {allAdventures?.features.length}</span>
 		</div>
 	)
 }

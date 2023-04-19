@@ -59,19 +59,18 @@ export const AdventureStateProvider = ({ children }: { children: ReactNode }): J
 	}, [adventureState.startPosition, Connections.isReady])
 
 	useEffect(() => {
-		fetcher(`${adventures.getAllAdventures.url}?type=${adventureState.globalAdventureType}`, {
-			method: adventures.getAllAdventures.method
-		})
-			.then(({ data: { adventures } }) => {
-				adventureDispatch({
-					type: 'setAllAdventures',
-					payload: adventures
-				})
-
-				return adventures
+		// this is a watcher that is looking for changes in the globalAdventureType.
+		// Any time it sees a change it'll refetch all the adventures
+		if (adventureState.globalAdventureType !== null) {
+			fetcher(`${adventures.getAllAdventures.url}?type=${adventureState.globalAdventureType}`, {
+				method: adventures.getAllAdventures.method
 			})
-			.catch(console.error)
-	}, [])
+				.then(({ data: { adventures: adventureListObject } }) => {
+					adventureDispatch({ type: 'setAllAdventures', payload: adventureListObject })
+				})
+				.catch(console.error)
+		}
+	}, [adventureState.globalAdventureType])
 
 	return (
 		<AdventureEditContext.Provider

@@ -197,7 +197,7 @@ export type AdventureState = {
 		zoom: number
 	} | null
 	isDeletePageOpen: boolean
-	globalAdventureType: AdventureChoiceType
+	globalAdventureType: AdventureChoiceType | null
 }
 
 export type AdventureContext = AdventureState & { adventureDispatch: Dispatch<AdventureAction> }

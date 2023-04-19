@@ -4,7 +4,8 @@ export const mockJsonPromise = jest.fn(async () => {
 	}
 })
 
-export const mockFetch = jest.fn(async (): Promise<any> => {
+export const mockFetch = jest.fn(async (args): Promise<any> => {
+	console.log({ args })
 	return {
 		json: mockJsonPromise
 	}
