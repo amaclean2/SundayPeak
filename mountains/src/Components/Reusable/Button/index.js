@@ -12,6 +12,7 @@ export const Button = ({
 	disabled,
 	id = 'basic-button',
 	secondaryButton = false,
+	headerButton = false,
 	small = false,
 	direction,
 	type = 'button'
@@ -29,9 +30,10 @@ export const Button = ({
 				id={id}
 				data-testid={id}
 				className={cx(
-					'button flex-box',
+					'button flex-box link',
 					className,
 					secondaryButton && 'secondary-button',
+					headerButton && 'header-button',
 					small && 'small'
 				)}
 			>
@@ -51,6 +53,7 @@ export const Button = ({
 				'flex-box',
 				className,
 				secondaryButton && 'secondary-button',
+				headerButton && 'header-button',
 				small && 'small'
 			)}
 		>
@@ -66,6 +69,7 @@ Button.propTypes = {
 	disabled: PropTypes.bool,
 	id: PropTypes.string,
 	secondaryButton: PropTypes.bool,
+	headerButton: PropTypes.bool,
 	small: PropTypes.bool,
 	direction: PropTypes.string,
 	type: PropTypes.oneOf(['link', 'button'])

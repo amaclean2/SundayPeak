@@ -18,7 +18,7 @@ const DefaultAdventureView = () => {
 			<AdventureSearch />
 			{loggedInUser?.id && (
 				<Button
-					type='link'
+					secondaryButton
 					id={'open-new-adventure-menu'}
 					direction={'/adventure/new'}
 				>

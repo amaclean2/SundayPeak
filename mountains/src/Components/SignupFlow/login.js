@@ -35,6 +35,7 @@ export const LoginFlow = () => {
 				name='email'
 				label='Email'
 				type='email'
+				testId='email'
 				block
 				hideLabel
 				isEditable
@@ -46,6 +47,7 @@ export const LoginFlow = () => {
 				name='password'
 				label='Password'
 				type='password'
+				testId='password'
 				block
 				hideLabel
 				isEditable

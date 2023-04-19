@@ -25,6 +25,7 @@ const AdventureTypeSelector = () => {
 				name='adventure_type_selector'
 				isEditable
 				fullWidth
+				testId={'adventure-type-selector'}
 				placeholder={'Adventure Type'}
 				options={{
 					selectOptions: [

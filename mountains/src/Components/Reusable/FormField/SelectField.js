@@ -1,4 +1,5 @@
 import cx from 'classnames'
+import PropTypes from 'prop-types'
 
 const SelectField = ({
 	className,
@@ -7,6 +8,7 @@ const SelectField = ({
 	placeholder,
 	value,
 	onChange,
+	testId,
 	autoFocus = false
 }) => {
 	const { selectOptions = [] } = options
@@ -14,6 +16,7 @@ const SelectField = ({
 		<select
 			className={cx('select form-field', className)}
 			name={name}
+			data-testid={testId}
 			value={value || '0'}
 			onChange={onChange}
 			autoFocus={autoFocus}
@@ -37,6 +40,17 @@ const SelectField = ({
 			))}
 		</select>
 	)
+}
+
+SelectField.propTypes = {
+	className: PropTypes.string,
+	options: PropTypes.object,
+	name: PropTypes.string,
+	placeholder: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	onChange: PropTypes.func,
+	testId: PropTypes.string,
+	autoFocus: PropTypes.bool
 }
 
 export default SelectField

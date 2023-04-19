@@ -1,4 +1,5 @@
 const { body } = require('express-validator')
+const { isDefined } = require('./utils')
 
 const adventureCreateValidator = () => {
   return [
@@ -49,8 +50,7 @@ const adventureEditValidator = () => {
         throw 'field object containing name, value, adventure_id, and adventure_type must be present in the body'
       }
 
-      const isCorrect =
-        field.name && field.value && field.adventure_id && field.adventure_type
+      const isCorrect = isDefined(field.name, field.value, field.adventure_id, field.adventure_type)
 
       if (
         [

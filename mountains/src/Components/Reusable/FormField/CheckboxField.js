@@ -19,7 +19,6 @@ const CheckboxField = ({ className, name, value, onChange, label, testId }) => {
 			<input
 				className={'hidden-checkbox'}
 				type='checkbox'
-				id={name}
 				name={name}
 				checked={value}
 				onChange={handleChange}

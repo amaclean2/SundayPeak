@@ -10,7 +10,7 @@ import { MessagingStateProvider } from '../Providers/MessageStateProvider'
 
 import CardTestConsumer from './CardTestConsumer'
 import MessageTestConsumer from './MessageTestConsumer'
-import AdventureTestConsumer from './AdventureTestConsumer'
+import AdventureTestConsumer from './Adventures/AdventureTestConsumer'
 import TokenTestConsumer from './TokenTestConsumer'
 import UserTestConsumer from './Users/UserTestConsumer'
 

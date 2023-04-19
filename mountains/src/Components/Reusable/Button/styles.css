@@ -35,15 +35,40 @@ a {
 	background-color: var(--primary-disabled-color);
 }
 
-.secondary-button {
+.link.flex-box,
+.link:hover.flex-box,
+.link,
+.link:hover {
+	background-color: transparent;
+	padding: 0;
+	color: -webkit-link;
+	display: inline;
+	font-size: inherit;
+}
+
+.secondary-button.flex-box,
+.secondary-button:hover.flex-box,
+.header-button.flex-box,
+.header-button:hover.flex-box {
+	padding: 0 1.5rem;
 	background-color: var(--main-light);
 	box-shadow: none;
 	color: var(--primary-accent-color);
 	font-weight: 600;
 	display: inline-flex;
+	font-size: 1rem;
 }
 
-.secondary-button:hover {
+.secondary-button.flex-box,
+.secondary-button:hover.flex-box {
+	background-color: transparent;
+}
+
+.logo-button {
+	padding: 0;
+}
+
+.header-button:hover {
 	background-color: var(--main-off-white);
 }
 

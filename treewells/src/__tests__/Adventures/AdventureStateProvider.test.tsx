@@ -2,9 +2,9 @@ import React from 'react'
 import '@testing-library/jest-dom'
 
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { mockFetch } from '../setupJest'
-import { AdventureTestApp } from '../__mocks__/TestApp'
-import { type AdventureList } from '../Types/Adventures'
+import { mockFetch } from '../../setupJest'
+import { AdventureTestApp } from '../../__mocks__/TestApp'
+import { type AdventureList } from '../../Types/Adventures'
 
 const renderApp = async (): Promise<void> => {
 	mockFetch.mockResolvedValue({

@@ -32,6 +32,9 @@ const ReactMap = () => {
 
 	const { allAdventures, startPosition, currentAdventure, globalAdventureType } =
 		useAdventureStateContext()
+
+	console.log('all adventures', allAdventures)
+
 	const { mapboxToken, mapboxStyleKey } = useTokenStateContext()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 	const { updateStartPosition } = useManipulateFlows()
@@ -76,11 +79,6 @@ const ReactMap = () => {
 	}
 
 	useEffect(() => {
-		fetch(`${Connections.restUrl}/services/initial`)
-			.then((resp) => resp.json())
-			.then((data) => console.log({ data }))
-			.catch((error) => console.log({ error }))
-
 		if (!currentAdventure || !mapRef.current) {
 			return
 		}
@@ -90,8 +88,6 @@ const ReactMap = () => {
 			zoom: 16
 		})
 	}, [currentAdventure?.id, mapRef.current])
-
-	console.log({ allAdventures, mapboxToken, mapboxStyleKey })
 
 	if (!(allAdventures && mapboxToken && mapboxStyleKey)) {
 		return (

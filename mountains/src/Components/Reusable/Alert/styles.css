@@ -1,8 +1,8 @@
 .alert {
 	position: fixed;
-	bottom: 30px;
-	right: 10px;
-	width: 300px;
+	bottom: 2rem;
+	right: 3rem;
+	min-width: 0rem;
 	min-height: 75px;
 	background-color: var(--primary-accent-color);
 	border-radius: 15px;
@@ -19,6 +19,7 @@
 .alert.show-alert {
 	opacity: 100;
 	display: block;
+	min-width: 20rem;
 }
 
 .alert.fade-alert {

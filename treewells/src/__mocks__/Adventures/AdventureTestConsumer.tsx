@@ -1,7 +1,7 @@
 import React from 'react'
-import { useAdventureStateContext } from '../Providers/AdventureStateProvider'
-import { type AdventureType } from '../Types/Adventures'
-import { type EventChoiceTypes } from '../Hooks/Users'
+import { useAdventureStateContext } from '../../Providers/AdventureStateProvider'
+import { type AdventureType } from '../../Types/Adventures'
+import { type EventChoiceTypes } from '../../Hooks/Users'
 
 const AdventureTestConsumer = (): JSX.Element => {
 	const {
