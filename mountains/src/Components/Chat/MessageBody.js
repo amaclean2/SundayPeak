@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import cx from 'classnames'
 import Linkify from 'linkify-react'
-import { useMessagingStateContext, useUserStateContext } from 'sundaypeak-treewells'
+import { useMessagingStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { FlexSpacer } from 'Components/Reusable'
 

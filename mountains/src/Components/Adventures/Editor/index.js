@@ -1,6 +1,10 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAdventureStateContext, useGetAdventures, useSaveAdventure } from 'sundaypeak-treewells'
+import {
+	useAdventureStateContext,
+	useGetAdventures,
+	useSaveAdventure
+} from '@amaclean2/sundaypeak-treewells'
 
 import ClimbForm from './ClimbForm'
 import HikeForm from './HikeForm'
@@ -15,7 +19,11 @@ const AdventureEditorForm = () => {
 	useEffect(() => {
 		if (!currentAdventure) {
 			// fetch the new adventure from the adventureId
-			getAdventure({ id: adventureId, type: adventureType })
+			try {
+				getAdventure({ id: adventureId, type: adventureType })
+			} catch (error) {
+				console.log({ error })
+			}
 		}
 	}, [])
 

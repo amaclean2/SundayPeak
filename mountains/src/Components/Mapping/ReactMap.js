@@ -8,12 +8,11 @@ import Map, {
 	Source
 } from 'react-map-gl'
 import {
-	Connections,
 	useAdventureStateContext,
 	useDebounce,
 	useManipulateFlows,
 	useTokenStateContext
-} from 'sundaypeak-treewells'
+} from '@amaclean2/sundaypeak-treewells'
 
 import { useCreateNewAdventure } from './utils'
 
@@ -32,9 +31,6 @@ const ReactMap = () => {
 
 	const { allAdventures, startPosition, currentAdventure, globalAdventureType } =
 		useAdventureStateContext()
-
-	console.log('all adventures', allAdventures)
-
 	const { mapboxToken, mapboxStyleKey } = useTokenStateContext()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 	const { updateStartPosition } = useManipulateFlows()

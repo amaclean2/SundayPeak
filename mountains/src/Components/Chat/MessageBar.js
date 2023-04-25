@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useMessages, useMessagingStateContext } from 'sundaypeak-treewells'
+import { useMessages, useMessagingStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, FormField } from 'Components/Reusable'
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useCreateUser, useManipulateFlows } from 'sundaypeak-treewells'
+import { useCreateUser, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
 

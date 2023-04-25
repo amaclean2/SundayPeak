@@ -1,4 +1,4 @@
-import { useManipulateFlows, useCardStateContext } from 'sundaypeak-treewells'
+import { useManipulateFlows, useCardStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, FlexSpacer } from '..'
 

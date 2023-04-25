@@ -2,7 +2,7 @@ import { useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useDebounce, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
+import { useDebounce, useGetUser, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { FieldHeader, FormField } from 'Components/Reusable'
 import { Friend } from './Friend'

@@ -5,7 +5,7 @@ import {
 	useSaveCompletedAdventure,
 	useSaveTodo,
 	useUserStateContext
-} from 'sundaypeak-treewells'
+} from '@amaclean2/sundaypeak-treewells'
 
 import getContent from 'TextContent'
 

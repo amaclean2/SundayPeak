@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAdventureStateContext, useGetAdventures } from 'sundaypeak-treewells'
+import { useAdventureStateContext, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 import { useAdventureMenu } from '../Buttons/utils'
 import ClimbViewer from './ClimbViewer'
 import HikeViewer from './HikeViewer'

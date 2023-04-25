@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { useUserStateContext } from 'sundaypeak-treewells'
+import { useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { Button } from 'Components/Reusable'
 

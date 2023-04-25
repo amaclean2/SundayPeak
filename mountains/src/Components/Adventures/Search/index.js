@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDebounce, useGetAdventures } from 'sundaypeak-treewells'
+import { useDebounce, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, FlexSpacer, FormField } from 'Components/Reusable'
 

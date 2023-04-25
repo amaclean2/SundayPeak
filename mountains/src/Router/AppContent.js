@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { SundayPeakProviders } from 'sundaypeak-treewells'
+import { SundayPeakProviders } from '@amaclean2/sundaypeak-treewells'
 
 import ReactMap from 'Components/Mapping/ReactMap'
 import { ImageViewer } from 'Components/Reusable'

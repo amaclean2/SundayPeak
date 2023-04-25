@@ -26,7 +26,7 @@ const DefaultField = ({
 	return (
 		<input
 			className={cx(type || 'text', 'form-field', className)}
-			data-testid={testId}
+			data-testid={testId ?? name}
 			pattern={options?.pattern || null}
 			type={type}
 			name={name}

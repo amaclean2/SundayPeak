@@ -1,4 +1,8 @@
-import { useEditUser, useUserStateContext, useManipulateFlows } from 'sundaypeak-treewells'
+import {
+	useEditUser,
+	useUserStateContext,
+	useManipulateFlows
+} from '@amaclean2/sundaypeak-treewells'
 
 import getContent from 'TextContent'
 import { Button, FooterButtons } from 'Components/Reusable'

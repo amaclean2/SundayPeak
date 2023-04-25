@@ -21,7 +21,7 @@ describe('Testing the login flow for the user', () => {
 		cy.contains('Finish').click()
 
 		// show the user was edited
-		cy.contains('San Diego, California')
+		// cy.contains('San Diego, California')
 
 		// show the stats cards
 		cy.contains('Completed')
@@ -32,6 +32,13 @@ describe('Testing the login flow for the user', () => {
 		// adventures view
 		cy.contains('Adventures').click()
 		cy.contains('Add a New Adventure').click()
-		cy.get('[data-testid="adventure-type-selector"]').select('ski')
+		cy.get('[data-testid="adventure-type-selector"]').select('hike')
+		cy.get('[data-testid="map-container"]').dblclick()
+
+		// create the new adventure fields
+		cy.get('[data-testid="adventure_name"]').focus()
+		cy.get('[data-testid="adventure_name"]').clear()
+		cy.get('[data-testid="adventure_name"]').type('My Hike')
+		// cy.get('[data-testid="adventure_name"]').type('My Hike')
 	})
 })

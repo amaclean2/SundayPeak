@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useMessages } from 'sundaypeak-treewells'
+import { useMessages } from '@amaclean2/sundaypeak-treewells'
 
 import MessagingContianer from './MessagingContainer'
 

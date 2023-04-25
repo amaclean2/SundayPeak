@@ -1,4 +1,4 @@
-import { useUserStateContext } from 'sundaypeak-treewells'
+import { useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, FlexSpacer } from 'Components/Reusable'
 import getContent from 'TextContent'

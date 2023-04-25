@@ -1,4 +1,4 @@
-import { useAdventureStateContext, useDeleteAdventure } from 'sundaypeak-treewells'
+import { useAdventureStateContext, useDeleteAdventure } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, FieldHeader, FooterButtons } from 'Components/Reusable'
 import ClickWrapper from 'Components/Reusable/ClickWrapper'

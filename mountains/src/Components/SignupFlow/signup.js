@@ -5,7 +5,7 @@ import {
 	useEditUser,
 	useGetUser,
 	useUserStateContext
-} from 'sundaypeak-treewells'
+} from '@amaclean2/sundaypeak-treewells'
 import { useEffect } from 'react'
 
 import { title } from 'Router/AppContent'

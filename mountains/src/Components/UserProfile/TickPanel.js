@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import { useGetAdventures, useUserStateContext } from 'sundaypeak-treewells'
+import { useGetAdventures, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { FieldHeader } from 'Components/Reusable'
 

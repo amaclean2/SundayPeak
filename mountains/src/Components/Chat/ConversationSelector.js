@@ -6,7 +6,7 @@ import {
 	useMessages,
 	useMessagingStateContext,
 	useUserStateContext
-} from 'sundaypeak-treewells'
+} from '@amaclean2/sundaypeak-treewells'
 
 import { FlexSpacer, FormField } from 'Components/Reusable'
 

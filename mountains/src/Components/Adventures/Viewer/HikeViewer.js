@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewells'
+import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { DistanceIcon, ElevationIcon } from 'Images/Symbols/LabelIcons'
 import getContent from 'TextContent'

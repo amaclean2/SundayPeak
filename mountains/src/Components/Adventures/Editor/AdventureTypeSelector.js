@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useGetAdventures } from 'sundaypeak-treewells'
+import { useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 
 import { FormField } from 'Components/Reusable'
 import { ImportAdventuresButton } from '../Buttons/ImportAdventuresButton'

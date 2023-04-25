@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useEditUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
+import { useEditUser, useGetUser, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 import { useEffect } from 'react'
 
 import { title } from 'Router/AppContent'
