@@ -14,7 +14,7 @@ Make sure `release<VERSION NUMBER>` is checked out locally and then start with r
 
 ### Rivers Deployment
 
-1. Push the code to docker hub using the following command
+1. Push the code to docker hub using the following command. The version number can be found in `/rivers/package.json`
 
 ```shell
 docker build --platform linux/amd64 -t amacleanjs/sunday-service:<VERSION NUMBER> -t amaclean/sunday-service:latest .
@@ -31,7 +31,10 @@ docker image push -a amacleanjs/sunday-service
 4. Zip the volume attached to the mysql instance and make a copy on your local machine
 
 ```shell
-# To be defined
+ cd /home/
+ tar -czf data.tar.gz data
+ # exit out of the server
+ scp root@128.199.3.44:/home/data.tar.gz ~/Downloads
 ```
 
 5. Pull and restart the `sunday-service` container
@@ -47,13 +50,13 @@ docker run \
 --name rivers \
 -d -p 80:5000 \
 --network sundaypeak \
--e DB_HOST=mysql
--e DB_USER=byf
--e DB_PASS=backyard
--e DB_NAME=friends
--e MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg
--e NODEMAILER_APP_PASSWORD=vtmrorarxqkhfcjc
--e JWT_SECRET=jB2MGh4dzN
+-e DB_HOST=mysql \
+-e DB_USER=byf \
+-e DB_PASS=backyard \
+-e DB_NAME=friends \
+-e MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg \
+-e NODEMAILER_APP_PASSWORD=vtmrorarxqkhfcjc \
+-e JWT_SECRET=jB2MGh4dzN \
 amacleanjs/sunday-service:latest
 docker ps -a # verify all containers are running
 ```
@@ -80,3 +83,54 @@ docker ps -a # verify all containers are running
 
 - This should return a json object
 - TODO: create a test endpoint that shows stats data about the app
+
+7. Increment the version number in `/rivers/package.json`
+
+### Couloirs Deployment
+
+1. Push the code to docker hub using the following command. The version number can be found in `/couloirs/package.json`
+
+```shell
+docker build --platform linux/amd64 -t amacleanjs/sunday-communion:<VERSION NUMBER> -t amaclean/sunday-communion:latest .
+docker image push -a amacleanjs/sunday-communion
+```
+
+2. You can check on docker hub to verify the new image tag was pushed
+3. SSH into the Digital Ocean droplet
+
+```shell
+  ssh root@128.199.3.44
+```
+
+4. Zip the volume attached to the mysql instance and make a copy on your local machine
+
+```shell
+ cd /home/
+ tar -czf data.tar.gz data
+ # exit out of the server
+ scp root@128.199.3.44:/home/data.tar.gz ~/Downloads
+```
+
+5. Pull and restart the `sunday-communion` container
+
+```shell
+docker stop couloirs
+docker rm couloirs
+docker image rm sunday-communion
+docker image pull amacleanjs/sunday-communion:latest
+docker images # verify the image is there
+docker network ls # verify the sundaypeak network is still there and connected to `mysql`
+docker run \
+--name rivers \
+-d -p 80:5000 \
+--network sundaypeak \
+-e DB_HOST=mysql \
+-e DB_USER=byf \
+-e DB_PASS=backyard \
+-e DB_NAME=friends \
+-e JWT_SECRET=jB2MGh4dzN \
+amacleanjs/sunday-communion:latest
+docker ps -a # verify all containers are running
+```
+
+6. Increment the version number in `/couloirs/package.json`
