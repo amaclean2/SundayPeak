@@ -5,7 +5,7 @@ import {
 	useEditUser,
 	useGetUser,
 	useUserStateContext
-} from 'sundaypeak-treewells'
+} from '@amaclean2/sundaypeak-treewells'
 import { useEffect } from 'react'
 
 import { title } from 'Router/AppContent'
@@ -103,7 +103,13 @@ export const SignupFlow = () => {
 				value={formFields.legal}
 				label={
 					<span>
-						I agree with the {title} <Button direction='/privacy'>Privacy Policy</Button>
+						I agree with the {title}{' '}
+						<Button
+							direction='/privacy'
+							type={'link'}
+						>
+							Privacy Policy
+						</Button>
 					</span>
 				}
 				isEditable

@@ -1,4 +1,4 @@
-import { useUserStateContext } from 'sundaypeak-treewells'
+import { useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { Pin } from 'Images'
 

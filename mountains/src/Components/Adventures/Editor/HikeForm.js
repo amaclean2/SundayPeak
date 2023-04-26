@@ -1,4 +1,4 @@
-import { useAdventureStateContext } from 'sundaypeak-treewells'
+import { useAdventureStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import {
 	Button,

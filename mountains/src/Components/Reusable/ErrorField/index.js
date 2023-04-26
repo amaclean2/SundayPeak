@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
-import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewells'
+import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import './styles.css'
 

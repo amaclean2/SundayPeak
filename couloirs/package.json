@@ -5,17 +5,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js"
+    "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js",
+    "test": "echo \"no tests have been written yet\"",
+    "start": "NODE_ENV=\"production\" node index.js"
   },
   "keywords": [],
   "author": "Andrew Maclean",
   "license": "ISC",
   "dependencies": {
+    "@amaclean2/sundaypeak-water": "^0.0.1",
     "byf-custom-logger": "^2.0.4",
     "dotenv": "^16.0.3",
     "env-cmd": "^10.1.0",
-    "sundaypeak-water": "^1.1.7",
     "ws": "^8.12.1"
   },
   "devDependencies": {

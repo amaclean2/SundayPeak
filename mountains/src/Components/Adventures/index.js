@@ -1,4 +1,4 @@
-import { useUserStateContext } from 'sundaypeak-treewells'
+import { useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, DisplayCard } from 'Components/Reusable'
 
@@ -18,7 +18,7 @@ const DefaultAdventureView = () => {
 			<AdventureSearch />
 			{loggedInUser?.id && (
 				<Button
-					type='link'
+					secondaryButton
 					id={'open-new-adventure-menu'}
 					direction={'/adventure/new'}
 				>

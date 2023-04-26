@@ -5,7 +5,7 @@ import {
 	useSaveCompletedAdventure,
 	useSaveTodo,
 	useUserStateContext
-} from 'sundaypeak-treewells'
+} from '@amaclean2/sundaypeak-treewells'
 
 import getContent from 'TextContent'
 
@@ -13,8 +13,8 @@ export const useAdventureMenu = () => {
 	const { loggedInUser } = useUserStateContext()
 	const { currentAdventure } = useAdventureStateContext()
 	const { shareAdventure } = useGetAdventures()
-	const saveTodo = useSaveTodo()
-	const saveCompletedAdventure = useSaveCompletedAdventure()
+	const { saveTodo } = useSaveTodo()
+	const { saveCompletedAdventure } = useSaveCompletedAdventure()
 
 	const navigate = useNavigate()
 

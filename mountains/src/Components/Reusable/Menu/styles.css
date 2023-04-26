@@ -37,8 +37,11 @@
 }
 
 .drop-list-subtext {
-	font-size: 0.9rem;
 	color: var(--primary-accent-color);
+}
+
+.drop-list-image {
+	padding-top: 0.2rem;
 }
 
 .drop-list-secondary {

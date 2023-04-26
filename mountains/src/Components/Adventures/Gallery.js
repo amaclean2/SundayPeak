@@ -2,7 +2,7 @@ import {
 	useAdventureStateContext,
 	useManipulateFlows,
 	useSubmitAdventurePicture
-} from 'sundaypeak-treewells'
+} from '@amaclean2/sundaypeak-treewells'
 import getContent from 'TextContent'
 
 import './styles.css'

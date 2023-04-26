@@ -4,7 +4,7 @@
   "description": "The backend for the Sunday Peak application",
   "main": "node index.js",
   "scripts": {
-    "start": "NODE_ENV=\"prod\" node index.js",
+    "start": "NODE_ENV=\"production\" node index.js",
     "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js",
     "sample-data": "env-cmd -f .env.dev nodemon --trace-warnings index.js --demo",
     "stage": "NODE_ENV=\"stage\" node index.js",
@@ -21,6 +21,7 @@
     "supertest": "^6.3.3"
   },
   "dependencies": {
+    "@amaclean2/sundaypeak-water": "^0.0.1",
     "@aws-sdk/client-s3": "^3.142.0",
     "@google-cloud/storage": "^6.4.2",
     "aws-sdk": "^2.1187.0",
@@ -45,8 +46,6 @@
     "pino": "^8.5.0",
     "pino-pretty": "^9.1.0",
     "sharp": "^0.31.0",
-    "string-hash": "^1.1.3",
-    "sundaypeak-water": "^1.2.4",
-    "water": "^0.0.1"
+    "string-hash": "^1.1.3"
   }
 }

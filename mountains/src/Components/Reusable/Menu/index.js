@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import { CSVLink } from 'react-csv'
-import { useAdventureStateContext } from 'sundaypeak-treewells'
+import { useAdventureStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { Meatball } from 'Images/UIGlyphs/Meatball'
 import { Button } from '../Button'

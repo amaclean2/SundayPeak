@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import { useMessages } from 'sundaypeak-treewells'
+import { useMessages } from '@amaclean2/sundaypeak-treewells'
 
 import { DisplayCard } from 'Components/Reusable'
 import MessageBody from './MessageBody'

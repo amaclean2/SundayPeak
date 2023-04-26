@@ -145,7 +145,7 @@ h3.label-field {
 }
 
 .tick.flex-box {
-	padding: 0.8rem;
+	padding: 0.3rem 0.5rem;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
 	width: 100%;

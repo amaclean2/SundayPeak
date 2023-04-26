@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useCreateUser, useGetUser } from 'sundaypeak-treewells'
+import { useCreateUser, useGetUser } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
 

@@ -1,4 +1,4 @@
-import { useUserStateContext, useManipulateFlows } from 'sundaypeak-treewells'
+import { useUserStateContext, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
 
 const UserProfileGallery = () => {
 	const { openImage } = useManipulateFlows()

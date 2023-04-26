@@ -1,4 +1,4 @@
-import { useUserStateContext } from 'sundaypeak-treewells'
+import { useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, FlexSpacer } from 'Components/Reusable'
 import getContent from 'TextContent'
@@ -8,8 +8,8 @@ import './styles.css'
 
 const LoginButton = () => (
 	<Button
+		headerButton
 		id='login-button-adventures'
-		className={'secondary-button'}
 		direction='/login'
 	>
 		{getContent('buttonText.login')}
@@ -18,7 +18,7 @@ const LoginButton = () => (
 
 const SignUpButton = () => (
 	<Button
-		className={'secondary-button'}
+		headerButton
 		direction={'/signup'}
 		id={'signup-button-adventures'}
 	>
@@ -28,8 +28,8 @@ const SignUpButton = () => (
 
 const ChatButton = () => (
 	<Button
+		headerButton
 		id={'open-conversations-mobile'}
-		className={'secondary-button'}
 		direction={'/conversations'}
 	>
 		Conversations
@@ -38,7 +38,7 @@ const ChatButton = () => (
 
 const UserProfileButton = () => (
 	<Button
-		secondaryButton
+		headerButton
 		id='user-profile-button'
 		direction={'/user'}
 	>
@@ -48,7 +48,7 @@ const UserProfileButton = () => (
 
 const AdventuresButton = () => (
 	<Button
-		secondaryButton
+		headerButton
 		id='button-adventures'
 		direction={'/adventure'}
 	>
@@ -73,6 +73,8 @@ const ButtonBar = () => {
 				<FlexSpacer />
 				<Button
 					id='home-redirect'
+					secondaryButton
+					className={'logo-button'}
 					direction={'/about'}
 				>
 					<LogoInline

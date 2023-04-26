@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useAdventureStateContext, useUserStateContext } from 'sundaypeak-treewells'
+import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { AngleIcon, DistanceIcon, ElevationIcon } from 'Images/Symbols/LabelIcons'
 import getContent from 'TextContent'
@@ -24,8 +24,6 @@ const SkiViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 	const navigate = useNavigate()
-
-	console.log({ loggedInUser })
 
 	return (
 		<DisplayCard
@@ -123,7 +121,10 @@ const SkiViewer = ({ menuContents }) => {
 					<Field>
 						<FieldHeader text='Created By' />
 						<FieldValue>
-							<Button direction={`/user/${currentAdventure.creator_id}`}>
+							<Button
+								direction={`/user/${currentAdventure.creator_id}`}
+								type='link'
+							>
 								{currentAdventure.creator_name}
 							</Button>
 						</FieldValue>

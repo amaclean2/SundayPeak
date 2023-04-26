@@ -8,12 +8,11 @@ import Map, {
 	Source
 } from 'react-map-gl'
 import {
-	Connections,
 	useAdventureStateContext,
 	useDebounce,
 	useManipulateFlows,
 	useTokenStateContext
-} from 'sundaypeak-treewells'
+} from '@amaclean2/sundaypeak-treewells'
 
 import { useCreateNewAdventure } from './utils'
 
@@ -76,11 +75,6 @@ const ReactMap = () => {
 	}
 
 	useEffect(() => {
-		fetch(`${Connections.restUrl}/services/initial`)
-			.then((resp) => resp.json())
-			.then((data) => console.log({ data }))
-			.catch((error) => console.log({ error }))
-
 		if (!currentAdventure || !mapRef.current) {
 			return
 		}
@@ -90,8 +84,6 @@ const ReactMap = () => {
 			zoom: 16
 		})
 	}, [currentAdventure?.id, mapRef.current])
-
-	console.log({ allAdventures, mapboxToken, mapboxStyleKey })
 
 	if (!(allAdventures && mapboxToken && mapboxStyleKey)) {
 		return (

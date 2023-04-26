@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useGetUser, useUserStateContext } from 'sundaypeak-treewells'
+import { useGetUser, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { DisplayCard, FlexSpacer } from 'Components/Reusable'
 import ActivityPanel from './ActivityPanel'
@@ -14,7 +14,7 @@ import UserBio from './UserBio'
 import './styles.css'
 
 const UserViewer = () => {
-	const { workingUser, statState, loggedInUser } = useUserStateContext()
+	const { workingUser, statView, loggedInUser } = useUserStateContext()
 	const { userId } = useParams()
 	const navigate = useNavigate()
 	const buildEditorMenu = useUserEditorMenu()
@@ -43,15 +43,15 @@ const UserViewer = () => {
 			<UserBio />
 			<Stats />
 			<div className='user-adventure-viewer flex-box'>
-				{statState === 'friends' ? (
+				{statView === 'friends' ? (
 					<>
 						<FriendsViewer />
 						<FlexSpacer />
 					</>
 				) : (
 					<>
-						{workingUser.todo_adventures?.length > 0 && <UserTodoPanel />}
 						{workingUser.completed_adventures?.length > 0 && <ActivityPanel />}
+						{workingUser.todo_adventures?.length > 0 && <UserTodoPanel />}
 					</>
 				)}
 			</div>

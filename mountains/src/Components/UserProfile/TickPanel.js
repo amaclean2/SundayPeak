@@ -1,8 +1,11 @@
 import cx from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import { useGetAdventures, useUserStateContext } from 'sundaypeak-treewells'
+import { useGetAdventures, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { FieldHeader } from 'Components/Reusable'
+import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
+
+const ICON_SIZE = 25
 
 const TodoAdventure = ({ onClick, tick }) => (
 	<li
@@ -10,7 +13,11 @@ const TodoAdventure = ({ onClick, tick }) => (
 		className='tick drop-list-item flex-box'
 	>
 		<span className={'main-text'}>{tick.adventure_name}</span>
-		<span className='drop-list-subtext'>{tick.adventure_type}</span>
+		<span className='drop-list-image'>
+			{tick.adventure_type === 'ski' && <LargeSkierIcon size={ICON_SIZE} />}
+			{tick.adventure_type === 'climb' && <LargeClimberIcon size={ICON_SIZE} />}
+			{tick.adventure_type === 'hike' && <LargeHikerIcon size={ICON_SIZE} />}
+		</span>
 	</li>
 )
 

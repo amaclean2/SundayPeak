@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { useCreateUser, useManipulateFlows } from 'sundaypeak-treewells'
+import { useCreateUser, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
 
 export const PasswordResetCapture = () => {
 	const [resetEmail, setResetEmail] = useState('')
-	const { sendPasswordResetLink } = useCreateUser()
+	const { sendPasswordResetLinkToEmail } = useCreateUser()
 	const { closeCard } = useManipulateFlows()
 
 	const handleResetButton = () => {
-		sendPasswordResetLink({ email: resetEmail })
+		sendPasswordResetLinkToEmail({ email: resetEmail })
 		closeCard('An email has been sent to reset your password')
 	}
 

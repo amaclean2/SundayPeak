@@ -1,4 +1,4 @@
-const SundayService = require('sundaypeak-water')
+const SundayService = require('@amaclean2/sundaypeak-water')
 
 const serviceHandler = new SundayService(
   {

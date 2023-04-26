@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useEditUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
+import { useEditUser, useGetUser, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 import { useEffect } from 'react'
 
 import { title } from 'Router/AppContent'
@@ -10,7 +10,7 @@ import './styles.css'
 export const LoginFlow = () => {
 	const { formFields, loggedInUser } = useUserStateContext()
 
-	const { loginUser, setLoginError } = useGetUser()
+	const { loginUser } = useGetUser()
 	const { editFormFields } = useEditUser()
 	const navigate = useNavigate()
 
@@ -35,6 +35,7 @@ export const LoginFlow = () => {
 				name='email'
 				label='Email'
 				type='email'
+				testId='email'
 				block
 				hideLabel
 				isEditable
@@ -46,6 +47,7 @@ export const LoginFlow = () => {
 				name='password'
 				label='Password'
 				type='password'
+				testId='password'
 				block
 				hideLabel
 				isEditable
@@ -74,10 +76,7 @@ export const LoginFlow = () => {
 					<Button
 						className='secondary-button new-account-button'
 						id={'switch-to-create-button'}
-						onClick={() => {
-							setLoginError('')
-							navigate('/signup')
-						}}
+						onClick={() => navigate('/signup')}
 					>
 						Create a new account
 					</Button>

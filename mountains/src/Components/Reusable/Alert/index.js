@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import { useEffect, useState } from 'react'
-import { useCardStateContext, useManipulateFlows } from 'sundaypeak-treewells'
+import { useCardStateContext, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
 
 import './styles.css'
 

@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { useAdventureStateContext, useGetAdventures } from 'sundaypeak-treewells'
+import { useAdventureStateContext, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 
 import { Button } from 'Components/Reusable'
 import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'

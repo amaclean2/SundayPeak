@@ -1,5 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import { useAdventureStateContext, useGetAdventures, useSaveAdventure } from 'sundaypeak-treewells'
+import {
+	useAdventureStateContext,
+	useGetAdventures,
+	useSaveAdventure
+} from '@amaclean2/sundaypeak-treewells'
 
 export const useCreateNewAdventure = () => {
 	const { adventureAddState } = useAdventureStateContext()

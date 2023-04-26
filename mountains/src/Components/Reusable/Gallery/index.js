@@ -1,4 +1,4 @@
-import { useManipulateFlows, useUserStateContext } from 'sundaypeak-treewells'
+import { useManipulateFlows, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 import getContent from 'TextContent'
 import './styles.css'
 

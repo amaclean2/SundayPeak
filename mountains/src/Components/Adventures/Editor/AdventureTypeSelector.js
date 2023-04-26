@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useGetAdventures } from 'sundaypeak-treewells'
+import { useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 
 import { FormField } from 'Components/Reusable'
 import { ImportAdventuresButton } from '../Buttons/ImportAdventuresButton'
@@ -25,6 +25,7 @@ const AdventureTypeSelector = () => {
 				name='adventure_type_selector'
 				isEditable
 				fullWidth
+				testId={'adventure-type-selector'}
 				placeholder={'Adventure Type'}
 				options={{
 					selectOptions: [

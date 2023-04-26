@@ -1,5 +1,10 @@
 import { useNavigate } from 'react-router-dom'
-import { useEditUser, useFollowUser, useGetUser, useUserStateContext } from 'sundaypeak-treewells'
+import {
+	useEditUser,
+	useFollowUser,
+	useGetUser,
+	useUserStateContext
+} from '@amaclean2/sundaypeak-treewells'
 
 import getContent from 'TextContent'
 
