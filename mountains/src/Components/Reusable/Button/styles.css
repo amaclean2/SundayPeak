@@ -144,3 +144,15 @@ a {
 	padding: 0;
 	text-overflow: ellipsis;
 }
+
+.adventure-result {
+	gap: 0.5rem;
+	color: inherit;
+	background-color: transparent;
+	padding: 0;
+	font-size: 0.9rem;
+}
+
+.adventure-result:hover {
+	background-color: transparent;
+}

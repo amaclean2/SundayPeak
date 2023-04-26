@@ -103,7 +103,13 @@ export const SignupFlow = () => {
 				value={formFields.legal}
 				label={
 					<span>
-						I agree with the {title} <Button direction='/privacy'>Privacy Policy</Button>
+						I agree with the {title}{' '}
+						<Button
+							direction='/privacy'
+							type={'link'}
+						>
+							Privacy Policy
+						</Button>
 					</span>
 				}
 				isEditable

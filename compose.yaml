@@ -1,18 +1,22 @@
 services:
-  mountains:
-    container_name: mountains
-    image: mountains
-    build: ./mountains
+  couloirs:
+    container_name: couloirs
+    image: couloirs
+    build: 
+      context: ./couloirs
+      dockerfile: Dockerfile.development
     restart: on-failure
     ports:
-      - '80:3000'
+      - '4000:4000'
     volumes:
-      - ./mountains:/home/app
+      - ./couloirs:/home/app
       - /home/app/node_modules
   rivers:
     container_name: rivers
     image: rivers
-    build: ./rivers
+    build: 
+      context: ./rivers
+      dockerfile: Dockerfile.development
     restart: on-failure
     ports:
       - '5000:5000'
@@ -32,6 +36,6 @@ services:
       - '3300:3306'
     volumes:
       - data:/var/lib/mysql
-      - ./water/DB/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./rivers/Config/init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   data:

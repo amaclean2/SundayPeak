@@ -25,8 +25,6 @@ const SkiViewer = ({ menuContents }) => {
 	const { loggedInUser } = useUserStateContext()
 	const navigate = useNavigate()
 
-	console.log({ loggedInUser })
-
 	return (
 		<DisplayCard
 			title={currentAdventure.adventure_name}
@@ -123,7 +121,10 @@ const SkiViewer = ({ menuContents }) => {
 					<Field>
 						<FieldHeader text='Created By' />
 						<FieldValue>
-							<Button direction={`/user/${currentAdventure.creator_id}`}>
+							<Button
+								direction={`/user/${currentAdventure.creator_id}`}
+								type='link'
+							>
 								{currentAdventure.creator_name}
 							</Button>
 						</FieldValue>

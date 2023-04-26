@@ -86,7 +86,10 @@ const ClimbViewer = ({ menuContents }) => {
 					<Field>
 						<FieldHeader text='Created By' />
 						<FieldValue>
-							<Button direction={`/user/${currentAdventure.creator_id}`}>
+							<Button
+								direction={`/user/${currentAdventure.creator_id}`}
+								type='link'
+							>
 								{currentAdventure.creator_name}
 							</Button>
 						</FieldValue>

@@ -10,7 +10,7 @@ import './styles.css'
 export const LoginFlow = () => {
 	const { formFields, loggedInUser } = useUserStateContext()
 
-	const { loginUser, setLoginError } = useGetUser()
+	const { loginUser } = useGetUser()
 	const { editFormFields } = useEditUser()
 	const navigate = useNavigate()
 
@@ -76,10 +76,7 @@ export const LoginFlow = () => {
 					<Button
 						className='secondary-button new-account-button'
 						id={'switch-to-create-button'}
-						onClick={() => {
-							setLoginError('')
-							navigate('/signup')
-						}}
+						onClick={() => navigate('/signup')}
 					>
 						Create a new account
 					</Button>

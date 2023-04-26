@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useGetAdventures, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { FieldHeader } from '../Reusable'
+import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
+
+const ICON_SIZE = 25
 
 const CompletedAdventure = ({ activity, onClick }) => (
 	<li
@@ -10,7 +13,11 @@ const CompletedAdventure = ({ activity, onClick }) => (
 		className='tick drop-list-item flex-box'
 	>
 		<span className={'main-text'}>{activity.adventure_name}</span>
-		<span className='drop-list-subtext'>{activity.adventure_type}</span>
+		<span className='drop-list-image'>
+			{activity.adventure_type === 'ski' && <LargeSkierIcon size={ICON_SIZE} />}
+			{activity.adventure_type === 'climb' && <LargeClimberIcon size={ICON_SIZE} />}
+			{activity.adventure_type === 'hike' && <LargeHikerIcon size={ICON_SIZE} />}
+		</span>
 	</li>
 )
 

@@ -6,5 +6,5 @@ RUN npm install
 
 USER node
 
-CMD npm start
-EXPOSE 5000
+CMD npm run dev
+EXPOSE 4000

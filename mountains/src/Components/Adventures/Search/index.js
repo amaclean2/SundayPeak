@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import { useDebounce, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
+import { useNavigate } from 'react-router'
 
-import { Button, FlexSpacer, FormField } from 'Components/Reusable'
+import { FlexSpacer, FormField } from 'Components/Reusable'
 
 import './styles.css'
+import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
 
 const AdventureSearch = () => {
 	const { searchAdventures } = useGetAdventures()
 
 	const [searchResults, setSearchResults] = useState(null)
 	const [adventureText, setAdventureText] = useState('')
+	const navigate = useNavigate()
 
 	const handleSendSearchText = useDebounce((text) => {
 		text.length && searchAdventures({ searchQuery: text }).then(setSearchResults)
@@ -40,17 +43,17 @@ const AdventureSearch = () => {
 						{searchResults.map((result, key) => (
 							<li
 								key={`search_result_${key}`}
-								className={'drop-list-item'}
+								className={'drop-list-item flex-box'}
+								onClick={() => navigate(`/adventure/${result.adventure_type}/${result.id}`)}
 							>
-								<Button
-									direction={`/adventure/${result.adventure_type}/${result.id}`}
-									className={'adventure-result'}
-								>
-									<span className='result-title'>{result.adventure_name}</span>
-									<span className='drop-list-subtext'>{result.adventure_type}</span>
-									<FlexSpacer />
-									<span className='drop-list-secondary'>{result.nearest_city}</span>
-								</Button>
+								<span className='drop-list-image'>
+									{result.adventure_type === 'ski' && <LargeSkierIcon size={20} />}
+									{result.adventure_type === 'climb' && <LargeClimberIcon size={20} />}
+									{result.adventure_type === 'hike' && <LargeHikerIcon size={20} />}
+								</span>
+								<span className='result-title'>{result.adventure_name}</span>
+								<FlexSpacer />
+								<span className='drop-list-secondary'>{result.nearest_city}</span>
 							</li>
 						))}
 					</ul>

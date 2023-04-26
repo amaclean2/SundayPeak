@@ -12,7 +12,7 @@
 
 Make sure `release<VERSION NUMBER>` is checked out locally and then start with rivers and couloirs
 
-### Backend Deployment
+### Rivers Deployment
 
 1. Push the code to docker hub using the following command
 
@@ -37,13 +37,24 @@ docker image push -a amacleanjs/sunday-service
 5. Pull and restart the `sunday-service` container
 
 ```shell
-docker stop river
+docker stop rivers
 docker rm rivers
 docker image rm sunday-service
 docker image pull amacleanjs/sunday-service:latest
 docker images # verify the image is there
 docker network ls # verify the sundaypeak network is still there and connected to `mysql`
-docker run --name rivers -d -p 80:5000 --network sundaypeak amacleanjs/sunday-service:latest
+docker run \
+--name rivers \
+-d -p 80:5000 \
+--network sundaypeak \
+-e DB_HOST=mysql
+-e DB_USER=byf
+-e DB_PASS=backyard
+-e DB_NAME=friends
+-e MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg
+-e NODEMAILER_APP_PASSWORD=vtmrorarxqkhfcjc
+-e JWT_SECRET=jB2MGh4dzN
+amacleanjs/sunday-service:latest
 docker ps -a # verify all containers are running
 ```
 
@@ -62,6 +73,7 @@ docker ps -a # verify all containers are running
   - `-p XXXX:XXXX` specifies the port to expose _this is only relevant for external connections, not other containers_
   - `--network` connects this container to a network
   - `XXXX/XXXX:XX` specifies the image to deploy to the container
+  - `-e` environment variables
 - `docker ps -a` shows a list of the active containers
 
 6. Ensure the new container is running by visiting http://api.sundaypeak.com/services/initial

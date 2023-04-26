@@ -1,4 +1,4 @@
-import SundayService from 'sundaypeak-water'
+import SundayService from '@amaclean2/sundaypeak-water'
 
 const serviceHandler = new SundayService(
   {

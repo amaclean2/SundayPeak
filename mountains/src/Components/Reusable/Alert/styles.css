@@ -9,7 +9,7 @@
 	padding: 15px;
 	box-shadow: 0 5px 10px var(--box-shadow-opacity);
 	color: var(--main-light);
-	font-size: 18px;
+	font-size: 1.1rem;
 	opacity: 0;
 	transition: all 0.5s ease-in-out;
 	display: none;

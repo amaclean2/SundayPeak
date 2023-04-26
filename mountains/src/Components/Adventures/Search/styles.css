@@ -17,6 +17,7 @@
 .results-container li {
 	padding: 0.4rem 0;
 	transition: all 0.3s ease-in-out;
+	gap: 0.5rem;
 }
 
 .results-container li:hover {
@@ -66,11 +67,6 @@
 
 .results-container li {
 	padding: 0.5rem;
-}
-
-.adventure-result {
-	gap: 0.5rem;
-	color: inherit;
 }
 
 @media screen and (max-width: 500px) {

@@ -4,7 +4,7 @@
   "description": "The backend for the Sunday Peak application",
   "main": "node index.js",
   "scripts": {
-    "start": "NODE_ENV=\"prod\" node index.js",
+    "start": "NODE_ENV=\"production\" node index.js",
     "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js",
     "sample-data": "env-cmd -f .env.dev nodemon --trace-warnings index.js --demo",
     "stage": "NODE_ENV=\"stage\" node index.js",

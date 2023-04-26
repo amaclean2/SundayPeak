@@ -50,8 +50,8 @@ const UserViewer = () => {
 					</>
 				) : (
 					<>
-						{workingUser.todo_adventures?.length > 0 && <UserTodoPanel />}
 						{workingUser.completed_adventures?.length > 0 && <ActivityPanel />}
+						{workingUser.todo_adventures?.length > 0 && <UserTodoPanel />}
 					</>
 				)}
 			</div>

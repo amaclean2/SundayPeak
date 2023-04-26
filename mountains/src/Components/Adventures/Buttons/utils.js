@@ -13,8 +13,8 @@ export const useAdventureMenu = () => {
 	const { loggedInUser } = useUserStateContext()
 	const { currentAdventure } = useAdventureStateContext()
 	const { shareAdventure } = useGetAdventures()
-	const saveTodo = useSaveTodo()
-	const saveCompletedAdventure = useSaveCompletedAdventure()
+	const { saveTodo } = useSaveTodo()
+	const { saveCompletedAdventure } = useSaveCompletedAdventure()
 
 	const navigate = useNavigate()
 

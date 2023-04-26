@@ -22,7 +22,7 @@ export const Button = ({
 		onClick(e)
 	}
 
-	if (type === 'link' || direction !== undefined) {
+	if (direction !== undefined) {
 		return (
 			<Link
 				to={direction}
@@ -30,8 +30,9 @@ export const Button = ({
 				id={id}
 				data-testid={id}
 				className={cx(
-					'button flex-box link',
+					'button flex-box',
 					className,
+					type === 'link' && 'link',
 					secondaryButton && 'secondary-button',
 					headerButton && 'header-button',
 					small && 'small'
