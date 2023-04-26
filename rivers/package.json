@@ -1,6 +1,6 @@
 {
   "name": "rivers",
-  "version": "1.0.0",
+  "version": "0.0.6",
   "description": "The backend for the Sunday Peak application",
   "main": "node index.js",
   "scripts": {

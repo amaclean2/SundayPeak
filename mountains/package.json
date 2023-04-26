@@ -71,7 +71,7 @@
 	},
 	"scripts": {
 		"dev": "env-cmd -f .env.dev npm start",
-		"start": "node scripts/start.js",
+		"start": "NODE_ENV=\"production\" node scripts/start.js",
 		"build": "node scripts/build.js",
 		"build:staging": "env-cmd -f .env.staging npm run build",
 		"test": "node scripts/test.js",

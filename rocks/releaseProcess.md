@@ -121,8 +121,8 @@ docker image pull amacleanjs/sunday-communion:latest
 docker images # verify the image is there
 docker network ls # verify the sundaypeak network is still there and connected to `mysql`
 docker run \
---name rivers \
--d -p 80:5000 \
+--name couloirs \
+-d -p 4000:4000 \
 --network sundaypeak \
 -e DB_HOST=mysql \
 -e DB_USER=byf \
