@@ -152,10 +152,15 @@ docker ps -a # verify all containers are running
 npm run build
 ```
 
-1. Push the code to docker hub using the following command. The version number can be found in `/mountains/package.json`
+1. Build a new image with the current code.
 
 ```shell
 docker build --platform linux/amd64 -t amacleanjs/sunday-brunch:<VERSION_NUMBER> -t amacleanjs/sunday-brunch:latest . --target=prod
+```
+
+2. Push the code to docker hub using the following command. The version number can be found in `/mountains/package.json`
+
+```shell
 docker image push -a amacleanjs/sunday-brunch
 ```
 
@@ -166,14 +171,21 @@ docker image push -a amacleanjs/sunday-brunch
   ssh root@24.199.124.234
 ```
 
-4. Pull and restart the `sunday-brunch` container
+4. Stop and remove the current mountains container and image
 
 ```shell
-docker stop mountains
-docker rm mountains
-docker image rm sunday-brunch
-docker image pull amacleanjs/sunday-brunch:latest
-docker images # verify the image is there
+docker stop mountains && docker rm mountains && docker image rm sunday-brunch
+```
+
+5. Pull the new image from docker hub and ensure it's loaded
+
+```shell
+docker image pull amacleanjs/sunday-brunch:latest && docker images
+```
+
+6. Run the new image
+
+```shell
 docker run \
 --name mountains \
 -d -p 80:3000 \
@@ -181,5 +193,4 @@ docker run \
 -e REACT_APP_API_URL=http://api.sundaypeak.com \
 -e REACT_APP_WEBSOCKET_URL=ws://api.sundaypeak.com:4000 \
 amacleanjs/sunday-brunch:latest
-docker ps -a # verify all containers are running
 ```
