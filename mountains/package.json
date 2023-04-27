@@ -1,6 +1,6 @@
 {
 	"name": "mapbox-ui",
-	"version": "0.1.0",
+	"version": "0.0.1",
 	"dependencies": {
 		"@amaclean2/sundaypeak-treewells": "^0.0.8",
 		"@babel/core": "^7.16.0",
@@ -72,8 +72,7 @@
 	"scripts": {
 		"dev": "env-cmd -f .env.dev npm start",
 		"start": "NODE_ENV=\"production\" node scripts/start.js",
-		"build": "node scripts/build.js",
-		"build:staging": "env-cmd -f .env.staging npm run build",
+		"build": "rm -fR build && node scripts/build.js",
 		"test": "node scripts/test.js",
 		"test:once": "node scripts/test.js --watchAll=false",
 		"e2e": "cypress open"

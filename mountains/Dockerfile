@@ -1,18 +1,16 @@
 FROM node:18-alpine as base
-
 WORKDIR /home/app
-COPY ./package.json /home/app/
-RUN npm install
+COPY . /home/app/
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm install
+COPY . /home/app/
 
 FROM base as test
-COPY . /home/app
 ENV NODE_ENV test
 RUN npm run test:once
 
-FROM base as prod
-COPY . /home/app
-RUN npm run build
-ENV NODE_ENV production
+FROM node:18-alpine as prod
+WORKDIR /home/prod
+COPY ./build /home/prod
 EXPOSE 3000
 USER node
 CMD ["npx", "serve", "build"]

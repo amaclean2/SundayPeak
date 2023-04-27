@@ -3,19 +3,13 @@ import { Connections } from '@amaclean2/sundaypeak-treewells'
 
 const { router } = require('Router')
 
-let restUrl, websocketUrl
-
-switch (process.env.NODE_ENV) {
-	case 'production':
-		restUrl = 'http://api.sundaypeak.com'
-		websocketUrl = 'ws://api.sundaypeak.com:4000'
-		break
-	default:
-		restUrl = 'http://sundaypeak.local:5000'
-		websocketUrl = 'ws://sundaypeak.local:4000'
-}
-
-Connections.setConnections({ restUrl, websocketUrl }, localStorage)
+Connections.setConnections(
+	{
+		restUrl: process.env.REACT_APP_API_URL,
+		websocketUrl: process.env.REACT_APP_WEBSOCKET_URL
+	},
+	localStorage
+)
 
 const App = () => <RouterProvider router={router} />
 

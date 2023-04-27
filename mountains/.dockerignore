@@ -1,4 +1,12 @@
 .git
 .DS_Store
 *.md
-node_modules
+/node_modules
+/src
+/cypress
+.eslintrc.js
+babel.config.js
+cypress.config.js
+jest.config.js
+jsconfig.json
+package-lock.json
