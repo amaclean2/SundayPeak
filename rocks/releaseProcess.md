@@ -174,7 +174,7 @@ docker image push -a amacleanjs/sunday-brunch
 4. Stop and remove the current mountains container and image
 
 ```shell
-docker stop mountains && docker rm mountains && docker image rm sunday-brunch
+docker stop mountains && docker rm mountains && docker image rm amacleanjs/sunday-brunch
 ```
 
 5. Pull the new image from docker hub and ensure it's loaded
