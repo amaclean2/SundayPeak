@@ -72,7 +72,7 @@
 	"scripts": {
 		"dev": "env-cmd -f .env.dev npm start",
 		"start": "NODE_ENV=\"production\" node scripts/start.js",
-		"build": "rm -fR build && node scripts/build.js",
+		"build": "env-cmd -f .env.build node scripts/build.js",
 		"test": "node scripts/test.js",
 		"test:once": "node scripts/test.js --watchAll=false",
 		"e2e": "cypress open"

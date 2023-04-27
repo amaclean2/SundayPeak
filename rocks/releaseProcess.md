@@ -155,7 +155,7 @@ npm run build
 1. Push the code to docker hub using the following command. The version number can be found in `/mountains/package.json`
 
 ```shell
-docker build -t amacleanjs/sunday-brunch:<VERSION_NUMBER> -t amacleanjs/sunday-brunch:latest . --target=prod
+docker build --platform linux/amd64 -t amacleanjs/sunday-brunch:<VERSION_NUMBER> -t amacleanjs/sunday-brunch:latest . --target=prod
 docker image push -a amacleanjs/sunday-brunch
 ```
 
@@ -177,9 +177,9 @@ docker images # verify the image is there
 docker run \
 --name mountains \
 -d -p 80:3000 \
--e NODE_ENV = development \
--e REACT_APP_API_URL = http://api.sundaypeak.com \
-REACT_APP_WEBSOCKET_URL = ws://api.sundaypeak.com:4000 \
+-e NODE_ENV=production \
+-e REACT_APP_API_URL=http://api.sundaypeak.com \
+-e REACT_APP_WEBSOCKET_URL=ws://api.sundaypeak.com:4000 \
 amacleanjs/sunday-brunch:latest
 docker ps -a # verify all containers are running
 ```

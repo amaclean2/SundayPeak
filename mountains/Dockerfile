@@ -10,7 +10,7 @@ RUN npm run test:once
 
 FROM node:18-alpine as prod
 WORKDIR /home/prod
-COPY ./build /home/prod
+COPY ./build /home/prod/build
 EXPOSE 3000
 USER node
-CMD ["npx", "serve", "build"]
+CMD npx serve -s build
