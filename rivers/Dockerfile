@@ -1,8 +1,8 @@
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /home/app
 COPY . /home/app/
-RUN npm install
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm install
 
 USER node
 

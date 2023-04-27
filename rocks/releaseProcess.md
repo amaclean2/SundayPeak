@@ -1,5 +1,14 @@
 # Sunday Peak Release Process
 
+## Table of Contents
+
+- [Steps Before Deployment](#steps-before-deployment)
+- [Deployment](#deployment)
+  - [Rivers Deployment](#rivers-deployment)
+    - [Breakdown](#breakdown)
+  - [Couloirs Deployment](#couloirs-deployment)
+  - [Mountains Deployment](#mountains-deployment)
+
 ## Steps Before Deployment
 
 1. Run cypress e2e tests and make sure a whole flow passes
@@ -134,3 +143,43 @@ docker ps -a # verify all containers are running
 ```
 
 6. Increment the version number in `/couloirs/package.json`
+
+### Mountains Deployment
+
+1. Build the react app.
+
+```shell
+npm run build
+```
+
+1. Push the code to docker hub using the following command. The version number can be found in `/mountains/package.json`
+
+```shell
+docker build -t amacleanjs/sunday-brunch:<VERSION_NUMBER> -t amacleanjs/sunday-brunch:latest . --target=prod
+docker image push -a amacleanjs/sunday-brunch
+```
+
+2. You can check on docker hub to verify the new image tag was pushed
+3. SSH into the Digital Ocean droplet
+
+```shell
+  ssh root@24.199.124.234
+```
+
+4. Pull and restart the `sunday-brunch` container
+
+```shell
+docker stop mountains
+docker rm mountains
+docker image rm sunday-brunch
+docker image pull amacleanjs/sunday-brunch:latest
+docker images # verify the image is there
+docker run \
+--name mountains \
+-d -p 80:3000 \
+-e NODE_ENV = development \
+-e REACT_APP_API_URL = http://api.sundaypeak.com \
+REACT_APP_WEBSOCKET_URL = ws://api.sundaypeak.com:4000 \
+amacleanjs/sunday-brunch:latest
+docker ps -a # verify all containers are running
+```
