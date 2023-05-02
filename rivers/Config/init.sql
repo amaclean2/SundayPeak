@@ -124,12 +124,12 @@ CREATE TABLE completed_adventures(
 );
 
 CREATE TABLE images(
-    file_name VARCHAR(150),
+    url VARCHAR(150),
     creator_id INT,
     adventure_id INT,
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     public TINYINT,
-    PRIMARY KEY(file_name),
+    PRIMARY KEY(url),
     FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_id) REFERENCES adventures(id) ON DELETE CASCADE
 );

@@ -1,103 +1,130 @@
+const multer = require('multer')
+const util = require('util')
+
+const { CREATED, SUCCESS } = require('../ResponseHandling/statuses')
+
+const serviceHandler = require('../Config/services')
+const { buildImageUrl } = require('./utils')
 const {
-  returnError,
   sendResponse,
-  SUCCESS,
-  NOT_ACCEPTABLE,
-  SERVER_ERROR,
-  NO_CONTENT,
-  NOT_FOUND
+  returnError,
+  SERVER_ERROR
 } = require('../ResponseHandling')
 
-const uploadPictures = async (req, res) => {}
-const deletePicture = async (req, res) => {}
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, process.env.FILE_STORAGE_PATH)
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  }
+})
 
-// const uploadPictures = async (req, res) => {
-//   try {
-//     const { id_from_token: user_id } = req.body
-//     const { adventure_id, profile_image } = req.query
+const filter = (req, file, cb) => {
+  cb(null, true)
+}
 
-//     const { publicUrl } = await uploadPictureToStorage(req, res, profile_image)
+const uploadPromisified = util.promisify(
+  multer({ storage, fileFilter: filter }).single('image')
+)
 
-//     if (adventure_id) {
-//       await addAdventurePicture({
-//         fileName: publicUrl,
-//         user_id,
-//         adventure_id
-//       })
-//     } else if (!profile_image) {
-//       await addUserPicture({ fileName: publicUrl, user_id })
-//     }
+const handleSaveImage = async (req, res) => {
+  // userId needs to be pulled before multer acts on the request
+  const userId = req.body.id_from_token
 
-//     return sendResponse({
-//       req,
-//       res,
-//       status: SUCCESS,
-//       data: {
-//         fileName: req.file.originalname,
-//         url: publicUrl
-//       }
-//     })
-//   } catch (error) {
-//     if (error.code === 'LIMIT_FILE_SIZE') {
-//       return returnError({
-//         req,
-//         res,
-//         status: NOT_ACCEPTABLE,
-//         message: 'File size cannot be larger than 3MB!',
-//         error
-//       })
-//     }
+  await uploadPromisified(req, res)
 
-//     return returnError({
-//       req,
-//       res,
-//       status: SERVER_ERROR,
-//       message: `Could not upload the file: ${req?.file?.originalname}. ${error.message}`,
-//       error: {
-//         code: error.code,
-//         ...error
-//       }
-//     })
-//   }
-// }
+  const {
+    file,
+    body: { adventure_id, profile_picture }
+  } = req
 
-// const deletePicture = async (req, res) => {
-//   try {
-//     const { file_name: fileUrl, id_from_token } = req.body
+  const baseImageUrl = buildImageUrl(req)
+  const profileImageDirectory = profile_picture ? 'profile/' : ''
+  const url =
+    `${baseImageUrl}${profileImageDirectory}${file.originalname}`.replace(
+      / /g,
+      ''
+    )
 
-//     if (fileUrl.includes('thumbs')) {
-//       const fileName = fileUrl.split('thumbs/').pop()
+  await serviceHandler.userService.saveImage({
+    file,
+    url,
+    userId,
+    adventureId: adventure_id,
+    profilePicture: profile_picture
+  })
 
-//       await deleteUserPictures({ file_name: fileUrl })
-//       deleteImageFromStorage(fileName)
-//       deleteImageFromStorage(`thumbs/${fileName}`)
-//     } else if (fileUrl.includes('profile_pictures')) {
-//       const fileName = fileUrl.split('profile_pictures/').pop()
+  return sendResponse({
+    req,
+    res,
+    data: { message: 'Picture uploaded', path: url },
+    status: CREATED
+  })
+}
 
-//       await deleteProfilePicture({ user_id: id_from_token })
-//       deleteImageFromStorage(`profile_pictures/${fileName}`)
-//     } else {
-//       throw returnError({
-//         req,
-//         res,
-//         status: NOT_FOUND,
-//         message: 'The picture you are trying to delete cannot be found'
-//       })
-//     }
+const deletePicture = async (req, res) => {
+  const { url } = req.query
 
-//     return sendResponse({ req, res, status: NO_CONTENT, data: {} })
-//   } catch (error) {
-//     return returnError({
-//       req,
-//       res,
-//       status: SERVER_ERROR,
-//       message: 'Could not delete the file',
-//       error
-//     })
-//   }
-// }
+  await serviceHandler.userService.removeGalleryImage({ url })
+
+  return sendResponse({
+    req,
+    res,
+    data: { message: 'Picture removed' },
+    status: SUCCESS
+  })
+}
+
+const deleteProfilePicture = async (req, res) => {
+  const userId = req.body.id_from_token
+  const oldUrl = req.body.old_url
+
+  await serviceHandler.userService.removeProfileImage({ userId, oldUrl })
+
+  return sendResponse({
+    req,
+    res,
+    data: { message: 'Picture removed' },
+    status: SUCCESS
+  })
+}
+
+const changeProfilePicture = async (req, res) => {
+  try {
+    const userId = req.body.id_from_token
+
+    await uploadPromisified(req, res)
+
+    const {
+      file,
+      body: { previous_profile_url }
+    } = req
+
+    const baseImageUrl = buildImageUrl(req)
+    const url = `${baseImageUrl}profile/${file.originalname}`.replace(/ /g, '')
+
+    await serviceHandler.userService.changeProfileImage({
+      userId,
+      file,
+      url,
+      oldUrl: previous_profile_url
+    })
+
+    return sendResponse({
+      req,
+      res,
+      data: { message: 'Profile picture changed' },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({ req, res, status: SERVER_ERROR, error })
+  }
+}
 
 module.exports = {
-  uploadPictures,
-  deletePicture
+  handleSaveImage,
+  deletePicture,
+  deleteProfilePicture,
+  changeProfilePicture
 }

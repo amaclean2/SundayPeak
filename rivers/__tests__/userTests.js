@@ -36,6 +36,7 @@ const userTests = () => {
     expect(user.completed_adventures.length).toBe(0)
     expect(user.todo_adventures.length).toBe(0)
     expect(user.id).toBeDefined()
+    expect(user.profile_picture_url.length).toBeGreaterThan(0)
     firstUserId = user.id
   })
 

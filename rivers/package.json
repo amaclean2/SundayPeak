@@ -6,6 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=\"production\" node index.js",
     "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js",
+    "docker": "nodemon --trace-warnings index.js",
     "stage": "NODE_ENV=\"stage\" node index.js",
     "test": "NODE_ENV=\"test\" env-cmd -f .env.test jest --coverage",
     "lint": "NODE_ENV=\"test\" eslint . --ext .js --fix"
@@ -20,7 +21,7 @@
     "supertest": "^6.3.3"
   },
   "dependencies": {
-    "@amaclean2/sundaypeak-water": "^0.0.3",
+    "@amaclean2/sundaypeak-water": "^0.0.12",
     "@aws-sdk/client-s3": "^3.142.0",
     "@google-cloud/storage": "^6.4.2",
     "aws-sdk": "^2.1187.0",
@@ -44,7 +45,7 @@
     "path": "^0.12.7",
     "pino": "^8.5.0",
     "pino-pretty": "^9.1.0",
-    "sharp": "^0.31.0",
+    "sharp": "^0.32.1",
     "string-hash": "^1.1.3"
   }
 }

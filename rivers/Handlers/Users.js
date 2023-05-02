@@ -9,6 +9,7 @@ const {
 const { sendResponse } = require('../ResponseHandling/success')
 
 const serviceHandler = require('../Config/services')
+const { buildImageUrl } = require('./utils')
 
 const createUser = async (req, res) => {
   try {
@@ -24,11 +25,13 @@ const createUser = async (req, res) => {
       password,
       confirmPassword: password_2,
       firstName: first_name,
-      lastName: last_name
+      lastName: last_name,
+      baseImageUrl: buildImageUrl(req)
     })
 
     return sendResponse({ req, res, data: newUserResponse, status: CREATED })
   } catch (error) {
+    console.log({ error })
     return returnError({
       req,
       res,
@@ -55,16 +58,15 @@ const loginUser = async (req, res) => {
 
     return sendResponse({ req, res, data: loginUserResponse, status: SUCCESS })
   } catch (error) {
-    if (error === 'passwordNotFound') {
+    if (typeof error === 'string') {
       return returnError({
         req,
         res,
-        message:
-          'There was no account found with the email and password you provided. Please try again or create a new account.',
-        error
+        message: error
       })
+    } else {
+      return returnError({ req, res, message: 'serverLoginUser', error })
     }
-    return returnError({ req, res, message: 'serverLoginUser', error })
   }
 }
 

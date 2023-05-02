@@ -121,7 +121,7 @@ const errorTexts = {
   // adventure errors
   missingAdventureProperty: {
     messageText:
-      'An adventure object must be provided in the request body. The adventure object must contain properties adventure_type, adventure_name, coordinates: {lat, lng}, nearest_city, and public.',
+      'The request body must contain properties adventure_type, adventure_name, coordinates: {lat, lng}, nearest_city, and public.',
     status: NOT_ACCEPTABLE
   },
   coordinates: {
