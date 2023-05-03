@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useGetAdventures } from '@amaclean2/sundaypeak-treewells'
+import { useGetAdventures, useSaveAdventure } from '@amaclean2/sundaypeak-treewells'
 
 const allowedExtensions = ['csv']
 
 export const ImportAdventuresButton = () => {
-	const { processCsvAdventures, insertBulkAdventures } = useGetAdventures()
+	const { processCsvAdventures } = useGetAdventures()
+	const { insertBulkAdventures } = useSaveAdventure()
 	const [jsonAdventures, setJsonAdventures] = useState(null)
 
 	const handleFileChange = (event) => {

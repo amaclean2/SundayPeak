@@ -12,11 +12,12 @@ h1 {
 }
 
 .scroller-container.flex-box {
-	height: 18rem;
+	height: 10rem;
 	width: 100%;
 	overflow-x: auto;
 	overflow-y: hidden;
 	justify-content: flex-start;
+	margin: 5rem 0;
 }
 
 .scroller-container img {
@@ -31,6 +32,7 @@ h1 {
 	margin: 0;
 	cursor: pointer;
 	width: 12rem;
+	min-width: 12rem;
 	justify-content: center;
 	border-radius: 0.5rem;
 }
@@ -145,6 +147,7 @@ h1 {
 	border: none;
 	height: 9rem;
 	width: 9rem;
+	min-width: 9rem;
 	left: 0;
 	position: absolute;
 	margin: 0;
@@ -163,6 +166,23 @@ h1 {
 .friend-list.flex-box {
 	margin-top: 0;
 }
+
+.user-bio-content {
+	gap: 2rem;
+	justify-content: flex-start;
+	margin-top: 2rem;
+}
+
+.user-bio-text {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+.user-bio {
+	color: var(--main-off-dark);
+}
+
 @media screen and (max-width: 500px) {
 	.main-user-content {
 		max-width: 100%;
@@ -170,9 +190,5 @@ h1 {
 
 	.friend-list-container.flex-box {
 		width: 100%;
-	}
-
-	.scroller-container.flex-box {
-		height: 10rem;
 	}
 }

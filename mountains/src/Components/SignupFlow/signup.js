@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import {
-	Connections,
 	useCreateUser,
 	useEditUser,
 	useGetUser,
@@ -16,7 +15,7 @@ export const SignupFlow = () => {
 	const { formFields, loggedInUser } = useUserStateContext()
 	const { createNewUser } = useCreateUser()
 	const { editFormFields } = useEditUser()
-	const { setLoginError } = useGetUser()
+	const { setUserError } = useGetUser()
 	const navigate = useNavigate()
 
 	const onChange = (event) => {
@@ -129,7 +128,7 @@ export const SignupFlow = () => {
 						className='secondary-button new-account-button'
 						id={'switch-to-login-button'}
 						onClick={() => {
-							setLoginError('')
+							setUserError('')
 							navigate('/login')
 						}}
 					>

@@ -1,27 +1,34 @@
-import { useUserStateContext, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
+import {
+	useUserStateContext,
+	useManipulateFlows,
+	usePictures
+} from '@amaclean2/sundaypeak-treewells'
 
 const UserProfileGallery = () => {
-	const { openImage } = useManipulateFlows()
+	const { setImageList } = useManipulateFlows()
 
-	const { workingUser, activeWorkingUser, images } = useUserStateContext()
+	const { workingUser, activeWorkingUser } = useUserStateContext()
+	const { savePicture } = usePictures()
 
 	const changeHandler = ({ target: { files } }) => {
-		console.log('picture submitted')
-		// submitPicture({ data: files[0] })
+		const formData = new FormData()
+		formData.append('image', files[0])
+
+		savePicture({ isProfilePicture: false, formData })
 	}
 
-	if (activeWorkingUser && !workingUser.imaages?.length) {
+	if (activeWorkingUser && !workingUser.images?.length) {
 		return null
 	}
 
 	return (
 		<div className='scroller-container flex-box'>
-			{images.map((image, key) => (
+			{workingUser.images.map((image, key) => (
 				<img
 					src={image}
 					alt={''}
 					key={`profile_image_${key}`}
-					onClick={() => openImage(image)}
+					onClick={() => setImageList(workingUser.images, key)}
 				/>
 			))}
 			<label

@@ -60,12 +60,13 @@ export const useUserEditorMenu = () => {
 					id: 'follow-user-button',
 					text: getContent('buttonText.follow', [workingUser.first_name])
 				})
+			} else {
+				menuFields.push({
+					action: () => navigate('/conversations'),
+					id: 'message-user-button',
+					text: getContent('buttonText.message', [workingUser.first_name])
+				})
 			}
-			menuFields.push({
-				action: () => navigate('/conversations'),
-				id: 'message-user-button',
-				text: getContent('buttonText.message', [workingUser.first_name])
-			})
 		}
 
 		return {
