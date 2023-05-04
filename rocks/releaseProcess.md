@@ -83,6 +83,7 @@ docker run \
 -e MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg \
 -e NODEMAILER_APP_PASSWORD=vtmrorarxqkhfcjc \
 -e JWT_SECRET=jB2MGh4dzN \
+-e FILE_STORAGE_PATH=/home/app/public/images \
 amacleanjs/sunday-service:latest
 docker ps -a # verify all containers are running
 ```
@@ -160,7 +161,6 @@ docker run \
 -e DB_PASS=backyard \
 -e DB_NAME=friends \
 -e JWT_SECRET=jB2MGh4dzN \
--e FILE_STORAGE_PATH=/home/app/public/images \
 amacleanjs/sunday-communion:latest
 docker ps -a # verify all containers are running
 ```
