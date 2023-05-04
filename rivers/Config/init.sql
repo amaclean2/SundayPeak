@@ -156,6 +156,7 @@ CREATE TABLE messages(
     sender_id INT,
     message_body TEXT,
     data_reference VARCHAR(255),
+    date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id),
     FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
     FOREIGN KEY(sender_id) REFERENCES users(id) ON DELETE CASCADE

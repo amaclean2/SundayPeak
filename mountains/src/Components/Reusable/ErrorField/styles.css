@@ -7,7 +7,7 @@
 	transition: all 0.2s ease-in-out;
 	min-height: 3rem;
 	border-radius: 0.5rem;
-	max-width: 26.4rem; /* 28rem - 0.8rem of padding on either side */
+	/* max-width: 26.4rem; 28rem - 0.8rem of padding on either side */
 }
 
 .error-field.collapsed {

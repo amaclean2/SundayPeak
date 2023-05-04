@@ -15,26 +15,12 @@ rivers/.env.dev
 rivers/google-cloud-key.json
 rivers/.DS_Store
 rivers/coverage
-
-water/.env.dev
-water/.env.test
-water/node_modules
-water/coverage
-water/package-lock.json
+rivers/public
 
 couloirs/node_modules
 couloirs/coverage
 couloirs/.env.dev
 couloirs/package-lock.json
-
-cliffs/node_modules
-cliffs/package-lock.json
-cliffs/ios
-
-treewells/node_modules
-treewells/coverage
-treewells/dist
-treewells/package-lock.json
 
 .DS_Store
 .dispatch.yaml.swp

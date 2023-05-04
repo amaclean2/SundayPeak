@@ -6,14 +6,14 @@ import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sunday
 import './styles.css'
 
 export const ErrorField = ({ form, className, testId }) => {
-	const { loginError } = useUserStateContext()
+	const { userError } = useUserStateContext()
 	const { adventureError } = useAdventureStateContext()
 
 	const error = useRef('')
 
 	switch (form) {
 		case 'login':
-			error.current = loginError
+			error.current = userError
 			break
 		case 'adventure':
 			error.current = adventureError

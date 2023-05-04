@@ -10,8 +10,8 @@ const { NOT_FOUND } = require('../../ResponseHandling/statuses')
 const router = Router()
 
 router.post('/upload', handleSaveImage)
-router.delete('/delete', deletePicture)
 
+router.put('/delete', deletePicture)
 router.put('/deleteProfilePicture', deleteProfilePicture)
 router.put('/changeProfilePicture', changeProfilePicture)
 

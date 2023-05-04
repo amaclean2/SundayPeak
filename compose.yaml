@@ -2,9 +2,11 @@ services:
   couloirs:
     container_name: couloirs
     image: couloirs
-    build: 
+    build:
       context: ./couloirs
       dockerfile: Dockerfile.development
+      secrets:
+        - npmrc
     restart: on-failure
     ports:
       - '4000:4000'
@@ -13,14 +15,29 @@ services:
       - /home/app/node_modules
   rivers:
     container_name: rivers
+    command: npm run docker
     image: rivers
-    build: 
+    build:
       context: ./rivers
       dockerfile: Dockerfile.development
+      secrets:
+        - npmrc
     restart: on-failure
     ports:
       - '5000:5000'
+    environment:
+      - NODE_ENV=docker
+      - DB_HOST=mysql
+      - DB_USER=byf
+      - DB_PASS=backyard
+      - DB_NAME=friends
+      - DB_PORT=3306
+      - FILE_STORAGE_PATH=/home/app/public/images
+      - MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg
+      - NODEMAILER_APP_PASSWORD=vtmrorarxqkhfcjc
+      - JWT_SECRET=secret
     volumes:
+      - files:/home/app/public/images
       - ./rivers:/home/app
       - /home/app/node_modules
   mysql:
@@ -39,3 +56,7 @@ services:
       - ./rivers/Config/init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   data:
+  files:
+secrets:
+  npmrc:
+    file: /Users/andrewmaclean/.npmrc

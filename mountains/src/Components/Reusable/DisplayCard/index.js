@@ -17,10 +17,10 @@ export const DisplayCard = ({
 }) => {
 	return (
 		<div
-			className={cx('display-card-container flex-box', className, configuration)}
+			className={cx('display-card-container flex-box', configuration)}
 			data-testid={testId}
 		>
-			<div className={`display-card`}>
+			<div className={cx('display-card', className)}>
 				<DisplayHeader
 					title={title}
 					onClose={onClose}

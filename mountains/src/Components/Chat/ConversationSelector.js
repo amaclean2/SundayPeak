@@ -79,8 +79,10 @@ const ConversationSelector = () => {
 							)}
 							onClick={() => getConversation({ conversationId: conversation.conversation_id })}
 						>
-							<span>{buildConversationName(conversation)}</span>
-							<span>{conversation.last_message}</span>
+							<div className='flex-box conversation-card'>
+								<span>{buildConversationName(conversation)}</span>
+								<span>{conversation.last_message}</span>
+							</div>
 							{conversation.unread && <div className='notification-button' />}
 						</li>
 					))}

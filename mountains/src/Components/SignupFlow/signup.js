@@ -33,6 +33,7 @@ export const SignupFlow = () => {
 			testId={'signup-page'}
 			configuration={'center'}
 			title={`Sign up with ${title}`}
+			className={'login-card'}
 			onClose={() => navigate('/discover')}
 		>
 			<ErrorField

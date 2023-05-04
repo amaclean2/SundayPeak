@@ -28,6 +28,7 @@ export const LoginFlow = () => {
 			configuration={'center'}
 			title={`Login to ${title}`}
 			onClose={() => navigate('/discover')}
+			className='login-card'
 		>
 			<ErrorField form='login' />
 			<FormField

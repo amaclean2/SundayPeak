@@ -72,3 +72,7 @@
 	font-weight: 500;
 	margin: 0;
 }
+
+.login-card {
+	max-width: 12rem;
+}

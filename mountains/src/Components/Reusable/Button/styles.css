@@ -77,9 +77,13 @@ a {
 }
 
 .button.small {
-	font-size: 13px;
-	padding: 5px 16px;
-	margin: 3px;
+	font-size: 0.9rem;
+	padding: 0.3rem 0.8rem;
+}
+
+.button.small:hover {
+	font-size: 0.9rem;
+	padding: 0.3rem 0.8rem;
 }
 
 .delete-button.flex-box {

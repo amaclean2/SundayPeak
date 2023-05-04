@@ -151,7 +151,7 @@ const ClimbForm = ({ onChange }) => {
 					id={'adventure-delete-button'}
 					onClick={toggleDeletePage}
 				>
-					Delete
+					Delete Adventure
 				</Button>
 			</FooterButtons>
 			{isDeletePageOpen && <DeletePage />}

@@ -73,9 +73,9 @@ const ButtonBar = () => {
 				<FlexSpacer />
 				<Button
 					id='home-redirect'
-					secondaryButton
+					type={'link'}
 					className={'logo-button'}
-					direction={'/about'}
+					direction={'/'}
 				>
 					<LogoInline
 						width={200}

@@ -74,7 +74,7 @@
 .friend-search-list li {
 	position: relative;
 	font-weight: 500;
-	font-size: 1.05rem;
+	font-size: 1rem;
 	padding: 0 0.5rem;
 	height: 3rem;
 	margin: 0;
@@ -94,9 +94,9 @@
 }
 
 .friend-search-list li img {
-	height: 2.5rem;
-	width: 2.5rem;
-	border-radius: 0.5rem;
+	height: 2.2rem;
+	width: 2.2rem;
+	border-radius: 0.2rem;
 }
 
 .conversation-selector {
@@ -119,7 +119,7 @@
 
 .conversation-messages li .message-text {
 	padding: 0.5rem 0.8rem;
-	border-radius: 0.8rem;
+	border-radius: 0.8rem 0.8rem 0.8rem 0;
 	background-color: var(--border-color);
 	max-width: 60%;
 	word-wrap: break-word;
@@ -133,6 +133,7 @@
 .conversation-messages li.me .message-text {
 	background-color: var(--primary-accent-color);
 	color: var(--main-off-white);
+	border-radius: 0.8rem 0.8rem 0rem 0.8rem;
 }
 
 .send-message-button {
@@ -143,6 +144,12 @@
 	align-items: stretch;
 	gap: 0.8rem;
 	min-height: 40vh;
+}
+
+.conversation-card {
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.2rem;
 }
 
 @media screen and (max-width: 500px) {

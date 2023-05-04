@@ -1,7 +1,11 @@
 const multer = require('multer')
 const util = require('util')
 
-const { CREATED, SUCCESS } = require('../ResponseHandling/statuses')
+const {
+  CREATED,
+  SUCCESS,
+  NOT_ACCEPTABLE
+} = require('../ResponseHandling/statuses')
 
 const serviceHandler = require('../Config/services')
 const { buildImageUrl } = require('./utils')
@@ -16,7 +20,7 @@ const storage = multer.diskStorage({
     cb(null, process.env.FILE_STORAGE_PATH)
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname)
+    cb(null, file.originalname.replace(/ /g, ''))
   }
 })
 
@@ -55,25 +59,39 @@ const handleSaveImage = async (req, res) => {
     profilePicture: profile_picture
   })
 
+  // make sure the url sent back to the client is the thumb url
+  // since the url is generated above and not in 'Water' then
+  // it's fair to modify it here
   return sendResponse({
     req,
     res,
-    data: { message: 'Picture uploaded', path: url },
+    data: {
+      message: 'Picture uploaded',
+      path: url.replace('/images', '/images/thumbs')
+    },
     status: CREATED
   })
 }
 
 const deletePicture = async (req, res) => {
-  const { url } = req.query
+  try {
+    const { url } = req.body
 
-  await serviceHandler.userService.removeGalleryImage({ url })
+    if (url === undefined || typeof url !== 'string') {
+      throw `URL parameter: ${url} is incorrect`
+    }
 
-  return sendResponse({
-    req,
-    res,
-    data: { message: 'Picture removed' },
-    status: SUCCESS
-  })
+    await serviceHandler.userService.removeGalleryImage({ url })
+
+    return sendResponse({
+      req,
+      res,
+      data: { message: 'Picture removed' },
+      status: SUCCESS
+    })
+  } catch (error) {
+    return returnError({ req, res, status: NOT_ACCEPTABLE, error })
+  }
 }
 
 const deleteProfilePicture = async (req, res) => {
@@ -114,7 +132,7 @@ const changeProfilePicture = async (req, res) => {
     return sendResponse({
       req,
       res,
-      data: { message: 'Profile picture changed' },
+      data: { message: 'Profile picture changed', path: url },
       status: SUCCESS
     })
   } catch (error) {
