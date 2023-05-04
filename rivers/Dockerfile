@@ -10,6 +10,8 @@ COPY . /home/app
 
 USER root
 
+RUN mkdir /home/app/public
+RUN mkdir /home/app/public/images
 RUN mkdir /home/app/public/images/thumbs
 RUN mkdir /home/app/public/images/profile
 
