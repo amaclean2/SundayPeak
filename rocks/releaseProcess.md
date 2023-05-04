@@ -160,6 +160,7 @@ docker run \
 -e DB_PASS=backyard \
 -e DB_NAME=friends \
 -e JWT_SECRET=jB2MGh4dzN \
+-e FILE_STORAGE_PATH=/home/app/public/images \
 amacleanjs/sunday-communion:latest
 docker ps -a # verify all containers are running
 ```

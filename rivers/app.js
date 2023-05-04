@@ -12,10 +12,9 @@ config()
 
 const app = express()
 
-app.use(express.static(`${__dirname}/public`))
+app.use(express.static(`${__dirname}/public/images`))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
-router.use(express.static(process.env.FILE_STORAGE_PATH))
 
 // security middleware
 app.use(cors({ origin: corsHandler }))
