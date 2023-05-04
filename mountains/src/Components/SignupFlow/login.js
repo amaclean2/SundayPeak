@@ -9,8 +9,7 @@ import './styles.css'
 
 export const LoginFlow = () => {
 	const { formFields, loggedInUser } = useUserStateContext()
-
-	const { loginUser } = useGetUser()
+	const { loginUser, setUserError } = useGetUser()
 	const { editFormFields } = useEditUser()
 	const navigate = useNavigate()
 
@@ -29,6 +28,7 @@ export const LoginFlow = () => {
 			configuration={'center'}
 			title={`Login to ${title}`}
 			onClose={() => navigate('/discover')}
+			className='login-card'
 		>
 			<ErrorField form='login' />
 			<FormField
@@ -76,7 +76,10 @@ export const LoginFlow = () => {
 					<Button
 						className='secondary-button new-account-button'
 						id={'switch-to-create-button'}
-						onClick={() => navigate('/signup')}
+						onClick={() => {
+							setUserError('')
+							navigate('/signup')
+						}}
 					>
 						Create a new account
 					</Button>

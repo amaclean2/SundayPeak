@@ -1,14 +1,18 @@
 import cx from 'classnames'
-import { useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useUserStateContext, usePictures } from '@amaclean2/sundaypeak-treewells'
 
 import { Button } from 'Components/Reusable'
 
 const ProfileImageUploader = () => {
 	const { workingUser } = useUserStateContext()
+	const { savePicture } = usePictures()
 
 	const handleUpload = ({ target: { files } }) => {
-		console.log('profile photo updated')
-		// updateProfilePicture({ data: files[0] })
+		const formData = new FormData()
+		formData.append('image', files[0])
+		formData.append('previous_profile_url', workingUser.profile_picture_url)
+
+		savePicture({ isProfilePicture: true, formData })
 	}
 
 	const deleteProfileImage = () => {

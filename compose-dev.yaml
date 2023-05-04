@@ -1,0 +1,17 @@
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    restart: on-failure
+    environment:
+      - MYSQL_DATABASE=friends
+      - MYSQL_USER=byf
+      - MYSQL_PASSWORD=backyard
+      - MYSQL_RANDOM_ROOT_PASSWORD=123
+    ports:
+      - '3300:3306'
+    volumes:
+      - data:/var/lib/mysql
+      - ./rivers/Config/init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  data:

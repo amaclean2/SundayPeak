@@ -61,7 +61,7 @@ const errorTexts = {
     status: NOT_ACCEPTABLE
   },
   nonMatchingPasswords: {
-    messageText: 'Passwords do not match.',
+    messageText: 'The password and confirm password fields have different values. Please ensure they are the same',
     status: NOT_ACCEPTABLE
   },
   missingFieldsFetchUser: {
@@ -115,6 +115,10 @@ const errorTexts = {
   },
   editFieldsFormat: {
     messageText: 'One or more of the edit fields are formatted incorrectly',
+    status: NOT_ACCEPTABLE
+  },
+  passwordNotFound: {
+    messageText: 'The password is incorrect for this email. Please try again.',
     status: NOT_ACCEPTABLE
   },
 

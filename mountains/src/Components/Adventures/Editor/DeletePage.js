@@ -2,10 +2,13 @@ import { useAdventureStateContext, useDeleteAdventure } from '@amaclean2/sundayp
 
 import { Button, FieldHeader, FooterButtons } from 'Components/Reusable'
 import ClickWrapper from 'Components/Reusable/ClickWrapper'
+import { useNavigate } from 'react-router-dom'
 
 const DeletePage = () => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { deleteAdventure, toggleDeletePage } = useDeleteAdventure()
+	const navigate = useNavigate()
+	
 	return (
 		<div className={'click-wrapper flex-box'}>
 			<ClickWrapper onClick={toggleDeletePage}>
@@ -19,8 +22,10 @@ const DeletePage = () => {
 							onClick={() => {
 								deleteAdventure({
 									adventureId: currentAdventure.id,
-									adventureType: currentAdventure.adventure_type
+									adventureType: currentAdventure.adventure_type,
+									adventureName: currentAdventure.adventure_name
 								})
+								navigate('/discover')
 							}}
 							id={`delete-adventure-${currentAdventure.id}`}
 							className={'delete-button'}

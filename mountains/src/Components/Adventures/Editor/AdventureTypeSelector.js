@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 
-import { FormField } from 'Components/Reusable'
+import { ErrorField, FormField } from 'Components/Reusable'
 import { ImportAdventuresButton } from '../Buttons/ImportAdventuresButton'
 
 const AdventureTypeSelector = () => {
@@ -19,6 +19,7 @@ const AdventureTypeSelector = () => {
 				Select an adventure type below then double click a point on the map to add a new adventure
 				starting at that point.
 			</p>
+			<ErrorField form='adventure' />
 			<ImportAdventuresButton />
 			<FormField
 				type='select'

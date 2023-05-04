@@ -1,4 +1,4 @@
-import { useAdventureStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useDeleteAdventure } from '@amaclean2/sundaypeak-treewells'
 
 import {
 	Button,
@@ -11,9 +11,11 @@ import {
 import getContent from 'TextContent'
 import { seasonOptions } from 'Components/Adventures/utils'
 import { LargeHikerIcon } from 'Images'
+import DeletePage from './DeletePage'
 
 const HikeForm = ({ onChange }) => {
-	const { currentAdventure } = useAdventureStateContext()
+	const { currentAdventure, isDeletePageOpen } = useAdventureStateContext()
+	const { toggleDeletePage } = useDeleteAdventure()
 
 	return (
 		<DisplayCard title={currentAdventure.adventure_name}>
@@ -82,13 +84,13 @@ const HikeForm = ({ onChange }) => {
 				options={{
 					range: {
 						min: 1,
-						max: 3,
+						max: 5,
 						step: 1
 					}
 				}}
 				isEditable
 				fullWidth
-				value={currentAdventure.difficulty || ''}
+				value={currentAdventure.difficulty || 1}
 				onChange={onChange}
 			/>
 			<FormField
@@ -124,7 +126,15 @@ const HikeForm = ({ onChange }) => {
 				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>
 					Finish
 				</Button>
+				<Button
+					className={'delete-button'}
+					id={'adventure-delete-button'}
+					onClick={toggleDeletePage}
+				>
+					Delete Adventure
+				</Button>
 			</FooterButtons>
+			{isDeletePageOpen && <DeletePage />}
 		</DisplayCard>
 	)
 }

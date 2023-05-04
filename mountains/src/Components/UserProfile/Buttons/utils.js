@@ -3,6 +3,7 @@ import {
 	useEditUser,
 	useFollowUser,
 	useGetUser,
+	useMessages,
 	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
@@ -13,6 +14,7 @@ export const useUserEditorMenu = () => {
 	const { toggleUserEditState } = useEditUser()
 	const { logoutUser } = useGetUser()
 	const { friendUser } = useFollowUser()
+	const { addConversation } = useMessages()
 	const navigate = useNavigate()
 
 	const buildEditorMenu = () => {
@@ -60,12 +62,16 @@ export const useUserEditorMenu = () => {
 					id: 'follow-user-button',
 					text: getContent('buttonText.follow', [workingUser.first_name])
 				})
+			} else {
+				menuFields.push({
+					action: () => {
+						navigate('/conversations')
+						addConversation({ userId: workingUser.id, name: `${workingUser.first_name} ${workingUser.last_name}` })
+					},
+					id: 'message-user-button',
+					text: getContent('buttonText.message', [workingUser.first_name])
+				})
 			}
-			menuFields.push({
-				action: () => navigate('/conversations'),
-				id: 'message-user-button',
-				text: getContent('buttonText.message', [workingUser.first_name])
-			})
 		}
 
 		return {

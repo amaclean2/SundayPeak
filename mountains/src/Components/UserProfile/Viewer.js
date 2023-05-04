@@ -10,6 +10,7 @@ import FriendsViewer from './FriendsViewer'
 import UserProfileGallery from './Gallery'
 import Stats from './Stats'
 import UserBio from './UserBio'
+import ProfileImageViewer from './ProfileImageViewer'
 
 import './styles.css'
 
@@ -39,8 +40,11 @@ const UserViewer = () => {
 			title={`${workingUser?.first_name} ${workingUser?.last_name}`}
 			onClose={() => navigate('/discover')}
 		>
+			<div className='flex-box user-bio-content'>
+				<ProfileImageViewer />
+				<UserBio />
+			</div>
 			<UserProfileGallery />
-			<UserBio />
 			<Stats />
 			<div className='user-adventure-viewer flex-box'>
 				{statView === 'friends' ? (

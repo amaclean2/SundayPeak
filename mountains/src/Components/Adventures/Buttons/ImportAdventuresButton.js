@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useGetAdventures } from '@amaclean2/sundaypeak-treewells'
+import { useGetAdventures, useSaveAdventure } from '@amaclean2/sundaypeak-treewells'
 
 const allowedExtensions = ['csv']
 
 export const ImportAdventuresButton = () => {
-	const { processCsvAdventures, insertBulkAdventures } = useGetAdventures()
+	const { processCsvAdventures } = useGetAdventures()
+	const { insertBulkAdventures, setAdventureError } = useSaveAdventure()
 	const [jsonAdventures, setJsonAdventures] = useState(null)
 
 	const handleFileChange = (event) => {
@@ -20,11 +21,13 @@ export const ImportAdventuresButton = () => {
 
 			reader.onload = async ({ target }) => {
 				const newData = await processCsvAdventures({ csvString: target.result })
-				setJsonAdventures(newData)
 
-				if (newData.length > 5) {
-					throw new Error('only 5 adventures can be created at once')
-				}
+				// if (newData.length > 5) {
+				// 	setAdventureError('Only 5 adventures can be created at once.')
+				// 	return
+				// }
+
+				setJsonAdventures(newData)
 			}
 
 			reader.readAsText(inputFile)

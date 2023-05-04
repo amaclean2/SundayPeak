@@ -59,12 +59,16 @@ a {
 	font-size: 1rem;
 }
 
-.secondary-button.flex-box,
-.secondary-button:hover.flex-box {
+.secondary-button.flex-box {
 	background-color: transparent;
 }
 
-.logo-button {
+.secondary-button:hover.flex-box {
+	background-color: var(--main-off-white);
+}
+
+.logo-button.flex-box,
+.logo-button:hover.flex-box {
 	padding: 0;
 }
 
@@ -73,9 +77,13 @@ a {
 }
 
 .button.small {
-	font-size: 13px;
-	padding: 5px 16px;
-	margin: 3px;
+	font-size: 0.9rem;
+	padding: 0.3rem 0.8rem;
+}
+
+.button.small:hover {
+	font-size: 0.9rem;
+	padding: 0.3rem 0.8rem;
 }
 
 .delete-button.flex-box {
@@ -155,4 +163,8 @@ a {
 
 .adventure-result:hover {
 	background-color: transparent;
+}
+
+.icon-flipped {
+	transform: rotate(180deg);
 }

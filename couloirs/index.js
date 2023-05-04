@@ -40,6 +40,9 @@ wss.on('connection', (ws) => {
         } else if (result.conversation) {
           // a new conversation was added
           // send the new conversation to every connected user in the conversation
+          // and add the conversation to the active conversations
+          activeConversations[result.conversation.conversation_id] = new Set()
+          activeConversations[result.conversation.conversation_id].add(user)
           ws.send(JSON.stringify(result))
         } else if (result.messages) {
           // responding to a request for all the messages for a particular conversation
@@ -48,12 +51,12 @@ wss.on('connection', (ws) => {
           // subscribe the user to each conversation once they are connected
           const userConversationKeys = Object.keys(result.conversations)
 
-          userConversationKeys.forEach((convo) => {
-            if (activeConversations[convo]) {
-              activeConversations[convo].add(user)
+          userConversationKeys.forEach((conversationKey) => {
+            if (activeConversations[conversationKey]) {
+              activeConversations[conversationKey].add(user)
             } else {
-              activeConversations[convo] = new Set()
-              activeConversations[convo].add(user)
+              activeConversations[conversationKey] = new Set()
+              activeConversations[conversationKey].add(user)
             }
           })
           ws.send(JSON.stringify(result))

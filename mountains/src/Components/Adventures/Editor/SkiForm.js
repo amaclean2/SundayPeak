@@ -141,7 +141,7 @@ const SkiForm = ({ onChange }) => {
 				}}
 				isEditable
 				fullWidth
-				value={currentAdventure.difficulty || ''}
+				value={currentAdventure.difficulty || 1}
 				onChange={onChange}
 			/>
 			<FormField
@@ -188,7 +188,7 @@ const SkiForm = ({ onChange }) => {
 					id={'adventure-delete-button'}
 					onClick={toggleDeletePage}
 				>
-					Delete
+					Delete Adventure
 				</Button>
 			</FooterButtons>
 			{isDeletePageOpen && <DeletePage />}
