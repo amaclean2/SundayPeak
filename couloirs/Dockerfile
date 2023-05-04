@@ -1,10 +1,13 @@
 FROM node:18-alpine
 
 WORKDIR /home/app
-COPY . /home/app/
-RUN npm install
+COPY ./package.json /home/app/package.json
 
-USER node
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm install
+
+COPY . /home/app
+
+USER root
 
 CMD npm start
 EXPOSE 4000

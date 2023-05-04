@@ -23,10 +23,15 @@ Make sure `release<VERSION NUMBER>` is checked out locally and then start with r
 
 ### Rivers Deployment
 
-1. Push the code to docker hub using the following command. The version number can be found in `/rivers/package.json`
+1. `cd` into `/rivers` and build the new docker image from the current directory
 
 ```shell
-docker build --platform linux/amd64 -t amacleanjs/sunday-service:<VERSION NUMBER> -t amaclean/sunday-service:latest .
+docker build --platform linux/amd64 -t amacleanjs/sunday-service:<VERSION NUMBER> -t amaclean/sunday-service:latest --secret id=npmrc,src=$HOME/.npmrc .
+```
+
+2. Push the code to docker hub using the following command. The version number can be found in `/rivers/package.json`
+
+```shell
 docker image push -a amacleanjs/sunday-service
 ```
 
@@ -46,15 +51,27 @@ docker image push -a amacleanjs/sunday-service
  scp root@128.199.3.44:/home/data.tar.gz ~/Downloads
 ```
 
-5. Pull and restart the `sunday-service` container
+5. Stop and remove the current running container
 
 ```shell
-docker stop rivers
-docker rm rivers
+docker stop rivers && docker rm rivers
+```
+
+6. Remove the current image
+
+```shell
 docker image rm sunday-service
-docker image pull amacleanjs/sunday-service:latest
-docker images # verify the image is there
-docker network ls # verify the sundaypeak network is still there and connected to `mysql`
+```
+
+7. Pull the new image and check the version
+
+```shell
+docker image pull amacleanjs/sunday-service:latest && docker images
+```
+
+8. Run the new image
+
+```shell
 docker run \
 --name rivers \
 -d -p 80:5000 \
@@ -97,10 +114,15 @@ docker ps -a # verify all containers are running
 
 ### Couloirs Deployment
 
+1. 1. `cd` into `/couloirs` and build the new docker image from the current directory
+
+```shell
+docker build --platform linux/amd64 -t amacleanjs/sunday-communion:<VERSION NUMBER> -t amaclean/sunday-communion:latest --secret id=npmrc,src=$HOME/.npmrc .
+```
+
 1. Push the code to docker hub using the following command. The version number can be found in `/couloirs/package.json`
 
 ```shell
-docker build --platform linux/amd64 -t amacleanjs/sunday-communion:<VERSION NUMBER> -t amaclean/sunday-communion:latest .
 docker image push -a amacleanjs/sunday-communion
 ```
 
