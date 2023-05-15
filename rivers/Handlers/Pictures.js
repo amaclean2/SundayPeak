@@ -33,44 +33,52 @@ const uploadPromisified = util.promisify(
 )
 
 const handleSaveImage = async (req, res) => {
-  // userId needs to be pulled before multer acts on the request
-  const userId = req.body.id_from_token
+  try {
+    // userId needs to be pulled before multer acts on the request
+    const userId = req.body.id_from_token
 
-  await uploadPromisified(req, res)
+    await uploadPromisified(req, res)
 
-  const {
-    file,
-    body: { adventure_id, profile_picture }
-  } = req
+    const {
+      file,
+      body: { adventure_id, profile_picture }
+    } = req
 
-  const baseImageUrl = buildImageUrl(req)
-  const profileImageDirectory = profile_picture ? 'profile/' : ''
-  const url =
-    `${baseImageUrl}${profileImageDirectory}${file.originalname}`.replace(
-      / /g,
-      ''
-    )
+    if (!file) {
+      throw `File required in image upload request, received ${file}.`
+    }
 
-  await serviceHandler.userService.saveImage({
-    file,
-    url,
-    userId,
-    adventureId: adventure_id,
-    profilePicture: profile_picture
-  })
+    const baseImageUrl = buildImageUrl(req)
+    const profileImageDirectory = profile_picture ? 'profile/' : ''
+    const url =
+      `${baseImageUrl}${profileImageDirectory}${file.originalname}`.replace(
+        / /g,
+        ''
+      )
 
-  // make sure the url sent back to the client is the thumb url
-  // since the url is generated above and not in 'Water' then
-  // it's fair to modify it here
-  return sendResponse({
-    req,
-    res,
-    data: {
-      message: 'Picture uploaded',
-      path: url.replace('/images', '/images/thumbs')
-    },
-    status: CREATED
-  })
+    await serviceHandler.userService.saveImage({
+      file,
+      url,
+      userId,
+      adventureId: adventure_id,
+      profilePicture: profile_picture
+    })
+
+    // make sure the url sent back to the client is the thumb url
+    // since the url is generated above and not in 'Water' then
+    // it's fair to modify it here
+    return sendResponse({
+      req,
+      res,
+      data: {
+        message: 'Picture uploaded',
+        path: url.replace('/images', '/images/thumbs')
+      },
+      status: CREATED
+    })
+  } catch (error) {
+    return returnError({ req, res, status: SERVER_ERROR, error })
+  }
 }
 
 const deletePicture = async (req, res) => {

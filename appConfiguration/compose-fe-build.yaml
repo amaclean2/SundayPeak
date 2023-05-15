@@ -1,0 +1,29 @@
+services:
+  mountains:
+    container_name: mountains
+    image: amacleanjs/sunday-brunch:latest
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=http://api.sundaypeak.com
+      - REACT_APP_WEBSOCKET_URL=ws://api.sundaypeak.com:4000
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /home/dockerConfig/certbot/files:/var/www/html
+      - /home/dockerConfig/certbot/etc/:/etc/letsencrypt
+      - /home/dockerConfig/certbot/var/:/var/lib/letsencrypt
+    networks:
+      - app-network
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - /home/dockerConfig/certbot/etc:/etc/letsencrypt
+      - /home/dockerConfig/certbot/var:/var/lib/letsencrypt
+      - /home/dockerConfig/certbot/files:/var/www/html
+    command: certonly --webroot --webroot-path=/var/www/html --email andrew@sundaypeak.com --agree-tos --no-eff-email --force-renewal -d sundaypeak.com -d www.sundaypeak.com
+networks:
+  app-network:
+    driver: bridge

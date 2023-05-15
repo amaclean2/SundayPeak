@@ -1,6 +1,6 @@
 {
   "name": "couloirs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "",
   "main": "index.js",
@@ -13,7 +13,7 @@
   "author": "Andrew Maclean",
   "license": "ISC",
   "dependencies": {
-    "@amaclean2/sundaypeak-water": "^0.0.20",
+    "@amaclean2/sundaypeak-water": "^0.0.23",
     "byf-custom-logger": "^2.0.4",
     "dotenv": "^16.0.3",
     "env-cmd": "^10.1.0",

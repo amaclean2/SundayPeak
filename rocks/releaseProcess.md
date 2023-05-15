@@ -26,7 +26,7 @@ Make sure `release<VERSION NUMBER>` is checked out locally and then start with r
 1. `cd` into `/rivers` and build the new docker image from the current directory
 
 ```shell
-docker build --platform linux/amd64 -t amacleanjs/sunday-service:<VERSION NUMBER> -t amaclean/sunday-service:latest --secret id=npmrc,src=$HOME/.npmrc .
+docker build --platform linux/amd64 -t amacleanjs/sunday-service:<VERSION NUMBER> -t amacleanjs/sunday-service:latest --secret id=npmrc,src=$HOME/.npmrc .
 ```
 
 2. Push the code to docker hub using the following command. The version number can be found in `/rivers/package.json`
@@ -60,7 +60,7 @@ docker stop rivers && docker rm rivers
 6. Remove the current image
 
 ```shell
-docker image rm sunday-service
+docker image rm amacleanjs/sunday-service
 ```
 
 7. Pull the new image and check the version
@@ -72,19 +72,7 @@ docker image pull amacleanjs/sunday-service:latest && docker images
 8. Run the new image
 
 ```shell
-docker run \
---name rivers \
--d -p 80:5000 \
---network sundaypeak \
--e DB_HOST=mysql \
--e DB_USER=byf \
--e DB_PASS=backyard \
--e DB_NAME=friends \
--e MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg \
--e NODEMAILER_APP_PASSWORD=vtmrorarxqkhfcjc \
--e JWT_SECRET=jB2MGh4dzN \
--e FILE_STORAGE_PATH=/home/app/public/images \
-amacleanjs/sunday-service:latest
+docker compose -f compose-be-run.yaml up rivers nginx -d
 docker ps -a # verify all containers are running
 ```
 
@@ -97,16 +85,11 @@ docker ps -a # verify all containers are running
 - `docker image pull amacleanjs/sunday-service:latest` pulls the new version of that image from docker hub
 - `docker images` verifies that image was infact pulled
 - `docker network ls & docker network inspect sundaypeak` checks to see if the `sundaypeak` networks exists and what containers are on it
-- `docker run --name rivers -d -p 80:5000 --network sundaypeak amacleanjs/sunday-service:latest` starts the new container with the latest image
-  - `--name` gives the container a name
-  - `-d` starts the container in detached mode
-  - `-p XXXX:XXXX` specifies the port to expose _this is only relevant for external connections, not other containers_
-  - `--network` connects this container to a network
-  - `XXXX/XXXX:XX` specifies the image to deploy to the container
-  - `-e` environment variables
+- `docker compose` takes care of all the configuration of the run command so we can repeat the same instruction every time
+  - `rivers` and `nginx` are the two services we need to restart when restarting the backend server
 - `docker ps -a` shows a list of the active containers
 
-6. Ensure the new container is running by visiting http://api.sundaypeak.com/services/initial
+6. Ensure the new container is running by visiting https://api.sundaypeak.com/services/initial
 
 - This should return a json object
 - TODO: create a test endpoint that shows stats data about the app
@@ -118,7 +101,7 @@ docker ps -a # verify all containers are running
 1. 1. `cd` into `/couloirs` and build the new docker image from the current directory
 
 ```shell
-docker build --platform linux/amd64 -t amacleanjs/sunday-communion:<VERSION NUMBER> -t amaclean/sunday-communion:latest --secret id=npmrc,src=$HOME/.npmrc .
+docker build --platform linux/amd64 -t amacleanjs/sunday-communion:<VERSION NUMBER> -t amacleanjs/sunday-communion:latest --secret id=npmrc,src=$HOME/.npmrc .
 ```
 
 1. Push the code to docker hub using the following command. The version number can be found in `/couloirs/package.json`
@@ -143,29 +126,35 @@ docker image push -a amacleanjs/sunday-communion
  scp root@128.199.3.44:/home/data.tar.gz ~/Downloads
 ```
 
-5. Pull and restart the `sunday-communion` container
+5. Stop and remove the current running container
 
 ```shell
-docker stop couloirs
-docker rm couloirs
+docker stop couloirs && docker rm couloirs
+```
+
+6. Remove the current image
+
+```shell
 docker image rm sunday-communion
-docker image pull amacleanjs/sunday-communion:latest
-docker images # verify the image is there
-docker network ls # verify the sundaypeak network is still there and connected to `mysql`
-docker run \
---name couloirs \
--d -p 4000:4000 \
---network sundaypeak \
--e DB_HOST=mysql \
--e DB_USER=byf \
--e DB_PASS=backyard \
--e DB_NAME=friends \
--e JWT_SECRET=jB2MGh4dzN \
-amacleanjs/sunday-communion:latest
+```
+
+7. Pull the new image and check the version
+
+```shell
+docker image pull amacleanjs/sunday-communion:latest && docker images
+```
+
+8. Run the new image
+
+```shell
+docker compose -f compose-be-run.yaml up couloirs nginx -d
+```
+
+```shell
 docker ps -a # verify all containers are running
 ```
 
-6. Increment the version number in `/couloirs/package.json`
+9. Increment the version number in `/couloirs/package.json`
 
 ### Mountains Deployment
 
@@ -178,7 +167,7 @@ npm run build
 1. Build a new image with the current code.
 
 ```shell
-docker build --platform linux/amd64 -t amacleanjs/sunday-brunch:<VERSION_NUMBER> -t amacleanjs/sunday-brunch:latest . --target=prod
+docker build --platform linux/amd64 -t amacleanjs/sunday-brunch:1.1.1 -t amacleanjs/sunday-brunch:latest . --secret id=npmrc,src=$HOME/.npmrc
 ```
 
 2. Push the code to docker hub using the following command. The version number can be found in `/mountains/package.json`
@@ -191,7 +180,7 @@ docker image push -a amacleanjs/sunday-brunch
 3. SSH into the Digital Ocean droplet
 
 ```shell
-  ssh root@24.199.124.234
+  ssh root@165.232.138.180
 ```
 
 4. Stop and remove the current mountains container and image
@@ -209,11 +198,7 @@ docker image pull amacleanjs/sunday-brunch:latest && docker images
 6. Run the new image
 
 ```shell
-docker run \
---name mountains \
--d -p 80:3000 \
--e NODE_ENV=production \
--e REACT_APP_API_URL=http://api.sundaypeak.com \
--e REACT_APP_WEBSOCKET_URL=ws://api.sundaypeak.com:4000 \
-amacleanjs/sunday-brunch:latest
+docker compose -f compose-fe-run.yaml up mountains -d
 ```
+
+7. Increment the version number in `/mountains/package.json`
