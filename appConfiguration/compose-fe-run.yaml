@@ -1,0 +1,22 @@
+services:
+  mountains:
+    container_name: mountains
+    image: amacleanjs/sunday-brunch:latest
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=http://api.sundaypeak.com
+      - REACT_APP_WEBSOCKET_URL=ws://api.sundaypeak.com:4000
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /home/dockerConfig/certbot/files/:/var/www/html
+      - /home/dockerConfig/certbot/etc/:/etc/letsencrypt
+      - /home/dockerConfig/certbot/var/:/var/lib/letsencrypt
+      - /home/dockerConfig/nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

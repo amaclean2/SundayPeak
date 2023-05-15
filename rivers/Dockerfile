@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /home/app
 COPY ./package.json /home/app/package.json
@@ -10,7 +10,10 @@ COPY . /home/app
 
 USER root
 
+RUN mkdir /home/app/public
+RUN mkdir /home/app/public/images
 RUN mkdir /home/app/public/images/thumbs
+RUN mkdir /home/app/public/images/profile
 
 CMD npm start
 EXPOSE 5000
