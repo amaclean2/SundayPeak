@@ -106,10 +106,10 @@ const ReactMap = () => {
 		onDblClick: handleCreateNewAdventure,
 		onClick: (event) => {
 			if (!event.features.length) return
-
-			navigate(
-				`adventure/${event.features[0].properties.adventure_type}/${event.features[0].properties.id}`
-			)
+			const adventureType = event.features[0].properties.adventure_type
+			const adventureId = event.features[0].properties.id
+			
+			navigate(`adventure/${adventureType}/${adventureId}`)
 		},
 		onLoad,
 		onMove
