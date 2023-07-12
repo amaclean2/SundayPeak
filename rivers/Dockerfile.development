@@ -4,7 +4,6 @@ WORKDIR /home/app
 COPY ./package.json .
 
 # RUN SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm install -s --arch=x64 --platform=linux sharp
-RUN echo "Hello"
 RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm install
 
 COPY . /home/app
