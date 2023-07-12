@@ -50,7 +50,12 @@ const adventureEditValidator = () => {
         throw 'field object containing name, value, adventure_id, and adventure_type must be present in the body'
       }
 
-      const isCorrect = isDefined(field.name, field.value, field.adventure_id, field.adventure_type)
+      const isCorrect = isDefined(
+        field.name,
+        field.value,
+        field.adventure_id,
+        field.adventure_type
+      )
 
       if (
         [
@@ -76,8 +81,19 @@ const adventuresGetValidator = () => {
   return []
 }
 
+const adventureBulkInsertValidator = () => {
+  return [
+    body('adventures').custom((field) => {
+      if (!field) {
+        throw '"adventure" parameter required in body'
+      }
+    })
+  ]
+}
+
 module.exports = {
   adventureCreateValidator,
   adventuresGetValidator,
-  adventureEditValidator
+  adventureEditValidator,
+  adventureBulkInsertValidator
 }
