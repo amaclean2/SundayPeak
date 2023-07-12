@@ -1,19 +1,20 @@
 const { Router } = require('express')
 
 const {
-	adventureCreateValidator,
-	adventuresGetValidator,
-	adventureEditValidator
+  adventureCreateValidator,
+  adventuresGetValidator,
+  adventureEditValidator,
+  adventureBulkInsertValidator
 } = require('../../Validators/AdventureValidators')
 const {
-	createNewAdventure,
-	deleteAdventure,
-	getAdventureDetails,
-	getAllAdventures,
-	editAdventure,
-	searchAdventures,
-	importBulkData,
-	processCSV
+  createNewAdventure,
+  deleteAdventure,
+  getAdventureDetails,
+  getAllAdventures,
+  editAdventure,
+  searchAdventures,
+  importBulkData,
+  processCSV
 } = require('../../Handlers/Adventures')
 const { NOT_FOUND } = require('../../ResponseHandling/statuses')
 
@@ -25,17 +26,17 @@ router.get('/all', adventuresGetValidator(), getAllAdventures)
 router.get('/details', getAdventureDetails)
 router.get('/search', searchAdventures)
 router.post('/processCsv', processCSV)
-router.post('/bulkImport', importBulkData)
+router.post('/bulkImport', adventureBulkInsertValidator(), importBulkData)
 router.put('/edit', adventureEditValidator(), editAdventure)
 router.delete('/delete', deleteAdventure)
 
 router.use('/', (req, res) => {
-	res.status(NOT_FOUND).json({
-		data: {
-			message: 'Please select a method on /adventurtes',
-			status: NOT_FOUND
-		}
-	})
+  res.status(NOT_FOUND).json({
+    data: {
+      message: 'Please select a method on /adventurtes',
+      status: NOT_FOUND
+    }
+  })
 })
 
 module.exports = router

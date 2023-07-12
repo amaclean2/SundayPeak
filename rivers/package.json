@@ -1,6 +1,6 @@
 {
   "name": "rivers",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The backend for the Sunday Peak application",
   "main": "node index.js",
   "scripts": {
@@ -21,11 +21,10 @@
     "supertest": "^6.3.3"
   },
   "dependencies": {
-    "@amaclean2/sundaypeak-water": "^0.0.21",
+    "@amaclean2/sundaypeak-water": "^1.1.0",
     "@aws-sdk/client-s3": "^3.142.0",
     "@google-cloud/storage": "^6.4.2",
     "aws-sdk": "^2.1187.0",
-    "byf-custom-logger": "^2.0.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "env-cmd": "^10.1.0",
@@ -46,6 +45,8 @@
     "pino": "^8.5.0",
     "pino-pretty": "^9.1.0",
     "sharp": "^0.32.1",
-    "string-hash": "^1.1.3"
+    "string-hash": "^1.1.3",
+    "winston": "^3.9.0",
+    "winston-mongodb": "^5.1.1"
   }
 }

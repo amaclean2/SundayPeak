@@ -30,12 +30,21 @@ const createNewAdventure = async (req, res) => {
 
 const importBulkData = async (req, res) => {
   try {
-    const { adventures } = req.body
+    const { adventures, id_from_token } = req.body
 
     if (!adventures)
       throw 'an object with the key "adventures" needs to be provided'
 
-    await serviceHandler.adventureService.bulkAdventureCreation({ adventures })
+    const sanitizedAdventures = adventures.map((adventure) => ({
+      ...adventure,
+      coordinates_lat: adventure.coordinates.lat,
+      coordinates_lng: adventure.coordinates.lng,
+      creator_id: id_from_token
+    }))
+
+    await serviceHandler.adventureService.bulkAdventureCreation({
+      adventures: sanitizedAdventures
+    })
 
     return sendResponse({
       req,

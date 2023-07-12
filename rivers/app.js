@@ -26,7 +26,6 @@ app.use(
   })
 )
 
-// public routes
 app.use((req, res, next) => {
   const bearerToken = req.headers?.authorization?.split(' ').pop()
   return serviceHandler.validationService
