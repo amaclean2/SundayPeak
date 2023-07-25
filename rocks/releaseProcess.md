@@ -69,6 +69,12 @@ docker image rm amacleanjs/sunday-service
 docker image pull amacleanjs/sunday-service:latest && docker images
 ```
 
+8. Ensure passwords in compose-be-run.yaml are correct
+
+```shell
+vi compose-be-run.yaml
+```
+
 8. Run the new image
 
 ```shell
