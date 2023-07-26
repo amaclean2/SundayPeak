@@ -24,3 +24,5 @@ couloirs/package-lock.json
 
 .DS_Store
 .dispatch.yaml.swp
+compose.yaml
+.env.dev

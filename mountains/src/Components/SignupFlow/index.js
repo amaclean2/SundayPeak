@@ -1,4 +1,4 @@
-export * from './Login'
-export * from './Signup'
+export * from './login'
+export * from './signup'
 export * from './PasswordResetCapture'
 export * from './NewPassword'
