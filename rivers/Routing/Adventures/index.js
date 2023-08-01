@@ -16,27 +16,22 @@ const {
   importBulkData,
   processCSV
 } = require('../../Handlers/Adventures')
-const { NOT_FOUND } = require('../../ResponseHandling/statuses')
+const { SUCCESS } = require('../../ResponseHandling/statuses')
+const { adventureTypes } = require('../../Config/utils')
 
 const router = Router()
 
-router.post('/create', adventureCreateValidator(), createNewAdventure)
+router.post('/', adventureCreateValidator(), createNewAdventure)
 router.get('/all', adventuresGetValidator(), getAllAdventures)
-
 router.get('/details', getAdventureDetails)
 router.get('/search', searchAdventures)
 router.post('/processCsv', processCSV)
 router.post('/bulkImport', adventureBulkInsertValidator(), importBulkData)
-router.put('/edit', adventureEditValidator(), editAdventure)
-router.delete('/delete', deleteAdventure)
+router.put('/', adventureEditValidator(), editAdventure)
+router.delete('/', deleteAdventure)
 
-router.use('/', (req, res) => {
-  res.status(NOT_FOUND).json({
-    data: {
-      message: 'Please select a method on /adventurtes',
-      status: NOT_FOUND
-    }
-  })
-})
+router.get('/adventureTypes', (_, res) =>
+  res.status(SUCCESS).json({ data: adventureTypes, status: SUCCESS })
+)
 
 module.exports = router

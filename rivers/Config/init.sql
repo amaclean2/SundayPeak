@@ -37,13 +37,13 @@ CREATE TABLE ski(
     id INT AUTO_INCREMENT,
     avg_angle FLOAT,
     max_angle FLOAT,
-    approach_distance VARCHAR(50),
+    approach_distance FLOAT,
     aspect VARCHAR(3),
     difficulty INT,
     summit_elevation INT,
     base_elevation INT,
     exposure INT,
-    gear VARCHAR(50),
+    gear VARCHAR(100),
     season VARCHAR(100),
     PRIMARY KEY(id)
 );
@@ -55,7 +55,7 @@ CREATE TABLE climb(
     pitches INT,
     protection VARCHAR(100),
     approach TEXT,
-    climb_type VARCHAR(100),
+    climb_type VARCHAR(50),
     light_times VARCHAR(100),
     season VARCHAR(100),
     PRIMARY KEY(id)

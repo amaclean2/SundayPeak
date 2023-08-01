@@ -30,7 +30,7 @@ const completedTests = () => {
     adventureId = data.adventure.id
 
     const createCompletedResponse = await request(app)
-      .post('/completed_adventures/create')
+      .post('/completed_adventures')
       .set('Authorization', `Bearer ${authToken}`)
       .send({ adventure_id: adventureId, public: true })
 

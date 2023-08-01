@@ -31,7 +31,7 @@ const todoTests = () => {
     adventureId = data.adventure.id
 
     const createTodoResponse = await request(app)
-      .post('/todo_adventures/create')
+      .post('/todo_adventures')
       .set('Authorization', `Bearer ${authToken}`)
       .send({ adventure_id: adventureId, public: true })
 

@@ -21,7 +21,7 @@ const adventureTests = () => {
     const localAdventureType = 'ski'
     adventureName = 'My First Ski'
     const adventureResponse = await request(app)
-      .post('/adventures/create')
+      .post('/adventures')
       .set('Authorization', `Bearer ${authToken}`)
       .send({
         adventure_type: localAdventureType,
@@ -77,7 +77,7 @@ const adventureTests = () => {
 
   test('edit an adventure', async () => {
     const editAdventureResponse = await request(app)
-      .put('/adventures/edit')
+      .put('/adventures')
       .set('Authorization', `Bearer ${authToken}`)
       .send({
         field: {
