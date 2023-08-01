@@ -31,7 +31,6 @@ const createUser = async (req, res) => {
 
     return sendResponse({ req, res, data: newUserResponse, status: CREATED })
   } catch (error) {
-    console.log({ error })
     return returnError({
       req,
       res,
@@ -92,16 +91,9 @@ const getUserById = async (req, res) => {
 
 const getLoggedInUser = async (req, res) => {
   try {
-    const authToken = req.headers?.authorization || ''
-    const bearerToken = authToken.split(' ').pop()
-
-    if (!bearerToken) {
-      throw 'token not found'
-    }
-
+    const { id_from_token } = req.body
     const loggedInUser = await serviceHandler.userService.getPresignedInUser({
-      url: req.originalUrl,
-      token: bearerToken
+      userId: id_from_token
     })
 
     return sendResponse({

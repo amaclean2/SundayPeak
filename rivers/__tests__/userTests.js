@@ -16,7 +16,7 @@ const userTests = () => {
   })
 
   test('create a user', async () => {
-    const createUserResponse = await request(app).post('/users/create').send({
+    const createUserResponse = await request(app).post('/users').send({
       email: 'andrew@email.com',
       first_name: 'Andrew',
       last_name: 'Maclean',
@@ -58,7 +58,7 @@ const userTests = () => {
 
   test('edit a user', async () => {
     const editUserResponse = await request(app)
-      .put('/users/edit')
+      .put('/users')
       .set('Authorization', `Bearer ${access_token}`)
       .send({
         field: {
@@ -81,7 +81,7 @@ const userTests = () => {
     expect(data.user.password).not.toBeDefined()
   })
   test('get another user', async () => {
-    const createUserResponse = await request(app).post('/users/create').send({
+    const createUserResponse = await request(app).post('/users').send({
       email: 'mark@email.com',
       first_name: 'Mark',
       last_name: 'Cavendish',
