@@ -8,6 +8,16 @@ services:
       secrets:
         - npmrc
     restart: on-failure
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=byf
+      - DB_PASS=<temp>
+      - MONGO_PASS=<temp>
+      - DB_NAME=friends
+      - DB_PORT=3306
+      - FILE_STORAGE=/home/app/public/images
+      - JWT_SECRET=secret
     ports:
       - '4000:4000'
     volumes:
