@@ -11,10 +11,11 @@ import {
 	useAdventureStateContext,
 	useDebounce,
 	useManipulateFlows,
-	useTokenStateContext
+	useTokenStateContext,
+	useSaveAdventure
 } from '@amaclean2/sundaypeak-treewells'
 
-import { useCreateNewAdventure } from './utils'
+import { adventurePathColor, useCreateNewAdventure } from './utils'
 
 import skier from 'Images/Activities/SkierIcon.png'
 import hiker from 'Images/Activities/HikerIcon.png'
@@ -23,27 +24,41 @@ import climber from 'Images/Activities/ClimberIcon.png'
 import './styles.css'
 
 const ReactMap = () => {
+	// mapRef is used to access the map dom element
 	const mapRef = useRef()
 
 	const getLocateControlRef = useCallback((ref) => {
+		// This jumps to the user's location if active.
+		// I'm not sure what I want to do with this
 		if (ref) ref.trigger()
 	}, [])
 
-	const { allAdventures, startPosition, currentAdventure, globalAdventureType } =
-		useAdventureStateContext()
+	const {
+		allAdventures,
+		startPosition,
+		currentAdventure,
+		globalAdventureType,
+		isPathEditOn,
+		workingPath,
+		adventureAddState
+	} = useAdventureStateContext()
 	const { mapboxToken, mapboxStyleKey } = useTokenStateContext()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
+	const { updatePath } = useSaveAdventure()
 	const { updateStartPosition } = useManipulateFlows()
 	const navigate = useNavigate()
 
 	const onLoad = () => {
+		// this is a reference to the map dom element
 		const map = mapRef.current?.getMap()
+
 		const icons = [
 			[skier, 'ski'],
 			[hiker, 'hike'],
 			[climber, 'climb']
 		]
 
+		// if there's a current adventure and the map is loading, fly to that adventure
 		if (currentAdventure) {
 			mapRef.current.flyTo({
 				center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
@@ -75,7 +90,7 @@ const ReactMap = () => {
 	}
 
 	useEffect(() => {
-		if (!currentAdventure || !mapRef.current) {
+		if (currentAdventure === null || !mapRef.current) {
 			return
 		}
 
@@ -105,10 +120,15 @@ const ReactMap = () => {
 		minZoom: 3,
 		onDblClick: handleCreateNewAdventure,
 		onClick: (event) => {
+			if (isPathEditOn) {
+				updatePath([event.lngLat.lng, event.lngLat.lat])
+				return
+			}
+
 			if (!event.features.length) return
 			const adventureType = event.features[0].properties.adventure_type
 			const adventureId = event.features[0].properties.id
-			
+
 			navigate(`adventure/${adventureType}/${adventureId}`)
 		},
 		onLoad,
@@ -150,6 +170,31 @@ const ReactMap = () => {
 						'sky-atmosphere-sun-intensity': 15
 					}}
 				/>
+				<Source
+					type='geojson'
+					data={{
+						type: 'Feature',
+						properties: {},
+						geometry: {
+							type: 'LineString',
+							coordinates: workingPath
+						}
+					}}
+				>
+					<Layer
+						id={'adventure-path'}
+						type={'line'}
+						source={'current-adventure'}
+						layout={{
+							'line-join': 'round',
+							'line-cap': 'round'
+						}}
+						paint={{
+							'line-color': adventurePathColor(currentAdventure?.adventure_type ?? 'ski'),
+							'line-width': 5
+						}}
+					/>
+				</Source>
 				<Source
 					type='geojson'
 					data={allAdventures}

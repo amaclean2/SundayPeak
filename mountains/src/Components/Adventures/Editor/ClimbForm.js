@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types'
-import { useAdventureStateContext, useDeleteAdventure } from '@amaclean2/sundaypeak-treewells'
+import {
+	useAdventureStateContext,
+	useDeleteAdventure,
+	useSaveAdventure
+} from '@amaclean2/sundaypeak-treewells'
 
 import {
 	Button,
@@ -23,6 +27,7 @@ import DeletePage from './DeletePage'
 const ClimbForm = ({ onChange }) => {
 	const { currentAdventure, isDeletePageOpen } = useAdventureStateContext()
 	const { toggleDeletePage } = useDeleteAdventure()
+	const { editAdventure } = useSaveAdventure()
 
 	return (
 		<DisplayCard title={currentAdventure.adventure_name}>
@@ -46,10 +51,10 @@ const ClimbForm = ({ onChange }) => {
 				isEditable
 				value={currentAdventure.adventure_name}
 				autoFocus
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<MultiField
-				onChange={onChange}
+				onChange={editAdventure}
 				label={'Climb Info'}
 				fields={[
 					{
@@ -73,7 +78,7 @@ const ClimbForm = ({ onChange }) => {
 					isEditable
 					fullWidth
 					value={currentAdventure.pitches || ''}
-					onChange={onChange}
+					onChange={editAdventure}
 				/>
 			)}
 			<FormField
@@ -83,7 +88,7 @@ const ClimbForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.bio || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			{pitchClimbs.includes(currentAdventure.climb_type) && (
 				<FormField
@@ -93,7 +98,7 @@ const ClimbForm = ({ onChange }) => {
 					isEditable
 					fullWidth
 					value={currentAdventure.protection || ''}
-					onChange={onChange}
+					onChange={editAdventure}
 				/>
 			)}
 			<FormField
@@ -103,7 +108,7 @@ const ClimbForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.approach || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='first_ascent'
@@ -111,7 +116,7 @@ const ClimbForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.first_ascent || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='season'
@@ -121,7 +126,7 @@ const ClimbForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.season || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='nearest_city'
@@ -129,7 +134,7 @@ const ClimbForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.nearest_city || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='public'
@@ -140,7 +145,7 @@ const ClimbForm = ({ onChange }) => {
 				value={
 					![undefined, null].includes(currentAdventure.public) ? currentAdventure.public : true
 				}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FooterButtons>
 				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>

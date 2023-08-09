@@ -1,9 +1,25 @@
-import Logger from 'byf-custom-logger'
+const winston = require('winston')
+require('winston-mongodb')
 
-const logger = new Logger({
-  name: 'friends',
-  verbose: process.env.NODE_ENV === 'dev',
-  storeLogs: false
+const logger = winston.createLogger({
+  level: 'silly',
+  format: winston.format.cli(),
+  transports: [new winston.transports.Console()]
 })
 
-export default logger
+if (process.env.NODE_ENV === 'production') {
+  logger.add(
+    new winston.transports.MongoDB({
+      level: 'info',
+      db: `mongodb+srv://byf:${process.env.MONGO_PASS}@splogging.lpeaxvy.mongodb.net/?retryWrites=true&w=majority`,
+      dbName: 'spLogging',
+      collection: 'couloir_logs',
+      tryReconnect: true,
+      options: {
+        useUnifiedTopology: true
+      }
+    })
+  )
+}
+
+module.exports = logger

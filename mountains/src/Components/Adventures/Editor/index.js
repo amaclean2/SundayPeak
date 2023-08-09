@@ -1,10 +1,6 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import {
-	useAdventureStateContext,
-	useGetAdventures,
-	useSaveAdventure
-} from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 
 import ClimbForm from './ClimbForm'
 import HikeForm from './HikeForm'
@@ -13,7 +9,6 @@ import SkiForm from './SkiForm'
 const AdventureEditorForm = () => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { getAdventure } = useGetAdventures()
-	const { editAdventure } = useSaveAdventure()
 	const { adventureId, adventureType } = useParams()
 
 	useEffect(() => {
@@ -33,11 +28,11 @@ const AdventureEditorForm = () => {
 
 	switch (currentAdventure.adventure_type) {
 		case 'climb':
-			return <ClimbForm onChange={editAdventure} />
+			return <ClimbForm />
 		case 'hike':
-			return <HikeForm onChange={editAdventure} />
+			return <HikeForm />
 		default:
-			return <SkiForm onChange={editAdventure} />
+			return <SkiForm />
 	}
 }
 

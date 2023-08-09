@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import {
+	useAdventureStateContext,
+	useManipulateFlows,
+	useUserStateContext
+} from '@amaclean2/sundaypeak-treewells'
 
 import { AngleIcon, DistanceIcon, ElevationIcon } from 'Images/Symbols/LabelIcons'
 import getContent from 'TextContent'
@@ -22,6 +26,7 @@ import { Pin } from 'Images'
 
 const SkiViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
+	const { closeAdventureView } = useManipulateFlows()
 	const { loggedInUser } = useUserStateContext()
 	const navigate = useNavigate()
 
@@ -29,7 +34,10 @@ const SkiViewer = ({ menuContents }) => {
 		<DisplayCard
 			title={currentAdventure.adventure_name}
 			menu={menuContents}
-			onClose={() => navigate('/discover')}
+			onClose={() => {
+				closeAdventureView()
+				navigate('/discover')
+			}}
 		>
 			<AdventureGallery />
 			<FieldPage className={'adventure-display-grid'}>
@@ -77,9 +85,7 @@ const SkiViewer = ({ menuContents }) => {
 						<FieldHeader text={getContent('adventurePanel.fields.approach')} />
 						<FieldValue className='flex-box'>
 							<DistanceIcon />
-							{getContent('adventurePanel.fields.approachContent', [
-								currentAdventure.approach_distance
-							])}
+							{getContent('adventurePanel.fields.approachContent', [currentAdventure.distance])}
 						</FieldValue>
 					</Field>
 					<Field>

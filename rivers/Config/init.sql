@@ -37,14 +37,15 @@ CREATE TABLE ski(
     id INT AUTO_INCREMENT,
     avg_angle FLOAT,
     max_angle FLOAT,
-    approach_distance FLOAT,
+    approach_distance VARCHAR(50),
     aspect VARCHAR(3),
     difficulty INT,
     summit_elevation INT,
     base_elevation INT,
     exposure INT,
-    gear VARCHAR(100),
+    gear VARCHAR(50),
     season VARCHAR(100),
+    trail_path TEXT,
     PRIMARY KEY(id)
 );
 
@@ -55,7 +56,7 @@ CREATE TABLE climb(
     pitches INT,
     protection VARCHAR(100),
     approach TEXT,
-    climb_type VARCHAR(50),
+    climb_type VARCHAR(100),
     light_times VARCHAR(100),
     season VARCHAR(100),
     PRIMARY KEY(id)
@@ -68,6 +69,20 @@ CREATE TABLE hike(
     base_elevation INT,
     distance FLOAT,
     season VARCHAR(100),
+    trail_path TEXT,
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE bike(
+    id INT AUTO_INCREMENT,
+    difficulty INT,
+    summit_elevation INT,
+    base_elevation INT,
+    distance FLOAT,
+    season VARCHAR(100),
+    trail_path TEXT,
+    climb INT,
+    descent INT,
     PRIMARY KEY(id)
 );
 
@@ -76,6 +91,7 @@ CREATE TABLE adventures(
     adventure_ski_id INT,
     adventure_hike_id INT,
     adventure_climb_id INT,
+    adventure_bike_id INT,
     adventure_name VARCHAR(100) NOT NULL,
     adventure_type VARCHAR(50) NOT NULL,
     bio TEXT,

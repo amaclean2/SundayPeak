@@ -76,6 +76,17 @@
 	display: none;
 }
 
+.edit-add-path {
+	justify-content: space-between;
+	margin-right: 0rem;
+}
+
+.path-buttons {
+	flex-direction: column;
+	gap: 0.5rem;
+	align-items: flex-end;
+}
+
 @media screen and (max-width: 500px) {
 	.adventure-info {
 		gap: 0rem;

@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import {
+	useAdventureStateContext,
+	useUserStateContext,
+	useManipulateFlows
+} from '@amaclean2/sundaypeak-treewells'
 
 import { DistanceIcon, ElevationIcon } from 'Images/Symbols/LabelIcons'
 import getContent from 'TextContent'
@@ -22,6 +26,7 @@ import { Pin } from 'Images'
 
 const HikeViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
+	const { closeAdventureView } = useManipulateFlows()
 	const { loggedInUser } = useUserStateContext()
 	const navigate = useNavigate()
 
@@ -29,7 +34,10 @@ const HikeViewer = ({ menuContents }) => {
 		<DisplayCard
 			title={currentAdventure.adventure_name}
 			menu={menuContents}
-			onClose={() => navigate('/discover')}
+			onClose={() => {
+				navigate('/discover')
+				closeAdventureView()
+			}}
 		>
 			<AdventureGallery />
 			<FieldPage className={'adventure-display-grid'}>

@@ -5,12 +5,12 @@ import { ErrorField, FormField } from 'Components/Reusable'
 import { ImportAdventuresButton } from '../Buttons/ImportAdventuresButton'
 
 const AdventureTypeSelector = () => {
-	const { changeAdventureType } = useGetAdventures()
+	const { enableNewAdventureClick } = useGetAdventures()
 	const [localAdventureType, setLocalAdventureType] = useState(null)
 
 	const handleChange = (event) => {
 		setLocalAdventureType(event.target.value)
-		changeAdventureType({ type: event.target.value })
+		enableNewAdventureClick({ type: event.target.value })
 	}
 
 	return (
@@ -45,6 +45,11 @@ const AdventureTypeSelector = () => {
 							text: 'Hike',
 							value: 'hike'
 						}
+						// {
+						// 	id: 'adventure-bike',
+						// 	text: 'Bike',
+						// 	value: 'bike'
+						// }
 					]
 				}}
 				value={localAdventureType}
