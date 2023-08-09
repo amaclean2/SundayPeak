@@ -12,8 +12,8 @@ services:
       - NODE_ENV=development
       - DB_HOST=mysql
       - DB_USER=byf
-      - DB_PASS=backyard
-      - MONGO_PASS=backyard
+      - DB_PASS=<temp>
+      - MONGO_PASS=<temp>
       - DB_NAME=friends
       - DB_PORT=3306
       - FILE_STORAGE=/home/app/public/images
@@ -39,8 +39,8 @@ services:
       - NODE_ENV=development
       - DB_HOST=mysql
       - DB_USER=byf
-      - DB_PASS=backyard
-      - MONGO_PASS=backyard
+      - DB_PASS=<temp>
+      - MONGO_PASS=<temp>
       - DB_NAME=friends
       - DB_PORT=3306
       - FILE_STORAGE_PATH=/home/app/public/images
@@ -58,7 +58,7 @@ services:
     environment:
       - MYSQL_DATABASE=friends
       - MYSQL_USER=byf
-      - MYSQL_PASSWORD=backyard
+      - MYSQL_PASSWORD=<temp>
       - MYSQL_RANDOM_ROOT_PASSWORD=123
     ports:
       - '3300:3306'
