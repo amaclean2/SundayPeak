@@ -146,7 +146,12 @@ const editAdventure = async (req, res) => {
 
     return sendResponse({ req, res, data: {}, status: NO_CONTENT })
   } catch (error) {
-    return returnError({ req, res, message: 'serverValidateUser', error })
+    return returnError({
+      req,
+      res,
+      message: 'Server Error: Could not edit the adventure',
+      error
+    })
   }
 }
 

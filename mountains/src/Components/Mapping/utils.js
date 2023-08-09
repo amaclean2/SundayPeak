@@ -33,3 +33,14 @@ export const useCreateNewAdventure = () => {
 		viewMore
 	}
 }
+
+export const adventurePathColor = (adventure_type = 'ski') => {
+	switch (adventure_type) {
+		case 'ski':
+			return '#38e'
+		case 'hike':
+			return '#e53'
+		case 'bike':
+			return '#3a3'
+	}
+}

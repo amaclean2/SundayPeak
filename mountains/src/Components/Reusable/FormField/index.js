@@ -84,7 +84,8 @@ export const FormField = (props) => {
 		className = '',
 		hideLabel = false,
 		onChange,
-		testId
+		testId,
+		minWidth = false
 	} = props
 
 	const renderNonCheckbox = () => (
@@ -112,7 +113,7 @@ export const FormField = (props) => {
 			id={id || name}
 			className={cx(
 				'form-field-container',
-				'full-width',
+				minWidth === false && 'full-width',
 				!isEditable && 'static',
 				type === 'noedit' && 'no-edit'
 			)}

@@ -70,15 +70,59 @@ const formatAdventureRating = body('rating').custom((value) => {
 
 const requireAdventureDifficulty = body('difficulty').custom(
   (value, { req }) => {
-    if (['ski', 'hike'].includes(req.body.adventure_type)) {
+    if (['ski', 'hike', 'bike'].includes(req.body.adventure_type)) {
       if (value === undefined)
-        throw 'difficulty field is required if adventure_type is ski or hike'
+        throw 'difficulty field is required if adventure_type is ski, hike, or bike'
       if (value < 1 || value > 5) throw 'difficulty must be a number from 1 - 5'
     }
 
     return true
   }
 )
+
+const formatAdventureTrailPath = body('path')
+  .custom((value, { req }) => {
+    if (['ski', 'hike', 'bike'].includes(req.body.adventure_type)) {
+      if (value === undefined) return true
+      else if (typeof value === 'object') return true
+      else {
+        throw 'path must be an object containing an array of data points'
+      }
+    }
+    return true
+  })
+  .customSanitizer((value, { req }) => {
+    if (value !== undefined) {
+      req.body.trail_path = JSON.stringify(value)
+      delete req.body.path
+    }
+
+    return value
+  })
+
+const formatAdventureDistance = body('distance')
+  .custom((value, { req }) => {
+    if (['ski', 'hike', 'bike'].includes(req.body.adventure_type)) {
+      if (value === undefined) return true
+      if (typeof value === 'number') {
+        return true
+      } else {
+        throw 'distance value must be a number'
+      }
+    }
+
+    return true
+  })
+  .customSanitizer((value, { req }) => {
+    if (value !== undefined) {
+      if (req.body.adventure_type === 'ski') {
+        req.body.approach_distance = value.toString()
+        delete req.body.distance
+      }
+    }
+
+    return value
+  })
 
 // the following types only apply if `adventure_type` is "climb"
 
@@ -93,7 +137,9 @@ const adventureCreateValidator = () => {
     requireAdventurePublic,
     requireAdventureCreatorId,
     formatAdventureRating,
-    requireAdventureDifficulty
+    formatAdventureTrailPath,
+    requireAdventureDifficulty,
+    formatAdventureDistance
   ]
 }
 

@@ -1,4 +1,8 @@
-import { useAdventureStateContext, useDeleteAdventure } from '@amaclean2/sundaypeak-treewells'
+import {
+	useAdventureStateContext,
+	useDeleteAdventure,
+	useSaveAdventure
+} from '@amaclean2/sundaypeak-treewells'
 
 import {
 	Button,
@@ -13,26 +17,49 @@ import { directionSelectOptions, gearOptions, seasonOptions } from 'Components/A
 import { LargeSkierIcon } from 'Images'
 import DeletePage from './DeletePage'
 
-const SkiForm = ({ onChange }) => {
-	const { currentAdventure, isDeletePageOpen } = useAdventureStateContext()
+const SkiForm = () => {
+	const { currentAdventure, isDeletePageOpen, isPathEditOn } = useAdventureStateContext()
 	const { toggleDeletePage } = useDeleteAdventure()
+	const { editAdventure, togglePathEdit, savePath, deletePath } = useSaveAdventure()
 
 	return (
 		<DisplayCard title={currentAdventure.adventure_name || 'New Adventure'}>
 			<ErrorField form={'adventure'} />
-			<FormField
-				type='noedit'
-				name='adventure_type'
-				hideLabel
-				value={
-					<LargeSkierIcon
-						size={40}
-						className={'editor-skier'}
-					/>
-				}
-				isEditable
-				onChange={() => {}}
-			/>
+			<div className='flex-box edit-add-path'>
+				<FormField
+					type='noedit'
+					name='adventure_type'
+					minWidth={true}
+					value={
+						<LargeSkierIcon
+							size={70}
+							className={'editor-skier'}
+						/>
+					}
+					isEditable
+					hideLabel
+					onChange={() => {}}
+				/>
+				<div className='flex-box path-buttons'>
+					{!currentAdventure.path?.length && (
+						<Button
+							id={'path-add-button'}
+							onClick={() => {
+								if (isPathEditOn) {
+									savePath()
+								} else {
+									togglePathEdit()
+								}
+							}}
+						>
+							{isPathEditOn ? 'Finish Adding Line' : 'Add Line'}
+						</Button>
+					)}
+					{!isPathEditOn && !!currentAdventure.path?.length && (
+						<Button onClick={deletePath}>Delete Line</Button>
+					)}
+				</div>
+			</div>
 			<FormField
 				name='adventure_name'
 				label={'Adventure Name'}
@@ -40,7 +67,7 @@ const SkiForm = ({ onChange }) => {
 				fullWidth
 				value={currentAdventure.adventure_name || ''}
 				autoFocus={true}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='bio'
@@ -49,19 +76,19 @@ const SkiForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.bio || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
-				name='approach_distance'
+				name='distance'
 				label={getContent('adventurePanel.editable.approachDistance')}
 				isEditable
 				fullWidth
 				options={{ suffix: 'miles' }}
-				value={currentAdventure.approach_distance || ''}
-				onChange={onChange}
+				value={currentAdventure.distance || ''}
+				onChange={editAdventure}
 			/>
 			<MultiField
-				onChange={onChange}
+				onChange={editAdventure}
 				label={getContent('adventurePanel.fields.elevation')}
 				fields={[
 					{
@@ -86,7 +113,7 @@ const SkiForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.season || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='gear'
@@ -96,10 +123,10 @@ const SkiForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.gear || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<MultiField
-				onChange={onChange}
+				onChange={editAdventure}
 				label={getContent('adventurePanel.editable.slope')}
 				fields={[
 					{
@@ -126,7 +153,7 @@ const SkiForm = ({ onChange }) => {
 					selectOptions: directionSelectOptions
 				}}
 				value={currentAdventure.aspect || 'N'}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='difficulty'
@@ -142,7 +169,7 @@ const SkiForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.difficulty || 1}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='exposure'
@@ -158,7 +185,7 @@ const SkiForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.exposure || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='nearest_city'
@@ -166,7 +193,7 @@ const SkiForm = ({ onChange }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.nearest_city || ''}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FormField
 				name='public'
@@ -177,7 +204,7 @@ const SkiForm = ({ onChange }) => {
 				value={
 					![undefined, null].includes(currentAdventure.public) ? currentAdventure.public : true
 				}
-				onChange={onChange}
+				onChange={editAdventure}
 			/>
 			<FooterButtons>
 				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>
