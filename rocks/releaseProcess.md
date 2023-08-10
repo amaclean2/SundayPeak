@@ -39,7 +39,7 @@ docker image push -a amacleanjs/sunday-service
 3. SSH into the Digital Ocean droplet
 
 ```shell
-  ssh root@128.199.3.44
+ssh root@128.199.3.44
 ```
 
 4. Zip the volume attached to the mysql instance and make a copy on your local machine
@@ -120,7 +120,7 @@ docker image push -a amacleanjs/sunday-communion
 3. SSH into the Digital Ocean droplet
 
 ```shell
-  ssh root@128.199.3.44
+ssh root@128.199.3.44
 ```
 
 4. Zip the volume attached to the mysql instance and make a copy on your local machine
