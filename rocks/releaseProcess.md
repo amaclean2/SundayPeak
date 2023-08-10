@@ -141,7 +141,7 @@ docker stop couloirs && docker rm couloirs
 6. Remove the current image
 
 ```shell
-docker image rm sunday-communion
+docker image rm amacleanjs/sunday-communion
 ```
 
 7. Pull the new image and check the version
