@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import {
 	useAdventureStateContext,
 	useGetAdventures,
-	useSaveAdventure
+	useSaveAdventure,
+	useTokenStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
 export const useCreateNewAdventure = () => {
@@ -44,3 +45,60 @@ export const adventurePathColor = (adventure_type = 'ski') => {
 			return '#3a3'
 	}
 }
+
+export const useRouteHandling = () => {
+	const { mapboxToken } = useTokenStateContext()
+	const { updatePath } = useSaveAdventure()
+
+	const updateRoute = (event) => {
+		const profile = 'walking'
+		// features is an array of geojson lineString 'Feature's
+		const lastFeature = event.features.length - 1
+		const coordinates = event.features[lastFeature].geometry.coordinates
+		const newCoordinates = coordinates.join(';')
+		const radius = coordinates.map(() => 40)
+
+		getMatch(newCoordinates, radius, profile)
+	}
+
+	const getMatch = async (coordinates, radius, profile) => {
+		try {
+			const radiuses = radius.join(';')
+			const query = await fetch(
+				`https://api.mapbox.com/matching/v5/mapbox/${profile}/${coordinates}?geometries=geojson&radiuses=${radiuses}&overview=full&access_token=${mapboxToken}`,
+				{ method: 'GET' }
+			)
+
+			const response = await query.json()
+
+			if (response.code !== 'Ok') {
+				throw `${response.code} - ${response.message}.\n\nFor more information: https://docs.mapbox.com/api/navigation/map-matching/#map-matching-api-errors`
+			}
+
+			const resultCoordinates = response.matchings[0].geometry.coordinates
+
+			console.log({ resultCoordinates: response.matchings })
+
+			updatePath(resultCoordinates)
+		} catch (error) {
+			console.log({ error })
+		}
+	}
+
+	return {
+		updateRoute
+	}
+}
+
+/**
+ *    if (isPathEditOn) {
+		  	updatePath([event.lngLat.lng, event.lngLat.lat])
+		  	return
+		  }
+
+			if (!event.features.length) return
+			const adventureType = event.features[0].properties.adventure_type
+			const adventureId = event.features[0].properties.id
+
+			navigate(`adventure/${adventureType}/${adventureId}`)
+ */
