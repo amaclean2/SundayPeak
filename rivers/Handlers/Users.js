@@ -26,7 +26,7 @@ const createUser = async (req, res) => {
       confirmPassword: password_2,
       firstName: first_name,
       lastName: last_name,
-      baseImageUrl: buildImageUrl(req)
+      baseImageUrl: buildImageUrl()
     })
 
     return sendResponse({ req, res, data: newUserResponse, status: CREATED })
