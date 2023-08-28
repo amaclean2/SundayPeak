@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Map, {
 	FullscreenControl,
@@ -15,12 +15,14 @@ import {
 	useSaveAdventure
 } from '@amaclean2/sundaypeak-treewells'
 
-import { adventurePathColor, useCreateNewAdventure } from './utils'
+import { adventurePathColor, useCreateNewAdventure, useRouteHandling } from './utils'
+import DrawControl from './DrawControl'
 
 import skier from 'Images/Activities/SkierIcon.png'
 import hiker from 'Images/Activities/HikerIcon.png'
 import climber from 'Images/Activities/ClimberIcon.png'
 
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import './styles.css'
 
 const ReactMap = () => {
@@ -39,14 +41,25 @@ const ReactMap = () => {
 		currentAdventure,
 		globalAdventureType,
 		isPathEditOn,
-		workingPath,
-		adventureAddState
+		workingPath
 	} = useAdventureStateContext()
 	const { mapboxToken, mapboxStyleKey } = useTokenStateContext()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
-	const { updatePath } = useSaveAdventure()
 	const { updateStartPosition } = useManipulateFlows()
 	const navigate = useNavigate()
+	const [features, setFeatures] = useState({})
+	const { updateRoute } = useRouteHandling()
+
+	const onDelete = useCallback((e) => {
+		setFeatures((currFeatures) => {
+			const newFeatures = { ...currFeatures }
+			for (const f of e.features) {
+				delete newFeatures[f.id]
+			}
+
+			return newFeatures
+		})
+	}, [])
 
 	const onLoad = () => {
 		// this is a reference to the map dom element
@@ -96,7 +109,7 @@ const ReactMap = () => {
 
 		mapRef.current.flyTo({
 			center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
-			zoom: 16
+			zoom: 13
 		})
 	}, [currentAdventure?.id, mapRef.current])
 
@@ -120,16 +133,13 @@ const ReactMap = () => {
 		minZoom: 3,
 		onDblClick: handleCreateNewAdventure,
 		onClick: (event) => {
-			if (isPathEditOn) {
-				updatePath([event.lngLat.lng, event.lngLat.lat])
-				return
+			if (!isPathEditOn) {
+				if (!event.features.length) return
+				const adventureType = event.features[0].properties.adventure_type
+				const adventureId = event.features[0].properties.id
+
+				navigate(`adventure/${adventureType}/${adventureId}`)
 			}
-
-			if (!event.features.length) return
-			const adventureType = event.features[0].properties.adventure_type
-			const adventureId = event.features[0].properties.id
-
-			navigate(`adventure/${adventureType}/${adventureId}`)
 		},
 		onLoad,
 		onMove
@@ -154,6 +164,14 @@ const ReactMap = () => {
 					position={'bottom-right'}
 				/>
 				<FullscreenControl position={'bottom-right'} />
+				{isPathEditOn && (
+					<DrawControl
+						position={'bottom-right'}
+						onCreate={updateRoute}
+						onUpdate={updateRoute}
+						onDelete={onDelete}
+					/>
+				)}
 				<Source
 					id='mapbox-dem'
 					type='raster-dem'
