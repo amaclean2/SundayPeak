@@ -1,6 +1,6 @@
-import { WebSocketServer } from 'ws'
-import logger from './Config/logger.js'
-import { parseMessage } from './Messages/index.js'
+const { WebSocketServer } = require('ws')
+const logger = require('./Config/logger.js')
+const parseMessage = require('./Messages')
 
 const wss = new WebSocketServer({ port: 4000 })
 
