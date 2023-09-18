@@ -1,4 +1,4 @@
-import SundayService from '@amaclean2/sundaypeak-water'
+const SundayService = require('@amaclean2/sundaypeak-water')
 
 const serviceHandler = new SundayService(
   {
@@ -11,4 +11,4 @@ const serviceHandler = new SundayService(
   process.env.JWT_SECRET
 )
 
-export default serviceHandler
+module.exports = serviceHandler

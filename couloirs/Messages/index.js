@@ -1,10 +1,10 @@
-import logger from '../Config/logger.js'
-import serviceHandler from '../Config/services.js'
+const logger = require('../Config/logger.js')
+const serviceHandler = require('../Config/services.js')
 
 /**
  * @param {Object} message
  */
-export const parseMessage = async ({ message, userId = 0 }) => {
+const parseMessage = async ({ message, userId = 0 }) => {
   message = JSON.parse(message)
 
   switch (message.type) {
@@ -108,3 +108,5 @@ const sendMessage = ({ userId, conversationId, messageBody }) => {
       return { message }
     })
 }
+
+module.exports = parseMessage
