@@ -40,12 +40,16 @@ const requireAdventureNearestCity = body('nearest_city').custom((value) => {
   return true
 })
 
-const requireAdventurePublic = body('public').custom((value) => {
-  if (value === undefined) throw 'public property is required'
-  if (typeof value !== 'boolean') throw 'public property must be a boolean'
+const requireAdventurePublic = body('public')
+  .custom((value) => {
+    if (value === undefined) throw 'public property is required'
+    if (typeof value !== 'boolean') throw 'public property must be a boolean'
 
-  return true
-})
+    return true
+  })
+  .customSanitizer((value) => {
+    return !!value === true ? 1 : 0
+  })
 
 const requireAdventureCreatorId = body('id_from_token')
   .custom((value) => {
@@ -66,19 +70,27 @@ const formatAdventureRating = body('rating').custom((value) => {
   return true
 })
 
-// the following types only apply if `adventure_type` is "ski"
-
-const requireAdventureDifficulty = body('difficulty').custom(
-  (value, { req }) => {
-    if (['ski', 'hike', 'bike'].includes(req.body.adventure_type)) {
-      if (value === undefined)
-        throw 'difficulty field is required if adventure_type is ski, hike, or bike'
-      if (value < 1 || value > 5) throw 'difficulty must be a number from 1 - 5'
+const sanitizeAdventureDifficulty = body('difficulty').customSanitizer(
+  (value) => {
+    if (value !== undefined) {
+      value = `${value}:1`
+    } else {
+      value = '0:0'
     }
 
-    return true
+    return value
   }
 )
+
+const sanitizeAdventureRating = body('rating').customSanitizer((value) => {
+  if (value !== undefined) {
+    value = `${value}:1`
+  } else {
+    value = '0:0'
+  }
+
+  return value
+})
 
 const formatAdventureTrailPath = body('path')
   .custom((value, { req }) => {
@@ -138,7 +150,8 @@ const adventureCreateValidator = () => {
     requireAdventureCreatorId,
     formatAdventureRating,
     formatAdventureTrailPath,
-    requireAdventureDifficulty,
+    sanitizeAdventureDifficulty,
+    sanitizeAdventureRating,
     formatAdventureDistance
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "couloirs",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "author": "Andrew Maclean",
   "license": "ISC",
   "dependencies": {
-    "@amaclean2/sundaypeak-water": "^1.4.1",
+    "@amaclean2/sundaypeak-water": "^1.4.2",
     "dotenv": "^16.0.3",
     "env-cmd": "^10.1.0",
     "jsonwebtoken": "^9.0.2",

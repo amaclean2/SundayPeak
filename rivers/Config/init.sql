@@ -107,9 +107,10 @@ CREATE TABLE adventures(
     FOREIGN KEY(adventure_ski_id) REFERENCES ski(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_climb_id) REFERENCES climb(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_hike_id) REFERENCES hike(id) ON DELETE CASCADE,
-    CHECK ((adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_climb_id IS NOT NULL)
-    OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_hike_id IS NOT NULL)
-    OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_ski_id IS NOT NULL))
+    CHECK ((adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_climb_id IS NOT NULL AND adventure_bike_id IS NULL)
+    OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_hike_id IS NOT NULL AND adventure_bike_id IS NULL)
+    OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_ski_id IS NOT NULL AND adventure_bike_Id IS NULL)
+    OR (adventure_bike_id IS NOT NULL AND adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_climb_id IS NULL))
 );
 
 CREATE TABLE searchable_adventures(

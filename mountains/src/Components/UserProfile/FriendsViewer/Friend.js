@@ -11,7 +11,7 @@ export const Friend = ({ friend, onClick }) => (
 
 Friend.propTypes = {
 	friend: PropTypes.shape({
-		id: PropTypes.number.isRequired,
+		user_id: PropTypes.number.isRequired,
 		display_name: PropTypes.string.isRequired,
 		email: PropTypes.string
 	}),

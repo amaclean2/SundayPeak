@@ -49,7 +49,7 @@ const FriendsViewer = ({ className }) => {
 							onClick={() => {
 								setSearchText('')
 								setSearchResults(null)
-								navigate(`/user/${friend.id}`)
+								navigate(`/user/${friend.user_id}`)
 							}}
 							friend={friend}
 							key={`user_friend_${key}`}
