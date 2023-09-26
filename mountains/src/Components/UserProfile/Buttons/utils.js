@@ -55,7 +55,9 @@ export const useUserEditorMenu = () => {
 				text: getContent('buttonText.logout')
 			})
 		} else if (loggedInUser) {
-			const alreadyFollowed = loggedInUser.friends?.some(({ id }) => workingUser?.id === id)
+			const alreadyFollowed = loggedInUser.friends?.some(
+				({ user_id }) => workingUser?.id === user_id
+			)
 			if (!alreadyFollowed) {
 				menuFields.push({
 					action: () => friendUser({ leaderId: workingUser.id, followerId: loggedInUser.id }),
@@ -66,7 +68,10 @@ export const useUserEditorMenu = () => {
 				menuFields.push({
 					action: () => {
 						navigate('/conversations')
-						addConversation({ userId: workingUser.id, name: `${workingUser.first_name} ${workingUser.last_name}` })
+						addConversation({
+							userId: workingUser.id,
+							name: `${workingUser.first_name} ${workingUser.last_name}`
+						})
 					},
 					id: 'message-user-button',
 					text: getContent('buttonText.message', [workingUser.first_name])

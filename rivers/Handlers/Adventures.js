@@ -12,6 +12,8 @@ const createNewAdventure = async (req, res) => {
       throw returnError({ req, res, error: errors.array()[0] })
     }
 
+    console.log({ adventureObject: req.body })
+
     const { adventure, adventureList } =
       await serviceHandler.adventureService.createAdventure({
         adventureObject: req.body

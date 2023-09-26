@@ -61,7 +61,8 @@ const errorTexts = {
     status: NOT_ACCEPTABLE
   },
   nonMatchingPasswords: {
-    messageText: 'The password and confirm password fields have different values. Please ensure they are the same',
+    messageText:
+      'The password and confirm password fields have different values. Please ensure they are the same',
     status: NOT_ACCEPTABLE
   },
   missingFieldsFetchUser: {
@@ -188,6 +189,11 @@ const errorTexts = {
   serverCreateActivity: {
     messageText: 'Server Error: Could not create this activity',
     status: SERVER_ERROR
+  },
+  finishActivityFields: {
+    messageText:
+      'A rating and difficulty must be provided when an adventure is completed. Ratings and difficulties should be formatted as `newRating:oldRating:oldRatingTally`',
+    status: NOT_ACCEPTABLE
   },
 
   // picture errors

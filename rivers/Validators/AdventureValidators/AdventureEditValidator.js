@@ -19,7 +19,6 @@ const adventureEditValidator = () => {
         if (
           [
             'distance',
-            'difficulty',
             'exposure',
             'summit_elevation',
             'base_elevation'
@@ -32,6 +31,19 @@ const adventureEditValidator = () => {
         // ensure the path object is an array of lat/lng arrays
         if (field.name === 'path') {
           checkPathObj(field.value)
+        }
+
+        // block a change if people have already been completing the activity
+        if (field.name === 'difficulty') {
+          const [difficultyValue, iterations] = field.value.split(':')
+          if (iterations > 1) {
+            throw 'difficulty cannot be edited once users have been completing the activity'
+          }
+        }
+
+        // block users from editing a rating
+        if (field.name === 'rating') {
+          throw 'rating cannot be edited'
         }
 
         if (!isCorrect) throw 'editFieldFormat'

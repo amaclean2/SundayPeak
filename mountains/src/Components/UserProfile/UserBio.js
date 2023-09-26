@@ -7,7 +7,7 @@ const UserBio = () => {
 	const { workingUser, loggedInUser } = useUserStateContext()
 	const { friendUser } = useFollowUser()
 
-	const alreadyFollowed = loggedInUser.friends?.some(({ id }) => workingUser?.id === id)
+	const alreadyFollowed = loggedInUser.friends?.some(({ user_id }) => workingUser?.id === user_id)
 
 	return (
 		<div className='flex-box user-bio-text'>
@@ -19,11 +19,12 @@ const UserBio = () => {
 			)}
 			<div className='user-bio'>{workingUser.bio}</div>
 			{workingUser !== loggedInUser && !alreadyFollowed && (
-				<Button small onClick={() => 
-				friendUser({ leaderId: workingUser.id, followerId: loggedInUser.id })
-				}>
+				<Button
+					small
+					onClick={() => friendUser({ leaderId: workingUser.id, followerId: loggedInUser.id })}
+				>
 					Friend {workingUser.first_name}
-					</Button>
+				</Button>
 			)}
 		</div>
 	)

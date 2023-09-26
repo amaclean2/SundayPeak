@@ -1,11 +1,14 @@
 const logger = require('../Config/logger.js')
 const serviceHandler = require('../Config/services.js')
+const { userValidation } = require('../Validation/index.js')
 
 /**
  * @param {Object} message
  */
 const parseMessage = async ({ message, userId = 0 }) => {
   message = JSON.parse(message)
+
+  console.log({ message, userId })
 
   switch (message.type) {
     case 'getAllConversations':
@@ -61,14 +64,8 @@ const getUserConversations = ({ userId }) => {
 
 const verifyUser = ({ token }) => {
   if (!token) throw 'token required to verify user'
-  return serviceHandler.validationService
-    .validate({ token, originalUrl: 'websocket' })
-    .then((resp) => {
-      if (resp.idFromToken) {
-        // set the current user
-      }
-      return { userJoined: resp.idFromToken }
-    })
+  return userValidation({ token })
+    .then((resp) => ({ userJoined: resp.idFromToken }))
     .catch((error) => {
       throw { closeConnection: true, message: `Invalid token ${error}` }
     })

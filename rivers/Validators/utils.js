@@ -1,5 +1,5 @@
 const isDefined = (...values) => {
-  return !values.some((value) => [undefined, null].includes(value))
+  return !values.some((value) => [undefined, null, ''].includes(value))
 }
 
 const checkPathObj = (path) => {
