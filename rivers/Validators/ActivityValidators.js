@@ -15,36 +15,55 @@ const createValidator = () => {
       .not()
       .isEmpty()
       .withMessage('invalidTickActivityFields'),
-    body('rating').custom((value) => {
-      if (!value) {
-        throw 'finishActivityFields'
-      }
+    body('rating')
+      .custom((value) => {
+        if (!value) {
+          throw 'finishActivityFields'
+        }
 
-      const regexMatch = value.match(ratingRegex)
-      if (regexMatch === null || regexMatch[0] !== value) {
-        throw 'finishActivityFields'
-      }
+        const regexMatch = value.match(ratingRegex)
+        if (regexMatch === null || regexMatch[0] !== value) {
+          throw 'finishActivityFields'
+        }
 
-      const [newRating, oldRating, oldRatingTally] = value.split(':')
-      const newAverage = (newRating + oldRating) / (oldRatingTally + 1)
+        return true
+      })
+      .customSanitizer((value, { req }) => {
+        const [newRating, oldRating, oldRatingTally] = value.split(':')
 
-      return `${newAverage}:${oldRatingTally + 1}`
-    }),
-    body('difficulty').custom((value) => {
-      if (!value) {
-        throw 'finishActivityFields'
-      }
+        const newAverage =
+          oldRatingTally !== '0'
+            ? (Number(newRating) + Number(oldRating)) /
+              (Number(oldRatingTally) + 1)
+            : Number(newRating)
 
-      const regexMatch = value.match(ratingRegex)
-      if (regexMatch === null || regexMatch[0] !== value) {
-        throw 'finishActivityFields'
-      }
+        req.body.old_rating = value
+        return `${newAverage}:${Number(oldRatingTally) + 1}`
+      }),
+    body('difficulty')
+      .custom((value) => {
+        if (!value) {
+          throw 'finishActivityFields'
+        }
 
-      const [newRating, oldRating, oldRatingTally] = value.split(':')
-      const newAverage = (newRating + oldRating) / (oldRatingTally + 1)
+        const regexMatch = value.match(ratingRegex)
+        if (regexMatch === null || regexMatch[0] !== value) {
+          throw 'finishActivityFields'
+        }
 
-      return `${newAverage}:${oldRatingTally + 1}`
-    }),
+        return true
+      })
+      .customSanitizer((value, { req }) => {
+        const [newRating, oldRating, oldRatingTally] = value.split(':')
+        const newAverage =
+          oldRatingTally !== '0'
+            ? (Number(newRating) + Number(oldRating)) /
+              (Number(oldRatingTally) + 1)
+            : Number(newRating)
+
+        req.body.old_difficulty = value
+        return `${newAverage}:${Number(oldRatingTally) + 1}`
+      }),
     body('public')
       .not()
       .isEmpty()

@@ -1,0 +1,24 @@
+@import url('../variables.css');
+
+.page {
+  flex: 1;
+  background-color: var(--main-off-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  border: none;
+  background-color: transparent;
+}
+
+.hero-button {
+  background-color: var(--primary-accent-color);
+  color: var(--main-light);
+  font-size: 1.5em;
+  padding: 0.5em 1.5em;
+  border-radius: 2em;
+  font-weight: 600;
+  text-decoration: none;
+}
