@@ -1,0 +1,34 @@
+.flex-spacer {
+	flex: 1;
+}
+
+.external-app-container {
+	display: flex;
+	height: 100vh;
+	width: 100vw;
+	flex-direction: column;
+	overflow: auto;
+	align-items: center;
+}
+
+.marketing-button {
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+
+.marketing-button:hover {
+	background-color: var(--border-color);
+	color: var(--primary-accent-color);
+}
+
+.hero-button {
+	background-color: var(--primary-accent-color);
+	color: var(--main-light);
+	font-size: 1.5em;
+	padding: 0.5em 1.5em;
+	border-radius: 2em;
+	font-weight: 600;
+	text-decoration: none;
+}

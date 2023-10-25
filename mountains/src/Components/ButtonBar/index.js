@@ -75,7 +75,7 @@ const ButtonBar = () => {
 					id='home-redirect'
 					type={'link'}
 					className={'logo-button'}
-					direction={'/'}
+					direction={'/about'}
 				>
 					<LogoInline
 						width={200}

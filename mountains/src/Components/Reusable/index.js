@@ -13,7 +13,6 @@ export * from './FieldOrganizer'
 export * from './ImageViewer'
 export * from './Accordion'
 export * from './ConfirmationPage'
-export * from './MobileMenu'
 export * from './Menu'
 
 export const FlexSpacer = () => <div className={'flex-spacer'} />

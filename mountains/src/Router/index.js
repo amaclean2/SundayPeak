@@ -20,6 +20,10 @@ import CreateNewAdventure from 'Components/Adventures/CreateNewAdventure'
 import AdventureEditorForm from 'Components/Adventures/Editor'
 import AdventureViewer from 'Components/Adventures/Viewer'
 import AppContent from 'Router/AppContent'
+import MetaPageContent from 'MetaPages'
+import HomePage from 'MetaPages/FirstPage'
+import PrivacyPolicy from 'MetaPages/Privacy'
+import SupportPage from 'MetaPages/Support'
 
 export const title = 'Sunday Peak'
 
@@ -29,123 +33,103 @@ export const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route
 			path={'/'}
-			element={<AppContent />}
+			element={<Outlet />}
 		>
 			<Route
-				index
-				element={<ButtonBar />}
+				path={'about'}
+				element={
+					<MetaPageContent>
+						<HomePage />
+					</MetaPageContent>
+				}
 			/>
 			<Route
-				path={'login'}
-				element={<LoginFlow />}
+				path={'privacy'}
+				element={
+					<MetaPageContent>
+						<PrivacyPolicy />
+					</MetaPageContent>
+				}
 			/>
 			<Route
-				path={'password-reset'}
-				element={<PasswordResetCapture />}
+				path={'support'}
+				element={
+					<MetaPageContent>
+						<SupportPage />
+					</MetaPageContent>
+				}
 			/>
 			<Route
-				path={'password'}
-				element={<NewPassword />}
-			/>
-			<Route
-				path={'signup'}
-				element={<SignupFlow />}
-			/>
-			<Route
-				path={'discover'}
-				element={<ButtonBar />}
-			/>
-			<Route
-				path={'user'}
-				element={<Outlet />}
+				path={'*'}
+				element={<AppContent />}
 			>
 				<Route
 					index
-					element={<UserViewer />}
+					element={<ButtonBar />}
 				/>
 				<Route
-					path={'edit'}
-					element={<UserEditor />}
+					path={'login'}
+					element={<LoginFlow />}
 				/>
 				<Route
-					path={':userId'}
-					element={<UserViewer />}
+					path={'password-reset'}
+					element={<PasswordResetCapture />}
+				/>
+				<Route
+					path={'password'}
+					element={<NewPassword />}
+				/>
+				<Route
+					path={'signup'}
+					element={<SignupFlow />}
+				/>
+				<Route
+					path={'discover'}
+					element={<ButtonBar />}
+				/>
+				<Route
+					path={'user'}
+					element={<Outlet />}
+				>
+					<Route
+						index
+						element={<UserViewer />}
+					/>
+					<Route
+						path={'edit'}
+						element={<UserEditor />}
+					/>
+					<Route
+						path={':userId'}
+						element={<UserViewer />}
+					/>
+				</Route>
+				<Route
+					path={'adventure'}
+					element={<Outlet />}
+				>
+					<Route
+						index
+						element={<DefaultAdventureView />}
+					/>
+					<Route
+						path={'new'}
+						element={<CreateNewAdventure />}
+					/>
+					<Route
+						path={'edit/:adventureType/:adventureId'}
+						element={<AdventureEditorForm />}
+					/>
+					<Route
+						path={':adventureType/:adventureId'}
+						element={<AdventureViewer />}
+					/>
+				</Route>
+				<Route
+					path={'conversations'}
+					element={<Chat />}
 				/>
 			</Route>
-			<Route
-				path={'adventure'}
-				element={<Outlet />}
-			>
-				<Route
-					index
-					element={<DefaultAdventureView />}
-				/>
-				<Route
-					path={'new'}
-					element={<CreateNewAdventure />}
-				/>
-				<Route
-					path={'edit/:adventureType/:adventureId'}
-					element={<AdventureEditorForm />}
-				/>
-				<Route
-					path={':adventureType/:adventureId'}
-					element={<AdventureViewer />}
-				/>
-			</Route>
-			<Route
-				path={'conversations'}
-				element={<Chat />}
-			/>
 		</Route>
 	)
 )
-
-/** const AppRouter = () => {
-	return (
-		<Router>
-			<div className='app-container'>
-				<Routes>
-					<Route
-						path='/adventure/:adventureId'
-						element={<Discover />}
-					/>
-					<Route
-						path='/privacy'
-						element={<PrivacyPolicy />}
-					/>
-					<Route
-						path='/password'
-						element={<Discover />}
-					/>
-					<Route
-						path='/plan'
-						element={<Discover />}
-					/>
-					<Route
-						path='/login'
-						element={<Discover />}
-					/>
-					<Route
-						path='/signup'
-						element={<Discover />}
-					/>
-					<Route
-						path='/discover'
-						element={<Discover />}
-					/>
-					<Route
-						path='/about'
-						element={<About />}
-					/>
-					<Route
-						path='/'
-						element={<Discover />}
-					/>
-				</Routes>
-			</div>
-		</Router>
-	)
-}
-
-export default AppRouter */

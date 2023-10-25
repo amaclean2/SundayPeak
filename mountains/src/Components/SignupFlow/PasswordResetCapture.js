@@ -42,7 +42,7 @@ export const PasswordResetCapture = () => {
 					className={'secondary-button'}
 					direction={'/login'}
 				>
-					Return to login
+					Return to Login
 				</Button>
 			</FooterButtons>
 		</DisplayCard>
