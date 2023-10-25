@@ -3,7 +3,6 @@
 @import './variables.css';
 
 html {
-	/* font-family: 'Open Sans', Arial, Helvetica, sans-serif; */
 	font-family: 'Helvetica Neue', Arial, sans-serif;
 	position: fixed;
 	top: 0;
@@ -12,6 +11,10 @@ html {
 	height: 100vh;
 	overflow: auto;
 	font-size: 0.9rem;
+}
+
+body {
+	margin: 0;
 }
 
 .full-width {

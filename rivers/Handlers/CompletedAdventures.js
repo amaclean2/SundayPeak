@@ -1,4 +1,9 @@
-const { sendResponse, returnError, CREATED } = require('../ResponseHandling')
+const {
+  sendResponse,
+  returnError,
+  CREATED,
+  NOT_ACCEPTABLE
+} = require('../ResponseHandling')
 const serviceHandler = require('../Config/services')
 const { validationResult } = require('express-validator')
 
@@ -15,8 +20,21 @@ const completeAdventure = async (req, res) => {
       adventure_type,
       public: publicField,
       difficulty,
-      rating
+      rating,
+      old_rating,
+      old_difficulty
     } = req.body
+
+    const { match, response } =
+      await serviceHandler.adventureService.checkAdventureRatings({
+        adventureId: adventure_id,
+        difficulty: old_difficulty,
+        rating: old_rating
+      })
+
+    if (!match) {
+      throw returnError({ req, res, message: response, status: NOT_ACCEPTABLE })
+    }
 
     const { userCompleted, adventureCompleted } =
       await serviceHandler.userService.completeAdventure({

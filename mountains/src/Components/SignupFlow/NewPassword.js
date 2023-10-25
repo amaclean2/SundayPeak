@@ -69,7 +69,7 @@ export const NewPassword = () => {
 					className={'secondary-button'}
 					onClick={() => navigate('/login')}
 				>
-					Return to login
+					Return to Login
 				</Button>
 			</FooterButtons>
 		</DisplayCard>

@@ -1,0 +1,19 @@
+@import url('../../variables.css');
+@import url('../styles.css');
+
+.marketing-header {
+	display: flex;
+	padding: 0.5rem 1rem;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 0.1rem solid var(--border-color);
+	height: 4rem;
+	position: sticky;
+	top: 0;
+	background-color: var(--main-light);
+	width: 100%;
+}
+
+.header-sp-logo {
+	width: 3rem;
+}

@@ -111,6 +111,12 @@ input {
 	cursor: pointer;
 	font-weight: 500;
 	font-size: 14px;
+	flex-direction: row;
+	padding: 0 0.5rem;
+}
+
+.label-field.checkbox span {
+	font-size: 0.9rem;
 }
 
 .hidden-checkbox {

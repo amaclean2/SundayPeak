@@ -1,0 +1,22 @@
+:root {
+	--primary-accent-color: #02ad85;
+	--primary-accent-color-hover: #5dd1b6;
+	--primary-accent-color-opacity: #249275aa;
+	--primary-disabled-color: #b1d7ce;
+
+	--main-dark: #000000;
+	--main-off-white: #eeeeee;
+	--main-light: #ffffff;
+	--main-off-dark: #666666;
+
+	--border-color: #d7d7e8;
+
+	--alert-error-color: #ff5151;
+
+	--header-gradient: linear-gradient(45deg, #2d966d, #3c9da5);
+	--header-gradient-light: linear-gradient(45deg, #3da67d, #4cadb5);
+
+	--off-background-color: #f6f6f6;
+
+	--box-shadow-opacity: rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,21 @@
+.marketing-main-logo {
+	width: 90%;
+	max-width: 36rem;
+}
+
+.first-page {
+	flex: 1;
+	background-color: var(--main-off-white);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	padding: 0 10vw;
+	overflow: hidden;
+	align-items: flex-start;
+	width: 100vw;
+}
+
+.hero-text {
+	font-size: 2em;
+}
