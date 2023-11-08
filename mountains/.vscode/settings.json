@@ -16,5 +16,21 @@
 	"editor.tabSize": 2,
 	"[xml]": {
 		"editor.defaultFormatter": "redhat.vscode-xml"
-	}
+	},
+	"sqltools.connections": [
+		{
+			"mysqlOptions": {
+				"authProtocol": "default",
+				"enableSsl": "Disabled"
+			},
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 3300,
+			"driver": "MySQL",
+			"name": "SundayPeakDev",
+			"database": "friends",
+			"username": "byf",
+			"askForPassword": true
+		}
+	]
 }

@@ -88,7 +88,7 @@
 	transition: all 0.3s ease-in-out;
 	flex-direction: column;
 	max-height: 89vh;
-	max-width: 60vw;
+	max-width: 40rem;
 	padding: 0.8rem;
 	align-items: stretch;
 	justify-content: flex-start;
