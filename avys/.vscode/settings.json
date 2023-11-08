@@ -1,0 +1,32 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3300,
+      "driver": "MySQL",
+      "database": "friends",
+      "username": "byf",
+      "name": "SPDev",
+      "askForPassword": true
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "128.199.3.44",
+      "port": 3300,
+      "driver": "MySQL",
+      "name": "SPProd",
+      "database": "friends",
+      "username": "byf",
+      "askForPassword": true
+    }
+  ]
+}

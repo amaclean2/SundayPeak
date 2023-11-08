@@ -1,0 +1,25 @@
+{
+  "name": "avys",
+  "version": "1.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "env-cmd -f .env.dev nodemon --trace-warnings index.js",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "@amaclean2/sundaypeak-couloirs": "^1.1.2",
+    "@amaclean2/sundaypeak-rivers": "^1.1.6",
+    "env": "^0.0.2",
+    "env-cmd": "^10.1.0",
+    "express": "^4.18.2",
+    "spdy": "^4.0.2",
+    "ws": "^8.14.2"
+  }
+}
