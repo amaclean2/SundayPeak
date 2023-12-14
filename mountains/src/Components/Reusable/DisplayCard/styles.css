@@ -156,6 +156,7 @@ h3.label-field {
 	border-bottom: 1px solid var(--border-color);
 	border-left: none;
 	justify-content: space-between;
+	font-size: 0.9rem;
 }
 
 .main-text {

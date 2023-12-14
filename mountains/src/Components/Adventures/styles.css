@@ -38,11 +38,10 @@
 }
 
 .user-image {
-	width: 35px;
-	height: 35px;
+	width: 2rem;
+	height: 2rem;
 	background-color: #ddd;
-	margin-right: 0.8rem;
-	border-radius: 0.3rem;
+	border-radius: 2rem;
 	overflow: hidden;
 	box-shadow: 0 0.1rem 0.1rem var(--box-shadow-opacity);
 }
@@ -85,31 +84,5 @@
 	flex-direction: column;
 	gap: 0.5rem;
 	align-items: flex-end;
-}
-
-@media screen and (max-width: 500px) {
-	.adventure-info {
-		gap: 0rem;
-	}
-
-	.main-adventure-content.flex-box {
-		width: 100%;
-		min-height: 0;
-	}
-
-	.adventure-viewer {
-		margin: 0;
-		padding: 0;
-		max-width: 100%;
-	}
-
-	.no-edit {
-		padding: 0;
-	}
-
-	.editor-climber,
-	.editor-skier,
-	.editor-hiker {
-		height: 2.5rem;
-	}
+	font-size: 0.9rem;
 }

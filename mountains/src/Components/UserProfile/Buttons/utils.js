@@ -14,7 +14,7 @@ export const useUserEditorMenu = () => {
 	const { toggleUserEditState } = useEditUser()
 	const { logoutUser } = useGetUser()
 	const { friendUser } = useFollowUser()
-	const { openConversationWithFriend } = useMessages()
+	const { openConversationWithFriend, addConversation } = useMessages()
 	const navigate = useNavigate()
 
 	const buildEditorMenu = () => {
@@ -68,9 +68,7 @@ export const useUserEditorMenu = () => {
 				menuFields.push({
 					action: () => {
 						navigate('/conversations')
-						openConversationWithFriend({
-							userId: workingUser.id
-						})
+						addConversation({ userId: workingUser.id })
 					},
 					id: 'message-user-button',
 					text: getContent('buttonText.message', [workingUser.first_name])

@@ -12,12 +12,12 @@ const TodoAdventure = ({ onClick, tick }) => (
 		onClick={onClick}
 		className='tick drop-list-item flex-box'
 	>
-		<span className={'main-text'}>{tick.adventure_name}</span>
 		<span className='drop-list-image'>
 			{tick.adventure_type === 'ski' && <LargeSkierIcon size={ICON_SIZE} />}
 			{tick.adventure_type === 'climb' && <LargeClimberIcon size={ICON_SIZE} />}
 			{tick.adventure_type === 'hike' && <LargeHikerIcon size={ICON_SIZE} />}
 		</span>
+		<span className={'main-text'}>{tick.adventure_name}</span>
 	</li>
 )
 

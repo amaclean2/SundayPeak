@@ -85,7 +85,8 @@ export const FormField = (props) => {
 		hideLabel = false,
 		onChange,
 		testId,
-		minWidth = false
+		minWidth = false,
+		reverse = false
 	} = props
 
 	const renderNonCheckbox = () => (
@@ -126,6 +127,7 @@ export const FormField = (props) => {
 					testId={testId}
 					onChange={onChange}
 					label={label}
+					reverse={reverse}
 				/>
 			) : (
 				renderNonCheckbox()
@@ -165,6 +167,7 @@ FormField.propTypes = {
 	fullWidth: PropTypes.bool,
 	block: PropTypes.bool,
 	onChange: PropTypes.func.isRequired,
+	reverse: PropTypes.bool,
 	options: PropTypes.shape({
 		onEnter: PropTypes.func
 	})

@@ -5,7 +5,7 @@ import { CarretIcon } from '../../../Images'
 import { Button } from '../Button'
 import { FieldProps, Menu } from '../Menu'
 
-const DisplayHeader = ({ className, onClose, title, menu }) => {
+const DisplayHeader = ({ className, onClose, title, menu, hasClose = true }) => {
 	const navigate = useNavigate()
 
 	const localOnClose = (e) => {
@@ -17,13 +17,15 @@ const DisplayHeader = ({ className, onClose, title, menu }) => {
 			<div className={'display-card-header-contents full-width'}>{title || ''}</div>
 			<div className='display-header-spacer' />
 			{menu && <Menu fields={menu.fields} />}
-			<Button
-				id='display-back-button'
-				className='display-back-button'
-				onClick={localOnClose}
-			>
-				<CarretIcon color={'#FFFFFF'} />
-			</Button>
+			{hasClose && (
+				<Button
+					id='display-back-button'
+					className='display-back-button'
+					onClick={localOnClose}
+				>
+					<CarretIcon color={'#FFFFFF'} />
+				</Button>
+			)}
 		</div>
 	)
 }
@@ -34,7 +36,8 @@ DisplayHeader.propTypes = {
 	title: PropTypes.node,
 	menu: PropTypes.shape({
 		fields: FieldProps
-	})
+	}),
+	hasClose: PropTypes.bool
 }
 
 export default DisplayHeader

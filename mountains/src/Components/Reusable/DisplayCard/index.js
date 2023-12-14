@@ -13,7 +13,8 @@ export const DisplayCard = ({
 	className,
 	title,
 	menu,
-	testId
+	testId,
+	hasClose = true
 }) => {
 	return (
 		<div
@@ -25,6 +26,7 @@ export const DisplayCard = ({
 					title={title}
 					onClose={onClose}
 					menu={menu}
+					hasClose={hasClose}
 				/>
 				<div className='display-content flex-box'>{children}</div>
 			</div>
@@ -40,5 +42,6 @@ DisplayCard.propTypes = {
 	title: PropTypes.node,
 	menu: PropTypes.shape({
 		fields: FieldProps
-	})
+	}),
+	hasClose: PropTypes.bool
 }

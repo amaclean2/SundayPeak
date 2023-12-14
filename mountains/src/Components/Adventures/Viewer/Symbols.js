@@ -1,28 +1,13 @@
 import React from 'react'
 import { AspectIcon } from '../../../Images/Symbols/AspectIcon'
-import {
-	DifficultyEasyIcon,
-	DifficultyHardIcon,
-	DifficultyMediumIcon
-} from '../../../Images/Symbols/Difficulty'
-import { ExposureS } from '../../../Images/Symbols/Exposure'
+import DifficultyGraphic from '../../../Images/Symbols/Difficulty'
 
 export const DifficultyViewer = ({ difficulty }) => {
-	switch (Number(difficulty)) {
-		case 1:
-			return <DifficultyEasyIcon />
-		case 2:
-			return <DifficultyMediumIcon />
-		default:
-			return <DifficultyHardIcon />
-	}
+	return <DifficultyGraphic difficultyLevel={Math.round(Number(difficulty.split(':')[0]))} />
 }
 
 export const ExposureViewer = ({ exposure }) => {
-	switch (exposure) {
-		default:
-			return <ExposureS />
-	}
+	return `E${exposure}`
 }
 
 export const Aspect = ({ aspect }) => {

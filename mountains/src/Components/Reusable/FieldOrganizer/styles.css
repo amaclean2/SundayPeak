@@ -1,3 +1,9 @@
+.field {
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+	white-space: pre-line;
+}
+
 .field-page {
 	width: 100%;
 	flex-direction: column;

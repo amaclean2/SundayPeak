@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import cx from 'classnames'
+import { CheckboxChecked, CheckboxEmpty } from 'Images'
 
-const CheckboxField = ({ className, name, value, onChange, label, testId }) => {
+const CheckboxField = ({ className, name, value, onChange, label, testId, reverse = false }) => {
 	const handleChange = (e) => {
 		onChange({
 			target: {
@@ -13,9 +14,10 @@ const CheckboxField = ({ className, name, value, onChange, label, testId }) => {
 
 	return (
 		<label
-			className={cx('checkbox', className, 'label-field')}
+			className={cx('checkbox', className, 'label-field flex-box')}
 			data-testid={testId}
 		>
+			{reverse && label}
 			<input
 				className={'hidden-checkbox'}
 				type='checkbox'
@@ -23,8 +25,8 @@ const CheckboxField = ({ className, name, value, onChange, label, testId }) => {
 				checked={value}
 				onChange={handleChange}
 			/>
-			<div className='checkbox-illus' />
-			{label}
+			{value === true ? <CheckboxChecked /> : <CheckboxEmpty />}
+			{!reverse && label}
 		</label>
 	)
 }
@@ -34,7 +36,8 @@ CheckboxField.propTypes = {
 	name: PropTypes.string,
 	value: PropTypes.bool,
 	onChange: PropTypes.func,
-	label: PropTypes.oneOfType([PropTypes.node, PropTypes.string])
+	label: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+	reverse: PropTypes.bool
 }
 
 export default CheckboxField

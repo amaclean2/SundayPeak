@@ -104,7 +104,7 @@ const ConversationSelector = () => {
 				autoComplete={'off'}
 			/>
 			<FlexSpacer />
-			<ul className='friend-search-list'>{buildList()}</ul>
+			<ul className='friend-search-list flex-box'>{buildList()}</ul>
 		</div>
 	)
 }

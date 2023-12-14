@@ -140,6 +140,7 @@ const ClimbForm = ({ onChange }) => {
 				name='public'
 				label={getContent('adventurePanel.editable.isPublic')}
 				type={'checkbox'}
+				className={'no-padding'}
 				isEditable
 				fullWidth
 				value={

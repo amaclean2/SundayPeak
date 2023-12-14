@@ -16,11 +16,13 @@ import getContent from 'TextContent'
 import { directionSelectOptions, gearOptions, seasonOptions } from 'Components/Adventures/utils'
 import { LargeSkierIcon } from 'Images'
 import DeletePage from './DeletePage'
+import CheckboxField from 'Components/Reusable/FormField/CheckboxField'
 
 const SkiForm = () => {
-	const { currentAdventure, isDeletePageOpen, isPathEditOn } = useAdventureStateContext()
+	const { currentAdventure, isDeletePageOpen, isPathEditOn, matchPath } = useAdventureStateContext()
 	const { toggleDeletePage } = useDeleteAdventure()
-	const { editAdventure, togglePathEdit, savePath, deletePath } = useSaveAdventure()
+	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath } =
+		useSaveAdventure()
 
 	return (
 		<DisplayCard title={currentAdventure.adventure_name || 'New Adventure'}>
@@ -41,8 +43,22 @@ const SkiForm = () => {
 					onChange={() => {}}
 				/>
 				<div className='flex-box path-buttons'>
+					{isPathEditOn && (
+						<FormField
+							name='pathMatch'
+							label={'Match path to a given road or trail'}
+							type={'checkbox'}
+							isEditable
+							fullWidth
+							reverse
+							className='no-padding'
+							value={matchPath}
+							onChange={toggleMatchPath}
+						/>
+					)}
 					{!currentAdventure.path?.length && (
 						<Button
+							small
 							id={'path-add-button'}
 							onClick={() => {
 								if (isPathEditOn) {
@@ -155,22 +171,24 @@ const SkiForm = () => {
 				value={currentAdventure.aspect || 'N'}
 				onChange={editAdventure}
 			/>
-			<FormField
-				name='difficulty'
-				label={getContent('adventurePanel.fields.difficulty')}
-				type='range'
-				options={{
-					range: {
-						min: 1,
-						max: 5,
-						step: 1
-					}
-				}}
-				isEditable
-				fullWidth
-				value={currentAdventure.difficulty || 1}
-				onChange={editAdventure}
-			/>
+			{Number(currentAdventure.difficulty.split(':')[1]) <= 1 && (
+				<FormField
+					name='difficulty'
+					label={getContent('adventurePanel.fields.difficulty')}
+					type='range'
+					options={{
+						range: {
+							min: 1,
+							max: 5,
+							step: 1
+						}
+					}}
+					isEditable
+					fullWidth
+					value={Number(currentAdventure.difficulty.split(':')[0]) || 1}
+					onChange={editAdventure}
+				/>
+			)}
 			<FormField
 				name='exposure'
 				label={getContent('adventurePanel.fields.exposure')}
@@ -201,6 +219,7 @@ const SkiForm = () => {
 				type={'checkbox'}
 				isEditable
 				fullWidth
+				className={'no-padding'}
 				value={
 					![undefined, null].includes(currentAdventure.public) ? currentAdventure.public : true
 				}

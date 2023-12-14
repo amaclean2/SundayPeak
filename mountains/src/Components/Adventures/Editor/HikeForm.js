@@ -19,9 +19,10 @@ import { LargeHikerIcon } from 'Images'
 import DeletePage from './DeletePage'
 
 const HikeForm = () => {
-	const { currentAdventure, isDeletePageOpen, isPathEditOn } = useAdventureStateContext()
+	const { currentAdventure, isDeletePageOpen, isPathEditOn, matchPath } = useAdventureStateContext()
 	const { toggleDeletePage } = useDeleteAdventure()
-	const { editAdventure, togglePathEdit, savePath, deletePath } = useSaveAdventure()
+	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath } =
+		useSaveAdventure()
 
 	return (
 		<DisplayCard title={currentAdventure.adventure_name}>
@@ -41,21 +42,39 @@ const HikeForm = () => {
 					hideLabel
 					onChange={() => {}}
 				/>
-				<Button
-					id={'path-add-button'}
-					onClick={() => {
-						if (isPathEditOn) {
-							savePath()
-						} else {
-							togglePathEdit()
-						}
-					}}
-				>
-					{isPathEditOn ? 'Finish Adding Path' : 'Add Path'}
-				</Button>
-				{!isPathEditOn && currentAdventure.path && (
-					<Button onClick={deletePath}>Delete Path</Button>
-				)}
+				<div className='flex-box path-buttons'>
+					{isPathEditOn && (
+						<FormField
+							name='pathMatch'
+							label={'Match path to a given road or trail'}
+							type={'checkbox'}
+							isEditable
+							fullWidth
+							reverse
+							className='no-padding'
+							value={matchPath}
+							onChange={toggleMatchPath}
+						/>
+					)}
+					{!currentAdventure.path?.length && (
+						<Button
+							small
+							id={'path-add-button'}
+							onClick={() => {
+								if (isPathEditOn) {
+									savePath()
+								} else {
+									togglePathEdit()
+								}
+							}}
+						>
+							{isPathEditOn ? 'Finish Adding Line' : 'Add Line'}
+						</Button>
+					)}
+					{!isPathEditOn && !!currentAdventure.path?.length && (
+						<Button onClick={deletePath}>Delete Line</Button>
+					)}
+				</div>
 			</div>
 			<FormField
 				name={'adventure_name'}
@@ -101,22 +120,24 @@ const HikeForm = () => {
 					}
 				]}
 			/>
-			<FormField
-				name='difficulty'
-				label={getContent('adventurePanel.fields.difficulty')}
-				type='range'
-				options={{
-					range: {
-						min: 1,
-						max: 5,
-						step: 1
-					}
-				}}
-				isEditable
-				fullWidth
-				value={currentAdventure.difficulty || 1}
-				onChange={editAdventure}
-			/>
+			{Number(currentAdventure.difficulty.split(':')[1]) <= 1 && (
+				<FormField
+					name='difficulty'
+					label={getContent('adventurePanel.fields.difficulty')}
+					type='range'
+					options={{
+						range: {
+							min: 1,
+							max: 5,
+							step: 1
+						}
+					}}
+					isEditable
+					fullWidth
+					value={Number(currentAdventure.difficulty.split(':')[0]) || 1}
+					onChange={editAdventure}
+				/>
+			)}
 			<FormField
 				name='season'
 				label={getContent('adventurePanel.editable.bestMonths')}
@@ -139,6 +160,7 @@ const HikeForm = () => {
 				name='public'
 				label={getContent('adventurePanel.editable.isPublic')}
 				type={'checkbox'}
+				className={'no-padding'}
 				isEditable
 				fullWidth
 				value={
