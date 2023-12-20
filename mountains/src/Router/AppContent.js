@@ -30,12 +30,12 @@ const AppContent = () => {
 	}
 
 	return (
-		<SundayPeakProviders>
+		<>
 			<ReactMap />
 			<Outlet />
 			<ImageViewer />
 			<Alert />
-		</SundayPeakProviders>
+		</>
 	)
 }
 

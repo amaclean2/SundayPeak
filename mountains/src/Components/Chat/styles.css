@@ -141,6 +141,7 @@
 	max-width: 60%;
 	word-wrap: break-word;
 	font-size: 0.85rem;
+	white-space: pre-line;
 }
 
 .message-text a {
