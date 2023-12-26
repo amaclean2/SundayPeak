@@ -65,7 +65,7 @@ export const router = createBrowserRouter(
 			>
 				<Route
 					index
-					element={<ButtonBar />}
+					element={<DefaultAdventureView />}
 				/>
 				<Route
 					path={'login'}
