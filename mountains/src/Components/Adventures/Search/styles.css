@@ -2,7 +2,6 @@
 	flex-direction: column;
 	width: 100%;
 	align-items: stretch;
-	border-bottom: 1px solid var(--border-color);
 	overflow: hidden;
 	overflow-y: auto;
 	gap: 1rem;
@@ -15,7 +14,7 @@
 }
 
 .results-container li {
-	padding: 0.4rem 0;
+	padding: 0.6rem;
 	transition: all 0.3s ease-in-out;
 	gap: 0.5rem;
 }
@@ -63,16 +62,4 @@
 
 .delete-page .action-buttons {
 	margin-bottom: 0;
-}
-
-.results-container li {
-	padding: 0.5rem;
-}
-
-@media screen and (max-width: 500px) {
-	.adventure-search.flex-box {
-		max-height: 20rem;
-		padding-bottom: 1.2rem;
-		position: relative;
-	}
 }

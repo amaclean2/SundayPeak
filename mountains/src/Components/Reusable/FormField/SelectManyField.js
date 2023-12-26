@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { Button } from '../Button'
 import ClickWrapper from '../ClickWrapper'
+import { CheckboxChecked, CheckboxEmpty } from 'Images'
 
 const SelectManyField = ({ className, options, onChange, name, value }) => {
 	// selectManyState is the current selection of present fields
@@ -53,7 +54,7 @@ const SelectManyField = ({ className, options, onChange, name, value }) => {
 									className={'hidden-checkbox'}
 									onChange={handleSelectManyState}
 								/>
-								<div className='select-many-illus' />
+								{selectManyState[key] ? <CheckboxChecked /> : <CheckboxEmpty />}
 								{option}
 							</label>
 						))}

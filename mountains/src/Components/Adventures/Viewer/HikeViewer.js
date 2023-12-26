@@ -55,7 +55,9 @@ const HikeViewer = ({ menuContents }) => {
 						<FieldHeader text={'Distance'} />
 						<FieldValue className={'flex-box'}>
 							<DistanceIcon />
-							{getContent('adventurePanel.fields.approachContent', [currentAdventure.distance])}
+							{getContent('adventurePanel.fields.approachContent', [
+								Math.round(currentAdventure.distance * 100) / 100
+							])}
 						</FieldValue>
 					</Field>
 					<Field borderRight>

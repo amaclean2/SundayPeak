@@ -146,6 +146,8 @@ input {
 .select-many-option {
 	margin-bottom: 0.5rem;
 	cursor: pointer;
+	flex-direction: row;
+	gap: 0.5rem;
 }
 
 .form-field.select-many {
@@ -167,6 +169,7 @@ input {
 	background-color: var(--main-light);
 	z-index: 1;
 	box-shadow: 0 0.5rem 0.8rem var(--box-shadow-opacity);
+	gap: 0.1rem;
 }
 
 .slider {
