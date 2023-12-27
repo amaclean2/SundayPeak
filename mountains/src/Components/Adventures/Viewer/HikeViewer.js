@@ -23,6 +23,7 @@ import AdventureTickPanel from '../TickPanel'
 import { formatSeasons, pitchClimbs } from '../utils'
 import { DifficultyViewer } from './Symbols'
 import { Pin } from 'Images'
+import RatingView from 'Components/Reusable/RatingView'
 
 const HikeViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -41,6 +42,11 @@ const HikeViewer = ({ menuContents }) => {
 		>
 			<AdventureGallery />
 			<FieldPage className={'adventure-display-grid'}>
+				<FieldRow className={'narrow-field'}>
+					<Field noPadding>
+						<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+					</Field>
+				</FieldRow>
 				<FieldRow className={'location-row'}>
 					<Field className={'view-location'}>
 						<Pin size={20} />

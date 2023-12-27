@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import {
+	gradeConverter,
 	useAdventureStateContext,
 	useManipulateFlows,
 	useUserStateContext
@@ -21,12 +22,15 @@ import AdventureGallery from '../Gallery'
 import AdventureTickPanel from '../TickPanel'
 import { formatSeasons, pitchClimbs } from '../utils'
 import { Pin } from 'Images'
+import RatingView from 'Components/Reusable/RatingView'
 
 const ClimbViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { closeAdventureView } = useManipulateFlows()
 	const { loggedInUser } = useUserStateContext()
 	const navigate = useNavigate()
+
+	console.log(currentAdventure)
 
 	return (
 		<DisplayCard
@@ -39,6 +43,11 @@ const ClimbViewer = ({ menuContents }) => {
 		>
 			<AdventureGallery />
 			<FieldPage className={'adventure-display-grid'}>
+				<FieldRow className={'narrow-field'}>
+					<Field noPadding>
+						<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+					</Field>
+				</FieldRow>
 				<FieldRow className={'location-row'}>
 					<Field className={'view-location'}>
 						<Pin size={20} />
@@ -55,7 +64,9 @@ const ClimbViewer = ({ menuContents }) => {
 					</Field>
 					<Field borderRight>
 						<FieldHeader text={'Grade'} />
-						<FieldValue>{currentAdventure.grade}</FieldValue>
+						<FieldValue>
+							{gradeConverter(currentAdventure?.difficulty, currentAdventure?.climb_type)}
+						</FieldValue>
 					</Field>
 					<Field>
 						<FieldHeader text={'First Ascent'} />

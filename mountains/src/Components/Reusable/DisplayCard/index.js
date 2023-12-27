@@ -22,12 +22,14 @@ export const DisplayCard = ({
 			data-testid={testId}
 		>
 			<div className={cx('display-card', className)}>
-				<DisplayHeader
-					title={title}
-					onClose={onClose}
-					menu={menu}
-					hasClose={hasClose}
-				/>
+				{title && (
+					<DisplayHeader
+						title={title}
+						onClose={onClose}
+						menu={menu}
+						hasClose={hasClose}
+					/>
+				)}
 				<div className='display-content flex-box'>{children}</div>
 			</div>
 		</div>

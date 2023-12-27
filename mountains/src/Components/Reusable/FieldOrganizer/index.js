@@ -12,9 +12,10 @@ export const FieldRow = ({ children, className, borderBottom }) => (
 	</div>
 )
 
-export const Field = ({ children, className, borderRight, onClick }) => (
+export const Field = ({ children, className, borderRight, onClick, noPadding }) => (
 	<div
 		className={cx(className, borderRight && 'border-right', 'field flex-box')}
+		style={noPadding && { padding: '0' }}
 		onClick={onClick}
 	>
 		{children}

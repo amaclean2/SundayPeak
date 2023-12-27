@@ -2,7 +2,7 @@
 	margin: 10px;
 	min-width: 28rem;
 	border-radius: 0.5rem;
-	box-shadow: 0 5px 10px var(--box-shadow-opacity);
+	box-shadow: 0 0 10px var(--box-shadow-opacity);
 	flex-direction: column;
 	overflow: hidden;
 	transition: opacity 0.3s ease-in-out;
