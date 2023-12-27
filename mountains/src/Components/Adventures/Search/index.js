@@ -1,5 +1,9 @@
 import { useState } from 'react'
-import { useDebounce, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
+import {
+	useAdventureStateContext,
+	useDebounce,
+	useGetAdventures
+} from '@amaclean2/sundaypeak-treewells'
 import { useNavigate } from 'react-router'
 
 import { FlexSpacer, FormField } from 'Components/Reusable'
@@ -9,19 +13,23 @@ import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
 
 const AdventureSearch = () => {
 	const { searchAdventures } = useGetAdventures()
-
+	const { adventuresList, globalAdventureType } = useAdventureStateContext()
 	const [searchResults, setSearchResults] = useState(null)
 	const [adventureText, setAdventureText] = useState('')
 	const navigate = useNavigate()
 
 	const handleSendSearchText = useDebounce((text) => {
-		text.length && searchAdventures({ searchQuery: text }).then(setSearchResults)
+		text.length
+			? searchAdventures({ searchQuery: text }).then(setSearchResults)
+			: setSearchResults(null)
 	})
 
 	const handleChange = (event) => {
 		setAdventureText(event.target.value)
 		handleSendSearchText(event.target.value)
 	}
+
+	console.log({ searchResults })
 
 	return (
 		<>
@@ -38,9 +46,9 @@ const AdventureSearch = () => {
 					placeholder={'Find an adventure'}
 					onChange={handleChange}
 				/>
-				{searchResults ? (
+				{searchResults?.length ? (
 					<ul className={'results-container'}>
-						{searchResults.map((result, key) => (
+						{searchResults?.map((result, key) => (
 							<li
 								key={`search_result_${key}`}
 								className={'drop-list-item flex-box'}
@@ -58,7 +66,19 @@ const AdventureSearch = () => {
 						))}
 					</ul>
 				) : (
-					<div className={'adventure-search-spacer'} />
+					<ul className={'results-container'}>
+						{adventuresList?.map((result, key) => (
+							<li
+								key={`adventure_${key}`}
+								className={'drop-list-item flex-box'}
+								onClick={() => navigate(`/adventure/${globalAdventureType}/${result.id}`)}
+							>
+								<span className='result-title'>{result.adventure_name}</span>
+								<FlexSpacer />
+								<span className='drop-list-secondary'>{result.nearest_city}</span>
+							</li>
+						))}
+					</ul>
 				)}
 			</div>
 		</>

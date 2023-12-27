@@ -1,15 +1,20 @@
-import { useState } from 'react'
-import { useCreateUser, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
+import {
+	useCreateUser,
+	useEditUser,
+	useManipulateFlows,
+	useUserStateContext
+} from '@amaclean2/sundaypeak-treewells'
 
 import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
 
 export const PasswordResetCapture = () => {
-	const [resetEmail, setResetEmail] = useState('')
 	const { sendPasswordResetLinkToEmail } = useCreateUser()
+	const { editFormFields } = useEditUser()
+	const { formFields } = useUserStateContext()
 	const { closeCard } = useManipulateFlows()
 
 	const handleResetButton = () => {
-		sendPasswordResetLinkToEmail({ email: resetEmail })
+		sendPasswordResetLinkToEmail()
 		closeCard('An email has been sent to reset your password')
 	}
 
@@ -26,8 +31,8 @@ export const PasswordResetCapture = () => {
 				placeholder={'email'}
 				isEditable
 				autoComplete={'on'}
-				value={resetEmail}
-				onChange={(e) => setResetEmail(e.target.value)}
+				value={formFields.email}
+				onChange={(e) => editFormFields({ name: e.target.name, value: e.target.value })}
 			/>
 			<FooterButtons className='reset-buttons'>
 				<Button

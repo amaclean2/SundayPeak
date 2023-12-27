@@ -1,5 +1,5 @@
 import { RouterProvider } from 'react-router-dom'
-import { Connections } from '@amaclean2/sundaypeak-treewells'
+import { Connections, SundayPeakProviders } from '@amaclean2/sundaypeak-treewells'
 
 const { router } = require('Router')
 
@@ -11,6 +11,10 @@ Connections.setConnections(
 	localStorage
 )
 
-const App = () => <RouterProvider router={router} />
+const App = () => (
+	<SundayPeakProviders>
+		<RouterProvider router={router} />
+	</SundayPeakProviders>
+)
 
 export default App

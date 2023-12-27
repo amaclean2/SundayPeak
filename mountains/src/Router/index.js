@@ -14,7 +14,6 @@ import ButtonBar from 'Components/ButtonBar'
 import { LoginFlow, NewPassword, PasswordResetCapture, SignupFlow } from 'Components/SignupFlow'
 import UserViewer from 'Components/UserProfile/Viewer'
 import UserEditor from 'Components/UserProfile/Editor'
-import Chat from 'Components/Chat'
 import DefaultAdventureView from 'Components/Adventures'
 import CreateNewAdventure from 'Components/Adventures/CreateNewAdventure'
 import AdventureEditorForm from 'Components/Adventures/Editor'
@@ -24,6 +23,7 @@ import MetaPageContent from 'MetaPages'
 import HomePage from 'MetaPages/FirstPage'
 import PrivacyPolicy from 'MetaPages/Privacy'
 import SupportPage from 'MetaPages/Support'
+import MessagingContianer from 'Components/Chat/MessagingContainer'
 
 export const title = 'Sunday Peak'
 
@@ -65,7 +65,7 @@ export const router = createBrowserRouter(
 			>
 				<Route
 					index
-					element={<ButtonBar />}
+					element={<DefaultAdventureView />}
 				/>
 				<Route
 					path={'login'}
@@ -127,7 +127,7 @@ export const router = createBrowserRouter(
 				</Route>
 				<Route
 					path={'conversations'}
-					element={<Chat />}
+					element={<MessagingContianer />}
 				/>
 			</Route>
 		</Route>

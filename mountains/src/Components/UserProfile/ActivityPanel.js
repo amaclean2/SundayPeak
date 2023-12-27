@@ -12,12 +12,12 @@ const CompletedAdventure = ({ activity, onClick }) => (
 		onClick={onClick}
 		className='tick drop-list-item flex-box'
 	>
-		<span className={'main-text'}>{activity.adventure_name}</span>
 		<span className='drop-list-image'>
 			{activity.adventure_type === 'ski' && <LargeSkierIcon size={ICON_SIZE} />}
 			{activity.adventure_type === 'climb' && <LargeClimberIcon size={ICON_SIZE} />}
 			{activity.adventure_type === 'hike' && <LargeHikerIcon size={ICON_SIZE} />}
 		</span>
+		<span className={'main-text'}>{activity.adventure_name}</span>
 	</li>
 )
 

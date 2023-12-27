@@ -2,7 +2,7 @@
 	margin: 10px;
 	min-width: 28rem;
 	border-radius: 0.5rem;
-	box-shadow: 0 5px 10px var(--box-shadow-opacity);
+	box-shadow: 0 0 10px var(--box-shadow-opacity);
 	flex-direction: column;
 	overflow: hidden;
 	transition: opacity 0.3s ease-in-out;
@@ -156,6 +156,7 @@ h3.label-field {
 	border-bottom: 1px solid var(--border-color);
 	border-left: none;
 	justify-content: space-between;
+	font-size: 0.9rem;
 }
 
 .main-text {

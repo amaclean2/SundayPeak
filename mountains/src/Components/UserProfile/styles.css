@@ -183,12 +183,14 @@ h1 {
 	color: var(--main-off-dark);
 }
 
-@media screen and (max-width: 500px) {
-	.main-user-content {
-		max-width: 100%;
-	}
+.friend-image {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 2rem;
+}
 
-	.friend-list-container.flex-box {
-		width: 100%;
-	}
+.tick.drop-list-item {
+	justify-content: flex-start;
+	align-items: center;
+	gap: 1rem;
 }

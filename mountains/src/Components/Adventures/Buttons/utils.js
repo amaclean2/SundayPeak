@@ -18,7 +18,7 @@ export const useAdventureMenu = () => {
 
 	const navigate = useNavigate()
 
-	const buildAdventureMenu = () => {
+	const buildAdventureMenu = (setIsCompleteMenuOpen) => {
 		if (!loggedInUser) return null
 
 		const canAddTodo =
@@ -69,11 +69,13 @@ export const useAdventureMenu = () => {
 
 			if (canComplete) {
 				fields.push({
-					action: () =>
-						saveCompletedAdventure({
-							adventureId: currentAdventure.id,
-							adventureType: currentAdventure.adventure_type
-						}),
+					action: () => {
+						setIsCompleteMenuOpen(true)
+					},
+					// saveCompletedAdventure({
+					// 	adventureId: currentAdventure.id,
+					// 	adventureType: currentAdventure.adventure_type
+					// }),
 					id: 'adventure-complete-button',
 					text: getContent('buttonText.completeActivity')
 				})

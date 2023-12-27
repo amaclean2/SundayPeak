@@ -38,7 +38,6 @@ const AdventureTickPanel = () => {
 						<UserImage url={todo.profile_picture_url} />
 						{todo.display_name}
 						<FlexSpacer />
-						<MailIcon />
 					</li>
 				))}
 			</ul>

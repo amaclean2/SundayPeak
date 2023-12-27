@@ -5,6 +5,10 @@ export const Friend = ({ friend, onClick }) => (
 		onClick={onClick}
 		className='tick drop-list-item flex-box'
 	>
+		<img
+			src={friend.profile_picture_url}
+			className={'friend-image'}
+		/>
 		{friend.display_name}
 	</li>
 )

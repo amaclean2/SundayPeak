@@ -5,6 +5,7 @@ import {
 	useSaveAdventure,
 	useTokenStateContext
 } from '@amaclean2/sundaypeak-treewells'
+import { useEffect, useRef } from 'react'
 
 export const useCreateNewAdventure = () => {
 	const { adventureAddState } = useAdventureStateContext()
@@ -49,12 +50,24 @@ export const adventurePathColor = (adventure_type = 'ski') => {
 export const useRouteHandling = () => {
 	const { mapboxToken } = useTokenStateContext()
 	const { updatePath } = useSaveAdventure()
+	const { matchPath } = useAdventureStateContext()
+	const localMatch = useRef(matchPath)
+
+	useEffect(() => {
+		localMatch.current = matchPath
+	}, [matchPath])
 
 	const updateRoute = (event) => {
 		const profile = 'walking'
 		// features is an array of geojson lineString 'Feature's
 		const lastFeature = event.features.length - 1
 		const coordinates = event.features[lastFeature].geometry.coordinates
+
+		// matchPath is a toggle that tells if the user wants to match the path to a given road or not
+		if (!localMatch.current) {
+			return updatePath(coordinates)
+		}
+
 		const newCoordinates = coordinates.join(';')
 		const radius = coordinates.map(() => 40)
 
@@ -68,7 +81,6 @@ export const useRouteHandling = () => {
 				`https://api.mapbox.com/matching/v5/mapbox/${profile}/${coordinates}?geometries=geojson&radiuses=${radiuses}&overview=full&access_token=${mapboxToken}`,
 				{ method: 'GET' }
 			)
-
 			const response = await query.json()
 
 			if (response.code !== 'Ok') {
@@ -76,8 +88,6 @@ export const useRouteHandling = () => {
 			}
 
 			const resultCoordinates = response.matchings[0].geometry.coordinates
-
-			console.log({ resultCoordinates: response.matchings })
 
 			updatePath(resultCoordinates)
 		} catch (error) {

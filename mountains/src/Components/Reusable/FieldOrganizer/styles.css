@@ -1,3 +1,9 @@
+.field {
+	font-size: 0.9rem;
+	line-height: 1.2rem;
+	white-space: pre-line;
+}
+
 .field-page {
 	width: 100%;
 	flex-direction: column;
@@ -57,24 +63,6 @@
 	padding: 0.5rem 0;
 }
 
-@media screen and (max-width: 500px) {
-	.field-row.flex-box {
-		flex-direction: column;
-		padding: 0;
-	}
-
-	.field-row.border-bottom {
-		border-bottom: none;
-	}
-
-	.field-row .field {
-		border-bottom: 1px solid var(--border-color);
-		width: 100%;
-		align-items: flex-start;
-		padding: 1rem 1.5rem;
-	}
-
-	.field.border-right {
-		border-right: none;
-	}
+.narrow-field.flex-box {
+	padding: 0.5rem 0;
 }

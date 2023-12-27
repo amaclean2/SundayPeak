@@ -11,6 +11,7 @@ const MessageBody = () => {
 	const { loggedInUser } = useUserStateContext()
 
 	useEffect(() => {
+		console.log({ messages })
 		if (!scrollRef.current) {
 			return
 		}
@@ -27,7 +28,7 @@ const MessageBody = () => {
 			ref={scrollRef}
 			className='messages-content flex-box'
 		>
-			<ul className={'conversation-messages'}>
+			<ul className={'conversation-messages flex-box'}>
 				{messages?.map((message, key) => (
 					<li
 						key={`message_${key}`}

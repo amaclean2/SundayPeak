@@ -1,0 +1,23 @@
+.rating-icon {
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	height: auto;
+}
+
+.rating-icon:hover {
+	border-radius: 100%;
+	background-color: var(--main-off-white);
+}
+
+.rating-group {
+	flex-direction: row;
+	gap: 0.4rem;
+	justify-content: flex-start;
+}
+
+.rating-selector p {
+	color: var(--main-off-dark);
+	margin: 0.3rem 0;
+	font-size: 0.9rem;
+}

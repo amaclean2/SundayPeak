@@ -1,10 +1,45 @@
-import React from 'react';
+import React from 'react'
 
-export const CheckboxChecked = () => {
-  return (
-    <svg id="Checkbox" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-      <circle id="Ellipse_7" data-name="Ellipse 7" cx="10.5" cy="10.5" r="10.5" fill="#007f98" />
-      <path id="Path_7" data-name="Path 7" d="M537.507,327.047s-.284,5.891,1.245,7.272,13.29.059,13.29.059" transform="translate(-608.757 160.069) rotate(-45)" fill="none" stroke="#fff" stroke-width="2" />
-    </svg>
-  );
-};
+export const CheckboxChecked = ({ color = '#02ad85' }) => {
+	return (
+		<svg
+			width='19'
+			height='19'
+			viewBox='0 0 19 19'
+		>
+			<path
+				d='M-284.893-371h-11a4.005,4.005,0,0,1-4-4v-11a4,4,0,0,1,4-4h11a4,4,0,0,1,4,4v11A4,4,0,0,1-284.893-371Zm-11-17a2,2,0,0,0-2,2v11a2,2,0,0,0,2,2h11a2,2,0,0,0,2-2v-11a2,2,0,0,0-2-2Z'
+				transform='translate(299.893 390)'
+				fill={color}
+			/>
+			<rect
+				width='8'
+				height='3'
+				rx='1'
+				transform='translate(4.528 7.364) rotate(45)'
+				fill={color}
+			/>
+			<rect
+				width='3'
+				height='12'
+				rx='1'
+				transform='translate(14.428 4.535) rotate(45)'
+				fill={color}
+			/>
+		</svg>
+	)
+}
+
+export const CheckboxEmpty = ({ color = '#666666' }) => (
+	<svg
+		width='19'
+		height='19'
+		viewBox='0 0 19 19'
+	>
+		<path
+			d='M-284.893-341h-11a4,4,0,0,1-4-4v-11a4,4,0,0,1,4-4h11a4,4,0,0,1,4,4v11A4,4,0,0,1-284.893-341Zm-11-17a2,2,0,0,0-2,2v11a2,2,0,0,0,2,2h11a2,2,0,0,0,2-2v-11a2,2,0,0,0-2-2Z'
+			transform='translate(299.893 360)'
+			fill={color}
+		/>
+	</svg>
+)

@@ -11,8 +11,9 @@ import {
 	useAdventureStateContext,
 	useDebounce,
 	useManipulateFlows,
+	useMessages,
 	useTokenStateContext,
-	useSaveAdventure
+	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
 import { adventurePathColor, useCreateNewAdventure, useRouteHandling } from './utils'
@@ -47,8 +48,11 @@ const ReactMap = () => {
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 	const { updateStartPosition } = useManipulateFlows()
 	const navigate = useNavigate()
-	const [features, setFeatures] = useState({})
 	const { updateRoute } = useRouteHandling()
+	const { initiateConnection } = useMessages()
+	const { loggedInUser } = useUserStateContext()
+
+	const [features, setFeatures] = useState({})
 
 	const onDelete = useCallback((e) => {
 		setFeatures((currFeatures) => {
@@ -62,7 +66,7 @@ const ReactMap = () => {
 	}, [])
 
 	const onLoad = () => {
-		// this is a reference to the map dom element
+		// this is a reference to the map DOM element
 		const map = mapRef.current?.getMap()
 
 		const icons = [
@@ -73,10 +77,20 @@ const ReactMap = () => {
 
 		// if there's a current adventure and the map is loading, fly to that adventure
 		if (currentAdventure) {
-			mapRef.current.flyTo({
-				center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
-				zoom: 16
-			})
+			if (currentAdventure.cameraBounds?.ne?.length && currentAdventure.cameraBounds?.sw?.length) {
+				mapRef.current.fitBounds(
+					[currentAdventure.cameraBounds.ne, currentAdventure.cameraBounds.sw],
+					{
+						padding: 100,
+						offset: [100, 0]
+					}
+				)
+			} else {
+				mapRef.current.flyTo({
+					center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
+					zoom: 16
+				})
+			}
 		}
 
 		icons.forEach(([icon, iconName]) => {
@@ -103,14 +117,31 @@ const ReactMap = () => {
 	}
 
 	useEffect(() => {
+		// initiate the websocket connection
+		if (loggedInUser?.id) {
+			initiateConnection()
+		}
+	}, [loggedInUser?.id])
+
+	useEffect(() => {
 		if (currentAdventure === null || !mapRef.current) {
 			return
 		}
 
-		mapRef.current.flyTo({
-			center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
-			zoom: 13
-		})
+		if (currentAdventure.cameraBounds?.ne?.length && currentAdventure.cameraBounds?.sw?.length) {
+			mapRef.current.fitBounds(
+				[currentAdventure.cameraBounds.ne, currentAdventure.cameraBounds.sw],
+				{
+					padding: 100,
+					offset: [100, 0]
+				}
+			)
+		} else {
+			mapRef.current.flyTo({
+				center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
+				zoom: 16
+			})
+		}
 	}, [currentAdventure?.id, mapRef.current])
 
 	if (!(allAdventures && mapboxToken && mapboxStyleKey)) {

@@ -23,6 +23,7 @@ import AdventureTickPanel from '../TickPanel'
 import { formatGearList, formatSeasons } from '../utils'
 import { Aspect, DifficultyViewer, ExposureViewer } from './Symbols'
 import { Pin } from 'Images'
+import RatingView from 'Components/Reusable/RatingView'
 
 const SkiViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -41,6 +42,11 @@ const SkiViewer = ({ menuContents }) => {
 		>
 			<AdventureGallery />
 			<FieldPage className={'adventure-display-grid'}>
+				<FieldRow className={'narrow-field'}>
+					<Field noPadding>
+						<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+					</Field>
+				</FieldRow>
 				<FieldRow className={'location-row'}>
 					<Field className={'view-location'}>
 						<Pin size={20} />
@@ -85,7 +91,9 @@ const SkiViewer = ({ menuContents }) => {
 						<FieldHeader text={getContent('adventurePanel.fields.approach')} />
 						<FieldValue className='flex-box'>
 							<DistanceIcon />
-							{getContent('adventurePanel.fields.approachContent', [currentAdventure.distance])}
+							{getContent('adventurePanel.fields.approachContent', [
+								Math.round(currentAdventure.distance * 100) / 100
+							])}
 						</FieldValue>
 					</Field>
 					<Field>

@@ -1,128 +1,175 @@
-export const DifficultyEasyIcon = () => (
+import React from 'react'
+
+const DifficultyEasyIcon = () => (
 	<svg
-		id='Layer_1'
-		data-name='Layer 1'
-		xmlns='http://www.w3.org/2000/svg'
-		width='90'
-		height='32'
-		viewBox='0 0 90 32'
+		width='101'
+		height='13'
+		viewBox='0 0 101 13'
+		style={{ paddingVertical: 15 }}
 	>
-		<path d='M83.93,17.34H6A1.07,1.07,0,1,1,6,15.2H83.93a1.07,1.07,0,0,1,0,2.14Z' />
-		<g>
+		<rect
+			width='101'
+			height='3'
+			rx='1.5'
+			transform='translate(0 5)'
+		/>
+		<g
+			transform='translate(4)'
+			fill='#0aff00'
+			stroke='#000'
+			strokeWidth='1'
+		>
 			<circle
-				className='cls-1'
-				cx='69.19'
-				cy='16.27'
-				r='4.28'
-				fill='#FFFFFF'
+				cx='6.5'
+				cy='6.5'
+				r='6.5'
+				stroke='none'
 			/>
-			<path d='M69.19,12.52a3.75,3.75,0,1,1-3.74,3.75,3.75,3.75,0,0,1,3.74-3.75m0-1.07A4.82,4.82,0,1,0,74,16.27a4.82,4.82,0,0,0-4.82-4.82Z' />
-		</g>
-		<g>
 			<circle
-				className='cls-1'
-				cx='44.19'
-				cy='16.27'
-				r='4.28'
-				fill='#FFFFFF'
+				cx='6.5'
+				cy='6.5'
+				r='6'
+				fill='none'
 			/>
-			<path d='M44.19,12.52a3.75,3.75,0,1,1-3.74,3.75,3.75,3.75,0,0,1,3.74-3.75m0-1.07A4.82,4.82,0,1,0,49,16.27a4.82,4.82,0,0,0-4.82-4.82Z' />
-		</g>
-		<g>
-			<circle
-				className='cls-2'
-				cx='19.58'
-				cy='16.27'
-				r='5.57'
-				fill='#33CC33'
-			/>
-			<path d='M19.58,11.23a5,5,0,1,1-5,5,5,5,0,0,1,5-5m0-1.07a6.11,6.11,0,1,0,6.11,6.11,6.11,6.11,0,0,0-6.11-6.11Z' />
 		</g>
 	</svg>
 )
 
-export const DifficultyMediumIcon = () => (
+const DifficultyMediumIcon = () => (
 	<svg
-		id='Layer_1'
-		data-name='Layer 1'
-		xmlns='http://www.w3.org/2000/svg'
-		width='90'
-		height='32'
-		viewBox='0 0 90 32'
+		width='101'
+		height='13'
+		viewBox='0 0 101 13'
+		style={{ paddingVertical: 15 }}
 	>
-		<g>
-			<path d='M83.93,17.34H6A1.07,1.07,0,1,1,6,15.2H83.93a1.07,1.07,0,0,1,0,2.14Z' />
-			<g>
-				<circle
-					className='cls-1'
-					cx='69.19'
-					cy='16.27'
-					r='4.28'
-					fill='#FFFFFF'
-				/>
-				<path d='M69.19,12.52a3.75,3.75,0,1,1-3.74,3.75,3.75,3.75,0,0,1,3.74-3.75m0-1.07A4.82,4.82,0,1,0,74,16.27a4.82,4.82,0,0,0-4.82-4.82Z' />
-			</g>
-			<g>
-				<circle
-					className='cls-1'
-					cx='19.97'
-					cy='16.27'
-					r='4.28'
-					fill='#FFFFFF'
-				/>
-				<path d='M20,12.52a3.75,3.75,0,1,1-3.75,3.75A3.75,3.75,0,0,1,20,12.52m0-1.07a4.82,4.82,0,1,0,4.82,4.82A4.82,4.82,0,0,0,20,11.45Z' />
-			</g>
-			<g>
-				<circle
-					className='cls-2'
-					cx='44.58'
-					cy='16.27'
-					r='5.57'
-					fill='#1B68FF'
-				/>
-				<path d='M44.58,11.23a5,5,0,1,1-5,5,5,5,0,0,1,5-5m0-1.07a6.11,6.11,0,1,0,6.11,6.11,6.11,6.11,0,0,0-6.11-6.11Z' />
-			</g>
+		<rect
+			width='101'
+			height='3'
+			rx='1.5'
+			transform='translate(0 5)'
+		/>
+		<g
+			transform='translate(24)'
+			fill='#0089ff'
+			stroke='#000'
+			strokeWidth='1'
+		>
+			<circle
+				cx='6.5'
+				cy='6.5'
+				r='6.5'
+				stroke='none'
+			/>
+			<circle
+				cx='6.5'
+				cy='6.5'
+				r='6'
+				fill='none'
+			/>
 		</g>
 	</svg>
 )
 
-export const DifficultyHardIcon = () => (
+const DifficultyHardIcon = () => (
 	<svg
-		id='Layer_1'
-		data-name='Layer 1'
-		xmlns='http://www.w3.org/2000/svg'
-		width='90'
-		height='31.74'
-		viewBox='0 0 90 31.74'
+		width='101'
+		height='13'
+		viewBox='0 0 101 13'
+		style={{ paddingVertical: 15 }}
 	>
-		<path d='M83.93,17.21H6a1.07,1.07,0,1,1,0-2.14H83.93a1.07,1.07,0,0,1,0,2.14Z' />
-		<g>
-			<circle
-				className='cls-1'
-				cx='45.19'
-				cy='16.14'
-				r='4.28'
-				fill='#FFFFFF'
+		<rect
+			width='101'
+			height='3'
+			rx='1.5'
+			transform='translate(0 5)'
+		/>
+		<g transform='translate(44)'>
+			<path
+				d='M 6.5 12.5 C 3.191590070724487 12.5 0.5 9.808409690856934 0.5 6.5 C 0.5 3.191590070724487 3.191590070724487 0.5 6.5 0.5 C 9.808409690856934 0.5 12.5 3.191590070724487 12.5 6.5 C 12.5 9.808409690856934 9.808409690856934 12.5 6.5 12.5 Z'
+				stroke='none'
 			/>
-			<path d='M45.19,12.39a3.75,3.75,0,1,1-3.74,3.75,3.75,3.75,0,0,1,3.74-3.75m0-1.07A4.82,4.82,0,1,0,50,16.14a4.82,4.82,0,0,0-4.82-4.82Z' />
-		</g>
-		<g>
-			<circle
-				className='cls-1'
-				cx='19.97'
-				cy='16.14'
-				r='4.28'
-				fill='#FFFFFF'
+			<path
+				d='M 6.5 1 C 3.467289924621582 1 1 3.467289924621582 1 6.5 C 1 9.532710075378418 3.467289924621582 12 6.5 12 C 9.532710075378418 12 12 9.532710075378418 12 6.5 C 12 3.467289924621582 9.532710075378418 1 6.5 1 M 6.5 0 C 10.0898494720459 0 13 2.910149574279785 13 6.5 C 13 10.0898494720459 10.0898494720459 13 6.5 13 C 2.910149574279785 13 0 10.0898494720459 0 6.5 C 0 2.910149574279785 2.910149574279785 0 6.5 0 Z'
+				stroke='none'
+				fill='#000'
 			/>
-			<path d='M20,12.39a3.75,3.75,0,1,1-3.75,3.75A3.75,3.75,0,0,1,20,12.39m0-1.07a4.82,4.82,0,1,0,4.82,4.82A4.82,4.82,0,0,0,20,11.32Z' />
-		</g>
-		<g>
-			<circle
-				cx='69.58'
-				cy='16.14'
-				r='5.57'
-			/>
-			<path d='M69.58,11.1a5,5,0,1,1-5,5,5,5,0,0,1,5-5m0-1.07a6.11,6.11,0,1,0,6.11,6.11A6.11,6.11,0,0,0,69.58,10Z' />
 		</g>
 	</svg>
 )
+
+const DifficultyExtremeIcon = () => (
+	<svg
+		width='101'
+		height='13'
+		viewBox='0 0 101 13'
+		style={{ paddingVertical: 15 }}
+	>
+		<rect
+			width='101'
+			height='3'
+			rx='1.5'
+			transform='translate(0 5)'
+		/>
+		<g
+			transform='translate(64)'
+			fill='#5800ff'
+		>
+			<path
+				d='M 6.5 12.5 C 3.191590070724487 12.5 0.5 9.808409690856934 0.5 6.5 C 0.5 3.191590070724487 3.191590070724487 0.5 6.5 0.5 C 9.808409690856934 0.5 12.5 3.191590070724487 12.5 6.5 C 12.5 9.808409690856934 9.808409690856934 12.5 6.5 12.5 Z'
+				stroke='none'
+			/>
+			<path
+				d='M 6.5 1 C 3.467289924621582 1 1 3.467289924621582 1 6.5 C 1 9.532710075378418 3.467289924621582 12 6.5 12 C 9.532710075378418 12 12 9.532710075378418 12 6.5 C 12 3.467289924621582 9.532710075378418 1 6.5 1 M 6.5 0 C 10.0898494720459 0 13 2.910149574279785 13 6.5 C 13 10.0898494720459 10.0898494720459 13 6.5 13 C 2.910149574279785 13 0 10.0898494720459 0 6.5 C 0 2.910149574279785 2.910149574279785 0 6.5 0 Z'
+				stroke='none'
+				fill='#000'
+			/>
+		</g>
+	</svg>
+)
+
+const DifficultyProIcon = () => (
+	<svg
+		width='101'
+		height='13'
+		viewBox='0 0 101 13'
+		style={{ paddingVertical: 15 }}
+	>
+		<rect
+			width='101'
+			height='3'
+			rx='1.5'
+			transform='translate(0 5)'
+		/>
+		<g
+			transform='translate(84)'
+			fill='#ef2c2c'
+		>
+			<path
+				d='M 6.5 12.5 C 3.191590070724487 12.5 0.5 9.808409690856934 0.5 6.5 C 0.5 3.191590070724487 3.191590070724487 0.5 6.5 0.5 C 9.808409690856934 0.5 12.5 3.191590070724487 12.5 6.5 C 12.5 9.808409690856934 9.808409690856934 12.5 6.5 12.5 Z'
+				stroke='none'
+			/>
+			<path
+				d='M 6.5 1 C 3.467289924621582 1 1 3.467289924621582 1 6.5 C 1 9.532710075378418 3.467289924621582 12 6.5 12 C 9.532710075378418 12 12 9.532710075378418 12 6.5 C 12 3.467289924621582 9.532710075378418 1 6.5 1 M 6.5 0 C 10.0898494720459 0 13 2.910149574279785 13 6.5 C 13 10.0898494720459 10.0898494720459 13 6.5 13 C 2.910149574279785 13 0 10.0898494720459 0 6.5 C 0 2.910149574279785 2.910149574279785 0 6.5 0 Z'
+				stroke='none'
+				fill='#000'
+			/>
+		</g>
+	</svg>
+)
+
+const DifficultyGraphic = ({ difficultyLevel = 1 }) => {
+	switch (difficultyLevel) {
+		case 1:
+			return <DifficultyEasyIcon />
+		case 2:
+			return <DifficultyMediumIcon />
+		case 3:
+			return <DifficultyHardIcon />
+		case 4:
+			return <DifficultyExtremeIcon />
+		default:
+			return <DifficultyProIcon />
+	}
+}
+
+export default DifficultyGraphic
