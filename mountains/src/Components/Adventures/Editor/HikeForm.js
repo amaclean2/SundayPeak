@@ -8,7 +8,6 @@ import {
 	Button,
 	DisplayCard,
 	ErrorField,
-	FlexSpacer,
 	FooterButtons,
 	FormField,
 	MultiField
@@ -135,7 +134,11 @@ const HikeForm = () => {
 					isEditable
 					fullWidth
 					value={Number(currentAdventure.difficulty.split(':')[0]) || 1}
-					onChange={editAdventure}
+					onChange={(event) =>
+						editAdventure({
+							target: { name: 'difficulty', value: `${event.target.value}:1` }
+						})
+					}
 				/>
 			)}
 			<FormField
