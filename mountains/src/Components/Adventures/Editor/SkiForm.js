@@ -186,7 +186,9 @@ const SkiForm = () => {
 					isEditable
 					fullWidth
 					value={Number(currentAdventure.difficulty.split(':')[0]) || 1}
-					onChange={editAdventure}
+					onChange={(event) =>
+						editAdventure({ target: { name: 'difficulty', value: `${event.target.value}:1` } })
+					}
 				/>
 			)}
 			<FormField
