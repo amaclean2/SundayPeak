@@ -11,7 +11,6 @@ const MessageBody = () => {
 	const { loggedInUser } = useUserStateContext()
 
 	useEffect(() => {
-		console.log({ messages })
 		if (!scrollRef.current) {
 			return
 		}

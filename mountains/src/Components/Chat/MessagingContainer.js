@@ -13,13 +13,18 @@ import ConversationSelector from './ConversationSelector'
 import MessageBar from './MessageBar'
 
 import './styles.css'
+import { useChatEditorMenu } from './utils'
+import NewUserModal from './NewUserModal'
 
 const MessagingContianer = () => {
 	const navigate = useNavigate()
 	const { closeConnection, initiateConnection } = useMessages()
 	const { conversations, currentConversationId, websocket } = useMessagingStateContext()
 	const { loggedInUser } = useUserStateContext()
+	const { buildEditorMenu } = useChatEditorMenu()
+
 	const [conversationTitle, setConversationTitle] = useState('Conversations')
+	const [isConversationModalOpen, setIsConversationModalOpen] = useState(false)
 
 	useEffect(() => {
 		const currentConversation = conversations?.[currentConversationId]
@@ -40,20 +45,26 @@ const MessagingContianer = () => {
 	}, [])
 
 	return (
-		<DisplayCard
-			configuration={'left'}
-			className={'messaging-display-card'}
-			title={conversationTitle}
-			onClose={() => navigate('/discover')}
-		>
-			<div className={'messaging-container full-width flex-box'}>
-				<ConversationSelector />
-				<div className={cx('chat-content flex-box full-width')}>
-					<MessageBody />
-					<MessageBar />
+		<>
+			<DisplayCard
+				menu={buildEditorMenu(() => setIsConversationModalOpen(true))}
+				configuration={'left'}
+				className={'messaging-display-card'}
+				title={conversationTitle}
+				onClose={() => navigate('/discover')}
+			>
+				<div className={'messaging-container full-width flex-box'}>
+					<ConversationSelector />
+					<div className={cx('chat-content flex-box full-width')}>
+						<MessageBody />
+						<MessageBar />
+					</div>
 				</div>
-			</div>
-		</DisplayCard>
+			</DisplayCard>
+			{isConversationModalOpen && (
+				<NewUserModal onClose={() => setIsConversationModalOpen(false)} />
+			)}
+		</>
 	)
 }
 

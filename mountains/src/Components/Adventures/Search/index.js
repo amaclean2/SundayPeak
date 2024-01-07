@@ -29,8 +29,6 @@ const AdventureSearch = () => {
 		handleSendSearchText(event.target.value)
 	}
 
-	console.log({ searchResults })
-
 	return (
 		<>
 			<div className='adventure-search flex-box'>

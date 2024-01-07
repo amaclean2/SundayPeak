@@ -21,6 +21,11 @@
 	pointer-events: none;
 }
 
+.display-card-container.block-background {
+	pointer-events: all;
+	background-color: var(--main-off-dark-opacity);
+}
+
 .display-card-container.left {
 	justify-content: flex-start;
 }

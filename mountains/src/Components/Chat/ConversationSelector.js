@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import cx from 'classnames'
 import {
 	useDebounce,
@@ -19,6 +19,8 @@ const ConversationSelector = () => {
 	const [searchList, setSearchList] = useState(null)
 	const [textSearch, setTextSearch] = useState('')
 
+	const newName = useRef('')
+
 	const getSearchResults = useDebounce((search) => {
 		if (search.length <= 3) return setSearchList(null)
 
@@ -37,7 +39,8 @@ const ConversationSelector = () => {
 			return conversation.conversation_name
 		} else {
 			return (
-				conversation.users?.find((user) => user.user_id !== loggedInUser?.id).display_name || ''
+				conversation.users?.find((user) => user.user_id !== loggedInUser?.id).display_name ??
+				newName.current
 			)
 		}
 	}
@@ -53,7 +56,8 @@ const ConversationSelector = () => {
 							onClick={() => {
 								setTextSearch('')
 								setSearchList(null)
-								addConversation({ userId: friend.id, name: friend.display_name })
+								addConversation({ userId: friend.user_id })
+								newName.current = friend.display_name
 							}}
 						>
 							{friend.profile_picture_url && (
@@ -81,7 +85,7 @@ const ConversationSelector = () => {
 						>
 							<div className='flex-box conversation-card'>
 								<span>{buildConversationName(conversation)}</span>
-								<span>{conversation.last_message}</span>
+								<span>{conversation.last_message ?? ''}</span>
 							</div>
 							{conversation.unread && <div className='notification-button' />}
 						</li>

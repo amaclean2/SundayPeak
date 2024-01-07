@@ -14,12 +14,18 @@ export const DisplayCard = ({
 	title,
 	menu,
 	testId,
-	hasClose = true
+	hasClose = true,
+	blockBackground = false
 }) => {
 	return (
 		<div
-			className={cx('display-card-container flex-box', configuration)}
+			className={cx(
+				'display-card-container flex-box',
+				configuration,
+				blockBackground && 'block-background'
+			)}
 			data-testid={testId}
+			onClick={() => blockBackground && onClose()}
 		>
 			<div className={cx('display-card', className)}>
 				{title && (

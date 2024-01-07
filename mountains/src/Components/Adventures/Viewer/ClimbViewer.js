@@ -30,8 +30,6 @@ const ClimbViewer = ({ menuContents }) => {
 	const { loggedInUser } = useUserStateContext()
 	const navigate = useNavigate()
 
-	console.log(currentAdventure)
-
 	return (
 		<DisplayCard
 			title={currentAdventure.adventure_name}
