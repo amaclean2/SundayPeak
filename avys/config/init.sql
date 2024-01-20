@@ -45,6 +45,7 @@ CREATE TABLE ski(
     gear VARCHAR(50),
     season VARCHAR(100),
     trail_path TEXT,
+    elevations TEXT,
     PRIMARY KEY(id)
 );
 
@@ -67,6 +68,7 @@ CREATE TABLE hike(
     distance FLOAT,
     season VARCHAR(100),
     trail_path TEXT,
+    elevations TEXT,
     PRIMARY KEY(id)
 );
 
@@ -77,6 +79,7 @@ CREATE TABLE bike(
     distance FLOAT,
     season VARCHAR(100),
     trail_path TEXT,
+    elevations TEXT,
     climb INT,
     descent INT,
     PRIMARY KEY(id)
@@ -90,6 +93,7 @@ CREATE TABLE adventures(
     adventure_bike_id INT,
     adventure_name VARCHAR(100) NOT NULL,
     adventure_type VARCHAR(50) NOT NULL,
+    difficulty VARCHAR(50),
     bio TEXT,
     coordinates_lat FLOAT NOT NULL,
     coordinates_lng FLOAT NOT NULL,
@@ -97,18 +101,16 @@ CREATE TABLE adventures(
     date_created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     nearest_city VARCHAR(100),
     public TINYINT NOT NULL,
-    rating VARCHAR(50),
+    rating FLOAT,
     difficulty VARCHAR(50),
     PRIMARY KEY(id),
     FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_ski_id) REFERENCES ski(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_climb_id) REFERENCES climb(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_hike_id) REFERENCES hike(id) ON DELETE CASCADE,
-    FOREIGN KEY(adventure_bike_id) REFERENCES bike(id) ON DELETE CASCADE,
-    CHECK ((adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_bike_id IS NULL AND adventure_climb_id IS NOT NULL)
-    OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_bike_id IS NULL AND adventure_hike_id IS NOT NULL)
-    OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_bike_id IS NULL AND adventure_ski_id IS NOT NULL)
-    OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_ski_id IS NULL AND adventure_bike_id IS NOT NULL))
+    CHECK ((adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_climb_id IS NOT NULL)
+    OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_hike_id IS NOT NULL)
+    OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_ski_id IS NOT NULL))
 );
 
 CREATE TABLE searchable_adventures(
