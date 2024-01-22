@@ -6,6 +6,7 @@ import {
 	useTokenStateContext
 } from '@amaclean2/sundaypeak-treewells'
 import { useEffect, useRef } from 'react'
+import * as turf from '@turf/turf'
 
 export const useCreateNewAdventure = () => {
 	const { adventureAddState } = useAdventureStateContext()
@@ -57,7 +58,7 @@ export const useRouteHandling = () => {
 		localMatch.current = matchPath
 	}, [matchPath])
 
-	const updateRoute = (event) => {
+	const updateRoute = (event, mapRef) => {
 		const profile = 'walking'
 		// features is an array of geojson lineString 'Feature's
 		const lastFeature = event.features.length - 1
@@ -65,18 +66,31 @@ export const useRouteHandling = () => {
 
 		// matchPath is a toggle that tells if the user wants to match the path to a given road or not
 		if (!localMatch.current) {
-			return updatePath(coordinates)
+			const options = { units: 'miles' }
+			let oldDistance = 0
+			const elevations = coordinates.map((point, idx, elevationPoints) => {
+				let distance
+				if (idx === 0) {
+					distance = 0
+				} else {
+					distance = turf.distance(point, elevationPoints[idx - 1], options) + oldDistance
+					oldDistance = distance
+				}
+				return [Math.round(mapRef.current?.queryTerrainElevation(point) * 100) / 100, distance]
+			})
+
+			return updatePath(coordinates, elevations)
 		}
 
 		const newCoordinates = coordinates.join(';')
 		const radius = coordinates.map(() => 40)
+		const radiuses = radius.join(';')
 
-		getMatch(newCoordinates, radius, profile)
+		getMatch(newCoordinates, radiuses, profile, mapRef)
 	}
 
-	const getMatch = async (coordinates, radius, profile) => {
+	const getMatch = async (coordinates, radiuses, profile, mapRef) => {
 		try {
-			const radiuses = radius.join(';')
 			const query = await fetch(
 				`https://api.mapbox.com/matching/v5/mapbox/${profile}/${coordinates}?geometries=geojson&radiuses=${radiuses}&overview=full&access_token=${mapboxToken}`,
 				{ method: 'GET' }
@@ -89,7 +103,24 @@ export const useRouteHandling = () => {
 
 			const resultCoordinates = response.matchings[0].geometry.coordinates
 
-			updatePath(resultCoordinates)
+			const options = { units: 'miles' }
+			let oldDistance = 0
+			const elevations = resultCoordinates.map((point, idx, elevationPoints) => {
+				let distance
+				if (idx === 0) {
+					distance = 0
+				} else {
+					distance =
+						Math.round(
+							(turf.distance(point, elevationPoints[idx - 1], options) + oldDistance) * 10000
+						) / 10000
+
+					oldDistance = distance
+				}
+				return [Math.round(mapRef.current?.queryTerrainElevation(point) * 100) / 100, distance]
+			})
+
+			updatePath(resultCoordinates, elevations)
 		} catch (error) {
 			console.log({ error })
 		}

@@ -11,6 +11,7 @@ import HikeViewer from './HikeViewer'
 import SkiViewer from './SkiViewer'
 import { Button, DisplayCard } from 'Components/Reusable'
 import RatingSelector from 'Components/Reusable/RatingSelector'
+import BikeViewer from './BikeViewer'
 
 const AdventureViewer = () => {
 	const { currentAdventure, globalAdventureType } = useAdventureStateContext()
@@ -61,6 +62,8 @@ const AdventureViewer = () => {
 				return <ClimbViewer menuContents={buildAdventureMenu(setIsCompleteMenuOpen)} />
 			case 'hike':
 				return <HikeViewer menuContents={buildAdventureMenu(setIsCompleteMenuOpen)} />
+			case 'bike':
+				return <BikeViewer menuContents={buildAdventureMenu(setIsCompleteMenuOpen)} />
 			default:
 				return <SkiViewer menuContents={buildAdventureMenu(setIsCompleteMenuOpen)} />
 		}

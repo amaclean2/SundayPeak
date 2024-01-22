@@ -15,6 +15,7 @@ import {
 	useTokenStateContext,
 	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
+import * as turf from '@turf/turf'
 
 import { adventurePathColor, useCreateNewAdventure, useRouteHandling } from './utils'
 import DrawControl from './DrawControl'
@@ -22,6 +23,7 @@ import DrawControl from './DrawControl'
 import skier from 'Images/Activities/SkierIcon.png'
 import hiker from 'Images/Activities/HikerIcon.png'
 import climber from 'Images/Activities/ClimberIcon.png'
+import biker from 'Images/Activities/BikerIcon.png'
 
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import './styles.css'
@@ -52,19 +54,6 @@ const ReactMap = () => {
 	const { initiateConnection } = useMessages()
 	const { loggedInUser } = useUserStateContext()
 
-	const [features, setFeatures] = useState({})
-
-	const onDelete = useCallback((e) => {
-		setFeatures((currFeatures) => {
-			const newFeatures = { ...currFeatures }
-			for (const f of e.features) {
-				delete newFeatures[f.id]
-			}
-
-			return newFeatures
-		})
-	}, [])
-
 	const onLoad = () => {
 		// this is a reference to the map DOM element
 		const map = mapRef.current?.getMap()
@@ -72,7 +61,8 @@ const ReactMap = () => {
 		const icons = [
 			[skier, 'ski'],
 			[hiker, 'hike'],
-			[climber, 'climb']
+			[climber, 'climb'],
+			[biker, 'bike']
 		]
 
 		// if there's a current adventure and the map is loading, fly to that adventure
@@ -106,6 +96,21 @@ const ReactMap = () => {
 	}
 
 	const establishNewStartPosition = useDebounce((mapPosition) => updateStartPosition(mapPosition))
+
+	const buildRoute = (event) => {
+		/**
+				This block is how we get the elevations and distance of the path
+				{
+					const path = currentAdventure.path
+					const turfPath = turf.lineString(path)
+					const pathDistance = turf.lineDistance(turfPath)
+					const elevations = path.map((point) => mapRef.current?.queryTerrainElevation(point))
+
+					console.log({ pathDistance, elevations })
+				}
+		*/
+		// return updateRoute(event)
+	}
 
 	const onMove = (event) => {
 		// set the new start position
@@ -160,12 +165,14 @@ const ReactMap = () => {
 		mapboxAccessToken: mapboxToken,
 		mapStyle: `${mapboxStyleKey}?optimize=true`,
 		initialViewState: startPosition,
-		maxPitch: 0,
+		maxPitch: 85,
 		minZoom: 3,
+		terrain: { source: 'mapbox-dem', exaggeration: 1 },
 		onDblClick: handleCreateNewAdventure,
 		onClick: (event) => {
 			if (!isPathEditOn) {
 				if (!event.features.length) return
+
 				const adventureType = event.features[0].properties.adventure_type
 				const adventureId = event.features[0].properties.id
 
@@ -198,9 +205,8 @@ const ReactMap = () => {
 				{isPathEditOn && (
 					<DrawControl
 						position={'bottom-right'}
-						onCreate={updateRoute}
-						onUpdate={updateRoute}
-						onDelete={onDelete}
+						onCreate={(event) => updateRoute(event, mapRef)}
+						onUpdate={(event) => updateRoute(event, mapRef)}
 					/>
 				)}
 				<Source

@@ -24,6 +24,7 @@ import { formatSeasons, pitchClimbs } from '../utils'
 import { DifficultyViewer } from './Symbols'
 import { Pin } from 'Images'
 import RatingView from 'Components/Reusable/RatingView'
+import ElevationView from './BikeViewer/ElevationView'
 
 const HikeViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -41,6 +42,7 @@ const HikeViewer = ({ menuContents }) => {
 			}}
 		>
 			<AdventureGallery />
+			{currentAdventure.elevations && <ElevationView />}
 			<FieldPage className={'adventure-display-grid'}>
 				<FieldRow className={'narrow-field'}>
 					<Field noPadding>

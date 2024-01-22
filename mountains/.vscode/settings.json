@@ -31,6 +31,19 @@
 			"database": "friends",
 			"username": "byf",
 			"askForPassword": true
+		},
+		{
+			"mysqlOptions": {
+				"authProtocol": "default",
+				"enableSsl": "Disabled"
+			},
+			"previewLimit": 50,
+			"server": "128.199.3.44",
+			"port": 3300,
+			"driver": "MySQL",
+			"name": "SundayPeakProd",
+			"database": "friends",
+			"username": "byf"
 		}
 	]
 }

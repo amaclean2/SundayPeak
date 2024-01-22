@@ -3,6 +3,7 @@ import { useAdventureStateContext, useGetAdventures } from '@amaclean2/sundaypea
 
 import { Button } from 'Components/Reusable'
 import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
+import { LargeBikerIcon } from 'Images/Activities/LargeBikerIcon'
 
 const MainAdventureSelector = () => {
 	const { globalAdventureType } = useAdventureStateContext()
@@ -22,6 +23,17 @@ const MainAdventureSelector = () => {
 					color={globalAdventureType === 'ski' ? '#FFF' : '#000'}
 				/>
 				Ski
+			</Button>
+			<Button
+				id='set-bike-adventure-type'
+				className={cx(globalAdventureType === 'bike' && 'current-adventure-type')}
+				onClick={() => changeAdventureType({ type: 'bike' })}
+			>
+				<LargeBikerIcon
+					size={svgSize}
+					color={globalAdventureType === 'bike' ? '#FFF' : '#000'}
+				/>
+				Ride
 			</Button>
 			<Button
 				id='set-climb-adventure-type'

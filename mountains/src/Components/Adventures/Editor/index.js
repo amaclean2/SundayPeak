@@ -5,6 +5,7 @@ import { useAdventureStateContext, useGetAdventures } from '@amaclean2/sundaypea
 import ClimbForm from './ClimbForm'
 import HikeForm from './HikeForm'
 import SkiForm from './SkiForm'
+import BikeForm from './BikeForm'
 
 const AdventureEditorForm = () => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -31,6 +32,8 @@ const AdventureEditorForm = () => {
 			return <ClimbForm />
 		case 'hike':
 			return <HikeForm />
+		case 'bike':
+			return <BikeForm />
 		default:
 			return <SkiForm />
 	}

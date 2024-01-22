@@ -11,11 +11,13 @@ import MainAdventureSelector from './Search/MainAdventureSelector'
 
 import './styles.css'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const DefaultAdventureView = () => {
 	const { loggedInUser } = useUserStateContext()
 	const { getAdventureList } = useGetAdventures()
 	const { globalAdventureType, startPosition } = useAdventureStateContext()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		getAdventureList({
@@ -28,6 +30,7 @@ const DefaultAdventureView = () => {
 		<DisplayCard
 			title={'Adventures'}
 			testId={'main-adventure-view'}
+			onClose={() => navigate('/discover')}
 		>
 			<MainAdventureSelector />
 			<AdventureSearch />

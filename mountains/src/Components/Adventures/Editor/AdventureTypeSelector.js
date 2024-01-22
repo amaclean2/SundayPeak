@@ -44,12 +44,12 @@ const AdventureTypeSelector = () => {
 							id: 'adventure-hike',
 							text: 'Hike',
 							value: 'hike'
+						},
+						{
+							id: 'adventure-bike',
+							text: 'Bike',
+							value: 'bike'
 						}
-						// {
-						// 	id: 'adventure-bike',
-						// 	text: 'Bike',
-						// 	value: 'bike'
-						// }
 					]
 				}}
 				value={localAdventureType}

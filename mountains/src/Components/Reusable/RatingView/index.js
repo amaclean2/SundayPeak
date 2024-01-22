@@ -24,8 +24,8 @@ const RatingView = ({ ratingCount = 5 }) => {
 			{remainingStars < 1 && remainingStars > 0.75 && <RatingFull />}
 			{Array(Math.floor(5 - ratingCount))
 				.fill(1)
-				.map(() => (
-					<RatingEmpty />
+				.map((_, idx) => (
+					<RatingEmpty key={`half_rating_${idx}`} />
 				))}
 		</div>
 	)

@@ -10,6 +10,7 @@ import { FlexSpacer, FormField } from 'Components/Reusable'
 
 import './styles.css'
 import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
+import { LargeBikerIcon } from 'Images/Activities/LargeBikerIcon'
 
 const AdventureSearch = () => {
 	const { searchAdventures } = useGetAdventures()
@@ -54,6 +55,7 @@ const AdventureSearch = () => {
 							>
 								<span className='drop-list-image'>
 									{result.adventure_type === 'ski' && <LargeSkierIcon size={20} />}
+									{result.adventure_type === 'bike' && <LargeBikerIcon size={20} />}
 									{result.adventure_type === 'climb' && <LargeClimberIcon size={20} />}
 									{result.adventure_type === 'hike' && <LargeHikerIcon size={20} />}
 								</span>
