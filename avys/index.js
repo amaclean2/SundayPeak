@@ -6,7 +6,6 @@ const WebSocket = require('ws')
 
 const app = require('@amaclean2/sundaypeak-rivers')
 const { onConnection } = require('@amaclean2/sundaypeak-couloirs')
-const logger = require('@amaclean2/sundaypeak-couloirs/Config/logger')
 
 const PORT = process.env.PORT || 5000
 const HTTP_PORT = process.env.HTTP_PORT || 80
