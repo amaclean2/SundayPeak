@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Map, {
 	FullscreenControl,
@@ -15,7 +15,6 @@ import {
 	useTokenStateContext,
 	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
-import * as turf from '@turf/turf'
 
 import { adventurePathColor, useCreateNewAdventure, useRouteHandling } from './utils'
 import DrawControl from './DrawControl'
@@ -24,6 +23,7 @@ import skier from 'Images/Activities/SkierIcon.png'
 import hiker from 'Images/Activities/HikerIcon.png'
 import climber from 'Images/Activities/ClimberIcon.png'
 import biker from 'Images/Activities/BikerIcon.png'
+import tourer from 'Images/Activities/TourerIcon.png'
 
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import './styles.css'
@@ -62,26 +62,11 @@ const ReactMap = () => {
 			[skier, 'ski'],
 			[hiker, 'hike'],
 			[climber, 'climb'],
-			[biker, 'bike']
+			[biker, 'bike'],
+			[tourer, 'skiApproach']
 		]
 
 		// if there's a current adventure and the map is loading, fly to that adventure
-		if (currentAdventure) {
-			if (currentAdventure.cameraBounds?.ne?.length && currentAdventure.cameraBounds?.sw?.length) {
-				mapRef.current.fitBounds(
-					[currentAdventure.cameraBounds.ne, currentAdventure.cameraBounds.sw],
-					{
-						padding: 100,
-						offset: [100, 0]
-					}
-				)
-			} else {
-				mapRef.current.flyTo({
-					center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
-					zoom: 16
-				})
-			}
-		}
 
 		icons.forEach(([icon, iconName]) => {
 			map.loadImage(icon, (error, image) => {
@@ -96,21 +81,6 @@ const ReactMap = () => {
 	}
 
 	const establishNewStartPosition = useDebounce((mapPosition) => updateStartPosition(mapPosition))
-
-	const buildRoute = (event) => {
-		/**
-				This block is how we get the elevations and distance of the path
-				{
-					const path = currentAdventure.path
-					const turfPath = turf.lineString(path)
-					const pathDistance = turf.lineDistance(turfPath)
-					const elevations = path.map((point) => mapRef.current?.queryTerrainElevation(point))
-
-					console.log({ pathDistance, elevations })
-				}
-		*/
-		// return updateRoute(event)
-	}
 
 	const onMove = (event) => {
 		// set the new start position
@@ -137,14 +107,14 @@ const ReactMap = () => {
 			mapRef.current.fitBounds(
 				[currentAdventure.cameraBounds.ne, currentAdventure.cameraBounds.sw],
 				{
-					padding: 100,
-					offset: [100, 0]
+					offset: [100, 0],
+					maxZoom: 15
 				}
 			)
 		} else {
 			mapRef.current.flyTo({
 				center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
-				zoom: 16
+				zoom: 15
 			})
 		}
 	}, [currentAdventure?.id, mapRef.current])
@@ -191,7 +161,7 @@ const ReactMap = () => {
 		>
 			<Map
 				{...mapProps}
-				interactiveLayerIds={['adventure-icons', 'sky']}
+				interactiveLayerIds={['adventure-icons', 'sky', 'approach-paths']}
 			>
 				<NavigationControl
 					showCompass
@@ -225,6 +195,19 @@ const ReactMap = () => {
 						'sky-atmosphere-sun-intensity': 15
 					}}
 				/>
+				{globalAdventureType === 'ski' && (
+					<Source
+						type='geojson'
+						data={allAdventures.skiApproach}
+					>
+						<Layer
+							id={'approach-paths'}
+							type={'line'}
+							layout={{ 'line-join': 'round', 'line-cap': 'round' }}
+							paint={{ 'line-color': adventurePathColor('skiApproach'), 'line-width': 5 }}
+						/>
+					</Source>
+				)}
 				<Source
 					type='geojson'
 					data={{
@@ -252,12 +235,11 @@ const ReactMap = () => {
 				</Source>
 				<Source
 					type='geojson'
-					data={allAdventures}
+					data={allAdventures[globalAdventureType]}
 				>
 					<Layer
 						id={'adventure-icons'}
 						type={'symbol'}
-						source={'adventures'}
 						layout={{
 							'icon-image': globalAdventureType,
 							'icon-size': 0.4

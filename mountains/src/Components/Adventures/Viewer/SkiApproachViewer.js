@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import {
 	useAdventureStateContext,
-	useManipulateFlows,
-	useUserStateContext
+	useUserStateContext,
+	useManipulateFlows
 } from '@amaclean2/sundaypeak-treewells'
 
-import { AngleIcon, DistanceIcon, ElevationIcon } from 'Images/Symbols/LabelIcons'
+import { DistanceIcon, ElevationIcon } from 'Images/Symbols/LabelIcons'
 import getContent from 'TextContent'
 import {
 	Button,
@@ -20,12 +20,13 @@ import {
 } from 'Components/Reusable'
 import AdventureGallery from '../Gallery'
 import AdventureTickPanel from '../TickPanel'
-import { formatGearList, formatSeasons } from '../utils'
-import { Aspect, DifficultyViewer, ExposureViewer } from './Symbols'
+import { formatSeasons, pitchClimbs } from '../utils'
+import { DifficultyViewer } from './Symbols'
 import { Pin } from 'Images'
 import RatingView from 'Components/Reusable/RatingView'
+import ElevationView from './BikeViewer/ElevationView'
 
-const SkiViewer = ({ menuContents }) => {
+const SkiApproachViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { closeAdventureView } = useManipulateFlows()
 	const { loggedInUser } = useUserStateContext()
@@ -36,11 +37,11 @@ const SkiViewer = ({ menuContents }) => {
 			title={currentAdventure.adventure_name}
 			menu={menuContents}
 			onClose={() => {
-				closeAdventureView()
 				navigate('/discover')
+				closeAdventureView()
 			}}
 		>
-			<AdventureGallery />
+			{currentAdventure.elevations && <ElevationView />}
 			<FieldPage className={'adventure-display-grid'}>
 				<FieldRow className={'narrow-field'}>
 					<Field noPadding>
@@ -58,45 +59,19 @@ const SkiViewer = ({ menuContents }) => {
 				</FieldRow>
 				<FieldRow borderBottom>
 					<Field borderRight>
-						<FieldHeader text={getContent('adventurePanel.fields.difficulty')} />
-						<FieldValue>
-							<DifficultyViewer difficulty={currentAdventure.difficulty} />
-						</FieldValue>
-					</Field>
-					<Field borderRight>
-						<FieldHeader text={getContent('adventurePanel.fields.exposure')} />
-						<FieldValue>
-							<ExposureViewer exposure={currentAdventure.exposure} />
-						</FieldValue>
-					</Field>
-					<Field borderRight>
-						<FieldHeader text={getContent('adventurePanel.fields.slopeAngle')} />
-						<FieldValue className='flex-box'>
-							<AngleIcon />
-							{getContent('adventurePanel.fields.angleRange', [
-								currentAdventure.avg_angle,
-								currentAdventure.max_angle
-							])}
-						</FieldValue>
-					</Field>
-					<Field>
-						<FieldHeader text={getContent('adventurePanel.fields.aspect')} />
-						<FieldValue>
-							<Aspect aspect={currentAdventure.aspect} />
-						</FieldValue>
-					</Field>
-				</FieldRow>
-				<FieldRow borderBottom>
-					<Field borderRight>
-						<FieldHeader text={getContent('adventurePanel.fields.approach')} />
-						<FieldValue className='flex-box'>
+						<FieldHeader text={'Distance'} />
+						<FieldValue className={'flex-box'}>
 							<DistanceIcon />
 							{getContent('adventurePanel.fields.approachContent', [
-								Math.round(currentAdventure.distance * 100) / 100
+								currentAdventure.elevations?.length
+									? Math.round(
+											currentAdventure.elevations[currentAdventure.elevations.length - 1][1] * 100
+									  ) / 100
+									: 0
 							])}
 						</FieldValue>
 					</Field>
-					<Field>
+					<Field borderRight>
 						<FieldHeader text={getContent('adventurePanel.fields.elevation')} />
 						<FieldValue className='flex-box'>
 							<ElevationIcon />
@@ -106,31 +81,21 @@ const SkiViewer = ({ menuContents }) => {
 							])}
 						</FieldValue>
 					</Field>
-				</FieldRow>
-				<FieldRow borderBottom>
 					<Field>
-						<FieldHeader text={getContent('adventurePanel.fields.gear')} />
+						<FieldHeader text={getContent('adventurePanel.fields.difficulty')} />
 						<FieldValue>
-							{formatGearList({
-								gear: currentAdventure.gear?.length ? JSON.parse(currentAdventure.gear) : []
-							})}
+							<DifficultyViewer difficulty={currentAdventure.difficulty} />
 						</FieldValue>
 					</Field>
 				</FieldRow>
-				<FieldRow borderBottom>
-					<Field>
-						<FieldHeader text={getContent('adventurePanel.fields.bestSeason')} />
-						<FieldValue>
-							{currentAdventure.season?.length
-								? formatSeasons({
-										seasonArray: currentAdventure.season.length
-											? JSON.parse(currentAdventure.season)
-											: []
-								  })
-								: ''}
-						</FieldValue>
-					</Field>
-				</FieldRow>
+				{pitchClimbs.includes(currentAdventure.climb_type) && (
+					<FieldRow borderBottom>
+						<Field>
+							<FieldHeader text={'Pro'} />
+							<FieldValue>{currentAdventure.protection}</FieldValue>
+						</Field>
+					</FieldRow>
+				)}
 				<FieldRow>
 					<Field>
 						<FieldHeader text='Created By' />
@@ -151,10 +116,10 @@ const SkiViewer = ({ menuContents }) => {
 	)
 }
 
-SkiViewer.propTypes = {
+SkiApproachViewer.propTypes = {
 	menuContents: PropTypes.shape({
 		fields: FieldProps
 	})
 }
 
-export default SkiViewer
+export default SkiApproachViewer

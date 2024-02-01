@@ -31,6 +31,7 @@ const MessageBar = () => {
 			<Button
 				onClick={handleEnter}
 				className='send-message-button'
+				small
 				id='send-message-button'
 			>
 				Send

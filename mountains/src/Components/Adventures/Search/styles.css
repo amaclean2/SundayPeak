@@ -16,6 +16,7 @@
 .results-container li {
 	padding: 0.6rem;
 	transition: all 0.3s ease-in-out;
+	cursor: pointer;
 	gap: 0.5rem;
 }
 
@@ -41,7 +42,7 @@
 }
 
 .adventure-pill-selector {
-	gap: 1rem;
+	gap: 0.5rem;
 }
 
 .adventure-search-spacer {

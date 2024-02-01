@@ -2,7 +2,7 @@
 	"name": "mountains",
 	"version": "1.6.10",
 	"dependencies": {
-		"@amaclean2/sundaypeak-treewells": "^1.4.10",
+		"@amaclean2/sundaypeak-treewells": "^1.4.17",
 		"@babel/core": "^7.16.0",
 		"@mapbox/mapbox-gl-draw": "^1.4.2",
 		"@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -38,7 +38,7 @@
 		"jest-watch-typeahead": "^1.0.0",
 		"jsdom": "^21.1.1",
 		"linkify-react": "^4.0.2",
-		"mapbox-gl": "^2.13.0",
+		"mapbox-gl": "^3.1.2",
 		"mini-css-extract-plugin": "^2.4.5",
 		"postcss": "^8.4.4",
 		"postcss-flexbugs-fixes": "^5.0.2",

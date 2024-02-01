@@ -155,8 +155,10 @@
 	border-radius: 0.8rem 0.8rem 0rem 0.8rem;
 }
 
-.send-message-button {
+.send-message-button.small {
 	background-color: var(--primary-accent-color);
+	padding: 0 1rem;
+	height: 2.1rem;
 }
 
 .messaging-container {

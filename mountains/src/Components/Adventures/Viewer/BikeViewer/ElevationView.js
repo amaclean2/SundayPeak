@@ -22,8 +22,6 @@ const ElevationView = () => {
 		}
 	])
 
-	console.log({ elevations: currentAdventure.elevations })
-
 	return (
 		<div className='chart-container'>
 			<Chart

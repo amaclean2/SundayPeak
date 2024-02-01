@@ -49,6 +49,11 @@ const AdventureTypeSelector = () => {
 							id: 'adventure-bike',
 							text: 'Bike',
 							value: 'bike'
+						},
+						{
+							id: 'adventure-ski-approach',
+							text: 'Ski Approach',
+							value: 'skiApproach'
 						}
 					]
 				}}

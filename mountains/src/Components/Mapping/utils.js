@@ -45,6 +45,8 @@ export const adventurePathColor = (adventure_type = 'ski') => {
 			return '#e53'
 		case 'bike':
 			return '#3a3'
+		case 'skiApproach':
+			return '#d70'
 	}
 }
 

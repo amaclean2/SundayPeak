@@ -12,6 +12,7 @@ import SkiViewer from './SkiViewer'
 import { Button, DisplayCard } from 'Components/Reusable'
 import RatingSelector from 'Components/Reusable/RatingSelector'
 import BikeViewer from './BikeViewer'
+import SkiApproachViewer from './SkiApproachViewer'
 
 const AdventureViewer = () => {
 	const { currentAdventure, globalAdventureType } = useAdventureStateContext()
@@ -45,10 +46,15 @@ const AdventureViewer = () => {
 	useEffect(() => {
 		if (!currentAdventure || currentAdventure.id !== adventureId) {
 			// fetch the new adventure from the adventureId
-			changeAdventureType({ type: adventureType })
+			changeAdventureType({ type: adventureType === 'skiApproach' ? 'ski' : adventureType })
 			getAdventure({ id: adventureId, type: adventureType })
 		} else if (currentAdventure.adventure_type !== globalAdventureType) {
-			changeAdventureType({ type: currentAdventure.adventure_type })
+			changeAdventureType({
+				type:
+					currentAdventure.adventure_type === 'skiApproach'
+						? 'ski'
+						: currentAdventure.adventure_type
+			})
 		}
 	}, [adventureId])
 
@@ -64,6 +70,8 @@ const AdventureViewer = () => {
 				return <HikeViewer menuContents={buildAdventureMenu(setIsCompleteMenuOpen)} />
 			case 'bike':
 				return <BikeViewer menuContents={buildAdventureMenu(setIsCompleteMenuOpen)} />
+			case 'skiApproach':
+				return <SkiApproachViewer menuContents={buildAdventureMenu(setIsCompleteMenuOpen)} />
 			default:
 				return <SkiViewer menuContents={buildAdventureMenu(setIsCompleteMenuOpen)} />
 		}

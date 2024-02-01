@@ -16,9 +16,8 @@ import getContent from 'TextContent'
 import { directionSelectOptions, gearOptions, seasonOptions } from 'Components/Adventures/utils'
 import { LargeSkierIcon } from 'Images'
 import DeletePage from './DeletePage'
-import CheckboxField from 'Components/Reusable/FormField/CheckboxField'
 
-const SkiForm = () => {
+const SkiApproachForm = () => {
 	const { currentAdventure, isDeletePageOpen, isPathEditOn, matchPath } = useAdventureStateContext()
 	const { toggleDeletePage } = useDeleteAdventure()
 	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath } =
@@ -114,36 +113,6 @@ const SkiForm = () => {
 				value={currentAdventure.gear || ''}
 				onChange={editAdventure}
 			/>
-			<MultiField
-				onChange={editAdventure}
-				label={getContent('adventurePanel.editable.slope')}
-				fields={[
-					{
-						type: 'text',
-						name: 'avg_angle',
-						value: currentAdventure.avg_angle || '',
-						placeholder: getContent('adventurePanel.editable.avgAngle')
-					},
-					{
-						type: 'text',
-						name: 'max_angle',
-						value: currentAdventure.max_angle || '',
-						placeholder: getContent('adventurePanel.editable.maxAngle')
-					}
-				]}
-			/>
-			<FormField
-				name='aspect'
-				label={getContent('adventurePanel.fields.aspect')}
-				type='select'
-				isEditable
-				fullWidth
-				options={{
-					selectOptions: directionSelectOptions
-				}}
-				value={currentAdventure.aspect || 'N'}
-				onChange={editAdventure}
-			/>
 			{Number(currentAdventure.difficulty.split(':')[1]) <= 1 && (
 				<FormField
 					name='difficulty'
@@ -217,4 +186,4 @@ const SkiForm = () => {
 	)
 }
 
-export default SkiForm
+export default SkiApproachForm

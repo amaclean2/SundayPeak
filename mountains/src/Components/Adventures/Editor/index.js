@@ -6,6 +6,7 @@ import ClimbForm from './ClimbForm'
 import HikeForm from './HikeForm'
 import SkiForm from './SkiForm'
 import BikeForm from './BikeForm'
+import SkiApproachForm from './SkiApproachForm'
 
 const AdventureEditorForm = () => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -34,6 +35,8 @@ const AdventureEditorForm = () => {
 			return <HikeForm />
 		case 'bike':
 			return <BikeForm />
+		case 'skiApproach':
+			return <SkiApproachForm />
 		default:
 			return <SkiForm />
 	}

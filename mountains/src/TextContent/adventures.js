@@ -29,7 +29,7 @@ export const adventurePanel = {
 		difficulty: 'Difficulty',
 		exposure: 'Exposure',
 		slopeAngle: 'Slope Angle',
-		angleRange: '{var} - {var} °',
+		angleRange: '{var} - {var}°',
 		aspect: 'Aspect',
 		approach: 'Approach',
 		approachContent: '{var} mi',
