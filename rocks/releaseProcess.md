@@ -99,7 +99,7 @@ npm run build
 1. Build a new image with the current code.
 
 ```shell
-docker build --platform linux/amd64 -t amacleanjs/sunday-brunch:<VERSION NUMBER> -t amacleanjs/sunday-brunch:latest . --secret id=npmrc,src=$HOME/.npmrc
+docker build --platform linux/amd64 -t amacleanjs/sunday-brunch:<VERSON NUMBER> -t amacleanjs/sunday-brunch:latest . --secret id=npmrc,src=$HOME/.npmrc
 ```
 
 2. Push the code to docker hub using the following command. The version number can be found in `/mountains/package.json`
@@ -112,7 +112,7 @@ docker image push -a amacleanjs/sunday-brunch
 3. SSH into the Digital Ocean droplet
 
 ```shell
-  ssh root@165.232.138.180
+ssh root@165.232.138.180
 ```
 
 4. Stop and remove the current mountains container and image

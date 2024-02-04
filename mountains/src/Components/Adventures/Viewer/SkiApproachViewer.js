@@ -41,7 +41,7 @@ const SkiApproachViewer = ({ menuContents }) => {
 				closeAdventureView()
 			}}
 		>
-			{currentAdventure.elevations && <ElevationView />}
+			{currentAdventure.elevations?.length && <ElevationView />}
 			<FieldPage className={'adventure-display-grid'}>
 				<FieldRow className={'narrow-field'}>
 					<Field noPadding>

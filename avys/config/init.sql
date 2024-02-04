@@ -37,12 +37,10 @@ CREATE TABLE ski(
     id INT AUTO_INCREMENT,
     avg_angle FLOAT,
     max_angle FLOAT,
-    approach_distance VARCHAR(50),
     aspect VARCHAR(3),
     summit_elevation INT,
     base_elevation INT,
     exposure INT,
-    gear VARCHAR(50),
     season VARCHAR(100),
     trail_path TEXT,
     elevations TEXT,
@@ -85,12 +83,25 @@ CREATE TABLE bike(
     PRIMARY KEY(id)
 );
 
+CREATE TABLE ski_approach(
+    id INT AUTO_INCREMENT
+    distance VARCHAR(50),
+    aspect VARCHAR(3),
+    summit_elevation INT,
+    base_elevation INT,
+    gear VARCHAR(50),
+    trail_path TEXT,
+    elevations TEXT,
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE adventures(
     id INT AUTO_INCREMENT,
     adventure_ski_id INT,
     adventure_hike_id INT,
     adventure_climb_id INT,
     adventure_bike_id INT,
+    ski_approach_id INT,
     adventure_name VARCHAR(100) NOT NULL,
     adventure_type VARCHAR(50) NOT NULL,
     difficulty VARCHAR(50),
@@ -108,9 +119,19 @@ CREATE TABLE adventures(
     FOREIGN KEY(adventure_ski_id) REFERENCES ski(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_climb_id) REFERENCES climb(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_hike_id) REFERENCES hike(id) ON DELETE CASCADE,
-    CHECK ((adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_climb_id IS NOT NULL)
-    OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_hike_id IS NOT NULL)
-    OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_ski_id IS NOT NULL))
+    FOREIGN KEY(adventure_bike_id) REFERENCES bike(id) ON DELETE CASCADE,
+    FOREIGN KEY(ski_approach_id) REFERENCES ski_approach(id) ON DELETE CASCADE,
+    CHECK ((adventure_ski_id IS NULL AND adventure_hike_id IS NULL AND adventure_bike_id IS NULL AND adventure_climb_id IS NOT NULL)
+    OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_bike_id IS NULL AND adventure_hike_id IS NOT NULL)
+    OR (adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_bike_id IS NULL AND adventure_ski_id IS NOT NULL)
+    OR (adventure_ski_id IS NULL AND adventure_climb_id IS NULL AND adventure_hike_id IS NULL AND adventure_bike_id IS NOT NULL))
+);
+
+CREATE TABLE device_tokens(
+    token VARCHAR(100),
+    user_id INT,
+    PRIMARY KEY(token),
+    FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE searchable_adventures(

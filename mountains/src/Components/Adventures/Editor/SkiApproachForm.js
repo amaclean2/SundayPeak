@@ -94,16 +94,6 @@ const SkiApproachForm = () => {
 				onChange={editAdventure}
 			/>
 			<FormField
-				name='season'
-				label={getContent('adventurePanel.editable.bestMonths')}
-				type='selectmany'
-				options={{ selectMany: seasonOptions }}
-				isEditable
-				fullWidth
-				value={currentAdventure.season || ''}
-				onChange={editAdventure}
-			/>
-			<FormField
 				name='gear'
 				label={getContent('adventurePanel.editable.gearRequired')}
 				type='selectmany'
