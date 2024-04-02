@@ -21,18 +21,15 @@ const MessagingContianer = () => {
 	const { closeConnection, initiateConnection } = useMessages()
 	const { conversations, currentConversationId, websocket } = useMessagingStateContext()
 	const { loggedInUser } = useUserStateContext()
-	const { buildEditorMenu } = useChatEditorMenu()
+	const { buildEditorMenu, buildConversationName } = useChatEditorMenu()
 
 	const [conversationTitle, setConversationTitle] = useState('Conversations')
 	const [isConversationModalOpen, setIsConversationModalOpen] = useState(false)
 
 	useEffect(() => {
 		const currentConversation = conversations?.[currentConversationId]
-		const newConversationTitle = currentConversation?.users.find(
-			(user) => user.user_id !== loggedInUser.id
-		)?.display_name
-		if (newConversationTitle) {
-			setConversationTitle(newConversationTitle)
+		if (currentConversation) {
+			setConversationTitle(buildConversationName(currentConversation))
 		}
 	}, [conversations, currentConversationId])
 
@@ -43,6 +40,12 @@ const MessagingContianer = () => {
 
 		return () => closeConnection('messaging component ended lifecycle')
 	}, [])
+
+	useEffect(() => {
+		if ([null, undefined].includes(loggedInUser)) {
+			navigate('/discover')
+		}
+	}, [loggedInUser])
 
 	return (
 		<>

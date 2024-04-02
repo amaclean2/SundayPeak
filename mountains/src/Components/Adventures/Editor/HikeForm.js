@@ -4,14 +4,7 @@ import {
 	useSaveAdventure
 } from '@amaclean2/sundaypeak-treewells'
 
-import {
-	Button,
-	DisplayCard,
-	ErrorField,
-	FooterButtons,
-	FormField,
-	MultiField
-} from 'Components/Reusable'
+import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
 import getContent from 'TextContent'
 import { seasonOptions } from 'Components/Adventures/utils'
 import { LargeHikerIcon } from 'Images'
@@ -22,6 +15,8 @@ const HikeForm = () => {
 	const { toggleDeletePage } = useDeleteAdventure()
 	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath } =
 		useSaveAdventure()
+
+	console.log(currentAdventure.path)
 
 	return (
 		<DisplayCard title={currentAdventure.adventure_name}>
@@ -59,15 +54,9 @@ const HikeForm = () => {
 						<Button
 							small
 							id={'path-add-button'}
-							onClick={() => {
-								if (isPathEditOn) {
-									savePath()
-								} else {
-									togglePathEdit()
-								}
-							}}
+							onClick={savePath}
 						>
-							{isPathEditOn ? 'Finish Adding Line' : 'Add Line'}
+							Add Line
 						</Button>
 					)}
 					{!isPathEditOn && !!currentAdventure.path?.length && (
@@ -91,33 +80,6 @@ const HikeForm = () => {
 				fullWidth
 				value={currentAdventure.bio || ''}
 				onChange={editAdventure}
-			/>
-			<FormField
-				name='distance'
-				label={'Distance'}
-				isEditable
-				fullWidth
-				options={{ suffix: 'miles' }}
-				value={currentAdventure.distance || ''}
-				onChange={editAdventure}
-			/>
-			<MultiField
-				onChange={editAdventure}
-				label={getContent('adventurePanel.fields.elevation')}
-				fields={[
-					{
-						type: 'text',
-						name: 'summit_elevation',
-						value: currentAdventure.summit_elevation || '',
-						placeholder: getContent('adventurePanel.editable.summit')
-					},
-					{
-						type: 'text',
-						name: 'base_elevation',
-						value: currentAdventure.base_elevation || '',
-						placeholder: 'Base Elevation'
-					}
-				]}
 			/>
 			{Number(currentAdventure.difficulty.split(':')[1]) <= 1 && (
 				<FormField

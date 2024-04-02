@@ -80,6 +80,7 @@ input {
 	padding: 0;
 	border: 0;
 	flex: 1;
+	font-size: 0.9rem;
 }
 
 .form-field.password button {

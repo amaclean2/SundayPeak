@@ -4,17 +4,18 @@ import {
 	useDebounce,
 	useGetUser,
 	useMessages,
-	useMessagingStateContext,
-	useUserStateContext
+	useMessagingStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
 import { FlexSpacer, FormField } from 'Components/Reusable'
+import ConversationImage from './ConversationImage'
+import { useChatEditorMenu } from './utils'
 
 const ConversationSelector = () => {
 	const { searchForFriends } = useGetUser()
 	const { conversations, currentConversationId } = useMessagingStateContext()
-	const { loggedInUser } = useUserStateContext()
 	const { addConversation, getConversation } = useMessages()
+	const { buildConversationName } = useChatEditorMenu()
 
 	const [searchList, setSearchList] = useState(null)
 	const [textSearch, setTextSearch] = useState('')
@@ -32,17 +33,6 @@ const ConversationSelector = () => {
 	const handleSearch = (event) => {
 		setTextSearch(event.target.value)
 		getSearchResults(event.target.value)
-	}
-
-	const buildConversationName = (conversation) => {
-		if (conversation.conversation_name) {
-			return conversation.conversation_name
-		} else {
-			return (
-				conversation.users?.find((user) => user.user_id !== loggedInUser?.id).display_name ??
-				newName.current
-			)
-		}
 	}
 
 	const buildList = () => {
@@ -83,9 +73,10 @@ const ConversationSelector = () => {
 							)}
 							onClick={() => getConversation({ conversationId: conversation.conversation_id })}
 						>
+							<ConversationImage conversation={conversation} />
 							<div className='flex-box conversation-card'>
-								<span>{buildConversationName(conversation)}</span>
-								<span>{conversation.last_message ?? ''}</span>
+								<span className='conversation-name'>{buildConversationName(conversation)}</span>
+								<span className='last-message'>{conversation.last_message ?? ''}</span>
 							</div>
 							{conversation.unread && <div className='notification-button' />}
 						</li>

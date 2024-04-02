@@ -50,7 +50,7 @@ export const adventurePathColor = (adventure_type = 'ski') => {
 	}
 }
 
-export const useRouteHandling = () => {
+export const useRouteHandling = (mapRef) => {
 	const { mapboxToken } = useTokenStateContext()
 	const { updatePath } = useSaveAdventure()
 	const { matchPath } = useAdventureStateContext()
@@ -60,27 +60,41 @@ export const useRouteHandling = () => {
 		localMatch.current = matchPath
 	}, [matchPath])
 
-	const updateRoute = (event, mapRef) => {
+	const updateRoute = (event) => {
+		mapRef.current.setZoom(13)
+
 		const profile = 'walking'
 		// features is an array of geojson lineString 'Feature's
 		const lastFeature = event.features.length - 1
 		const coordinates = event.features[lastFeature].geometry.coordinates
 
-		// matchPath is a toggle that tells if the user wants to match the path to a given road or not
+		// matchPath/localMatch is a toggle that tells if the user wants to match the path to a given road or not
 		if (!localMatch.current) {
+			// sets units for the distance calculator
 			const options = { units: 'miles' }
 			let oldDistance = 0
+
+			// runs a loop calculating the elevations based on each point on the path
 			const elevations = coordinates.map((point, idx, elevationPoints) => {
 				let distance
 				if (idx === 0) {
 					distance = 0
 				} else {
+					// calculates the distance from the last point and adds it to a total distance
 					distance = turf.distance(point, elevationPoints[idx - 1], options) + oldDistance
 					oldDistance = distance
 				}
-				return [Math.round(mapRef.current?.queryTerrainElevation(point) * 100) / 100, distance]
+
+				// calculates the elevation at each point, sometimes returns null, so trying to fix that
+				const elev = mapRef.current?.queryTerrainElevation({
+					lng: point[0],
+					lat: point[1]
+				})
+
+				return [elev, distance]
 			})
 
+			// makes a call to the server to store the path and the elevations
 			return updatePath(coordinates, elevations)
 		}
 
@@ -88,11 +102,13 @@ export const useRouteHandling = () => {
 		const radius = coordinates.map(() => 40)
 		const radiuses = radius.join(';')
 
+		// if matchPath is turned on, match the path first
 		getMatch(newCoordinates, radiuses, profile, mapRef)
 	}
 
 	const getMatch = async (coordinates, radiuses, profile, mapRef) => {
 		try {
+			// calls the matchPath api
 			const query = await fetch(
 				`https://api.mapbox.com/matching/v5/mapbox/${profile}/${coordinates}?geometries=geojson&radiuses=${radiuses}&overview=full&access_token=${mapboxToken}`,
 				{ method: 'GET' }
@@ -103,15 +119,18 @@ export const useRouteHandling = () => {
 				throw `${response.code} - ${response.message}.\n\nFor more information: https://docs.mapbox.com/api/navigation/map-matching/#map-matching-api-errors`
 			}
 
+			// gets the coordinates from the api
 			const resultCoordinates = response.matchings[0].geometry.coordinates
 
 			const options = { units: 'miles' }
 			let oldDistance = 0
-			const elevations = resultCoordinates.map((point, idx, elevationPoints) => {
+			// calcuates the elevations based on path points
+			let elevations = resultCoordinates.map((point, idx, elevationPoints) => {
 				let distance
 				if (idx === 0) {
 					distance = 0
 				} else {
+					// calculates each point's distance along the path from the beginning
 					distance =
 						Math.round(
 							(turf.distance(point, elevationPoints[idx - 1], options) + oldDistance) * 10000
@@ -119,10 +138,17 @@ export const useRouteHandling = () => {
 
 					oldDistance = distance
 				}
-				return [Math.round(mapRef.current?.queryTerrainElevation(point) * 100) / 100, distance]
+
+				// calculates the elevation at each point along the path
+				const elev = mapRef.current?.queryTerrainElevation({
+					lng: point[0],
+					lat: point[1]
+				})
+
+				return [elev, distance]
 			})
 
-			updatePath(resultCoordinates, elevations)
+			return updatePath(resultCoordinates, elevations)
 		} catch (error) {
 			console.log({ error })
 		}

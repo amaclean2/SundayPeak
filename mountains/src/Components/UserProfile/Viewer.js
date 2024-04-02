@@ -22,6 +22,10 @@ const UserViewer = () => {
 	const { setWorkingUserToCurrentUser, getNonLoggedInUser } = useGetUser()
 
 	useEffect(() => {
+		if (!loggedInUser) {
+			navigate('/discover')
+		}
+
 		const numberId = Number(userId)
 		if (loggedInUser && numberId === loggedInUser.id) {
 			navigate('/user')

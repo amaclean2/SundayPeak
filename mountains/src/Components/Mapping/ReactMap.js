@@ -18,12 +18,7 @@ import {
 
 import { adventurePathColor, useCreateNewAdventure, useRouteHandling } from './utils'
 import DrawControl from './DrawControl'
-
-import skier from 'Images/Activities/SkierIcon.png'
-import hiker from 'Images/Activities/HikerIcon.png'
-import climber from 'Images/Activities/ClimberIcon.png'
-import biker from 'Images/Activities/BikerIcon.png'
-import tourer from 'Images/Activities/TourerIcon.png'
+import { icons } from 'Images/Activities/IconMap'
 
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import './styles.css'
@@ -50,7 +45,7 @@ const ReactMap = () => {
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 	const { updateStartPosition } = useManipulateFlows()
 	const navigate = useNavigate()
-	const { updateRoute } = useRouteHandling()
+	const { updateRoute } = useRouteHandling(mapRef)
 	const { initiateConnection } = useMessages()
 	const { loggedInUser } = useUserStateContext()
 
@@ -58,21 +53,12 @@ const ReactMap = () => {
 		// this is a reference to the map DOM element
 		const map = mapRef.current?.getMap()
 
-		const icons = [
-			[skier, 'ski'],
-			[hiker, 'hike'],
-			[climber, 'climb'],
-			[biker, 'bike'],
-			[tourer, 'skiApproach']
-		]
-
 		// if there's a current adventure and the map is loading, fly to that adventure
 
 		icons.forEach(([icon, iconName]) => {
 			map.loadImage(icon, (error, image) => {
-				if (error) {
-					throw error
-				}
+				if (error) console.error(error)
+
 				if (!map.hasImage(iconName)) {
 					map.addImage(iconName, image)
 				}
@@ -92,7 +78,8 @@ const ReactMap = () => {
 	}
 
 	useEffect(() => {
-		// initiate the websocket connection
+		// initiate the websocket connection for messages
+		// this page will always load first so this was as good of a place to put it as any
 		if (loggedInUser?.id) {
 			initiateConnection()
 		}
@@ -175,8 +162,8 @@ const ReactMap = () => {
 				{isPathEditOn && (
 					<DrawControl
 						position={'bottom-right'}
-						onCreate={(event) => updateRoute(event, mapRef)}
-						onUpdate={(event) => updateRoute(event, mapRef)}
+						onCreate={updateRoute}
+						onUpdate={updateRoute}
 					/>
 				)}
 				<Source

@@ -104,16 +104,6 @@ const SkiForm = () => {
 				value={currentAdventure.season || ''}
 				onChange={editAdventure}
 			/>
-			<FormField
-				name='gear'
-				label={getContent('adventurePanel.editable.gearRequired')}
-				type='selectmany'
-				options={{ selectMany: gearOptions }}
-				isEditable
-				fullWidth
-				value={currentAdventure.gear || ''}
-				onChange={editAdventure}
-			/>
 			<MultiField
 				onChange={editAdventure}
 				label={getContent('adventurePanel.editable.slope')}

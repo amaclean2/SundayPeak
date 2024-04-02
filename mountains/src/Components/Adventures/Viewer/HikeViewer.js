@@ -32,6 +32,12 @@ const HikeViewer = ({ menuContents }) => {
 	const { loggedInUser } = useUserStateContext()
 	const navigate = useNavigate()
 
+	const adventureDistance =
+		currentAdventure.elevations?.[currentAdventure.elevations?.length - 1]?.[1] ??
+		currentAdventure.distance
+
+	console.log({ elev: currentAdventure.elevations, path: currentAdventure.path })
+
 	return (
 		<DisplayCard
 			title={currentAdventure.adventure_name}
@@ -42,7 +48,7 @@ const HikeViewer = ({ menuContents }) => {
 			}}
 		>
 			<AdventureGallery />
-			{currentAdventure.elevations && <ElevationView />}
+			{!!currentAdventure.elevations?.length && <ElevationView />}
 			<FieldPage className={'adventure-display-grid'}>
 				<FieldRow className={'narrow-field'}>
 					<Field noPadding>
@@ -64,7 +70,7 @@ const HikeViewer = ({ menuContents }) => {
 						<FieldValue className={'flex-box'}>
 							<DistanceIcon />
 							{getContent('adventurePanel.fields.approachContent', [
-								Math.round(currentAdventure.distance * 100) / 100
+								Math.round(adventureDistance * 100) / 100
 							])}
 						</FieldValue>
 					</Field>

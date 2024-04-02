@@ -1,6 +1,10 @@
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { useAdventureStateContext, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import {
+	useAdventureStateContext,
+	useGetAdventures,
+	useUserStateContext
+} from '@amaclean2/sundaypeak-treewells'
 
 import ClimbForm from './ClimbForm'
 import HikeForm from './HikeForm'
@@ -10,8 +14,11 @@ import SkiApproachForm from './SkiApproachForm'
 
 const AdventureEditorForm = () => {
 	const { currentAdventure } = useAdventureStateContext()
+	const { loggedInUser } = useUserStateContext()
 	const { getAdventure } = useGetAdventures()
 	const { adventureId, adventureType } = useParams()
+	const { pathname } = useLocation()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		if (!currentAdventure) {
@@ -23,6 +30,12 @@ const AdventureEditorForm = () => {
 			}
 		}
 	}, [])
+
+	useEffect(() => {
+		if (!loggedInUser) {
+			navigate(pathname.replace('/edit', ''))
+		}
+	}, [loggedInUser])
 
 	if (!currentAdventure) {
 		return null
