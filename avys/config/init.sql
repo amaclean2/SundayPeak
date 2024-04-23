@@ -172,6 +172,7 @@ CREATE TABLE conversations(
     id INT AUTO_INCREMENT,
     last_message TEXT,
     conversation_name VARCHAR(255),
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(id)
 );
 
@@ -179,6 +180,7 @@ CREATE TABLE conversation_interactions(
     user_id INT,
     conversation_id INT,
     unread TINYINT,
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY(user_id, conversation_id),
     FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY(conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
