@@ -1,14 +1,18 @@
-import { useEffect, useRef, useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import { CSVLink } from 'react-csv'
-import { useAdventureStateContext } from '@amaclean2/sundaypeak-treewells'
+import {
+	useAdventureStateContext,
+	useCardStateContext,
+	useManipulateFlows
+} from '@amaclean2/sundaypeak-treewells'
 
 import { Meatball } from 'Images/UIGlyphs/Meatball'
 import { Button } from '../Button'
 import { formatAdventureForExport } from './utils'
 
 import './styles.css'
+import { useEffect, useState } from 'react'
 
 const Field = ({ field, onClick }) => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -37,49 +41,47 @@ const Field = ({ field, onClick }) => {
 	}
 }
 
-export const Menu = ({ className, fields }) => {
-	const [isOpen, setIsOpen] = useState(false)
-	const [position, setPosition] = useState('left')
-	const menuRef = useRef()
+export const MenuButton = () => {
+	const { toggleMenuOpen } = useManipulateFlows()
 
-	const handleMenuButton = (event, action) => {
-		setIsOpen(false)
+	return (
+		<Button
+			onClick={toggleMenuOpen}
+			id='menu-opener'
+			className={'menu-opener'}
+		>
+			<Meatball />
+		</Button>
+	)
+}
+
+export const Menu = ({ fields, bounds }) => {
+	const { toggleMenuOpen } = useManipulateFlows()
+	const { isMenuOpen } = useCardStateContext()
+
+	const [menuLeftPosition, setMenuLeftPosition] = useState(bounds.right)
+
+	const handleMenuButton = (action) => {
+		toggleMenuOpen()
 		action()
 	}
 
-	// this useEffect needs to be here because it needs to wait for the DOM to be loaded
 	useEffect(() => {
-		const position = menuRef.current.getBoundingClientRect().x
-		const menuWidth = 200
-
-		setPosition(position < menuWidth ? 'right' : 'left')
-	}, [isOpen])
+		setMenuLeftPosition(isMenuOpen ? bounds.right : bounds.right - 200)
+	}, [isMenuOpen])
 
 	return (
 		<div
-			ref={menuRef}
-			className={cx('menu', className, position)}
+			className={'menu-buttons'}
+			style={{ left: menuLeftPosition, top: `calc(${bounds.top}px + 3rem)` }}
 		>
-			<Button
-				onClick={() => setIsOpen(!isOpen)}
-				id='menu-opener'
-				className={'menu-opener'}
-			>
-				<Meatball />
-			</Button>
-			<div
-				className={cx('menu-buttons-background', isOpen ? '' : 'closed')}
-				onClick={() => setIsOpen(false)}
-			/>
-			<div className={'menu-buttons'}>
-				{fields.map((field, key) => (
-					<Field
-						field={field}
-						key={`menu_button_${key}`}
-						onClick={(e) => handleMenuButton(e, field.action)}
-					/>
-				))}
-			</div>
+			{fields.map((field, key) => (
+				<Field
+					field={field}
+					key={`menu_button_${key}`}
+					onClick={() => handleMenuButton(field.action)}
+				/>
+			))}
 		</div>
 	)
 }

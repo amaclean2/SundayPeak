@@ -9,9 +9,9 @@ import { useEffect, useRef } from 'react'
 import * as turf from '@turf/turf'
 
 export const useCreateNewAdventure = () => {
-	const { adventureAddState } = useAdventureStateContext()
+	const { adventureAddState, currentAdventure } = useAdventureStateContext()
 	const { getAdventure } = useGetAdventures()
-	const { createNewDefaultAdventure } = useSaveAdventure()
+	const { createNewDefaultAdventure, editAdventure, moveMarker } = useSaveAdventure()
 	const navigate = useNavigate()
 
 	const handleCreateNewAdventure = (event) => {
@@ -19,6 +19,13 @@ export const useCreateNewAdventure = () => {
 
 		if (!adventureAddState) {
 			return
+		}
+
+		if (currentAdventure) {
+			editAdventure({
+				target: { name: 'coordinates', value: [event.lngLat.lng, event.lngLat.lat] }
+			})
+			return moveMarker()
 		}
 
 		return createNewDefaultAdventure({
@@ -61,12 +68,12 @@ export const useRouteHandling = (mapRef) => {
 	}, [matchPath])
 
 	const updateRoute = (event) => {
-		mapRef.current.setZoom(13)
+		// mapRef.current.setZoom(14)
 
 		const profile = 'walking'
 		// features is an array of geojson lineString 'Feature's
-		const lastFeature = event.features.length - 1
-		const coordinates = event.features[lastFeature].geometry.coordinates
+		const lastFeatureIdx = event.features.length - 1
+		const coordinates = event.features[lastFeatureIdx].geometry.coordinates
 
 		// matchPath/localMatch is a toggle that tells if the user wants to match the path to a given road or not
 		if (!localMatch.current) {

@@ -2,9 +2,10 @@ import PropTypes from 'prop-types'
 import cx from 'classnames'
 
 import DisplayHeader from './DisplayHeader'
-import { FieldProps } from '../Menu'
+import { FieldProps, Menu } from '../Menu'
 
 import './styles.css'
+import { useEffect, useRef, useState } from 'react'
 
 export const DisplayCard = ({
 	children,
@@ -13,10 +14,18 @@ export const DisplayCard = ({
 	className,
 	title,
 	menu,
-	testId,
+	id,
 	hasClose = true,
 	blockBackground = false
 }) => {
+	const displayCardRef = useRef(null)
+	const [frameBounds, setFrameBounds] = useState({ top: 0, right: 0 })
+
+	useEffect(() => {
+		const boundingBox = displayCardRef.current.getBoundingClientRect()
+		setFrameBounds({ top: boundingBox.y, right: boundingBox.width + boundingBox.x })
+	}, [displayCardRef.current])
+
 	return (
 		<div
 			className={cx(
@@ -24,15 +33,25 @@ export const DisplayCard = ({
 				configuration,
 				blockBackground && 'block-background'
 			)}
-			data-testid={testId}
+			data-testid={id}
+			id={id}
 			onClick={() => blockBackground && onClose()}
 		>
-			<div className={cx('display-card', className)}>
+			{menu && (
+				<Menu
+					fields={menu.fields}
+					bounds={frameBounds}
+				/>
+			)}
+			<div
+				className={cx('display-card', className)}
+				ref={displayCardRef}
+			>
 				{title && (
 					<DisplayHeader
 						title={title}
 						onClose={onClose}
-						menu={menu}
+						menu={!!menu}
 						hasClose={hasClose}
 					/>
 				)}

@@ -11,6 +11,7 @@ import HikeForm from './HikeForm'
 import SkiForm from './SkiForm'
 import BikeForm from './BikeForm'
 import SkiApproachForm from './SkiApproachForm'
+import { useAdventureMenu } from '../Buttons/utils'
 
 const AdventureEditorForm = () => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -19,6 +20,7 @@ const AdventureEditorForm = () => {
 	const { adventureId, adventureType } = useParams()
 	const { pathname } = useLocation()
 	const navigate = useNavigate()
+	const { buildEditViewMenu } = useAdventureMenu()
 
 	useEffect(() => {
 		if (!currentAdventure) {
@@ -43,15 +45,15 @@ const AdventureEditorForm = () => {
 
 	switch (currentAdventure.adventure_type) {
 		case 'climb':
-			return <ClimbForm />
+			return <ClimbForm menuContents={buildEditViewMenu()} />
 		case 'hike':
-			return <HikeForm />
+			return <HikeForm menuContents={buildEditViewMenu()} />
 		case 'bike':
-			return <BikeForm />
+			return <BikeForm menuContents={buildEditViewMenu()} />
 		case 'skiApproach':
-			return <SkiApproachForm />
+			return <SkiApproachForm menuContents={buildEditViewMenu()} />
 		default:
-			return <SkiForm />
+			return <SkiForm menuContents={buildEditViewMenu()} />
 	}
 }
 

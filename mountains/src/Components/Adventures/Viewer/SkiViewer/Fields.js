@@ -6,7 +6,7 @@ import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sunday
 import { AngleIcon, ElevationIcon, Pin } from 'Images'
 import getContent from 'TextContent'
 import { Aspect, DifficultyViewer, ExposureViewer } from '../Symbols'
-import { formatGearList, formatSeasons } from 'Components/Adventures/utils'
+import { formatSeasons } from 'Components/Adventures/utils'
 import AdventureTickPanel from 'Components/Adventures/TickPanel'
 
 const Fields = () => {
@@ -28,7 +28,7 @@ const Fields = () => {
 				</Field>
 			</FieldRow>
 			<FieldRow className='adventure-bio'>
-				<Field className={'no-padding'}>{currentAdventure.bio}</Field>
+				<Field longText>{currentAdventure.bio}</Field>
 			</FieldRow>
 			{/* new field row */}
 			<FieldRow borderBottom>
@@ -50,7 +50,7 @@ const Fields = () => {
 				<Field borderRight>
 					<FieldHeader text={getContent('adventurePanel.fields.slopeAngle')} />
 					<FieldValue className='flex-box'>
-						<AngleIcon />
+						<AngleIcon size={25} />
 						{getContent('adventurePanel.fields.angleRange', [
 							currentAdventure.avg_angle,
 							currentAdventure.max_angle
@@ -68,8 +68,8 @@ const Fields = () => {
 					<FieldValue className='flex-box'>
 						<ElevationIcon />
 						{getContent('adventurePanel.fields.elevationContent', [
-							currentAdventure.base_elevation,
-							currentAdventure.summit_elevation
+							currentAdventure.summit_elevation,
+							currentAdventure.base_elevation
 						])}
 					</FieldValue>
 				</Field>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Map, {
 	FullscreenControl,
@@ -39,7 +39,8 @@ const ReactMap = () => {
 		currentAdventure,
 		globalAdventureType,
 		isPathEditOn,
-		workingPath
+		workingPath,
+		adventureAddState
 	} = useAdventureStateContext()
 	const { mapboxToken, mapboxStyleKey } = useTokenStateContext()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
@@ -48,6 +49,8 @@ const ReactMap = () => {
 	const { updateRoute } = useRouteHandling(mapRef)
 	const { initiateConnection } = useMessages()
 	const { loggedInUser } = useUserStateContext()
+
+	const [cursorMarker, setCursorMarker] = useState(null)
 
 	const onLoad = () => {
 		// this is a reference to the map DOM element
@@ -122,9 +125,9 @@ const ReactMap = () => {
 		mapboxAccessToken: mapboxToken,
 		mapStyle: `${mapboxStyleKey}?optimize=true`,
 		initialViewState: startPosition,
-		maxPitch: 85,
+		maxPitch: adventureAddState ? 0 : 85,
 		minZoom: 3,
-		terrain: { source: 'mapbox-dem', exaggeration: 1 },
+		terrain: { source: 'mapbox-dem' },
 		onDblClick: handleCreateNewAdventure,
 		onClick: (event) => {
 			if (!isPathEditOn) {
@@ -134,6 +137,11 @@ const ReactMap = () => {
 				const adventureId = event.features[0].properties.id
 
 				navigate(`adventure/${adventureType}/${adventureId}`)
+			}
+		},
+		onMouseMove: (event) => {
+			if (adventureAddState || isPathEditOn) {
+				setCursorMarker([event.lngLat.lng, event.lngLat.lat])
 			}
 		},
 		onLoad,
@@ -220,6 +228,28 @@ const ReactMap = () => {
 						}}
 					/>
 				</Source>
+				{cursorMarker && (
+					<Source
+						type='geojson'
+						data={{
+							type: 'Feature',
+							properties: {},
+							geometry: {
+								type: 'Point',
+								coordinates: cursorMarker
+							}
+						}}
+					>
+						<Layer
+							id={'cursor-marker'}
+							type={'symbol'}
+							layout={{
+								'icon-image': globalAdventureType,
+								'icon-size': 0.4
+							}}
+						/>
+					</Source>
+				)}
 				<Source
 					type='geojson'
 					data={allAdventures[globalAdventureType]}

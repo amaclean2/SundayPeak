@@ -9,6 +9,7 @@
 	pointer-events: auto;
 	position: relative;
 	background-color: var(--main-light);
+	z-index: 1;
 }
 
 .display-card-container.flex-box {
@@ -50,7 +51,7 @@
 	color: var(--main-light);
 	font-size: 1.3rem;
 	font-weight: 500;
-	padding-left: 1rem;
+	padding: 0 0.6rem 0 0.4rem;
 }
 
 .display-card-header-contents {
@@ -65,22 +66,20 @@
 
 .display-back-button {
 	border: none;
-	padding: 0;
-	border-radius: 0;
 	color: var(--main-light);
-	width: 3rem;
-	height: 3rem;
+	padding: 1rem 0.8rem;
 	outline: none;
 	background-color: transparent;
 	cursor: pointer;
 	transition: all 0.2s ease-in-out;
 	margin: 0;
+	margin-right: 0.5rem;
 }
 
 .display-back-button svg {
-	padding-right: 10px;
 	transition: all 0.2s ease-in-out;
 	color: inherit;
+	flex: none;
 }
 
 .display-back-button:hover {
@@ -93,7 +92,7 @@
 	transition: all 0.3s ease-in-out;
 	flex-direction: column;
 	max-height: 89vh;
-	max-width: 40rem;
+	max-width: 33rem;
 	padding: 0.8rem;
 	align-items: stretch;
 	justify-content: flex-start;
@@ -178,6 +177,10 @@ h3.label-field {
 
 .tick:hover {
 	background-color: var(--main-off-white);
+}
+
+.user-profile-display-card .display-content {
+	max-width: 40rem;
 }
 
 @media screen and (max-width: 500px) {

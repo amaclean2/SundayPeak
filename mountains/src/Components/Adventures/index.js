@@ -29,7 +29,7 @@ const DefaultAdventureView = () => {
 	return (
 		<DisplayCard
 			title={'Adventures'}
-			testId={'main-adventure-view'}
+			id={'main-adventure-view'}
 			onClose={() => navigate('/discover')}
 		>
 			<MainAdventureSelector />

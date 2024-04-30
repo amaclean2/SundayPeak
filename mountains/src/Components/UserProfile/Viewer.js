@@ -42,6 +42,7 @@ const UserViewer = () => {
 		<DisplayCard
 			menu={buildEditorMenu()}
 			title={`${workingUser?.first_name} ${workingUser?.last_name}`}
+			className='user-profile-display-card'
 			onClose={() => navigate('/discover')}
 		>
 			<div className='flex-box user-bio-content'>

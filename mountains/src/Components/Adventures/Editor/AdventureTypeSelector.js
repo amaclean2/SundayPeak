@@ -1,20 +1,24 @@
-import { useState } from 'react'
-import { useGetAdventures } from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 
-import { ErrorField, FormField } from 'Components/Reusable'
+import { DisplayCard, ErrorField, FormField } from 'Components/Reusable'
 import { ImportAdventuresButton } from '../Buttons/ImportAdventuresButton'
+import { useState } from 'react'
 
 const AdventureTypeSelector = () => {
 	const { enableNewAdventureClick } = useGetAdventures()
-	const [localAdventureType, setLocalAdventureType] = useState(null)
+	const { globalAdventureType } = useAdventureStateContext()
+	const [hasChanged, setHasChanged] = useState(false)
 
 	const handleChange = (event) => {
-		setLocalAdventureType(event.target.value)
 		enableNewAdventureClick({ type: event.target.value })
+		setHasChanged(true)
 	}
 
 	return (
-		<>
+		<DisplayCard
+			title={'Create a New Adventure'}
+			id={'create-new-adventure-card'}
+		>
 			<p className='new-adventure-brief'>
 				Select an adventure type below then double click a point on the map to add a new adventure
 				starting at that point.
@@ -57,10 +61,10 @@ const AdventureTypeSelector = () => {
 						}
 					]
 				}}
-				value={localAdventureType}
+				value={hasChanged ? globalAdventureType : null}
 				onChange={handleChange}
 			/>
-		</>
+		</DisplayCard>
 	)
 }
 

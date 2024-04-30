@@ -13,6 +13,7 @@ const DefaultField = ({
 	value,
 	options,
 	placeholder,
+	isLargeField,
 	testId,
 	onChange,
 	autoFocus = false
@@ -25,7 +26,7 @@ const DefaultField = ({
 
 	return (
 		<input
-			className={cx(type || 'text', 'form-field', className)}
+			className={cx(type ?? 'text', 'form-field', className, isLargeField && 'header-input')}
 			data-testid={testId ?? name}
 			pattern={options?.pattern || null}
 			type={type}

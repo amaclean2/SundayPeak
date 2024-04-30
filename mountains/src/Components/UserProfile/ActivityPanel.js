@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGetAdventures, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { FieldHeader } from '../Reusable'
-import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
+import { LargeBikerIcon, LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
 
 const ICON_SIZE = 25
 
@@ -16,6 +16,7 @@ const CompletedAdventure = ({ activity, onClick }) => (
 			{activity.adventure_type === 'ski' && <LargeSkierIcon size={ICON_SIZE} />}
 			{activity.adventure_type === 'climb' && <LargeClimberIcon size={ICON_SIZE} />}
 			{activity.adventure_type === 'hike' && <LargeHikerIcon size={ICON_SIZE} />}
+			{activity.adventure_type === 'bike' && <LargeBikerIcon size={ICON_SIZE} />}
 		</span>
 		<span className={'main-text'}>{activity.adventure_name}</span>
 	</li>

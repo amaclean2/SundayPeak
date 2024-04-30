@@ -12,6 +12,10 @@ const SkiViewer = ({ menuContents }) => {
 	const { closeAdventureView } = useManipulateFlows()
 	const navigate = useNavigate()
 
+	if (currentAdventure.adventure_name === 'New Adventure' && !currentAdventure.path?.length) {
+		navigate(`/adventure/edit/ski/${currentAdventure.id}`)
+	}
+
 	return (
 		<DisplayCard
 			title={currentAdventure.adventure_name}

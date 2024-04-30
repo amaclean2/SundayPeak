@@ -18,7 +18,7 @@ const AdventureViewer = () => {
 	const { currentAdventure, globalAdventureType } = useAdventureStateContext()
 	const { adventureId, adventureType } = useParams()
 	const { changeAdventureType, getAdventure } = useGetAdventures()
-	const buildAdventureMenu = useAdventureMenu()
+	const { buildAdventureMenu } = useAdventureMenu()
 	const { saveCompletedAdventure } = useSaveCompletedAdventure()
 
 	const [isCompleteMenuOpen, setIsCompleteMenuOpen] = useState(false)

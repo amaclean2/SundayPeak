@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import {
 	useAdventureStateContext,
 	useGetAdventures,
-	useSaveCompletedAdventure,
+	useSaveAdventure,
 	useSaveTodo,
 	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
@@ -14,7 +14,7 @@ export const useAdventureMenu = () => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { shareAdventure } = useGetAdventures()
 	const { saveTodo } = useSaveTodo()
-	const { saveCompletedAdventure } = useSaveCompletedAdventure()
+	const { togglePathEdit, savePath, deletePath, moveMarker } = useSaveAdventure()
 
 	const navigate = useNavigate()
 
@@ -87,5 +87,38 @@ export const useAdventureMenu = () => {
 		return { fields }
 	}
 
-	return buildAdventureMenu
+	const buildEditViewMenu = () => {
+		const fields = []
+
+		if (currentAdventure.path?.length) {
+			fields.push({
+				action: deletePath,
+				id: 'delete-path',
+				text: 'Delete Path'
+			})
+			fields.push({
+				action: togglePathEdit,
+				id: 'edit-path',
+				text: 'Edit Path'
+			})
+		} else {
+			fields.push({
+				action: savePath,
+				id: 'add-path',
+				text: 'Add Path'
+			})
+		}
+		fields.push({
+			action: moveMarker,
+			id: 'move-marker',
+			text: 'Move Marker'
+		})
+
+		return { fields }
+	}
+
+	return {
+		buildAdventureMenu,
+		buildEditViewMenu
+	}
 }

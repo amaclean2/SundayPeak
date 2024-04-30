@@ -2,38 +2,18 @@
 	position: relative;
 }
 
-.menu.left .menu-buttons {
-	right: 0;
-}
-
-.menu-buttons-background {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-}
-
-.menu-buttons-background.closed {
-	display: none;
-}
-
-.menu-buttons-background.closed + .menu-buttons {
-	max-height: 0;
-}
-
 .menu-buttons {
-	position: absolute;
+	position: fixed;
 	background-color: var(--main-light);
 	box-shadow: 0 0 10px var(--box-shadow-opacity);
-	z-index: 2;
-	border-radius: 10px;
+	border-radius: 0 0.7rem 0.7rem 0;
 	color: var(--primary-accent-color);
-	width: 200px;
 	font-size: 1rem;
 	overflow: hidden;
 	max-height: 1000px;
 	transition: all 0.3s ease-in-out;
+	z-index: 1;
+	pointer-events: all;
 }
 
 .drop-list-subtext {
@@ -48,8 +28,7 @@
 	font-size: 0.9rem;
 }
 
-.menu-button {
-	height: 48px;
+.menu-button.flex-box {
 	transition: all 0.3s ease-in-out;
 	cursor: pointer;
 	color: inherit;
@@ -57,6 +36,9 @@
 	margin: 0;
 	background-color: transparent;
 	border-radius: 0;
+	justify-content: flex-start;
+	padding: 0 1rem;
+	height: 3rem;
 }
 
 .menu-buttons .menu-button:hover {

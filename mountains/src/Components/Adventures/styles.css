@@ -68,7 +68,8 @@
 }
 
 .adventure-display-grid {
-	width: 35rem;
+	width: 100%;
+	min-width: 30rem;
 }
 
 .import-adventures-button input {

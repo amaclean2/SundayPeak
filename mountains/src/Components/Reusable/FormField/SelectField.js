@@ -9,7 +9,8 @@ const SelectField = ({
 	value,
 	onChange,
 	testId,
-	autoFocus = false
+	autoFocus = false,
+	defaultValue
 }) => {
 	const { selectOptions = [] } = options
 	return (
@@ -20,6 +21,7 @@ const SelectField = ({
 			value={value || '0'}
 			onChange={onChange}
 			autoFocus={autoFocus}
+			defaultValue={defaultValue}
 		>
 			{placeholder && (
 				<option
@@ -34,6 +36,7 @@ const SelectField = ({
 					key={`select_${name}_${key}`}
 					value={option.value}
 					id={option.id}
+					disabled={option.disabled}
 				>
 					{option.text || option.value}
 				</option>

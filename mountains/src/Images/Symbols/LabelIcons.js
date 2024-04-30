@@ -1,11 +1,8 @@
-export const AngleIcon = () => (
+export const AngleIcon = ({ size = 32 }) => (
 	<svg
-		id='Layer_1'
-		data-name='Layer 1'
 		className='angle-icon'
-		xmlns='http://www.w3.org/2000/svg'
-		width='32'
-		height='32'
+		width={size}
+		height={size}
 		viewBox='0 0 32 32'
 	>
 		<g>
@@ -15,27 +12,21 @@ export const AngleIcon = () => (
 	</svg>
 )
 
-export const ElevationIcon = () => (
+export const ElevationIcon = ({ size = 20 }) => (
 	<svg
 		className='elevation-icon'
-		id='Layer_1'
-		data-name='Layer 1'
-		xmlns='http://www.w3.org/2000/svg'
-		width='20'
-		height='20'
+		width={size}
+		height={size}
 		viewBox='0 0 20 20'
 	>
 		<path d='M19.93,17.84,10.45,1.41a.54.54,0,0,0-.9,0L.07,17.84a.49.49,0,0,0,0,.52.51.51,0,0,0,.44.26h19a.51.51,0,0,0,.45-.26A.53.53,0,0,0,19.93,17.84Zm-4.08-5H4.15L6.35,9h7.3ZM10,2.71,13.05,8H7ZM1.41,17.58l2.14-3.7h12.9l2.14,3.7Z' />
 	</svg>
 )
 
-export const DistanceIcon = () => (
+export const DistanceIcon = ({ size = 20 }) => (
 	<svg
-		id='Layer_1'
-		data-name='Layer 1'
-		xmlns='http://www.w3.org/2000/svg'
-		width='20'
-		height='20'
+		width={size}
+		height={size}
 		className='distance-icon'
 		viewBox='0 0 20 20'
 	>

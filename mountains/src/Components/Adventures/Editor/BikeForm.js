@@ -20,7 +20,7 @@ import DeletePage from './DeletePage'
 const BikeForm = () => {
 	const { currentAdventure, isDeletePageOpen, isPathEditOn, matchPath } = useAdventureStateContext()
 	const { toggleDeletePage } = useDeleteAdventure()
-	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath } =
+	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath, moveMarker } =
 		useSaveAdventure()
 
 	return (
@@ -68,6 +68,7 @@ const BikeForm = () => {
 					{!isPathEditOn && !!currentAdventure.path?.length && (
 						<Button onClick={deletePath}>Delete Line</Button>
 					)}
+					<Button onClick={moveMarker}>Move Marker</Button>
 				</div>
 			</div>
 			<FormField

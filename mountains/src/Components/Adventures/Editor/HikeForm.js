@@ -13,8 +13,7 @@ import DeletePage from './DeletePage'
 const HikeForm = () => {
 	const { currentAdventure, isDeletePageOpen, isPathEditOn, matchPath } = useAdventureStateContext()
 	const { toggleDeletePage } = useDeleteAdventure()
-	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath } =
-		useSaveAdventure()
+	const { editAdventure, savePath, deletePath, toggleMatchPath } = useSaveAdventure()
 
 	console.log(currentAdventure.path)
 
