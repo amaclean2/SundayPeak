@@ -1,20 +1,19 @@
-import React from 'react'
-
+import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 import { Button, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from 'Components/Reusable'
 import RatingView from 'Components/Reusable/RatingView'
-import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
-import { AngleIcon, ElevationIcon, Pin } from 'Images'
+import { DistanceIcon, ElevationIcon, Pin } from 'Images'
 import getContent from 'TextContent'
-import { Aspect, DifficultyViewer, ExposureViewer } from '../Symbols'
+import React from 'react'
+import { DifficultyViewer } from '../Symbols'
 import { formatSeasons } from 'Components/Adventures/utils'
-import AdventureTickPanel from 'Components/Adventures/TickPanel'
 import { ParentSize } from '@visx/responsive'
 import ElevationChart from 'Components/Reusable/Chart'
+import AdventureTickPanel from 'Components/Adventures/TickPanel'
 import Linkify from 'linkify-react'
 import NearbyCards from 'Components/Reusable/NearbyCard'
 
 const Fields = () => {
-	const { currentAdventure, closeAdventures } = useAdventureStateContext()
+	const { currentAdventure, workingPath, closeAdventures } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 
 	return (
@@ -34,10 +33,36 @@ const Fields = () => {
 
 			<FieldRow className='adventure-bio'>
 				<Field
-					noPadding
 					longText
+					noPadding
 				>
 					<Linkify options={{ defaultProtocol: 'https' }}>{currentAdventure.bio}</Linkify>
+				</Field>
+			</FieldRow>
+
+			<FieldRow borderBottom>
+				<Field borderRight>
+					<FieldHeader text={'Distance'} />
+					<FieldValue className={'flex-box'}>
+						<DistanceIcon />
+						{getContent('adventurePanel.fields.approachContent', [
+							(
+								currentAdventure.elevations?.[currentAdventure.elevations.length - 1]?.[1] ??
+								currentAdventure.distance ??
+								0
+							).toFixed(2)
+						])}
+					</FieldValue>
+				</Field>
+				<Field>
+					<FieldHeader text={getContent('adventurePanel.fields.elevation')} />
+					<FieldValue className='flex-box'>
+						<ElevationIcon />
+						{getContent('adventurePanel.fields.elevationContent', [
+							[Infinity, -Infinity, undefined].includes(workingPath.minEl) ? 0 : workingPath.minEl,
+							[Infinity, -Infinity, undefined].includes(workingPath.maxEl) ? 0 : workingPath.maxEl
+						])}
+					</FieldValue>
 				</Field>
 			</FieldRow>
 
@@ -48,39 +73,13 @@ const Fields = () => {
 						<DifficultyViewer difficulty={currentAdventure.difficulty} />
 					</FieldValue>
 				</Field>
-				<Field>
-					<FieldHeader text={getContent('adventurePanel.fields.exposure')} />
-					<FieldValue>
-						<ExposureViewer exposure={currentAdventure.exposure} />
-					</FieldValue>
-				</Field>
-			</FieldRow>
-
-			<FieldRow borderBottom>
 				<Field borderRight>
-					<FieldHeader text={getContent('adventurePanel.fields.slopeAngle')} />
-					<FieldValue className='flex-box'>
-						<AngleIcon size={25} />
-						{currentAdventure.avg_angle === currentAdventure.max_angle
-							? `${currentAdventure.avg_angle}°`
-							: `${currentAdventure.avg_angle} - ${currentAdventure.max_angle}°`}
-					</FieldValue>
-				</Field>
-				<Field borderRight>
-					<FieldHeader text={getContent('adventurePanel.fields.aspect')} />
-					<FieldValue>
-						<Aspect aspect={currentAdventure.aspect} />
-					</FieldValue>
+					<FieldHeader text={'Climb'} />
+					<FieldValue>{currentAdventure.climb} ft</FieldValue>
 				</Field>
 				<Field>
-					<FieldHeader text={getContent('adventurePanel.fields.elevation')} />
-					<FieldValue className='flex-box'>
-						<ElevationIcon />
-						{getContent('adventurePanel.fields.elevationContent', [
-							currentAdventure.summit_elevation,
-							currentAdventure.base_elevation
-						])}
-					</FieldValue>
+					<FieldHeader text={'Descent'} />
+					<FieldValue>{currentAdventure.descent} ft</FieldValue>
 				</Field>
 			</FieldRow>
 

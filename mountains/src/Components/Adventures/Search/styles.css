@@ -30,6 +30,10 @@
 
 .result-title {
 	font-weight: 500;
+	overflow: hidden;
+	max-width: 15rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .current-adventure-type {

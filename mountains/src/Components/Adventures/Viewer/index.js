@@ -18,12 +18,35 @@ const AdventureViewer = () => {
 	const { currentAdventure, globalAdventureType } = useAdventureStateContext()
 	const { adventureId, adventureType } = useParams()
 	const { changeAdventureType, getAdventure } = useGetAdventures()
+	const { getNearbyAdventures } = useGetAdventures()
 	const { buildAdventureMenu } = useAdventureMenu()
 	const { saveCompletedAdventure } = useSaveCompletedAdventure()
 
 	const [isCompleteMenuOpen, setIsCompleteMenuOpen] = useState(false)
 	const [rating, setRating] = useState(1)
 	const [difficulty, setDifficulty] = useState(1)
+
+	useEffect(() => {
+		if (!currentAdventure || currentAdventure.id !== adventureId) {
+			// fetch the new adventure from the adventureId
+			changeAdventureType({ type: adventureType === 'skiApproach' ? 'ski' : adventureType })
+			getAdventure({ id: adventureId, type: adventureType })
+		} else if (currentAdventure?.adventure_type !== globalAdventureType) {
+			changeAdventureType({
+				type:
+					currentAdventure.adventure_type === 'skiApproach'
+						? 'ski'
+						: currentAdventure.adventure_type
+			})
+		}
+
+		if (currentAdventure?.id) {
+			getNearbyAdventures({
+				type: currentAdventure.adventure_type,
+				coordinates: currentAdventure.coordinates
+			})
+		}
+	}, [adventureId, currentAdventure?.id])
 
 	useEffect(() => {
 		if (typeof currentAdventure?.rating === 'number') {
@@ -42,21 +65,6 @@ const AdventureViewer = () => {
 			setDifficulty(Math.round(Number(currentAdventure?.difficulty)))
 		}
 	}, [currentAdventure?.rating, currentAdventure?.difficulty])
-
-	useEffect(() => {
-		if (!currentAdventure || currentAdventure.id !== adventureId) {
-			// fetch the new adventure from the adventureId
-			changeAdventureType({ type: adventureType === 'skiApproach' ? 'ski' : adventureType })
-			getAdventure({ id: adventureId, type: adventureType })
-		} else if (currentAdventure.adventure_type !== globalAdventureType) {
-			changeAdventureType({
-				type:
-					currentAdventure.adventure_type === 'skiApproach'
-						? 'ski'
-						: currentAdventure.adventure_type
-			})
-		}
-	}, [adventureId])
 
 	if (!currentAdventure) {
 		return null

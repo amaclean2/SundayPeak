@@ -13,6 +13,8 @@ import BikeForm from './BikeForm'
 import SkiApproachForm from './SkiApproachForm'
 import { useAdventureMenu } from '../Buttons/utils'
 
+import './styles.css'
+
 const AdventureEditorForm = () => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
@@ -25,11 +27,7 @@ const AdventureEditorForm = () => {
 	useEffect(() => {
 		if (!currentAdventure) {
 			// fetch the new adventure from the adventureId
-			try {
-				getAdventure({ id: adventureId, type: adventureType })
-			} catch (error) {
-				console.log({ error })
-			}
+			getAdventure({ id: adventureId, type: adventureType })
 		}
 	}, [])
 

@@ -7,13 +7,12 @@ import {
 } from '@amaclean2/sundaypeak-treewells'
 
 import { Button, DisplayCard, FooterButtons } from 'Components/Reusable'
-import AddPath from 'Components/Reusable/AddPath'
-
 import DeletePage from '../DeletePage'
-import SkiFields from './Fields'
+import SkiApproachFields from './Fields'
+import AddPath from 'Components/Reusable/AddPath'
 import { useNavigate } from 'react-router-dom'
 
-const SkiForm = ({ menuContents }) => {
+const SkiApproachForm = ({ menuContents }) => {
 	const { currentAdventure, isDeletePageOpen, isPathEditOn } = useAdventureStateContext()
 	const { enableAddPath } = useCardStateContext()
 	const { togglePathEdit, savePath } = useSaveAdventure()
@@ -26,7 +25,7 @@ const SkiForm = ({ menuContents }) => {
 			!currentAdventure.path?.length &&
 			!isPathEditOn
 		)
-			togglePathEdit()
+			togglePathEdit(true)
 	}, [])
 
 	return (
@@ -34,7 +33,7 @@ const SkiForm = ({ menuContents }) => {
 			title={currentAdventure.adventure_name || 'New Adventure'}
 			onClose={() => (isPathEditOn ? togglePathEdit(false) : navigate(-1))}
 		>
-			{isPathEditOn ? <AddPath /> : <SkiFields menuContents={menuContents} />}
+			{isPathEditOn ? <AddPath /> : <SkiApproachFields menuContents={menuContents} />}
 			<FooterButtons row>
 				{isPathEditOn && enableAddPath && (
 					<Button
@@ -46,15 +45,9 @@ const SkiForm = ({ menuContents }) => {
 						Save Path
 					</Button>
 				)}
-				{!isPathEditOn ? (
-					<Button
-						direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}
-					>
-						Finish
-					</Button>
-				) : (
-					<Button onClick={() => togglePathEdit(false)}>Cancel</Button>
-				)}
+				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>
+					Finish
+				</Button>
 				<Button
 					className={'delete-button'}
 					id={'adventure-delete-button'}
@@ -68,4 +61,4 @@ const SkiForm = ({ menuContents }) => {
 	)
 }
 
-export default SkiForm
+export default SkiApproachForm

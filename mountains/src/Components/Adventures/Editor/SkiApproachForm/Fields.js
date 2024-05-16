@@ -1,30 +1,27 @@
-import {
-	useAdventureStateContext,
-	useDeleteAdventure,
-	useSaveAdventure
-} from '@amaclean2/sundaypeak-treewells'
-
-import {
-	Button,
-	DisplayCard,
-	ErrorField,
-	FooterButtons,
-	FormField,
-	MultiField
-} from 'Components/Reusable'
+import { useAdventureStateContext, useSaveAdventure } from '@amaclean2/sundaypeak-treewells'
+import { gearOptions } from 'Components/Adventures/utils'
+import { Button, ErrorField, FormField } from 'Components/Reusable'
+import { LargeActivityIcon } from 'Images'
 import getContent from 'TextContent'
-import { directionSelectOptions, gearOptions, seasonOptions } from 'Components/Adventures/utils'
-import { LargeSkierIcon } from 'Images'
-import DeletePage from './DeletePage'
+import React from 'react'
 
-const SkiApproachForm = () => {
-	const { currentAdventure, isDeletePageOpen, isPathEditOn, matchPath } = useAdventureStateContext()
-	const { toggleDeletePage } = useDeleteAdventure()
-	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath } =
-		useSaveAdventure()
-
+const SkiApproachFields = ({ menuContents }) => {
+	const { currentAdventure } = useAdventureStateContext()
+	const { editAdventure } = useSaveAdventure()
 	return (
-		<DisplayCard title={currentAdventure.adventure_name || 'New Adventure'}>
+		<>
+			<div className={'flex-box adventure-button-header'}>
+				{menuContents.fields.map((button, idx) => (
+					<Button
+						small
+						className={idx === 0 && 'delete-button'}
+						onClick={button.action}
+						id={button.id}
+					>
+						{button.text}
+					</Button>
+				))}
+			</div>
 			<ErrorField form={'adventure'} />
 			<div className='flex-box edit-add-path'>
 				<FormField
@@ -32,48 +29,15 @@ const SkiApproachForm = () => {
 					name='adventure_type'
 					minWidth={true}
 					value={
-						<LargeSkierIcon
+						<LargeActivityIcon
 							size={70}
-							className={'editor-skier'}
+							type={'ski'}
 						/>
 					}
 					isEditable
 					hideLabel
 					onChange={() => {}}
 				/>
-				<div className='flex-box path-buttons'>
-					{isPathEditOn && (
-						<FormField
-							name='pathMatch'
-							label={'Match path to a given road or trail'}
-							type={'checkbox'}
-							isEditable
-							fullWidth
-							reverse
-							className='no-padding'
-							value={matchPath}
-							onChange={toggleMatchPath}
-						/>
-					)}
-					{!currentAdventure.path?.length && (
-						<Button
-							small
-							id={'path-add-button'}
-							onClick={() => {
-								if (isPathEditOn) {
-									savePath()
-								} else {
-									togglePathEdit()
-								}
-							}}
-						>
-							{isPathEditOn ? 'Finish Adding Line' : 'Add Line'}
-						</Button>
-					)}
-					{!isPathEditOn && !!currentAdventure.path?.length && (
-						<Button onClick={deletePath}>Delete Line</Button>
-					)}
-				</div>
 			</div>
 			<FormField
 				name='adventure_name'
@@ -159,21 +123,8 @@ const SkiApproachForm = () => {
 				}
 				onChange={editAdventure}
 			/>
-			<FooterButtons>
-				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>
-					Finish
-				</Button>
-				<Button
-					className={'delete-button'}
-					id={'adventure-delete-button'}
-					onClick={toggleDeletePage}
-				>
-					Delete Adventure
-				</Button>
-			</FooterButtons>
-			{isDeletePageOpen && <DeletePage />}
-		</DisplayCard>
+		</>
 	)
 }
 
-export default SkiApproachForm
+export default SkiApproachFields

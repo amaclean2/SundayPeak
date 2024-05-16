@@ -2,8 +2,7 @@ import cx from 'classnames'
 import { useAdventureStateContext, useGetAdventures } from '@amaclean2/sundaypeak-treewells'
 
 import { Button } from 'Components/Reusable'
-import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
-import { LargeBikerIcon } from 'Images/Activities/LargeBikerIcon'
+import { LargeActivityIcon } from 'Images'
 
 const MainAdventureSelector = () => {
 	const { globalAdventureType } = useAdventureStateContext()
@@ -18,9 +17,10 @@ const MainAdventureSelector = () => {
 				className={cx(globalAdventureType === 'ski' && 'current-adventure-type')}
 				onClick={() => changeAdventureType({ type: 'ski' })}
 			>
-				<LargeSkierIcon
+				<LargeActivityIcon
 					size={svgSize}
 					color={globalAdventureType === 'ski' ? '#FFF' : '#000'}
+					type={'ski'}
 				/>
 				Ski
 			</Button>
@@ -29,9 +29,10 @@ const MainAdventureSelector = () => {
 				className={cx(globalAdventureType === 'bike' && 'current-adventure-type')}
 				onClick={() => changeAdventureType({ type: 'bike' })}
 			>
-				<LargeBikerIcon
+				<LargeActivityIcon
 					size={svgSize}
 					color={globalAdventureType === 'bike' ? '#FFF' : '#000'}
+					type={'bike'}
 				/>
 				Ride
 			</Button>
@@ -40,9 +41,10 @@ const MainAdventureSelector = () => {
 				className={cx(globalAdventureType === 'climb' && 'current-adventure-type')}
 				onClick={() => changeAdventureType({ type: 'climb' })}
 			>
-				<LargeClimberIcon
+				<LargeActivityIcon
 					size={svgSize}
 					color={globalAdventureType === 'climb' ? '#FFF' : '#000'}
+					type={'climb'}
 				/>
 				Climb
 			</Button>
@@ -51,9 +53,10 @@ const MainAdventureSelector = () => {
 				className={cx(globalAdventureType === 'hike' && 'current-adventure-type')}
 				onClick={() => changeAdventureType({ type: 'hike' })}
 			>
-				<LargeHikerIcon
+				<LargeActivityIcon
 					size={svgSize}
 					color={globalAdventureType === 'hike' ? '#FFF' : '#000'}
+					type={'hike'}
 				/>
 				Hike
 			</Button>

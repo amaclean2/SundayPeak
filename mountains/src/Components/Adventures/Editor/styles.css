@@ -1,0 +1,5 @@
+.adventure-button-header.flex-box {
+	gap: 0.5rem;
+	justify-content: flex-end;
+	flex-direction: row-reverse;
+}

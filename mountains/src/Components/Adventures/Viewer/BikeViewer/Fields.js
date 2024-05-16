@@ -5,12 +5,16 @@ import getContent from 'TextContent'
 import { Button, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from 'Components/Reusable'
 import RatingView from 'Components/Reusable/RatingView'
 import { DistanceIcon, ElevationIcon, Pin } from 'Images'
-import { formatSeasons, pitchClimbs } from 'Components/Adventures/utils'
+import { formatSeasons } from 'Components/Adventures/utils'
 import { DifficultyViewer } from '../Symbols'
 import AdventureTickPanel from 'Components/Adventures/TickPanel'
+import { ParentSize } from '@visx/responsive'
+import ElevationChart from 'Components/Reusable/Chart'
+import Linkify from 'linkify-react'
+import NearbyCards from 'Components/Reusable/NearbyCard'
 
 const Fields = () => {
-	const { currentAdventure } = useAdventureStateContext()
+	const { currentAdventure, closeAdventures } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 
 	return (
@@ -20,6 +24,7 @@ const Fields = () => {
 					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
 				</Field>
 			</FieldRow>
+
 			<FieldRow className={'location-row'}>
 				<Field className={'view-location'}>
 					<Pin size={20} />
@@ -27,35 +32,25 @@ const Fields = () => {
 				</Field>
 			</FieldRow>
 			<FieldRow className='adventure-bio'>
-				<Field className={'no-padding'}>{currentAdventure.bio}</Field>
+				<Field
+					longText
+					noPadding
+				>
+					<Linkify options={{ defaultProtocol: 'https' }}>{currentAdventure.bio}</Linkify>
+				</Field>
 			</FieldRow>
+
 			<FieldRow borderBottom>
 				<Field borderRight>
 					<FieldHeader text={'Distance'} />
 					<FieldValue className={'flex-box'}>
 						<DistanceIcon />
 						{getContent('adventurePanel.fields.approachContent', [
-							Math.round(currentAdventure.distance * 100) / 100
+							currentAdventure.elevations?.[currentAdventure.elevations.length - 1]?.[1].toFixed(2)
 						])}
 					</FieldValue>
 				</Field>
 				<Field>
-					<FieldHeader text={getContent('adventurePanel.fields.difficulty')} />
-					<FieldValue>
-						<DifficultyViewer difficulty={currentAdventure.difficulty} />
-					</FieldValue>
-				</Field>
-			</FieldRow>
-			{pitchClimbs.includes(currentAdventure.climb_type) && (
-				<FieldRow borderBottom>
-					<Field>
-						<FieldHeader text={'Pro'} />
-						<FieldValue>{currentAdventure.protection}</FieldValue>
-					</Field>
-				</FieldRow>
-			)}
-			<FieldRow borderBottom>
-				<Field borderRight>
 					<FieldHeader text={getContent('adventurePanel.fields.elevation')} />
 					<FieldValue className='flex-box'>
 						<ElevationIcon />
@@ -65,15 +60,27 @@ const Fields = () => {
 						])}
 					</FieldValue>
 				</Field>
+			</FieldRow>
+
+			<FieldRow borderBottom>
+				<Field borderRight>
+					<FieldHeader text={getContent('adventurePanel.fields.difficulty')} />
+					<FieldValue>
+						<DifficultyViewer difficulty={currentAdventure.difficulty} />
+					</FieldValue>
+				</Field>
 				<Field borderRight>
 					<FieldHeader text={'Climb'} />
 					<FieldValue className='flex-box'>{currentAdventure.climb?.toString()} ft</FieldValue>
 				</Field>
 				<Field>
 					<FieldHeader text={'Descent'} />
-					<FieldValue className='flex-box'>{currentAdventure.descent?.toString()} ft</FieldValue>
+					<FieldValue className='flex-box'>
+						{Math.abs(currentAdventure.descent?.toString())} ft
+					</FieldValue>
 				</Field>
 			</FieldRow>
+
 			<FieldRow borderBottom>
 				<Field>
 					<FieldHeader text={getContent('adventurePanel.fields.bestSeason')} />
@@ -88,6 +95,7 @@ const Fields = () => {
 					</FieldValue>
 				</Field>
 			</FieldRow>
+
 			<FieldRow>
 				<Field>
 					<FieldHeader text='Created By' />
@@ -101,7 +109,37 @@ const Fields = () => {
 					</FieldValue>
 				</Field>
 			</FieldRow>
-			<FieldRow></FieldRow>
+
+			<FieldRow>
+				<Field noPadding>
+					<FieldHeader
+						text={'Elevation Chart'}
+						largeHeader
+					/>
+					{currentAdventure?.elevations?.length ? (
+						<ParentSize>
+							{({ width }) => (
+								<ElevationChart
+									width={width}
+									height={200}
+									data={currentAdventure.elevations}
+								/>
+							)}
+						</ParentSize>
+					) : null}
+				</Field>
+			</FieldRow>
+
+			<FieldRow>
+				<Field noPadding>
+					<FieldHeader
+						text={'Nearby'}
+						largeHeader
+					/>
+					<NearbyCards adventures={closeAdventures} />
+				</Field>
+			</FieldRow>
+
 			{loggedInUser && <AdventureTickPanel />}
 		</FieldPage>
 	)

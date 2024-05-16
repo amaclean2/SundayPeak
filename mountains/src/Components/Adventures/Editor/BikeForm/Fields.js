@@ -1,36 +1,36 @@
-import {
-	useAdventureStateContext,
-	useDeleteAdventure,
-	useSaveAdventure
-} from '@amaclean2/sundaypeak-treewells'
-
-import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
-import getContent from 'TextContent'
+import { useAdventureStateContext, useSaveAdventure } from '@amaclean2/sundaypeak-treewells'
 import { seasonOptions } from 'Components/Adventures/utils'
-import { LargeHikerIcon } from 'Images'
-import DeletePage from './DeletePage'
+import { Button, ErrorField, FormField } from 'Components/Reusable'
+import { LargeActivityIcon } from 'Images'
+import getContent from 'TextContent'
+import React from 'react'
 
-const HikeForm = () => {
-	const { currentAdventure, isDeletePageOpen, isPathEditOn, matchPath } = useAdventureStateContext()
-	const { toggleDeletePage } = useDeleteAdventure()
-	const { editAdventure, savePath, deletePath, toggleMatchPath } = useSaveAdventure()
-
-	console.log(currentAdventure.path)
+const BikeFields = ({ menuContents }) => {
+	const { isPathEditOn, matchPath, currentAdventure } = useAdventureStateContext()
+	const { toggleMatchPath, editAdventure } = useSaveAdventure()
 
 	return (
-		<DisplayCard title={currentAdventure.adventure_name}>
+		<>
+			<div className={'flex-box adventure-button-header'}>
+				{menuContents.fields.map((button, idx) => (
+					<Button
+						key={`field_${idx}`}
+						small
+						className={idx === 0 ? 'delete-button' : ''}
+						onClick={button.action}
+						id={button.id}
+					>
+						{button.text}
+					</Button>
+				))}
+			</div>
 			<ErrorField form={'adventure'} />
 			<div className='flex-box edit-add-path'>
 				<FormField
 					type='noedit'
 					name='adventure_type'
 					minWidth={true}
-					value={
-						<LargeHikerIcon
-							size={70}
-							className={'editor-hiker'}
-						/>
-					}
+					value={<LargeActivityIcon size={70} />}
 					isEditable
 					hideLabel
 					onChange={() => {}}
@@ -48,18 +48,6 @@ const HikeForm = () => {
 							value={matchPath}
 							onChange={toggleMatchPath}
 						/>
-					)}
-					{!currentAdventure.path?.length && (
-						<Button
-							small
-							id={'path-add-button'}
-							onClick={savePath}
-						>
-							Add Line
-						</Button>
-					)}
-					{!isPathEditOn && !!currentAdventure.path?.length && (
-						<Button onClick={deletePath}>Delete Line</Button>
 					)}
 				</div>
 			</div>
@@ -132,21 +120,8 @@ const HikeForm = () => {
 				}
 				onChange={editAdventure}
 			/>
-			<FooterButtons>
-				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>
-					Finish
-				</Button>
-				<Button
-					className={'delete-button'}
-					id={'adventure-delete-button'}
-					onClick={toggleDeletePage}
-				>
-					Delete Adventure
-				</Button>
-			</FooterButtons>
-			{isDeletePageOpen && <DeletePage />}
-		</DisplayCard>
+		</>
 	)
 }
 
-export default HikeForm
+export default BikeFields

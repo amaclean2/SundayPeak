@@ -22,7 +22,7 @@ input {
 .form-field.email {
 	background-color: var(--main-off-white);
 	border: none;
-	border-radius: 0.5rem;
+	border-radius: 0.3rem;
 	font-size: 0.9rem;
 	margin: 0;
 	display: block;

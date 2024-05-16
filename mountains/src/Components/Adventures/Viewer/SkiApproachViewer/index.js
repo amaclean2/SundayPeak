@@ -1,23 +1,19 @@
 import PropTypes from 'prop-types'
 import { redirect, useNavigate } from 'react-router-dom'
-import {
-	useAdventureStateContext,
-	useGetAdventures,
-	useManipulateFlows
-} from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
 
 import { DisplayCard, FieldProps } from 'Components/Reusable'
-import AdventureGallery from 'Components/Adventures/Gallery'
 
 import Fields from './Fields'
+import AdventureGallery from '../../Gallery'
 
-const SkiViewer = ({ menuContents }) => {
+const SkiApproachViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { closeAdventureView } = useManipulateFlows()
 	const navigate = useNavigate()
 
 	if (currentAdventure.adventure_name === 'New Adventure' && !currentAdventure.path?.length) {
-		redirect(`/adventure/edit/ski/${currentAdventure.id}`)
+		redirect(`/adventure/edit/skiApproach/${currentAdventure.id}`)
 	}
 
 	return (
@@ -25,8 +21,8 @@ const SkiViewer = ({ menuContents }) => {
 			title={currentAdventure.adventure_name}
 			menu={menuContents}
 			onClose={() => {
-				closeAdventureView()
 				navigate('/discover')
+				closeAdventureView()
 			}}
 		>
 			<AdventureGallery />
@@ -35,10 +31,10 @@ const SkiViewer = ({ menuContents }) => {
 	)
 }
 
-SkiViewer.propTypes = {
+SkiApproachViewer.propTypes = {
 	menuContents: PropTypes.shape({
 		fields: FieldProps
 	})
 }
 
-export default SkiViewer
+export default SkiApproachViewer

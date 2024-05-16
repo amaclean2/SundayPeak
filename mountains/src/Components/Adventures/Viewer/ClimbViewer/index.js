@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { useAdventureStateContext, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
 
 import { DisplayCard, FieldProps } from 'Components/Reusable'
-import AdventureGallery from '../../Gallery'
-import Fields from './Fields'
 
-const BikeViewer = ({ menuContents }) => {
+import AdventureGallery from '../../Gallery'
+import ClimbFields from './Fields'
+
+const ClimbViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { closeAdventureView } = useManipulateFlows()
 	const navigate = useNavigate()
@@ -21,15 +22,15 @@ const BikeViewer = ({ menuContents }) => {
 			}}
 		>
 			<AdventureGallery />
-			<Fields />
+			<ClimbFields />
 		</DisplayCard>
 	)
 }
 
-BikeViewer.propTypes = {
+ClimbViewer.propTypes = {
 	menuContents: PropTypes.shape({
 		fields: FieldProps
 	})
 }
 
-export default BikeViewer
+export default ClimbViewer

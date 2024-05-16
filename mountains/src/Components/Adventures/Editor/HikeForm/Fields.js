@@ -1,22 +1,24 @@
 import { useAdventureStateContext, useSaveAdventure } from '@amaclean2/sundaypeak-treewells'
-
-import { Button, ErrorField, FormField, MultiField } from 'Components/Reusable'
-import getContent from 'TextContent'
-import { directionSelectOptions, seasonOptions } from 'Components/Adventures/utils'
+import { seasonOptions } from 'Components/Adventures/utils'
+import { Button, ErrorField, FormField } from 'Components/Reusable'
 import { LargeActivityIcon } from 'Images'
+import getContent from 'TextContent'
+import React from 'react'
 
-const SkiFields = ({ menuContents }) => {
+const HikeFields = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { editAdventure } = useSaveAdventure()
+
+	console.log({ menuContents })
 
 	return (
 		<>
 			<div className={'flex-box adventure-button-header'}>
 				{menuContents.fields.map((button, idx) => (
 					<Button
-						key={`field_${idx}`}
 						small
-						className={idx === 0 ? 'delete-button' : ''}
+						key={`path_button_${idx}`}
+						className={button.id === 'delete-path' && 'delete-button'}
 						onClick={button.action}
 						id={button.id}
 					>
@@ -32,7 +34,7 @@ const SkiFields = ({ menuContents }) => {
 					minWidth={true}
 					value={
 						<LargeActivityIcon
-							type={'ski'}
+							type={'hike'}
 							size={70}
 						/>
 					}
@@ -42,13 +44,11 @@ const SkiFields = ({ menuContents }) => {
 				/>
 			</div>
 			<FormField
-				name='adventure_name'
+				name={'adventure_name'}
 				label={'Adventure Name'}
 				isEditable
-				isLargeField
-				fullWidth
-				value={currentAdventure.adventure_name || ''}
-				autoFocus={true}
+				value={currentAdventure.adventure_name}
+				autoFocus
 				onChange={editAdventure}
 			/>
 			<FormField
@@ -58,46 +58,6 @@ const SkiFields = ({ menuContents }) => {
 				isEditable
 				fullWidth
 				value={currentAdventure.bio || ''}
-				onChange={editAdventure}
-			/>
-			<FormField
-				name='season'
-				label={getContent('adventurePanel.editable.bestMonths')}
-				type='selectmany'
-				options={{ selectMany: seasonOptions }}
-				isEditable
-				fullWidth
-				value={currentAdventure.season || ''}
-				onChange={editAdventure}
-			/>
-			<MultiField
-				onChange={editAdventure}
-				label={getContent('adventurePanel.editable.slope')}
-				fields={[
-					{
-						type: 'text',
-						name: 'avg_angle',
-						value: currentAdventure.avg_angle || '',
-						placeholder: getContent('adventurePanel.editable.avgAngle')
-					},
-					{
-						type: 'text',
-						name: 'max_angle',
-						value: currentAdventure.max_angle || '',
-						placeholder: getContent('adventurePanel.editable.maxAngle')
-					}
-				]}
-			/>
-			<FormField
-				name='aspect'
-				label={getContent('adventurePanel.fields.aspect')}
-				type='select'
-				isEditable
-				fullWidth
-				options={{
-					selectOptions: directionSelectOptions
-				}}
-				value={currentAdventure.aspect || 'N'}
 				onChange={editAdventure}
 			/>
 			{Number(currentAdventure.difficulty.split(':')[1]) <= 1 && (
@@ -116,24 +76,20 @@ const SkiFields = ({ menuContents }) => {
 					fullWidth
 					value={Number(currentAdventure.difficulty.split(':')[0]) || 1}
 					onChange={(event) =>
-						editAdventure({ target: { name: 'difficulty', value: `${event.target.value}:1` } })
+						editAdventure({
+							target: { name: 'difficulty', value: `${event.target.value}:1` }
+						})
 					}
 				/>
 			)}
 			<FormField
-				name='exposure'
-				label={getContent('adventurePanel.fields.exposure')}
-				type='range'
-				options={{
-					range: {
-						min: 0,
-						max: 5,
-						step: 1
-					}
-				}}
+				name='season'
+				label={getContent('adventurePanel.editable.bestMonths')}
+				type='selectmany'
+				options={{ selectMany: seasonOptions }}
 				isEditable
 				fullWidth
-				value={currentAdventure.exposure || ''}
+				value={currentAdventure.season || ''}
 				onChange={editAdventure}
 			/>
 			<FormField
@@ -148,9 +104,9 @@ const SkiFields = ({ menuContents }) => {
 				name='public'
 				label={getContent('adventurePanel.editable.isPublic')}
 				type={'checkbox'}
+				className={'no-padding'}
 				isEditable
 				fullWidth
-				className={'no-padding'}
 				value={
 					![undefined, null].includes(currentAdventure.public) ? currentAdventure.public : true
 				}
@@ -160,4 +116,4 @@ const SkiFields = ({ menuContents }) => {
 	)
 }
 
-export default SkiFields
+export default HikeFields

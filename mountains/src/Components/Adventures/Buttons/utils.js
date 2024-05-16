@@ -14,7 +14,7 @@ export const useAdventureMenu = () => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { shareAdventure } = useGetAdventures()
 	const { saveTodo } = useSaveTodo()
-	const { togglePathEdit, savePath, deletePath, moveMarker } = useSaveAdventure()
+	const { togglePathEdit, deletePath, toggleAdventureAddState } = useSaveAdventure()
 
 	const navigate = useNavigate()
 
@@ -97,19 +97,19 @@ export const useAdventureMenu = () => {
 				text: 'Delete Path'
 			})
 			fields.push({
-				action: togglePathEdit,
+				action: () => togglePathEdit(true),
 				id: 'edit-path',
 				text: 'Edit Path'
 			})
 		} else {
 			fields.push({
-				action: savePath,
+				action: () => togglePathEdit(true),
 				id: 'add-path',
 				text: 'Add Path'
 			})
 		}
 		fields.push({
-			action: moveMarker,
+			action: toggleAdventureAddState,
 			id: 'move-marker',
 			text: 'Move Marker'
 		})

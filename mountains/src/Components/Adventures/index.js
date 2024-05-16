@@ -20,8 +20,11 @@ const DefaultAdventureView = () => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
+		const adventureType = !['skiApproach', undefined].includes(globalAdventureType)
+			? globalAdventureType
+			: 'ski'
 		getAdventureList({
-			type: globalAdventureType ?? 'ski',
+			type: adventureType,
 			coordinates: { lat: startPosition?.latitude ?? 2, lng: startPosition?.longitude ?? 3 }
 		})
 	}, [startPosition, globalAdventureType])

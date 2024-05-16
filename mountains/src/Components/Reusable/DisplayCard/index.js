@@ -55,7 +55,7 @@ export const DisplayCard = ({
 						hasClose={hasClose}
 					/>
 				)}
-				<div className='display-content flex-box'>{children}</div>
+				<div className='display-content'>{children}</div>
 			</div>
 		</div>
 	)

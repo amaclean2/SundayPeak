@@ -46,7 +46,7 @@ export const MenuButton = () => {
 
 	return (
 		<Button
-			onClick={toggleMenuOpen}
+			onClick={() => toggleMenuOpen()}
 			id='menu-opener'
 			className={'menu-opener'}
 		>

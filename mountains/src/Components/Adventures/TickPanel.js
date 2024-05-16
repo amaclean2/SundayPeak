@@ -27,7 +27,7 @@ const AdventureTickPanel = () => {
 
 	return (
 		<div className={cx('tick-list-container flex-box')}>
-			<FieldHeader className={'label-field'}>Adventurers</FieldHeader>
+			<FieldHeader largeHeader>Adventurers</FieldHeader>
 			<ul className='tick-list flex-box'>
 				{todos.map((todo, key) => (
 					<li

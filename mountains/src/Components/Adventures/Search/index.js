@@ -9,8 +9,7 @@ import { useNavigate } from 'react-router'
 import { FlexSpacer, FormField } from 'Components/Reusable'
 
 import './styles.css'
-import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
-import { LargeBikerIcon } from 'Images/Activities/LargeBikerIcon'
+import { LargeActivityIcon } from 'Images'
 
 const AdventureSearch = () => {
 	const { searchAdventures } = useGetAdventures()
@@ -54,10 +53,10 @@ const AdventureSearch = () => {
 								onClick={() => navigate(`/adventure/${result.adventure_type}/${result.id}`)}
 							>
 								<span className='drop-list-image'>
-									{result.adventure_type === 'ski' && <LargeSkierIcon size={20} />}
-									{result.adventure_type === 'bike' && <LargeBikerIcon size={20} />}
-									{result.adventure_type === 'climb' && <LargeClimberIcon size={20} />}
-									{result.adventure_type === 'hike' && <LargeHikerIcon size={20} />}
+									<LargeActivityIcon
+										type={result.adventure_type}
+										size={20}
+									/>
 								</span>
 								<span className='result-title'>{result.adventure_name}</span>
 								<FlexSpacer />
@@ -74,10 +73,10 @@ const AdventureSearch = () => {
 								onClick={() => navigate(`/adventure/${result.adventure_type}/${result.id}`)}
 							>
 								<span className='drop-list-image'>
-									{result.adventure_type === 'ski' && <LargeSkierIcon size={20} />}
-									{result.adventure_type === 'bike' && <LargeBikerIcon size={20} />}
-									{result.adventure_type === 'climb' && <LargeClimberIcon size={20} />}
-									{result.adventure_type === 'hike' && <LargeHikerIcon size={20} />}
+									<LargeActivityIcon
+										type={result.adventure_type}
+										size={20}
+									/>
 								</span>
 								<span className='result-title'>{result.adventure_name}</span>
 								<FlexSpacer />

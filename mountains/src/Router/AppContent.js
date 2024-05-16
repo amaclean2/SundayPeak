@@ -1,13 +1,12 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import { SundayPeakProviders } from '@amaclean2/sundaypeak-treewells'
 
-import ReactMap from 'Components/Mapping/ReactMap'
 import { ImageViewer } from 'Components/Reusable'
 import Alert from 'Components/Reusable/Alert'
+import AppRedirect from 'Components/AppRedirect'
+import MapboxMap from 'Components/Mapping/MapboxMap'
 
 import '../App.css'
 import '../variables.css'
-import AppRedirect from 'Components/AppRedirect'
 
 export const title = 'Sunday Peak'
 
@@ -31,7 +30,7 @@ const AppContent = () => {
 
 	return (
 		<>
-			<ReactMap />
+			<MapboxMap />
 			<Outlet />
 			<ImageViewer />
 			<Alert />
