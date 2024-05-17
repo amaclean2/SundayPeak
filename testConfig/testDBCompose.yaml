@@ -1,0 +1,11 @@
+services:
+  mysql:
+    container_name: testql
+    image: mysql:latest
+    restart: on-failure
+    environment:
+     - MYSQL_ROOT_PASSWORD=skiing
+    ports:
+      - '3310:3306'
+    volumes:
+      - /Users/andrewmaclean/SundayPeak/testConfig/init.sql:/docker-entrypoint-initdb.d/init.sql
