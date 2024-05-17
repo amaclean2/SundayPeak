@@ -80,6 +80,8 @@ CREATE TABLE hike(
     season VARCHAR(100),
     trail_path TEXT,
     elevations TEXT,
+    climb INT,
+    descent INT,
     PRIMARY KEY(id)
 );
 
