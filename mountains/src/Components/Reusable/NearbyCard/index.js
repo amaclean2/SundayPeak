@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 
@@ -10,14 +10,9 @@ const NearbyCards = ({ adventures }) => {
 	return (
 		<div className={'scroller-container flex-box'}>
 			{adventures?.map((adv, idx) => (
-				<>
-					{adv?.id !== currentAdventure.id && (
-						<NearbyCard
-							key={`nearby_adventure_${idx}`}
-							adventure={adv}
-						/>
-					)}
-				</>
+				<Fragment key={`nearby_adventure_${idx}`}>
+					{adv?.id !== currentAdventure.id && <NearbyCard adventure={adv} />}
+				</Fragment>
 			))}
 		</div>
 	)

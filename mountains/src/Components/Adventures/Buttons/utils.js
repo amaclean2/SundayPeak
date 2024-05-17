@@ -38,6 +38,7 @@ export const useAdventureMenu = () => {
 		if (currentAdventure) {
 			fields.push({
 				action: () => shareAdventure({ id: currentAdventure.id }),
+				viewerItem: false,
 				id: 'adventure-share-button',
 				text: getContent('buttonText.share')
 			})
@@ -45,12 +46,14 @@ export const useAdventureMenu = () => {
 			fields.push({
 				action: () =>
 					navigate(`/adventure/edit/${currentAdventure.adventure_type}/${currentAdventure.id}`),
+				viewerItem: false,
 				id: 'adventure-edit-button',
 				text: getContent('buttonText.editAdventure')
 			})
 
 			fields.push({
 				action: 'export',
+				viewerItem: false,
 				id: 'adventure-download-button',
 				text: 'Export Adventure'
 			})
@@ -62,6 +65,7 @@ export const useAdventureMenu = () => {
 							adventureId: currentAdventure.id,
 							adventureType: currentAdventure.adventure_type
 						}),
+					viewerItem: true,
 					id: 'adventure-tick-button',
 					text: getContent('buttonText.addToTicklist')
 				})
@@ -76,6 +80,7 @@ export const useAdventureMenu = () => {
 					// 	adventureId: currentAdventure.id,
 					// 	adventureType: currentAdventure.adventure_type
 					// }),
+					viewerItem: true,
 					id: 'adventure-complete-button',
 					text: getContent('buttonText.completeActivity')
 				})

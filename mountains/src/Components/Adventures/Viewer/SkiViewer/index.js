@@ -1,12 +1,8 @@
 import PropTypes from 'prop-types'
 import { redirect, useNavigate } from 'react-router-dom'
-import {
-	useAdventureStateContext,
-	useGetAdventures,
-	useManipulateFlows
-} from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
 
-import { DisplayCard, FieldProps } from 'Components/Reusable'
+import { Button, DisplayCard, FieldProps } from 'Components/Reusable'
 import AdventureGallery from 'Components/Adventures/Gallery'
 
 import Fields from './Fields'
@@ -30,6 +26,20 @@ const SkiViewer = ({ menuContents }) => {
 			}}
 		>
 			<AdventureGallery />
+			<div className='flex-box adventure-page-action-items'>
+				{menuContents?.fields
+					?.filter((item) => item.viewerItem)
+					?.map((item) => (
+						<Button
+							small
+							id={item.id}
+							key={item.id}
+							onClick={item.action}
+						>
+							{item.text}
+						</Button>
+					))}
+			</div>
 			<Fields />
 		</DisplayCard>
 	)

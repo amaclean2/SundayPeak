@@ -177,9 +177,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 			}
 		})
 
-		map.on('dblclick', (event) => {
-			handleCreateNewAdventure(event)
-		})
+		map.on('click', 'cursor-layer', (event) => handleCreateNewAdventure(event))
 	}
 
 	const removeCursorLayer = (map) => {

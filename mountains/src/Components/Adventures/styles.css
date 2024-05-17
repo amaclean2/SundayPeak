@@ -94,3 +94,9 @@
 	flex-direction: row-reverse;
 	justify-content: flex-start;
 }
+
+.adventure-page-action-items {
+	justify-content: flex-start;
+	gap: 0.5rem;
+	margin: 1rem 0rem;
+}
