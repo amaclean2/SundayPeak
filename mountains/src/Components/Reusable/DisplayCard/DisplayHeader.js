@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { CarretIcon } from '../../../Images'
 import { Button } from '../Button'
-import { FieldProps, Menu } from '../Menu'
+import { MenuButton } from '../Menu'
 
 const DisplayHeader = ({ className, onClose, title, menu, hasClose = true }) => {
 	const navigate = useNavigate()
@@ -14,9 +14,6 @@ const DisplayHeader = ({ className, onClose, title, menu, hasClose = true }) => 
 
 	return (
 		<div className={cx(className, 'display-header flex-box')}>
-			<div className={'display-card-header-contents full-width'}>{title || ''}</div>
-			<div className='display-header-spacer' />
-			{menu && <Menu fields={menu.fields} />}
 			{hasClose && (
 				<Button
 					id='display-back-button'
@@ -26,6 +23,9 @@ const DisplayHeader = ({ className, onClose, title, menu, hasClose = true }) => 
 					<CarretIcon color={'#FFFFFF'} />
 				</Button>
 			)}
+			<div className={'display-card-header-contents full-width'}>{title || ''}</div>
+			<div className='display-header-spacer' />
+			{menu && <MenuButton />}
 		</div>
 	)
 }
@@ -34,9 +34,7 @@ DisplayHeader.propTypes = {
 	className: PropTypes.string,
 	onClose: PropTypes.func,
 	title: PropTypes.node,
-	menu: PropTypes.shape({
-		fields: FieldProps
-	}),
+	menu: PropTypes.bool,
 	hasClose: PropTypes.bool
 }
 

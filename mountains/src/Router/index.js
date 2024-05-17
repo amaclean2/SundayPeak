@@ -15,7 +15,6 @@ import { LoginFlow, NewPassword, PasswordResetCapture, SignupFlow } from 'Compon
 import UserViewer from 'Components/UserProfile/Viewer'
 import UserEditor from 'Components/UserProfile/Editor'
 import DefaultAdventureView from 'Components/Adventures'
-import CreateNewAdventure from 'Components/Adventures/CreateNewAdventure'
 import AdventureEditorForm from 'Components/Adventures/Editor'
 import AdventureViewer from 'Components/Adventures/Viewer'
 import AppContent from 'Router/AppContent'
@@ -24,6 +23,7 @@ import HomePage from 'MetaPages/FirstPage'
 import PrivacyPolicy from 'MetaPages/Privacy'
 import SupportPage from 'MetaPages/Support'
 import MessagingContianer from 'Components/Chat/MessagingContainer'
+import AdventureTypeSelector from 'Components/Adventures/Editor/AdventureTypeSelector'
 
 export const title = 'Sunday Peak'
 
@@ -114,7 +114,7 @@ export const router = createBrowserRouter(
 					/>
 					<Route
 						path={'new'}
-						element={<CreateNewAdventure />}
+						element={<AdventureTypeSelector />}
 					/>
 					<Route
 						path={'edit/:adventureType/:adventureId'}

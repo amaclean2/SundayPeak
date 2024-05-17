@@ -20,11 +20,11 @@ import {
 	pitchClimbs,
 	seasonOptions
 } from 'Components/Adventures/utils'
-import { LargeClimberIcon } from 'Images'
+import { LargeActivityIcon } from 'Images'
 
 import DeletePage from './DeletePage'
 
-const ClimbForm = ({ onChange }) => {
+const ClimbForm = () => {
 	const { currentAdventure, isDeletePageOpen } = useAdventureStateContext()
 	const { toggleDeletePage } = useDeleteAdventure()
 	const { editAdventure } = useSaveAdventure()
@@ -37,9 +37,9 @@ const ClimbForm = ({ onChange }) => {
 				name='adventure_type'
 				hideLabel
 				value={
-					<LargeClimberIcon
+					<LargeActivityIcon
+						type={'climb'}
 						size={70}
-						className={'editor-climber'}
 					/>
 				}
 				isEditable

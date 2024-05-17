@@ -1,31 +1,29 @@
-import {
-	useAdventureStateContext,
-	useDeleteAdventure,
-	useSaveAdventure
-} from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useSaveAdventure } from '@amaclean2/sundaypeak-treewells'
 
-import {
-	Button,
-	DisplayCard,
-	ErrorField,
-	FooterButtons,
-	FormField,
-	MultiField
-} from 'Components/Reusable'
+import { Button, ErrorField, FormField, MultiField } from 'Components/Reusable'
 import getContent from 'TextContent'
-import { directionSelectOptions, gearOptions, seasonOptions } from 'Components/Adventures/utils'
-import { LargeSkierIcon } from 'Images'
-import DeletePage from './DeletePage'
-import CheckboxField from 'Components/Reusable/FormField/CheckboxField'
+import { directionSelectOptions, seasonOptions } from 'Components/Adventures/utils'
+import { LargeActivityIcon } from 'Images'
 
-const SkiForm = () => {
-	const { currentAdventure, isDeletePageOpen, isPathEditOn, matchPath } = useAdventureStateContext()
-	const { toggleDeletePage } = useDeleteAdventure()
-	const { editAdventure, togglePathEdit, savePath, deletePath, toggleMatchPath } =
-		useSaveAdventure()
+const SkiFields = ({ menuContents }) => {
+	const { currentAdventure } = useAdventureStateContext()
+	const { editAdventure } = useSaveAdventure()
 
 	return (
-		<DisplayCard title={currentAdventure.adventure_name || 'New Adventure'}>
+		<>
+			<div className={'flex-box adventure-button-header'}>
+				{menuContents.fields.map((button, idx) => (
+					<Button
+						key={`field_${idx}`}
+						small
+						className={idx === 0 ? 'delete-button' : ''}
+						onClick={button.action}
+						id={button.id}
+					>
+						{button.text}
+					</Button>
+				))}
+			</div>
 			<ErrorField form={'adventure'} />
 			<div className='flex-box edit-add-path'>
 				<FormField
@@ -33,53 +31,21 @@ const SkiForm = () => {
 					name='adventure_type'
 					minWidth={true}
 					value={
-						<LargeSkierIcon
+						<LargeActivityIcon
+							type={'ski'}
 							size={70}
-							className={'editor-skier'}
 						/>
 					}
 					isEditable
 					hideLabel
 					onChange={() => {}}
 				/>
-				<div className='flex-box path-buttons'>
-					{isPathEditOn && (
-						<FormField
-							name='pathMatch'
-							label={'Match path to a given road or trail'}
-							type={'checkbox'}
-							isEditable
-							fullWidth
-							reverse
-							className='no-padding'
-							value={matchPath}
-							onChange={toggleMatchPath}
-						/>
-					)}
-					{!currentAdventure.path?.length && (
-						<Button
-							small
-							id={'path-add-button'}
-							onClick={() => {
-								if (isPathEditOn) {
-									savePath()
-								} else {
-									togglePathEdit()
-								}
-							}}
-						>
-							{isPathEditOn ? 'Finish Adding Line' : 'Add Line'}
-						</Button>
-					)}
-					{!isPathEditOn && !!currentAdventure.path?.length && (
-						<Button onClick={deletePath}>Delete Line</Button>
-					)}
-				</div>
 			</div>
 			<FormField
 				name='adventure_name'
 				label={'Adventure Name'}
 				isEditable
+				isLargeField
 				fullWidth
 				value={currentAdventure.adventure_name || ''}
 				autoFocus={true}
@@ -95,33 +61,6 @@ const SkiForm = () => {
 				onChange={editAdventure}
 			/>
 			<FormField
-				name='distance'
-				label={getContent('adventurePanel.editable.approachDistance')}
-				isEditable
-				fullWidth
-				options={{ suffix: 'miles' }}
-				value={currentAdventure.distance || ''}
-				onChange={editAdventure}
-			/>
-			<MultiField
-				onChange={editAdventure}
-				label={getContent('adventurePanel.fields.elevation')}
-				fields={[
-					{
-						type: 'text',
-						name: 'summit_elevation',
-						value: currentAdventure.summit_elevation || '',
-						placeholder: getContent('adventurePanel.editable.summit')
-					},
-					{
-						type: 'text',
-						name: 'base_elevation',
-						value: currentAdventure.base_elevation || '',
-						placeholder: getContent('adventurePanel.editable.base')
-					}
-				]}
-			/>
-			<FormField
 				name='season'
 				label={getContent('adventurePanel.editable.bestMonths')}
 				type='selectmany'
@@ -129,16 +68,6 @@ const SkiForm = () => {
 				isEditable
 				fullWidth
 				value={currentAdventure.season || ''}
-				onChange={editAdventure}
-			/>
-			<FormField
-				name='gear'
-				label={getContent('adventurePanel.editable.gearRequired')}
-				type='selectmany'
-				options={{ selectMany: gearOptions }}
-				isEditable
-				fullWidth
-				value={currentAdventure.gear || ''}
 				onChange={editAdventure}
 			/>
 			<MultiField
@@ -227,21 +156,8 @@ const SkiForm = () => {
 				}
 				onChange={editAdventure}
 			/>
-			<FooterButtons>
-				<Button direction={`/adventure/${currentAdventure.adventure_type}/${currentAdventure.id}`}>
-					Finish
-				</Button>
-				<Button
-					className={'delete-button'}
-					id={'adventure-delete-button'}
-					onClick={toggleDeletePage}
-				>
-					Delete Adventure
-				</Button>
-			</FooterButtons>
-			{isDeletePageOpen && <DeletePage />}
-		</DisplayCard>
+		</>
 	)
 }
 
-export default SkiForm
+export default SkiFields

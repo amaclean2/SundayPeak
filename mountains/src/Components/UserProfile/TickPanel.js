@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useGetAdventures, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { FieldHeader } from 'Components/Reusable'
-import { LargeClimberIcon, LargeHikerIcon, LargeSkierIcon } from 'Images'
+import { LargeActivityIcon } from 'Images'
 
 const ICON_SIZE = 25
 
@@ -13,9 +13,10 @@ const TodoAdventure = ({ onClick, tick }) => (
 		className='tick drop-list-item flex-box'
 	>
 		<span className='drop-list-image'>
-			{tick.adventure_type === 'ski' && <LargeSkierIcon size={ICON_SIZE} />}
-			{tick.adventure_type === 'climb' && <LargeClimberIcon size={ICON_SIZE} />}
-			{tick.adventure_type === 'hike' && <LargeHikerIcon size={ICON_SIZE} />}
+			<LargeActivityIcon
+				type={tick.adventure_type}
+				size={ICON_SIZE}
+			/>
 		</span>
 		<span className={'main-text'}>{tick.adventure_name}</span>
 	</li>
@@ -34,7 +35,7 @@ const UserTodoPanel = ({ className }) => {
 
 	return (
 		<div className={cx(className, 'tick-list-container flex-box')}>
-			<FieldHeader className='label-field'>Todo List</FieldHeader>
+			<FieldHeader largeHeader>Todo List</FieldHeader>
 			<ul className='tick-list flex-box'>
 				{workingUser.todo_adventures?.map((adventure, key) => (
 					<TodoAdventure

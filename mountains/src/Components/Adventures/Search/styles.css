@@ -16,6 +16,7 @@
 .results-container li {
 	padding: 0.6rem;
 	transition: all 0.3s ease-in-out;
+	cursor: pointer;
 	gap: 0.5rem;
 }
 
@@ -29,6 +30,10 @@
 
 .result-title {
 	font-weight: 500;
+	overflow: hidden;
+	max-width: 15rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .current-adventure-type {
@@ -41,7 +46,7 @@
 }
 
 .adventure-pill-selector {
-	gap: 1rem;
+	gap: 0.5rem;
 }
 
 .adventure-search-spacer {

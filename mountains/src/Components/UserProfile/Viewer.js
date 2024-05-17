@@ -22,6 +22,10 @@ const UserViewer = () => {
 	const { setWorkingUserToCurrentUser, getNonLoggedInUser } = useGetUser()
 
 	useEffect(() => {
+		if (!loggedInUser) {
+			navigate('/discover')
+		}
+
 		const numberId = Number(userId)
 		if (loggedInUser && numberId === loggedInUser.id) {
 			navigate('/user')
@@ -38,6 +42,7 @@ const UserViewer = () => {
 		<DisplayCard
 			menu={buildEditorMenu()}
 			title={`${workingUser?.first_name} ${workingUser?.last_name}`}
+			className='user-profile-display-card'
 			onClose={() => navigate('/discover')}
 		>
 			<div className='flex-box user-bio-content'>

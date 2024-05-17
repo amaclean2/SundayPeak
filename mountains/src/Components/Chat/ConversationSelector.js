@@ -1,23 +1,26 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import cx from 'classnames'
 import {
 	useDebounce,
 	useGetUser,
 	useMessages,
-	useMessagingStateContext,
-	useUserStateContext
+	useMessagingStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
 import { FlexSpacer, FormField } from 'Components/Reusable'
+import ConversationImage from './ConversationImage'
+import { useChatEditorMenu } from './utils'
 
 const ConversationSelector = () => {
 	const { searchForFriends } = useGetUser()
 	const { conversations, currentConversationId } = useMessagingStateContext()
-	const { loggedInUser } = useUserStateContext()
 	const { addConversation, getConversation } = useMessages()
+	const { buildConversationName } = useChatEditorMenu()
 
 	const [searchList, setSearchList] = useState(null)
 	const [textSearch, setTextSearch] = useState('')
+
+	const newName = useRef('')
 
 	const getSearchResults = useDebounce((search) => {
 		if (search.length <= 3) return setSearchList(null)
@@ -32,16 +35,6 @@ const ConversationSelector = () => {
 		getSearchResults(event.target.value)
 	}
 
-	const buildConversationName = (conversation) => {
-		if (conversation.conversation_name) {
-			return conversation.conversation_name
-		} else {
-			return (
-				conversation.users?.find((user) => user.user_id !== loggedInUser?.id).display_name || ''
-			)
-		}
-	}
-
 	const buildList = () => {
 		if (searchList?.length) {
 			return (
@@ -53,7 +46,8 @@ const ConversationSelector = () => {
 							onClick={() => {
 								setTextSearch('')
 								setSearchList(null)
-								addConversation({ userId: friend.id, name: friend.display_name })
+								addConversation({ userId: friend.user_id })
+								newName.current = friend.display_name
 							}}
 						>
 							{friend.profile_picture_url && (
@@ -79,9 +73,10 @@ const ConversationSelector = () => {
 							)}
 							onClick={() => getConversation({ conversationId: conversation.conversation_id })}
 						>
+							<ConversationImage conversation={conversation} />
 							<div className='flex-box conversation-card'>
-								<span>{buildConversationName(conversation)}</span>
-								<span>{conversation.last_message}</span>
+								<span className='conversation-name'>{buildConversationName(conversation)}</span>
+								<span className='last-message'>{conversation.last_message ?? ''}</span>
 							</div>
 							{conversation.unread && <div className='notification-button' />}
 						</li>

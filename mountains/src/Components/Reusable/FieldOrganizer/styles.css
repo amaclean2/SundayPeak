@@ -1,7 +1,8 @@
 .field {
 	font-size: 0.9rem;
 	line-height: 1.2rem;
-	white-space: pre-line;
+	white-space: nowrap;
+	max-width: 100%;
 }
 
 .field-page {
@@ -20,6 +21,8 @@
 .field-row.flex-box {
 	width: 100%;
 	padding: 1rem 0;
+	justify-content: flex-start;
+	align-items: flex-start;
 }
 
 .field-row.border-bottom {
@@ -31,7 +34,7 @@
 }
 
 .field-header {
-	font-size: 1.1rem;
+	font-size: 1rem;
 	margin: 0;
 	font-weight: 500;
 }
@@ -39,6 +42,18 @@
 .field-image {
 	height: 6rem;
 	width: 6rem;
+}
+
+.field.flex-box.wide {
+	padding: 0;
+}
+
+.min-field.flex-box {
+	flex: none;
+}
+
+.long-text.field {
+	white-space: pre-line;
 }
 
 .field-image img {
@@ -49,6 +64,7 @@
 .field-value.flex-box {
 	justify-content: flex-start;
 	gap: 0.5rem;
+	max-width: 100%;
 }
 
 .view-location.flex-box {
@@ -65,4 +81,15 @@
 
 .narrow-field.flex-box {
 	padding: 0.5rem 0;
+}
+
+.large-header.field-header {
+	font-size: 1.4rem;
+	margin-bottom: 0.5rem;
+}
+
+.card-field.field {
+	background: var(--primary-accent-light);
+	padding: 1rem;
+	border-radius: 0.8rem;
 }

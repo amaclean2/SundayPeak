@@ -156,14 +156,16 @@ export const rangeValues = {
 }
 
 export const formatSeasons = ({ seasonArray }) => {
-	let lastValue
+	// seasonArray is a list of 12 true/false values representing whether
+	// the adventure is in for that month
 
 	if (seasonArray.every((month) => month)) {
 		return 'All year'
-	} else if (seasonArray.every((month) => !month)) {
+	} else if (!seasonArray.some((month) => month)) {
 		return 'Never'
 	}
 
+	let lastValue
 	const inlineList = seasonArray.reduce((newList, value, idx) => {
 		if (!value) {
 			return newList

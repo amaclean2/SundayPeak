@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import {
 	useAdventureStateContext,
 	useGetAdventures,
-	useSaveCompletedAdventure,
+	useSaveAdventure,
 	useSaveTodo,
 	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
@@ -14,7 +14,7 @@ export const useAdventureMenu = () => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { shareAdventure } = useGetAdventures()
 	const { saveTodo } = useSaveTodo()
-	const { saveCompletedAdventure } = useSaveCompletedAdventure()
+	const { togglePathEdit, deletePath, toggleAdventureAddState } = useSaveAdventure()
 
 	const navigate = useNavigate()
 
@@ -38,6 +38,7 @@ export const useAdventureMenu = () => {
 		if (currentAdventure) {
 			fields.push({
 				action: () => shareAdventure({ id: currentAdventure.id }),
+				viewerItem: false,
 				id: 'adventure-share-button',
 				text: getContent('buttonText.share')
 			})
@@ -45,12 +46,14 @@ export const useAdventureMenu = () => {
 			fields.push({
 				action: () =>
 					navigate(`/adventure/edit/${currentAdventure.adventure_type}/${currentAdventure.id}`),
+				viewerItem: false,
 				id: 'adventure-edit-button',
 				text: getContent('buttonText.editAdventure')
 			})
 
 			fields.push({
 				action: 'export',
+				viewerItem: false,
 				id: 'adventure-download-button',
 				text: 'Export Adventure'
 			})
@@ -62,6 +65,7 @@ export const useAdventureMenu = () => {
 							adventureId: currentAdventure.id,
 							adventureType: currentAdventure.adventure_type
 						}),
+					viewerItem: true,
 					id: 'adventure-tick-button',
 					text: getContent('buttonText.addToTicklist')
 				})
@@ -76,6 +80,7 @@ export const useAdventureMenu = () => {
 					// 	adventureId: currentAdventure.id,
 					// 	adventureType: currentAdventure.adventure_type
 					// }),
+					viewerItem: true,
 					id: 'adventure-complete-button',
 					text: getContent('buttonText.completeActivity')
 				})
@@ -87,5 +92,38 @@ export const useAdventureMenu = () => {
 		return { fields }
 	}
 
-	return buildAdventureMenu
+	const buildEditViewMenu = () => {
+		const fields = []
+
+		if (currentAdventure.path?.length) {
+			fields.push({
+				action: deletePath,
+				id: 'delete-path',
+				text: 'Delete Path'
+			})
+			fields.push({
+				action: () => togglePathEdit(true),
+				id: 'edit-path',
+				text: 'Edit Path'
+			})
+		} else {
+			fields.push({
+				action: () => togglePathEdit(true),
+				id: 'add-path',
+				text: 'Add Path'
+			})
+		}
+		fields.push({
+			action: toggleAdventureAddState,
+			id: 'move-marker',
+			text: 'Move Marker'
+		})
+
+		return { fields }
+	}
+
+	return {
+		buildAdventureMenu,
+		buildEditViewMenu
+	}
 }

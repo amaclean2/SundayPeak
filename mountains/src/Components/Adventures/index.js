@@ -11,15 +11,20 @@ import MainAdventureSelector from './Search/MainAdventureSelector'
 
 import './styles.css'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const DefaultAdventureView = () => {
 	const { loggedInUser } = useUserStateContext()
 	const { getAdventureList } = useGetAdventures()
 	const { globalAdventureType, startPosition } = useAdventureStateContext()
+	const navigate = useNavigate()
 
 	useEffect(() => {
+		const adventureType = !['skiApproach', undefined].includes(globalAdventureType)
+			? globalAdventureType
+			: 'ski'
 		getAdventureList({
-			type: globalAdventureType ?? 'ski',
+			type: adventureType,
 			coordinates: { lat: startPosition?.latitude ?? 2, lng: startPosition?.longitude ?? 3 }
 		})
 	}, [startPosition, globalAdventureType])
@@ -27,7 +32,8 @@ const DefaultAdventureView = () => {
 	return (
 		<DisplayCard
 			title={'Adventures'}
-			testId={'main-adventure-view'}
+			id={'main-adventure-view'}
+			onClose={() => navigate('/discover')}
 		>
 			<MainAdventureSelector />
 			<AdventureSearch />

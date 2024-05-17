@@ -115,7 +115,19 @@
 }
 
 .conversation-selector {
-	width: 15rem;
+	width: 16rem;
+}
+
+.conversation-name {
+	text-overflow: ellipsis;
+	max-width: 10rem;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.last-message {
+	text-overflow: ellipsis;
+	max-width: 10rem;
 }
 
 .conversation-messages {
@@ -155,8 +167,10 @@
 	border-radius: 0.8rem 0.8rem 0rem 0.8rem;
 }
 
-.send-message-button {
+.send-message-button.small {
 	background-color: var(--primary-accent-color);
+	padding: 0 1rem;
+	height: 2.1rem;
 }
 
 .messaging-container {
@@ -175,4 +189,23 @@
 .messaging-display-card .display-content {
 	max-width: 50rem;
 	width: 100vw;
+}
+
+.conversation-icon {
+	width: 3rem !important;
+	height: 3rem !important;
+	border-radius: 3rem !important;
+}
+
+.multi-image-container {
+	background-color: var(--main-off-white) !important;
+	flex-shrink: 0;
+	position: relative;
+}
+
+.multi-image-icon {
+	width: 1.2rem !important;
+	height: 1.2rem !important;
+	border-radius: 1.2rem !important;
+	position: absolute !important;
 }

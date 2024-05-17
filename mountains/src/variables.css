@@ -1,6 +1,7 @@
 :root {
 	--primary-accent-color: #02ad85;
 	--primary-accent-color-hover: #5dd1b6;
+	--primary-accent-light: #ecf7f4;
 	--primary-accent-color-opacity: #249275aa;
 	--primary-disabled-color: #b1d7ce;
 
@@ -8,6 +9,7 @@
 	--main-off-white: #eeeeee;
 	--main-light: #ffffff;
 	--main-off-dark: #666666;
+	--main-off-dark-opacity: #000000aa;
 
 	--border-color: #d7d7e8;
 

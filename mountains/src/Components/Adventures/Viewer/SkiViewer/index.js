@@ -1,0 +1,54 @@
+import PropTypes from 'prop-types'
+import { redirect, useNavigate } from 'react-router-dom'
+import { useAdventureStateContext, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
+
+import { Button, DisplayCard, FieldProps } from 'Components/Reusable'
+import AdventureGallery from 'Components/Adventures/Gallery'
+
+import Fields from './Fields'
+
+const SkiViewer = ({ menuContents }) => {
+	const { currentAdventure } = useAdventureStateContext()
+	const { closeAdventureView } = useManipulateFlows()
+	const navigate = useNavigate()
+
+	if (currentAdventure.adventure_name === 'New Adventure' && !currentAdventure.path?.length) {
+		redirect(`/adventure/edit/ski/${currentAdventure.id}`)
+	}
+
+	return (
+		<DisplayCard
+			title={currentAdventure.adventure_name}
+			menu={menuContents}
+			onClose={() => {
+				closeAdventureView()
+				navigate('/discover')
+			}}
+		>
+			<AdventureGallery />
+			<div className='flex-box adventure-page-action-items'>
+				{menuContents?.fields
+					?.filter((item) => item.viewerItem)
+					?.map((item) => (
+						<Button
+							small
+							id={item.id}
+							key={item.id}
+							onClick={item.action}
+						>
+							{item.text}
+						</Button>
+					))}
+			</div>
+			<Fields />
+		</DisplayCard>
+	)
+}
+
+SkiViewer.propTypes = {
+	menuContents: PropTypes.shape({
+		fields: FieldProps
+	})
+}
+
+export default SkiViewer

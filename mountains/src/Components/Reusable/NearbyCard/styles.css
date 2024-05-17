@@ -1,0 +1,20 @@
+.nearby-card {
+	min-width: 11rem;
+	background: linear-gradient(#d6d6d6, #f6f6f6);
+	color: var(--main-off-dark);
+	height: 100%;
+	border-radius: 0.5rem;
+	font-size: 1.1rem;
+	font-weight: 600;
+	align-items: flex-end;
+	white-space: pre-line;
+	text-align: left;
+	justify-content: flex-start;
+	padding: 0.5rem;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+
+.nearby-card:hover {
+	color: var(--primary-accent-color);
+}
