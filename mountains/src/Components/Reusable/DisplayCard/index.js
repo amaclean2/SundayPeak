@@ -5,7 +5,7 @@ import DisplayHeader from './DisplayHeader'
 import { FieldProps, Menu } from '../Menu'
 
 import './styles.css'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 
 export const DisplayCard = ({
 	children,
@@ -19,12 +19,6 @@ export const DisplayCard = ({
 	blockBackground = false
 }) => {
 	const displayCardRef = useRef(null)
-	const [frameBounds, setFrameBounds] = useState({ top: 0, right: 0 })
-
-	useEffect(() => {
-		const boundingBox = displayCardRef.current.getBoundingClientRect()
-		setFrameBounds({ top: boundingBox.y, right: boundingBox.width + boundingBox.x })
-	}, [displayCardRef.current])
 
 	return (
 		<div
@@ -40,7 +34,10 @@ export const DisplayCard = ({
 			{menu && (
 				<Menu
 					fields={menu.fields}
-					bounds={frameBounds}
+					bounds={{
+						top: displayCardRef.current?.getBoundingClientRect()?.top ?? 0,
+						right: displayCardRef.current?.getBoundingClientRect()?.right ?? 0
+					}}
 				/>
 			)}
 			<div

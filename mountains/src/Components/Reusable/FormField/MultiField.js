@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { FormField } from '.'
 
-export const MultiField = ({ onChange, label, fields, className }) => {
+export const MultiField = ({ label, fields, className }) => {
 	return (
 		<div className={cx('multi-field flex-box', className)}>
 			{label && <label className={'label-field'}>{label}</label>}
@@ -11,7 +11,7 @@ export const MultiField = ({ onChange, label, fields, className }) => {
 				{fields.map((field, key) => (
 					<FormField
 						key={`multi_field_${key}`}
-						onChange={onChange}
+						onChange={field.onChange}
 						value={field.value}
 						name={field.name}
 						type={field.type}
@@ -33,7 +33,8 @@ MultiField.propTypes = {
 		PropTypes.shape({
 			value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 			name: PropTypes.string,
-			placeholder: PropTypes.string
+			placeholder: PropTypes.string,
+			onChange: PropTypes.func
 		})
 	),
 	className: PropTypes.string

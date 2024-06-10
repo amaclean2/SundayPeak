@@ -14,7 +14,8 @@ const SkiApproachFields = ({ menuContents }) => {
 				{menuContents.fields.map((button, idx) => (
 					<Button
 						small
-						className={idx === 0 && 'delete-button'}
+						key={`path_button_${idx}`}
+						className={button.id === 'delete-path' ? 'delete-button' : ''}
 						onClick={button.action}
 						id={button.id}
 					>

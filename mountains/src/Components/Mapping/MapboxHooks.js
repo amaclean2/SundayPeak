@@ -3,14 +3,15 @@ import {
 	useDebounce,
 	useManipulateFlows,
 	useSaveAdventure,
-	useTokenStateContext
+	useTokenStateContext,
+	useZoneStateContext
 } from '@amaclean2/sundaypeak-treewells'
 import * as turf from '@turf/turf'
 import mapboxgl from '!mapbox-gl' // eslint-disable-line import/no-webpack-loader-syntax
 import { useEffect, useRef, useState } from 'react'
 import { icons } from 'Images/Activities/IconMap'
-import { useNavigate } from 'react-router-dom'
-import { adventurePathColor, useCreateNewAdventure } from './utils'
+import { useNavigate, useParams } from 'react-router-dom'
+import { adventurePathColor, parseZoneAdventures, useCreateNewAdventure } from './utils'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
 export const useMapboxHooks = (mapRef, mapContainerRef) => {
@@ -20,13 +21,15 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		globalAdventureType,
 		currentAdventure,
 		isPathEditOn,
-		adventureAddState
+		adventureAddState,
+		matchPath
 	} = useAdventureStateContext()
+	const { allZones, currentZone } = useZoneStateContext()
 	const { mapboxStyleKey, mapboxToken } = useTokenStateContext()
-	const { matchPath } = useAdventureStateContext()
 	const { updateStartPosition, toggleEnableAddPath } = useManipulateFlows()
 	const { handleCreateNewAdventure } = useCreateNewAdventure()
 	const { updatePath } = useSaveAdventure()
+	const { adventureId, zoneId } = useParams()
 	const navigate = useNavigate()
 	const localMatch = useRef(matchPath)
 	const hoveredLine = useRef(null)
@@ -43,7 +46,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 
 	// initialize map
 	useEffect(() => {
-		if (mapRef.current || !startPosition || !allAdventures || styleLoaded) return
+		if (mapRef.current || !startPosition || !allAdventures || styleLoaded || !allZones) return
 
 		mapRef.current = initializeMap()
 
@@ -67,28 +70,32 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 			mapRef.current.off('style.load', () => loadLayers(mapRef.current))
 			mapRef.current.off('move', () => handleMapMove(mapRef.current))
 		}
-	}, [startPosition, allAdventures])
+	}, [startPosition, allAdventures, allZones])
 
 	// new globalAdventureType
 	useEffect(() => {
-		if (!mapRef.current || !globalAdventureType || !allAdventures || !styleLoaded) return
+		if (!mapRef.current || !globalAdventureType || !allZones || !styleLoaded) return
 
-		let adventureData = allAdventures[globalAdventureType] ?? []
-		if (Array.isArray(adventureData) && !adventureData.length) {
-			adventureData = { type: 'FeatureCollection', features: [] }
-		}
+		if (currentAdventure || currentZone) return
 
-		mapRef.current.getSource('adventures')?.setData(adventureData)
-		mapRef.current.setLayoutProperty('adventures-layer', 'icon-image', globalAdventureType)
+		addZonesLayer(
+			mapRef.current,
+			allZones?.[globalAdventureType] ?? { type: 'FeatureCollection', features: [] }
+		)
+		addLinesLayer(mapRef.current, allAdventures?.[globalAdventureType]?.lines)
+		addPointsLayer(mapRef.current, allAdventures?.[globalAdventureType]?.points)
+		addPathLayer(mapRef.current, [])
+		removeParentIconLayer(mapRef.current)
 
-		if (['ski', 'skiApproach'].includes(globalAdventureType)) {
-			addSkiApproachLayer(mapRef.current)
-		} else if (mapRef.current.getSource('ski-approach')) {
-			mapRef.current.removeLayer('ski-approach-layer')
-			mapRef.current.removeSource('ski-approach')
-		}
-	}, [globalAdventureType, allAdventures, styleLoaded])
+		mapRef.current.flyTo({
+			center: [startPosition.lng, startPosition.lat],
+			zoom: 13
+		})
 
+		mapRef.current.setLayoutProperty('zones-layer', 'icon-image', globalAdventureType)
+	}, [globalAdventureType, allZones, styleLoaded, allAdventures])
+
+	// show/hide cursor layer
 	useEffect(() => {
 		if (!mapRef.current) return
 		if (adventureAddState) {
@@ -96,38 +103,129 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		} else {
 			removeCursorLayer(mapRef.current)
 		}
+
+		return () => {
+			removeCursorLayer(mapRef.current)
+		}
 	}, [adventureAddState])
 
-	// new current adventure
+	// new current adventure or current zone
 	useEffect(() => {
 		if (!mapRef.current || !styleLoaded) return
 
-		if (currentAdventure?.path?.length) {
-			const bounds = new mapboxgl.LngLatBounds(currentAdventure.path[0], currentAdventure.path[0])
+		// if the current item is an adventure
+		if (adventureId !== undefined) {
+			// if the current adventure has a path, fit bounds to the path
+			// show just the adventure, either point for climb
+			// or line otherwise
 
-			for (const p of currentAdventure.path) {
-				bounds.extend(p)
+			addZonesLayer(mapRef.current, null)
+			addLinesLayer(mapRef.current, null)
+			addParentIconLayer(mapRef.current, null)
+
+			if (currentAdventure.path?.length) {
+				const bounds = new mapboxgl.LngLatBounds()
+				currentAdventure.path.forEach((point) => {
+					bounds.extend(point)
+				})
+
+				mapRef.current.fitBounds(bounds, {
+					padding: { top: 100, bottom: 200, left: 34 * 16, right: 50 },
+					maxZoom: 19
+				})
+
+				addPathLayer(mapRef.current, currentAdventure.path)
+				addPointsLayer(mapRef.current, null)
+			} else {
+				mapRef.current.flyTo({
+					center: [currentAdventure.coordinates.lng - 0.001, currentAdventure.coordinates.lat],
+					zoom: 16
+				})
+
+				addPointsLayer(mapRef.current, {
+					type: 'FeatureCollection',
+					features: [
+						{
+							geometry: {
+								type: 'Point',
+								coordinates: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat]
+							}
+						}
+					]
+				})
+
+				if (mapRef.current.getLayer('adventure-path-layer')) {
+					mapRef.current.removeLayer('adventure-path-layer')
+					mapRef.current.removeSource('adventure-path')
+				}
 			}
-			mapRef.current.fitBounds(bounds, {
-				padding: { top: 100, bottom: 200, left: 34 * 16, right: 50 },
-				maxZoom: 19
-			})
-		} else if (currentAdventure?.id) {
-			mapRef.current.flyTo({
-				center: [currentAdventure.coordinates.lng, currentAdventure.coordinates.lat],
-				zoom: 16
-			})
-		}
+		} else if (zoneId !== undefined) {
+			// all the sub-zones should be points
+			// all the adventure should be lines
+			const { lines, points } = parseZoneAdventures(currentZone.adventures)
 
-		if (!currentAdventure?.path?.length) {
-			if (mapRef.current.getLayer('adventure-path-layer')) {
-				mapRef.current.removeLayer('adventure-path-layer')
-				mapRef.current.removeSource('adventure-path')
+			addPathLayer(mapRef.current, [])
+
+			const mapZones = {
+				type: 'FeatureCollection',
+				features: currentZone.zones.map((zone) => ({
+					type: 'Feature',
+					properties: {
+						adventureType: zone.adventure_type,
+						zoneName: zone.zone_name
+					},
+					geometry: {
+						type: 'Point',
+						coordinates: [zone.coordinates.lng, zone.coordinates.lat]
+					},
+					id: zone.zone_id
+				}))
 			}
-		}
 
-		if (currentAdventure?.adventure_type !== 'skiApproach') addPathLayer(mapRef.current)
-	}, [currentAdventure, styleLoaded])
+			addParentIconLayer(mapRef.current, {
+				type: 'Feature',
+				geometry: {
+					type: 'Point',
+					coordinates: [currentZone.coordinates.lng, currentZone.coordinates.lat]
+				},
+				id: currentZone.id
+			})
+
+			if (mapZones.features.length > 1 || currentZone.adventures.length) {
+				addZonesLayer(mapRef.current, mapZones)
+				addLinesLayer(mapRef.current, lines)
+				addPointsLayer(mapRef.current, points)
+
+				const bounds = new mapboxgl.LngLatBounds()
+				mapZones.features?.forEach((zone) => bounds.extend(zone.geometry.coordinates))
+
+				currentZone.adventures.forEach((adventure) =>
+					bounds.extend([adventure.coordinates.lng, adventure.coordinates.lat])
+				)
+				bounds.extend([currentZone.coordinates.lng, currentZone.coordinates.lat])
+				console.log(currentZone.adventures)
+				mapRef.current.fitBounds(bounds, {
+					padding: { top: 100, bottom: 200, left: 34 * 16, right: 50 },
+					maxZoom: 19
+				})
+			} else {
+				mapRef.current.flyTo({
+					center: [currentZone.coordinates.lng - 0.001, currentZone.coordinates.lat],
+					zoom: 16
+				})
+			}
+		} else {
+			// show all top-level zones again
+			addZonesLayer(
+				mapRef.current,
+				allZones?.[globalAdventureType] ?? { type: 'FeatureCollection', features: [] }
+			)
+			addLinesLayer(mapRef.current, allAdventures?.[globalAdventureType]?.lines)
+			addPointsLayer(mapRef.current, allAdventures?.[globalAdventureType]?.points)
+			addParentIconLayer(mapRef.current, null)
+			addPathLayer(mapRef.current, [])
+		}
+	}, [currentAdventure, currentZone, styleLoaded])
 
 	// handles the drawControl layer
 	useEffect(() => {
@@ -142,7 +240,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		const map = new mapboxgl.Map({
 			container: mapContainerRef.current,
 			style: `${mapboxStyleKey}?optimize=true`,
-			center: [startPosition.longitude, startPosition.latitude],
+			center: [startPosition.lng, startPosition.lat],
 			zoom: startPosition.zoom
 		})
 
@@ -177,7 +275,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 			}
 		})
 
-		map.on('click', 'cursor-layer', (event) => handleCreateNewAdventure(event))
+		map.on('click', (event) => handleCreateNewAdventure(event))
 	}
 
 	const removeCursorLayer = (map) => {
@@ -188,116 +286,219 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		}
 	}
 
-	const addAdventuresLayer = (map) => {
-		map.addSource('adventures', {
-			type: 'geojson',
-			data: allAdventures[globalAdventureType]
-		})
+	const addZonesLayer = (map, data, reset) => {
+		const previousSource = map.getSource('zones')
+		try {
+			if (!previousSource || reset) {
+				map.addSource('zones', {
+					type: 'geojson',
+					data: data ?? { type: 'FeatureCollection', features: [] }
+				})
 
-		map.addLayer({
-			id: 'adventures-layer',
-			source: 'adventures',
-			type: 'symbol',
-			layout: {
-				'icon-image': globalAdventureType,
-				'icon-size': 0.4
+				map.addLayer({
+					id: 'zones-layer',
+					source: 'zones',
+					type: 'symbol',
+					layout: {
+						'icon-image': globalAdventureType,
+						'icon-size': 0.4
+					}
+				})
+
+				map.on('click', 'zones-layer', (event) => {
+					const zoneId = event.features[0].id
+					navigate(`zone/${zoneId}`)
+				})
 			}
-		})
-
-		map.on('click', 'adventures-layer', (event) => handleAdventuresClick(event, map))
+			if (previousSource) {
+				previousSource.setData(data ?? { type: 'FeatureCollection', features: [] })
+			}
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
-	const addPathLayer = (map, newPath) => {
-		const path = newPath ?? currentAdventure?.path ?? []
-		const pathSource = map.getSource('adventure-path')
-		if (pathSource) {
-			pathSource.setData({
-				type: 'Feature',
-				geometry: {
-					type: 'LineString',
-					coordinates: path
-				}
-			})
+	const addPathLayer = (map, pathPoints, reset) => {
+		const previousSource = map.getSource('adventure-path')
+		try {
+			if (!previousSource || reset) {
+				map.addSource('adventure-path', {
+					type: 'geojson',
+					data: {
+						type: 'Feature',
+						geometry: {
+							type: 'LineString',
+							coordinates: pathPoints ?? []
+						}
+					}
+				})
 
-			map.setPaintProperty(
-				'adventure-path-layer',
-				'line-color',
-				adventurePathColor(globalAdventureType ?? 'ski')
-			)
-		} else {
-			map.addSource('adventure-path', {
-				type: 'geojson',
-				data: {
+				map.addLayer({
+					id: 'adventure-path-layer',
+					source: 'adventure-path',
+					type: 'line',
+					layout: {
+						'line-join': 'round',
+						'line-cap': 'round'
+					},
+					paint: {
+						'line-color': adventurePathColor(globalAdventureType ?? 'ski'),
+						'line-width': 5
+					}
+				})
+			}
+			if (previousSource) {
+				previousSource.setData({
 					type: 'Feature',
 					geometry: {
 						type: 'LineString',
-						coordinates: path
+						coordinates: pathPoints ?? []
 					}
-				}
-			})
+				})
 
-			map.addLayer({
-				id: 'adventure-path-layer',
-				source: 'adventure-path',
-				type: 'line',
-				layout: {
-					'line-join': 'round',
-					'line-cap': 'round'
-				},
-				paint: {
-					'line-color': adventurePathColor(globalAdventureType ?? 'ski'),
-					'line-width': 5
-				}
-			})
+				map.setPaintProperty(
+					'adventure-path-layer',
+					'line-color',
+					adventurePathColor(globalAdventureType ?? 'ski')
+				)
+			}
+		} catch (error) {
+			console.error(error)
 		}
 	}
 
-	const addSkiApproachLayer = (map) => {
-		if (!allAdventures?.skiApproach?.features?.length) return
+	const addLinesLayer = (map, data, reset) => {
+		const previousSource = map.getSource('lines')
 
-		const skiApproachSource = map.getSource('ski-approach')
-		if (skiApproachSource) {
-			skiApproachSource.setData(allAdventures.skiApproach)
-		} else {
-			map.addSource('ski-approach', {
-				type: 'geojson',
-				data: allAdventures.skiApproach
-			})
+		try {
+			if (!previousSource || reset) {
+				map.addSource('lines', {
+					type: 'geojson',
+					data: data ?? { type: 'FeatureCollection', features: [] }
+				})
 
-			map.addLayer({
-				id: 'ski-approach-layer',
-				source: 'ski-approach',
-				type: 'line',
-				layout: {
-					'line-join': 'round',
-					'line-cap': 'round'
-				},
-				paint: {
-					'line-color': [
-						'case',
-						['boolean', ['feature-state', 'hover'], false],
-						'#e40',
-						adventurePathColor('skiApproach')
-					],
-					'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 5, 4]
-				}
-			})
-		}
+				map.addLayer({
+					id: 'lines-layer',
+					source: 'lines',
+					type: 'line',
+					layout: {
+						'line-join': 'round',
+						'line-cap': 'round'
+					},
+					paint: {
+						'line-color': ['get', 'color'],
+						'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 6, 3.5]
+					}
+				})
+				map.on('mousemove', 'lines-layer', (event) => {
+					if (event.features.length > 0) {
+						if (hoveredLine.current !== null) {
+							map.setFeatureState({ source: 'lines', id: hoveredLine.current }, { hover: false })
+						}
+						hoveredLine.current = event.features[0].id
+						map.setFeatureState({ source: 'lines', id: event.features[0].id }, { hover: true })
+					}
+				})
+				map.on('mouseleave', 'lines-layer', () => {
+					map.setFeatureState({ source: 'lines', id: hoveredLine.current }, { hover: false })
+					hoveredLine.current = null
+				})
+				map.on('click', 'lines-layer', (event) => {
+					const adventureId = event.features[0].id
+					const adventureType = event.features[0].properties.adventureType
 
-		map.on('mousemove', 'ski-approach-layer', (event) => {
-			if (event.features.length > 0) {
-				if (hoveredLine.current !== null) {
-					map.setFeatureState({ source: 'ski-approach', id: hoveredLine.current }, { hover: false })
-				}
-				hoveredLine.current = event.features[0].id
-				map.setFeatureState({ source: 'ski-approach', id: event.features[0].id }, { hover: true })
+					navigate(`adventure/${adventureType}/${adventureId}`)
+				})
 			}
-		})
-		map.on('mouseleave', 'ski-approach-layer', () => {
-			map.setFeatureState({ source: 'ski-approach', id: hoveredLine.current }, { hover: false })
-			hoveredLine.current = null
-		})
-		map.on('click', 'ski-approach-layer', (event) => handleAdventuresClick(event, map))
+			if (previousSource) {
+				previousSource.setData(data ?? { type: 'FeatureCollection', features: [] })
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	const addParentIconLayer = (map, data, reset) => {
+		const previousSource = map.getSource('parent')
+		try {
+			if (!previousSource || reset) {
+				map.addSource('parent', {
+					type: 'geojson',
+					data: data ?? { type: 'Feature', geometry: { type: 'Point', coordinates: [] } }
+				})
+
+				map.addLayer({
+					id: 'parent-layer',
+					source: 'parent',
+					type: 'symbol',
+					layout: {
+						'icon-image': `${globalAdventureType}-parent`,
+						'icon-size': 0.4
+					}
+				})
+
+				map.on('click', 'parent-layer', (event) => {
+					map.flyTo({ center: event.features[0].geometry.coordinates, zoom: 13 })
+				})
+			}
+
+			if (previousSource) {
+				previousSource.setData(
+					data ?? { type: 'Feature', geometry: { type: 'Point', coordinates: [] } }
+				)
+				map.setLayoutProperty('parent-layer', 'icon-image', `${globalAdventureType}-parent`)
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
+	const removeParentIconLayer = (map) => {
+		if (map.getSource('parent')) {
+			map.removeLayer('parent-layer')
+			map.removeSource('parent')
+		}
+	}
+
+	const addPointsLayer = (map, data, reset) => {
+		const previousSource = map.getSource('points')
+		try {
+			if (!previousSource || reset) {
+				if (map.getSource('points')) {
+					map.removeLayer('points-layer')
+					map.removeSource('points')
+				}
+
+				map.addSource('points', {
+					type: 'geojson',
+					data: data ?? { type: 'FeatureCollection', features: [] }
+				})
+
+				map.addLayer({
+					id: 'points-layer',
+					source: 'points',
+					type: 'symbol',
+					layout: {
+						'icon-image': `${globalAdventureType}-activity`,
+						'icon-size': 0.4
+					}
+				})
+
+				map.on('click', 'points-layer', (event) => {
+					const adventureId = event.features[0].id
+					const adventureType = event.features[0].properties.adventureType
+
+					navigate(`adventure/${adventureType}/${adventureId}`)
+				})
+			}
+
+			if (previousSource) {
+				previousSource.setData(data ?? { type: 'FeatureCollection', features: [] })
+				map.setLayoutProperty('points-layer', 'icon-image', `${globalAdventureType}-activity`)
+			}
+		} catch (error) {
+			console.error(error)
+		}
 	}
 
 	const loadIcons = (map) => {
@@ -322,23 +523,15 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 
 		map.setTerrain({ source: 'mapbox-dem' })
 
-		addAdventuresLayer(map)
 		setStyleLoaded(true)
 	}
 
 	const handleMapMove = (map) => {
 		establishNewStartPosition({
-			latitude: map.getCenter().lat,
-			longitude: map.getCenter().lng,
+			lat: map.getCenter().lat,
+			lng: map.getCenter().lng,
 			zoom: map.getZoom()
 		})
-	}
-
-	const handleAdventuresClick = (event) => {
-		const adventureId = event.features[0].properties.id
-		const adventureType = event.features[0].properties.adventure_type
-
-		navigate(`adventure/${adventureType}/${adventureId}`)
 	}
 
 	const enableDrawControl = (map) => {

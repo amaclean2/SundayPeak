@@ -105,7 +105,7 @@ CREATE TABLE adventures(
     adventure_bike_id INT,
     ski_approach_id INT,
     adventure_name VARCHAR(100) NOT NULL,
-    adventure_type VARCHAR(50) NOT NULL,
+    adventure_type ENUM('ski', 'hike', 'climb', 'bike', 'skiApproach'),
     bio TEXT,
     coordinates_lat FLOAT NOT NULL,
     coordinates_lng FLOAT NOT NULL,
@@ -122,6 +122,34 @@ CREATE TABLE adventures(
     FOREIGN KEY(adventure_hike_id) REFERENCES hike(id) ON DELETE CASCADE,
     FOREIGN KEY(adventure_bike_id) REFERENCES bike(id) ON DELETE CASCADE,
     FOREIGN KEY(ski_approach_id) REFERENCES ski_approach(id) ON DELETE CASCADE
+);
+
+CREATE TABLE zones(
+    id INT AUTO_INCREMENT,
+    zone_name VARCHAR(100) NOT NULL,
+    adventure_type ENUM('ski', 'hike', 'climb', 'bike', 'skiApproach'),
+    bio TEXT,
+    coordinates_lat FLOAT NOT NULL,
+    coordinates_lng FLOAT NOT NULL,
+    creator_id INT NOT NULL,
+    date_created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    date_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    nearest_city VARCHAR(100),
+    public TINYINT NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(creator_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE zone_interactions(
+    id INT AUTO_INCREMENT,
+    adventure_child_id INT,
+    zone_child_id INT,
+    interaction_type ENUM('zone', 'adventure'),
+    parent_id INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(parent_id) REFERENCES zones(id) ON DELETE CASCADE,
+    FOREIGN KEY(adventure_child_id) REFERENCES adventures(id) ON DELETE CASCADE,
+    FOREIGN KEY(zone_child_id) REFERENCES zones(id) ON DELETE CASCADE
 );
 
 CREATE TABLE device_tokens(

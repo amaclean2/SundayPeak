@@ -4,7 +4,6 @@ import { useAdventureStateContext, useManipulateFlows } from '@amaclean2/sundayp
 
 import { DisplayCard, FieldProps } from 'Components/Reusable'
 
-import AdventureGallery from '../../Gallery'
 import Fields from './Fields'
 
 const HikeViewer = ({ menuContents }) => {
@@ -21,8 +20,7 @@ const HikeViewer = ({ menuContents }) => {
 				closeAdventureView()
 			}}
 		>
-			<AdventureGallery />
-			<Fields />
+			<Fields menuContents={menuContents} />
 		</DisplayCard>
 	)
 }

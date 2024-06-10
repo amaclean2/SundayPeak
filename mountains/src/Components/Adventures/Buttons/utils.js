@@ -4,7 +4,8 @@ import {
 	useGetAdventures,
 	useSaveAdventure,
 	useSaveTodo,
-	useUserStateContext
+	useUserStateContext,
+	useZoneStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
 import getContent from 'TextContent'
@@ -12,9 +13,11 @@ import getContent from 'TextContent'
 export const useAdventureMenu = () => {
 	const { loggedInUser } = useUserStateContext()
 	const { currentAdventure } = useAdventureStateContext()
+	const { currentZone } = useZoneStateContext()
 	const { shareAdventure } = useGetAdventures()
 	const { saveTodo } = useSaveTodo()
-	const { togglePathEdit, deletePath, toggleAdventureAddState } = useSaveAdventure()
+	const { togglePathEdit, deletePath, toggleAdventureAddState, removeAdventureFromArea } =
+		useSaveAdventure()
 
 	const navigate = useNavigate()
 
@@ -57,6 +60,19 @@ export const useAdventureMenu = () => {
 				id: 'adventure-download-button',
 				text: 'Export Adventure'
 			})
+
+			if (currentAdventure.breadcrumb.length > 1) {
+				fields.push({
+					action: () =>
+						removeAdventureFromArea({
+							parentId: currentAdventure.breadcrumb[currentAdventure.breadcrumb.length - 2].id,
+							childId: currentAdventure.id
+						}),
+					viewerItem: false,
+					id: 'remove-zone-button',
+					text: 'Remove Adventure from Area'
+				})
+			}
 
 			if (canAddTodo) {
 				fields.push({
@@ -114,16 +130,64 @@ export const useAdventureMenu = () => {
 			})
 		}
 		fields.push({
-			action: toggleAdventureAddState,
+			action: () => toggleAdventureAddState('adventure'),
 			id: 'move-marker',
 			text: 'Move Marker'
 		})
+		// fields.push({
+		// 	action: () => console.log('Hi'),
+		// 	id: 'add-adventure-to-zone',
+		// 	text: 'Add to Zone'
+		// })
+
+		return { fields }
+	}
+
+	const buildZoneMenu = () => {
+		const fields = []
+
+		if (!loggedInUser) return null
+
+		const canEdit = loggedInUser.id === currentZone.creator_id
+
+		if (currentZone) {
+			// yes, but not ready yet
+			// fields.push({
+			// 	action: () => shareAdventure({ id: currentAdventure.id }),
+			// 	viewerItem: false,
+			// 	id: 'adventure-share-button',
+			// 	text: getContent('buttonText.share')
+			// })
+			if (canEdit) {
+				fields.push({
+					action: () => navigate(`/zone/edit/${currentZone.id}`),
+					viewerItem: false,
+					id: 'zone-edit-button',
+					text: 'Edit Area'
+				})
+				fields.push({
+					action: () => navigate(`/zone/edit/${currentZone.id}/adventureFinder`),
+					viewerItem: false,
+					id: 'adventure-add-button',
+					text: 'Add Adventure to Area'
+				})
+				fields.push({
+					action: () => navigate(`/zone/edit/${currentZone.id}/zoneFinder`),
+					viewerItem: false,
+					id: 'zone-add-button',
+					text: 'Add Child Area'
+				})
+			}
+		}
+
+		if (!fields.length) return null
 
 		return { fields }
 	}
 
 	return {
 		buildAdventureMenu,
-		buildEditViewMenu
+		buildEditViewMenu,
+		buildZoneMenu
 	}
 }

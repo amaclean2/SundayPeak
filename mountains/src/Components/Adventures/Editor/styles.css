@@ -2,4 +2,22 @@
 	gap: 0.5rem;
 	justify-content: flex-end;
 	flex-direction: row-reverse;
+	align-self: flex-start;
+}
+
+.child-search.flex-box {
+	max-height: 70vh;
+}
+
+.zone-edit {
+	height: 89vh;
+}
+
+.zone-edit .display-content {
+	height: calc(100% - 3rem);
+}
+
+.flex-edit-fields {
+	flex-direction: column;
+	gap: 0.8rem;
 }

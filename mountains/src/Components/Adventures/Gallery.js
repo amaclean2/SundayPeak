@@ -1,32 +1,41 @@
 import {
 	useAdventureStateContext,
 	useManipulateFlows,
-	usePictures
+	usePictures,
+	useZoneStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
 import './styles.css'
 
-const PhotoGallery = () => {
+const PhotoGallery = ({ spaceType }) => {
 	const { setImageList } = useManipulateFlows()
 	const { currentAdventure } = useAdventureStateContext()
+	const { currentZone } = useZoneStateContext()
 	const { savePicture } = usePictures()
 
 	const changeHandler = ({ target: { files } }) => {
 		const formData = new FormData()
 		formData.append('image', files[0])
-		formData.append('adventure_id', currentAdventure.id)
 
-		savePicture({ isProfilePicture: false, formData, isAdventure: true })
+		if (spaceType === 'zone') {
+			formData.append('zone_id', currentZone.id)
+			savePicture({ isProfilePicture: false, formData, isZone: true })
+		} else {
+			formData.append('adventure_id', currentAdventure.id)
+			savePicture({ isProfilePicture: false, formData, isAdventure: true })
+		}
 	}
+
+	const currentObject = spaceType === 'zone' ? currentZone : currentAdventure
 
 	return (
 		<div className='scroller-container flex-box'>
-			{currentAdventure.images.map((image, key) => (
+			{currentObject.images.map((image, key) => (
 				<img
 					src={image}
 					alt={''}
 					key={`profile_image_${key}`}
-					onClick={() => setImageList(currentAdventure.images, key)}
+					onClick={() => setImageList(currentObject.images, key)}
 				/>
 			))}
 			<label

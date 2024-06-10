@@ -1,18 +1,22 @@
 import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
-import { Button, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from 'Components/Reusable'
-import RatingView from 'Components/Reusable/RatingView'
-import { DistanceIcon, ElevationIcon, Pin } from 'Images'
-import getContent from 'TextContent'
-import React from 'react'
-import { DifficultyViewer } from '../Symbols'
-import { formatSeasons } from 'Components/Adventures/utils'
 import { ParentSize } from '@visx/responsive'
+import React from 'react'
+import Linkify from 'linkify-react'
+
+import { formatSeasons } from 'Components/Adventures/utils'
 import ElevationChart from 'Components/Reusable/Chart'
 import AdventureTickPanel from 'Components/Adventures/TickPanel'
-import Linkify from 'linkify-react'
 import NearbyCards from 'Components/Reusable/NearbyCard'
+import { Button, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from 'Components/Reusable'
+import RatingView from 'Components/Reusable/RatingView'
+import Breadcrumb from 'Components/Reusable/Breadcrumb'
+import getContent from 'TextContent'
+import { DistanceIcon, ElevationIcon, Pin } from 'Images'
 
-const Fields = () => {
+import AdventureGallery from '../../Gallery'
+import { DifficultyViewer } from '../Symbols'
+
+const Fields = ({ menuContents }) => {
 	const { currentAdventure, workingPath, closeAdventures } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 
@@ -20,7 +24,7 @@ const Fields = () => {
 		<FieldPage className={'adventure-display-grid'}>
 			<FieldRow className={'narrow-field'}>
 				<Field noPadding>
-					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+					<Breadcrumb />
 				</Field>
 			</FieldRow>
 
@@ -29,6 +33,33 @@ const Fields = () => {
 					<Pin size={20} />
 					{currentAdventure.nearest_city}
 				</Field>
+			</FieldRow>
+
+			<FieldRow className={'narrow-field'}>
+				<Field noPadding>
+					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+				</Field>
+			</FieldRow>
+
+			<FieldRow>
+				<Field>
+					<AdventureGallery />
+				</Field>
+			</FieldRow>
+
+			<FieldRow className={'adventure-page-action-items'}>
+				{menuContents?.fields
+					?.filter((item) => item.viewerItem)
+					?.map((item) => (
+						<Button
+							small
+							id={item.id}
+							key={item.id}
+							onClick={item.action}
+						>
+							{item.text}
+						</Button>
+					))}
 			</FieldRow>
 
 			<FieldRow className='adventure-bio'>

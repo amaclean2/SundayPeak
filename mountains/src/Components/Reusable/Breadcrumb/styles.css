@@ -1,0 +1,69 @@
+.bread-crumb {
+	gap: 0.5rem;
+	align-items: center;
+	background-color: var(--main-off-white);
+	padding: 0.3rem 0.8rem;
+	border-radius: 0.3rem;
+	flex-direction: row-reverse;
+	position: relative;
+}
+
+.bread-crumb a.flex-box {
+	height: auto;
+	color: var(--main-dark);
+	text-decoration: none;
+}
+
+.bread-crumb a.flex-box:hover {
+	color: var(--main-dark);
+	text-decoration: underline;
+}
+
+.bc-span {
+	display: block;
+	max-width: 10rem;
+	overflow-x: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.expanded-bc {
+	position: absolute;
+	background-color: var(--main-light);
+	padding: 0.5rem 0;
+	cursor: pointer;
+	top: 1.5rem;
+	border-radius: 0.5rem;
+	border: 0.1rem solid var(--border-color);
+	flex-direction: column-reverse;
+	align-items: stretch;
+	gap: 0.1rem;
+}
+
+.expanded-bc-background {
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	position: fixed;
+	background-color: transparent;
+}
+
+.expandable-bc.button {
+	padding: 0 0.3rem;
+}
+
+.expandable-bc.button:hover {
+	background-color: var(--main-light);
+	padding: 0 0.3rem;
+}
+
+.expanded-bc-link {
+	background-color: var(--main-light);
+	padding: 0.5rem 1.5rem;
+}
+
+.bread-crumb a.expanded-bc-link:hover {
+	background-color: var(--main-off-white);
+	text-decoration: none;
+}

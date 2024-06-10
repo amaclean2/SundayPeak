@@ -12,24 +12,55 @@ import { ParentSize } from '@visx/responsive'
 import ElevationChart from 'Components/Reusable/Chart'
 import Linkify from 'linkify-react'
 import NearbyCards from 'Components/Reusable/NearbyCard'
+import AdventureGallery from 'Components/Adventures/Gallery'
+import Breadcrumb from 'Components/Reusable/Breadcrumb'
 
-const Fields = () => {
+const Fields = ({ menuContents }) => {
 	const { currentAdventure, closeAdventures } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 
 	return (
 		<FieldPage className={'adventure-display-grid'}>
-			<FieldRow className={'narrow-field'}>
-				<Field noPadding>
-					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
-				</Field>
-			</FieldRow>
+			{currentAdventure?.breadcrumb?.length > 1 && (
+				<FieldRow className={'narrow-field'}>
+					<Field noPadding>
+						<Breadcrumb />
+					</Field>
+				</FieldRow>
+			)}
 
 			<FieldRow className={'location-row'}>
 				<Field className={'view-location'}>
 					<Pin size={20} />
 					{currentAdventure.nearest_city}
 				</Field>
+			</FieldRow>
+
+			<FieldRow className={'narrow-field'}>
+				<Field noPadding>
+					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+				</Field>
+			</FieldRow>
+
+			<FieldRow>
+				<Field noPadding>
+					<AdventureGallery />
+				</Field>
+			</FieldRow>
+
+			<FieldRow className={'adventure-page-action-items'}>
+				{menuContents?.fields
+					?.filter((item) => item.viewerItem)
+					?.map((item) => (
+						<Button
+							small
+							id={item.id}
+							key={item.id}
+							onClick={item.action}
+						>
+							{item.text}
+						</Button>
+					))}
 			</FieldRow>
 
 			<FieldRow className='adventure-bio'>
@@ -84,7 +115,7 @@ const Fields = () => {
 				</Field>
 			</FieldRow>
 
-			<FieldRow borderBottom>
+			<FieldRow>
 				<Field>
 					<FieldHeader text={getContent('adventurePanel.fields.bestSeason')} />
 					<FieldValue>
@@ -99,6 +130,38 @@ const Fields = () => {
 				</Field>
 			</FieldRow>
 
+			{currentAdventure.elevations?.length && (
+				<FieldRow>
+					<Field cardField>
+						<FieldHeader
+							text={'Elevation Chart'}
+							largeHeader
+						/>
+						{currentAdventure?.elevations?.length ? (
+							<ParentSize>
+								{({ width }) => (
+									<ElevationChart
+										width={width}
+										height={200}
+										data={currentAdventure.elevations}
+									/>
+								)}
+							</ParentSize>
+						) : null}
+					</Field>
+				</FieldRow>
+			)}
+
+			<FieldRow>
+				<Field cardField>
+					<FieldHeader
+						text={'Nearby Adventures'}
+						largeHeader
+					/>
+					<NearbyCards adventures={closeAdventures} />
+				</Field>
+			</FieldRow>
+
 			<FieldRow>
 				<Field>
 					<FieldHeader text='Created By' />
@@ -110,36 +173,6 @@ const Fields = () => {
 							{currentAdventure.creator_name}
 						</Button>
 					</FieldValue>
-				</Field>
-			</FieldRow>
-
-			<FieldRow>
-				<Field cardField>
-					<FieldHeader
-						text={'Elevation Chart'}
-						largeHeader
-					/>
-					{currentAdventure?.elevations?.length ? (
-						<ParentSize>
-							{({ width }) => (
-								<ElevationChart
-									width={width}
-									height={200}
-									data={currentAdventure.elevations}
-								/>
-							)}
-						</ParentSize>
-					) : null}
-				</Field>
-			</FieldRow>
-
-			<FieldRow>
-				<Field cardField>
-					<FieldHeader
-						text={'Nearby'}
-						largeHeader
-					/>
-					<NearbyCards adventures={closeAdventures} />
 				</Field>
 			</FieldRow>
 

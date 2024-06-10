@@ -54,20 +54,22 @@ const ClimbForm = () => {
 				onChange={editAdventure}
 			/>
 			<MultiField
-				onChange={editAdventure}
 				label={'Climb Info'}
 				fields={[
 					{
 						type: 'select',
 						name: 'climb_type',
 						value: currentAdventure.climb_type || 'Trad',
-						options: { selectOptions: climbTypeSelection }
+						options: { selectOptions: climbTypeSelection },
+						onChange: editAdventure
 					},
 					{
 						type: 'select',
-						name: 'grade',
-						value: currentAdventure.grade || 'Please select a climb type',
-						options: { selectOptions: getClimbGrade({ climbType: currentAdventure.climb_type }) }
+						name: 'difficulty',
+						value: currentAdventure?.difficulty?.split(':')[0] || 'Please select a climb type',
+						options: { selectOptions: getClimbGrade({ climbType: currentAdventure.climb_type }) },
+						onChange: (event) =>
+							editAdventure({ target: { name: 'difficulty', value: `${event.target.value}:0` } })
 					}
 				]}
 			/>

@@ -16,7 +16,7 @@ const SkiFields = ({ menuContents }) => {
 					<Button
 						key={`field_${idx}`}
 						small
-						className={idx === 0 ? 'delete-button' : ''}
+						className={button.id === 'delete-path' ? 'delete-button' : ''}
 						onClick={button.action}
 						id={button.id}
 					>
@@ -71,19 +71,20 @@ const SkiFields = ({ menuContents }) => {
 				onChange={editAdventure}
 			/>
 			<MultiField
-				onChange={editAdventure}
 				label={getContent('adventurePanel.editable.slope')}
 				fields={[
 					{
 						type: 'text',
 						name: 'avg_angle',
 						value: currentAdventure.avg_angle || '',
+						onChange: editAdventure,
 						placeholder: getContent('adventurePanel.editable.avgAngle')
 					},
 					{
 						type: 'text',
 						name: 'max_angle',
 						value: currentAdventure.max_angle || '',
+						onChange: editAdventure,
 						placeholder: getContent('adventurePanel.editable.maxAngle')
 					}
 				]}

@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { CarretIcon } from '../../../Images'
 import { Button } from '../Button'
 import { MenuButton } from '../Menu'
+import { useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
 
 const DisplayHeader = ({ className, onClose, title, menu, hasClose = true }) => {
 	const navigate = useNavigate()
+	const { clearErrors } = useManipulateFlows()
 
 	const localOnClose = (e) => {
+		clearErrors()
 		return onClose ? onClose(e) : navigate(-1)
 	}
 

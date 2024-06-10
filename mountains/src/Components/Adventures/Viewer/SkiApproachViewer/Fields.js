@@ -1,4 +1,5 @@
 import React from 'react'
+import Linkify from 'linkify-react'
 import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 import { ParentSize } from '@visx/responsive'
 
@@ -6,21 +7,26 @@ import { Button, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from 'Com
 import RatingView from 'Components/Reusable/RatingView'
 import ElevationChart from 'Components/Reusable/Chart'
 import AdventureTickPanel from 'Components/Adventures/TickPanel'
+import NearbyCards from 'Components/Reusable/NearbyCard'
 import { DistanceIcon, ElevationIcon, Pin } from 'Images'
 import getContent from 'TextContent'
 
 import { DifficultyViewer } from '../Symbols'
-import Linkify from 'linkify-react'
-import NearbyCards from 'Components/Reusable/NearbyCard'
+import AdventureGallery from '../../Gallery'
+import Breadcrumb from 'Components/Reusable/Breadcrumb'
 
 const Fields = () => {
 	const { loggedInUser } = useUserStateContext()
 	const { currentAdventure, closeAdventures } = useAdventureStateContext()
 
-	console.log({ currentAdventure })
-
 	return (
 		<FieldPage className={'adventure-display-grid'}>
+			<FieldRow className={'narrow-field'}>
+				<Field noPadding>
+					<Breadcrumb />
+				</Field>
+			</FieldRow>
+
 			<FieldRow className={'narrow-field'}>
 				<Field noPadding>
 					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
@@ -31,6 +37,12 @@ const Fields = () => {
 				<Field className={'view-location'}>
 					<Pin size={20} />
 					{currentAdventure.nearest_city}
+				</Field>
+			</FieldRow>
+
+			<FieldRow>
+				<Field>
+					<AdventureGallery />
 				</Field>
 			</FieldRow>
 
@@ -90,7 +102,7 @@ const Fields = () => {
 			</FieldRow>
 
 			<FieldRow>
-				<Field noPadding>
+				<Field cardField>
 					<FieldHeader
 						text={'Elevation Chart'}
 						largeHeader
@@ -109,15 +121,17 @@ const Fields = () => {
 				</Field>
 			</FieldRow>
 
-			<FieldRow>
-				<Field noPadding>
-					<FieldHeader
-						text={'Nearby'}
-						largeHeader
-					/>
-					<NearbyCards adventures={closeAdventures} />
-				</Field>
-			</FieldRow>
+			{closeAdventures?.length > 1 && (
+				<FieldRow>
+					<Field cardField>
+						<FieldHeader
+							text={'Nearby Approaches'}
+							largeHeader
+						/>
+						<NearbyCards adventures={closeAdventures} />
+					</Field>
+				</FieldRow>
+			)}
 
 			{loggedInUser && <AdventureTickPanel />}
 		</FieldPage>

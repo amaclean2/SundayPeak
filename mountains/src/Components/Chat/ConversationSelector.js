@@ -2,9 +2,10 @@ import { useRef, useState } from 'react'
 import cx from 'classnames'
 import {
 	useDebounce,
-	useGetUser,
 	useMessages,
-	useMessagingStateContext
+	useMessagingStateContext,
+	useSearch,
+	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
 import { FlexSpacer, FormField } from 'Components/Reusable'
@@ -12,8 +13,9 @@ import ConversationImage from './ConversationImage'
 import { useChatEditorMenu } from './utils'
 
 const ConversationSelector = () => {
-	const { searchForFriends } = useGetUser()
+	const { searchUsers } = useSearch()
 	const { conversations, currentConversationId } = useMessagingStateContext()
+	const { loggedInUser } = useUserStateContext()
 	const { addConversation, getConversation } = useMessages()
 	const { buildConversationName } = useChatEditorMenu()
 
@@ -22,10 +24,12 @@ const ConversationSelector = () => {
 
 	const newName = useRef('')
 
+	console.log({ conversations })
+
 	const getSearchResults = useDebounce((search) => {
 		if (search.length <= 3) return setSearchList(null)
 
-		searchForFriends({ search }).then((users) => {
+		searchUsers({ searchText: search, userId: loggedInUser.id }).then((users) => {
 			setSearchList(users)
 		})
 	})

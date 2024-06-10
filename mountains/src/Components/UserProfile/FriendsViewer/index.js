@@ -2,14 +2,14 @@ import { useState } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useDebounce, useGetUser, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useDebounce, useSearch, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 
 import { FieldHeader, FormField } from 'Components/Reusable'
 import { Friend } from './Friend'
 
 const FriendsViewer = ({ className }) => {
-	const { workingUser } = useUserStateContext()
-	const { searchForUsers } = useGetUser()
+	const { workingUser, loggedInUser } = useUserStateContext()
+	const { searchUsers } = useSearch()
 	const navigate = useNavigate()
 
 	const [searchText, setSearchText] = useState('')
@@ -19,7 +19,7 @@ const FriendsViewer = ({ className }) => {
 	const getSearchResults = useDebounce((search) => {
 		if (search.length <= 3) return setSearchResults(null)
 
-		searchForUsers({ search }).then((users) => {
+		searchUsers({ searchText: search, userId: loggedInUser.id }).then((users) => {
 			setSearchResults(users)
 		})
 	})

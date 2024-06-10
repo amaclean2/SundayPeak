@@ -1,6 +1,9 @@
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
 	useAdventureStateContext,
 	useGetAdventures,
+	useGetZones,
 	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
 
@@ -10,12 +13,11 @@ import AdventureSearch from './Search'
 import MainAdventureSelector from './Search/MainAdventureSelector'
 
 import './styles.css'
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 const DefaultAdventureView = () => {
 	const { loggedInUser } = useUserStateContext()
-	const { getAdventureList } = useGetAdventures()
+	const { getNearbyAdventures } = useGetAdventures()
+	const { getNearbyZones } = useGetZones()
 	const { globalAdventureType, startPosition } = useAdventureStateContext()
 	const navigate = useNavigate()
 
@@ -23,9 +25,15 @@ const DefaultAdventureView = () => {
 		const adventureType = !['skiApproach', undefined].includes(globalAdventureType)
 			? globalAdventureType
 			: 'ski'
-		getAdventureList({
+		getNearbyAdventures({
 			type: adventureType,
-			coordinates: { lat: startPosition?.latitude ?? 2, lng: startPosition?.longitude ?? 3 }
+			coordinates: { lat: startPosition?.lat ?? 2, lng: startPosition?.lng ?? 3 },
+			count: 8
+		})
+		getNearbyZones({
+			type: adventureType,
+			coordinates: { lat: startPosition?.lat ?? 2, lng: startPosition?.lng ?? 3 },
+			count: 5
 		})
 	}, [startPosition, globalAdventureType])
 
@@ -38,13 +46,22 @@ const DefaultAdventureView = () => {
 			<MainAdventureSelector />
 			<AdventureSearch />
 			{loggedInUser?.id && (
-				<Button
-					secondaryButton
-					id={'open-new-adventure-menu'}
-					direction={'/adventure/new'}
-				>
-					Add a New Adventure
-				</Button>
+				<div className={'flex-box create-new-button'}>
+					<Button
+						secondaryButton
+						id={'open-new-adventure-menu'}
+						direction={'/adventure/new/adventure'}
+					>
+						Add a New Adventure
+					</Button>
+					<Button
+						secondaryButton
+						id={'open-new-adventure-menu'}
+						direction={'/adventure/new/zone'}
+					>
+						Add a New Area
+					</Button>
+				</div>
 			)}
 		</DisplayCard>
 	)

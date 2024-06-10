@@ -16,7 +16,7 @@ const StatTemplate = ({ statLabel = '', statValue = '', onClick, selected }) => 
 
 StatTemplate.propTypes = {
 	statLabel: PropTypes.string.isRequired,
-	statValue: PropTypes.string.isRequired,
+	statValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 	onClick: PropTypes.func,
 	selected: PropTypes.bool
 }
