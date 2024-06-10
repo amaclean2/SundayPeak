@@ -61,7 +61,7 @@ export const useAdventureMenu = () => {
 				text: 'Export Adventure'
 			})
 
-			if (currentAdventure.breadcrumb.length > 1) {
+			if (currentAdventure.breadcrumb?.length > 1) {
 				fields.push({
 					action: () =>
 						removeAdventureFromArea({

@@ -1,6 +1,6 @@
 {
 	"name": "mountains",
-	"version": "1.9.1",
+	"version": "1.9.2",
 	"dependencies": {
 		"@amaclean2/sundaypeak-treewells": "^1.6.41",
 		"@babel/core": "^7.16.0",
