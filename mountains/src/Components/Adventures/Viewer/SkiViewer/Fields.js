@@ -130,7 +130,7 @@ const Fields = ({ menuContents }) => {
 				</Field>
 			</FieldRow>
 
-			{currentAdventure.elevations?.length && (
+			{currentAdventure.elevations?.length ? (
 				<FieldRow>
 					<Field cardField>
 						<FieldHeader
@@ -150,7 +150,7 @@ const Fields = ({ menuContents }) => {
 						) : null}
 					</Field>
 				</FieldRow>
-			)}
+			) : null}
 
 			<FieldRow>
 				<Field cardField>
