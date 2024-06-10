@@ -5,7 +5,6 @@ import { useAdventureStateContext, useManipulateFlows } from '@amaclean2/sundayp
 import { DisplayCard, FieldProps } from 'Components/Reusable'
 
 import Fields from './Fields'
-import AdventureGallery from '../../Gallery'
 
 const SkiApproachViewer = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -25,7 +24,6 @@ const SkiApproachViewer = ({ menuContents }) => {
 				closeAdventureView()
 			}}
 		>
-			<AdventureGallery />
 			<Fields />
 		</DisplayCard>
 	)

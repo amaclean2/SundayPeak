@@ -24,6 +24,10 @@ import PrivacyPolicy from 'MetaPages/Privacy'
 import SupportPage from 'MetaPages/Support'
 import MessagingContianer from 'Components/Chat/MessagingContainer'
 import AdventureTypeSelector from 'Components/Adventures/Editor/AdventureTypeSelector'
+import ZoneForm from 'Components/Adventures/Editor/ZoneForm'
+import ZoneViewer from 'Components/Adventures/Viewer/ZoneViewer'
+import AdventureChildFinder from 'Components/Adventures/Editor/ZoneForm/AdventureFinder'
+import ZoneChildFinder from 'Components/Adventures/Editor/ZoneForm/ZoneFinder'
 
 export const title = 'Sunday Peak'
 
@@ -113,7 +117,7 @@ export const router = createBrowserRouter(
 						element={<DefaultAdventureView />}
 					/>
 					<Route
-						path={'new'}
+						path={'new/:type'}
 						element={<AdventureTypeSelector />}
 					/>
 					<Route
@@ -123,6 +127,27 @@ export const router = createBrowserRouter(
 					<Route
 						path={':adventureType/:adventureId'}
 						element={<AdventureViewer />}
+					/>
+				</Route>
+				<Route
+					path={'zone'}
+					elemet={<Outlet />}
+				>
+					<Route
+						path={':zoneId'}
+						element={<ZoneViewer />}
+					/>
+					<Route
+						path={'edit/:zoneId'}
+						element={<ZoneForm />}
+					/>
+					<Route
+						path={'edit/:zoneId/adventureFinder'}
+						element={<AdventureChildFinder />}
+					/>
+					<Route
+						path={'edit/:zoneId/zoneFinder'}
+						element={<ZoneChildFinder />}
 					/>
 				</Route>
 				<Route

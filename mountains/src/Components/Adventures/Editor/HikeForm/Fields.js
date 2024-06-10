@@ -9,8 +9,6 @@ const HikeFields = ({ menuContents }) => {
 	const { currentAdventure } = useAdventureStateContext()
 	const { editAdventure } = useSaveAdventure()
 
-	console.log({ menuContents })
-
 	return (
 		<>
 			<div className={'flex-box adventure-button-header'}>
@@ -18,7 +16,7 @@ const HikeFields = ({ menuContents }) => {
 					<Button
 						small
 						key={`path_button_${idx}`}
-						className={button.id === 'delete-path' && 'delete-button'}
+						className={button.id === 'delete-path' ? 'delete-button' : ''}
 						onClick={button.action}
 						id={button.id}
 					>

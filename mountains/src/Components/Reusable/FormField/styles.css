@@ -29,7 +29,7 @@ input {
 	/* subtract the padding from the form field and the border*/
 	width: 100%;
 	padding: 0.5rem 0.8rem;
-	transition: all 0.15s ease-in-out;
+	/* transition: all 0.15s ease-in-out; */
 	outline: none;
 }
 
@@ -38,7 +38,8 @@ input {
 .form-field.select:focus,
 .form-field.tel:focus,
 .form-field.email:focus {
-	border: 0.1rem solid var(--primary-accent-color);
+	border: 1px solid var(--primary-accent-color);
+	padding: calc(0.5rem - 1px) calc(0.8rem - 1px);
 }
 
 .form-field.select {

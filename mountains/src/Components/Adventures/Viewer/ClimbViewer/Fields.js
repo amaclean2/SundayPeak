@@ -1,8 +1,11 @@
+import Linkify from 'linkify-react'
+import React from 'react'
 import {
 	gradeConverter,
 	useAdventureStateContext,
 	useUserStateContext
 } from '@amaclean2/sundaypeak-treewells'
+
 import AdventureTickPanel from 'Components/Adventures/TickPanel'
 import { formatSeasons, pitchClimbs } from 'Components/Adventures/utils'
 import { Button, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from 'Components/Reusable'
@@ -10,10 +13,11 @@ import NearbyCards from 'Components/Reusable/NearbyCard'
 import RatingView from 'Components/Reusable/RatingView'
 import { Pin } from 'Images'
 import getContent from 'TextContent'
-import Linkify from 'linkify-react'
-import React from 'react'
 
-const ClimbFields = () => {
+import AdventureGallery from '../../Gallery'
+import Breadcrumb from 'Components/Reusable/Breadcrumb'
+
+const ClimbFields = ({ menuContents }) => {
 	const { currentAdventure, closeAdventures } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 
@@ -21,7 +25,7 @@ const ClimbFields = () => {
 		<FieldPage className={'adventure-display-grid'}>
 			<FieldRow className={'narrow-field'}>
 				<Field noPadding>
-					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+					<Breadcrumb />
 				</Field>
 			</FieldRow>
 
@@ -30,6 +34,33 @@ const ClimbFields = () => {
 					<Pin size={20} />
 					{currentAdventure.nearest_city}
 				</Field>
+			</FieldRow>
+
+			<FieldRow className={'narrow-field'}>
+				<Field noPadding>
+					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+				</Field>
+			</FieldRow>
+
+			<FieldRow>
+				<Field noPadding>
+					<AdventureGallery />
+				</Field>
+			</FieldRow>
+
+			<FieldRow className={'adventure-page-action-items'}>
+				{menuContents?.fields
+					?.filter((item) => item.viewerItem)
+					?.map((item) => (
+						<Button
+							small
+							id={item.id}
+							key={item.id}
+							onClick={item.action}
+						>
+							{item.text}
+						</Button>
+					))}
 			</FieldRow>
 
 			<FieldRow className='adventure-bio'>
@@ -61,7 +92,7 @@ const ClimbFields = () => {
 			{pitchClimbs.includes(currentAdventure.climb_type) && (
 				<FieldRow borderBottom>
 					<Field>
-						<FieldHeader text={'Pro'} />
+						<FieldHeader text={'Protection'} />
 						<FieldValue>{currentAdventure.protection}</FieldValue>
 					</Field>
 				</FieldRow>
@@ -104,9 +135,9 @@ const ClimbFields = () => {
 			</FieldRow>
 
 			<FieldRow>
-				<Field noPadding>
+				<Field cardField>
 					<FieldHeader
-						text={'Nearby'}
+						text={'Nearby Climbs'}
 						largeHeader
 					/>
 					<NearbyCards adventures={closeAdventures} />

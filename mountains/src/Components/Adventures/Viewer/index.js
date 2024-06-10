@@ -42,7 +42,7 @@ const AdventureViewer = () => {
 
 		if (currentAdventure?.id) {
 			getNearbyAdventures({
-				type: currentAdventure.adventure_type,
+				type: currentAdventure.adventure_type ?? globalAdventureType,
 				coordinates: currentAdventure.coordinates
 			})
 		}

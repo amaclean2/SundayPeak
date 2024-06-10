@@ -14,7 +14,7 @@ export const useUserEditorMenu = () => {
 	const { toggleUserEditState } = useEditUser()
 	const { logoutUser } = useGetUser()
 	const { friendUser } = useFollowUser()
-	const { openConversationWithFriend, addConversation } = useMessages()
+	const { addConversation } = useMessages()
 	const navigate = useNavigate()
 
 	const buildEditorMenu = () => {

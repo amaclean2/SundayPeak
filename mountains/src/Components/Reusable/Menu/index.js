@@ -67,7 +67,7 @@ export const Menu = ({ fields, bounds }) => {
 	}
 
 	useEffect(() => {
-		setMenuLeftPosition(isMenuOpen ? bounds.right : bounds.right - 200)
+		setMenuLeftPosition(isMenuOpen ? bounds.right : bounds.right - 300)
 	}, [isMenuOpen])
 
 	return (

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 
 import './styles.css'
-import { useAdventureStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useZoneStateContext } from '@amaclean2/sundaypeak-treewells'
 
 const NearbyCards = ({ adventures }) => {
 	const { currentAdventure } = useAdventureStateContext()
@@ -27,6 +27,32 @@ const NearbyCard = ({ adventure }) => {
 			className={'nearby-card flex-box'}
 		>
 			{adventure.adventure_name}
+		</div>
+	)
+}
+
+export const NearbyZoneCards = ({ zones }) => {
+	const { currentZone } = useZoneStateContext()
+	return (
+		<div className='scroller-container flex-box'>
+			{zones?.map((zone, idx) => (
+				<Fragment key={`nearby_zone_${idx}`}>
+					{zone?.zone_id !== currentZone.id && <NearbyZoneCard zone={zone} />}
+				</Fragment>
+			))}
+		</div>
+	)
+}
+
+const NearbyZoneCard = ({ zone }) => {
+	const navigate = useNavigate()
+
+	return (
+		<div
+			onClick={() => navigate(`/zone/${zone.zone_id}`)}
+			className={'nearby-card flex-box'}
+		>
+			{zone.zone_name}
 		</div>
 	)
 }

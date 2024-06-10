@@ -16,7 +16,7 @@ const BikeFields = ({ menuContents }) => {
 					<Button
 						key={`field_${idx}`}
 						small
-						className={idx === 0 ? 'delete-button' : ''}
+						className={button.id === 'delete-path' ? 'delete-button' : ''}
 						onClick={button.action}
 						id={button.id}
 					>

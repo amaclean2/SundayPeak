@@ -1,29 +1,34 @@
-import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
 import React from 'react'
+import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { ParentSize } from '@visx/responsive'
+import Linkify from 'linkify-react'
 
 import getContent from 'TextContent'
 import { Button, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from 'Components/Reusable'
 import RatingView from 'Components/Reusable/RatingView'
 import { DistanceIcon, ElevationIcon, Pin } from 'Images'
 import { formatSeasons } from 'Components/Adventures/utils'
-import { DifficultyViewer } from '../Symbols'
 import AdventureTickPanel from 'Components/Adventures/TickPanel'
-import { ParentSize } from '@visx/responsive'
 import ElevationChart from 'Components/Reusable/Chart'
-import Linkify from 'linkify-react'
 import NearbyCards from 'Components/Reusable/NearbyCard'
+import Breadcrumb from 'Components/Reusable/Breadcrumb'
 
-const Fields = () => {
+import { DifficultyViewer } from '../Symbols'
+import AdventureGallery from '../../Gallery'
+
+const Fields = ({ menuContents }) => {
 	const { currentAdventure, closeAdventures } = useAdventureStateContext()
 	const { loggedInUser } = useUserStateContext()
 
 	return (
 		<FieldPage className={'adventure-display-grid'}>
-			<FieldRow className={'narrow-field'}>
-				<Field noPadding>
-					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
-				</Field>
-			</FieldRow>
+			{currentAdventure?.breadcrumb?.length > 1 && (
+				<FieldRow className={'narrow-row'}>
+					<Field noPadding>
+						<Breadcrumb />
+					</Field>
+				</FieldRow>
+			)}
 
 			<FieldRow className={'location-row'}>
 				<Field className={'view-location'}>
@@ -31,6 +36,34 @@ const Fields = () => {
 					{currentAdventure.nearest_city}
 				</Field>
 			</FieldRow>
+
+			<FieldRow className={'narrow-field'}>
+				<Field noPadding>
+					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+				</Field>
+			</FieldRow>
+
+			<FieldRow>
+				<Field noPadding>
+					<AdventureGallery />
+				</Field>
+			</FieldRow>
+
+			<FieldRow className={'adventure-page-action-items'}>
+				{menuContents?.fields
+					?.filter((item) => item.viewerItem)
+					?.map((item) => (
+						<Button
+							small
+							id={item.id}
+							key={item.id}
+							onClick={item.action}
+						>
+							{item.text}
+						</Button>
+					))}
+			</FieldRow>
+
 			<FieldRow className='adventure-bio'>
 				<Field
 					longText
@@ -111,7 +144,7 @@ const Fields = () => {
 			</FieldRow>
 
 			<FieldRow>
-				<Field noPadding>
+				<Field cardField>
 					<FieldHeader
 						text={'Elevation Chart'}
 						largeHeader
@@ -131,9 +164,9 @@ const Fields = () => {
 			</FieldRow>
 
 			<FieldRow>
-				<Field noPadding>
+				<Field cardField>
 					<FieldHeader
-						text={'Nearby'}
+						text={'Nearby Rides'}
 						largeHeader
 					/>
 					<NearbyCards adventures={closeAdventures} />

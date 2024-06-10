@@ -68,7 +68,6 @@
 }
 
 .adventure-display-grid {
-	width: 100%;
 	min-width: 30rem;
 }
 
@@ -98,5 +97,9 @@
 .adventure-page-action-items {
 	justify-content: flex-start;
 	gap: 0.5rem;
-	margin: 1rem 0rem;
+}
+
+.create-new-button {
+	gap: 1rem;
+	justify-content: flex-end;
 }

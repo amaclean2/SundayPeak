@@ -78,8 +78,6 @@ export const climbTypeSelection = [
 export const pitchClimbs = ['sport', 'trad', 'ice']
 
 const yds = [
-	'5.0',
-	'5.1',
 	'5.2',
 	'5.3',
 	'5.4',
@@ -119,15 +117,15 @@ export const getClimbGrade = ({ climbType }) => {
 				.fill('')
 				.map((_, idx) => ({
 					id: `v-${idx + 1}`,
-					value: `V${idx + 1}`,
+					value: idx,
 					text: `V${idx + 1}`
 				}))
 		case 'sport':
 		case 'trad':
-			return yds.map((value) => ({
-				id: value.split('.')[1],
+			return yds.map((text, value) => ({
+				id: text.split('.')[1],
 				value,
-				text: value
+				text
 			}))
 		case 'ice':
 		case 'alpine':

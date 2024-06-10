@@ -1,13 +1,14 @@
 .field {
-	font-size: 0.9rem;
+	font-size: 0.95rem;
 	line-height: 1.2rem;
 	white-space: nowrap;
 	max-width: 100%;
 }
 
-.field-page {
+.field-page.flex-box {
 	width: 100%;
 	flex-direction: column;
+	justify-content: flex-start;
 }
 
 .field.flex-box {
@@ -34,7 +35,7 @@
 }
 
 .field-header {
-	font-size: 1rem;
+	font-size: 1.1rem;
 	margin: 0;
 	font-weight: 500;
 }
@@ -86,6 +87,11 @@
 .large-header.field-header {
 	font-size: 1.4rem;
 	margin-bottom: 0.5rem;
+}
+
+.left-header.field-header {
+	align-self: flex-start;
+	color: var(--main-off-dark);
 }
 
 .card-field.field {
