@@ -25,13 +25,7 @@ Make sure `release<VERSION NUMBER>` is checked out locally and then start with r
 1. `cd` into `/avys` and build the new docker image from the current directory
 
 ```shell
-docker build --platform linux/amd64 -t amacleanjs/sunday-morning:<VERSION NUMBER> -t amacleanjs/sunday-morning:latest --secret id=npmrc,src=$HOME/.npmrc .
-```
-
-2. Push the code to docker hub using the following command. The version number can be found in `/rivers/package.json`
-
-```shell
-docker image push -a amacleanjs/sunday-morning
+npm i && docker build --platform linux/amd64 -t amacleanjs/sunday-morning:<version_number> -t amacleanjs/sunday-morning:latest --secret id=npmrc,src=$HOME/.npmrc . && docker image push -a amacleanjs/sunday-morning
 ```
 
 2. You can check on docker hub to verify the new image tag was pushed
