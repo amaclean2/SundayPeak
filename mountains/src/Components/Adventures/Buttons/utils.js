@@ -148,7 +148,7 @@ export const useAdventureMenu = () => {
 
 		if (!loggedInUser) return null
 
-		const canEdit = loggedInUser.id === currentZone.creator_id
+		const canEdit = loggedInUser.id === currentZone.creator?.user_id
 
 		if (currentZone) {
 			// yes, but not ready yet

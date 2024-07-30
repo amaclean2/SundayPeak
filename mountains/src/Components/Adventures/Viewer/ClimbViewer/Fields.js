@@ -111,28 +111,28 @@ const ClimbFields = ({ menuContents }) => {
 					<FieldValue>
 						{currentAdventure.season?.length
 							? formatSeasons({
-									seasonArray: currentAdventure.season.length
-										? JSON.parse(currentAdventure.season)
-										: []
+									seasonArray: currentAdventure.season.length ? currentAdventure.season : []
 							  })
 							: ''}
 					</FieldValue>
 				</Field>
 			</FieldRow>
 
-			<FieldRow>
-				<Field>
-					<FieldHeader text='Created By' />
-					<FieldValue>
-						<Button
-							direction={`/user/${currentAdventure.creator_id}`}
-							type='link'
-						>
-							{currentAdventure.creator_name}
-						</Button>
-					</FieldValue>
-				</Field>
-			</FieldRow>
+			{currentAdventure.creator && (
+				<FieldRow>
+					<Field>
+						<FieldHeader text='Created By' />
+						<FieldValue>
+							<Button
+								direction={`/user/${currentAdventure.creator.user_id}`}
+								type='link'
+							>
+								{currentAdventure.creator.display_name}
+							</Button>
+						</FieldValue>
+					</Field>
+				</FieldRow>
+			)}
 
 			<FieldRow>
 				<Field cardField>

@@ -48,7 +48,7 @@ export const DisplayCard = ({
 					<DisplayHeader
 						title={title}
 						onClose={onClose}
-						menu={!!menu}
+						menu={Boolean(menu)}
 						hasClose={hasClose}
 					/>
 				)}

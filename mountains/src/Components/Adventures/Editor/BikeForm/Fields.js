@@ -97,7 +97,7 @@ const BikeFields = ({ menuContents }) => {
 				options={{ selectMany: seasonOptions }}
 				isEditable
 				fullWidth
-				value={currentAdventure.season || ''}
+				value={JSON.stringify(currentAdventure.season) || ''}
 				onChange={editAdventure}
 			/>
 			<FormField

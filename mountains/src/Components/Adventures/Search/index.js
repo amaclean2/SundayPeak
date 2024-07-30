@@ -151,7 +151,9 @@ const AdventureSearch = () => {
 									<li
 										key={`adventure_${key}`}
 										className={'drop-list-item flex-box default-list-item'}
-										onClick={() => navigate(`/adventure/${result.adventure_type}/${result.id}`)}
+										onClick={() =>
+											navigate(`/adventure/${result.adventure_type}/${result.adventure_id}`)
+										}
 									>
 										<span className='drop-list-image'>
 											<LargeActivityIcon
