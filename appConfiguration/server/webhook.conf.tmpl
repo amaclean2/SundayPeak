@@ -1,0 +1,27 @@
+[
+  {
+    "id": "deploy",
+    "execute-command": "/usr/local/bin/deploy-avys.sh",
+    "command-working-directory": "/srv/sundaypeak",
+    "response-message": "deploy queued",
+    "trigger-rule-mismatch-http-response-code": 403,
+    "trigger-rule": {
+      "and": [
+        {
+          "match": {
+            "type": "payload-hmac-sha256",
+            "secret": "__WEBHOOK_SECRET__",
+            "parameter": { "source": "header", "name": "X-Hub-Signature-256" }
+          }
+        },
+        {
+          "match": {
+            "type": "value",
+            "value": "refs/heads/master",
+            "parameter": { "source": "payload", "name": "ref" }
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,20 @@
+{
+	email andrew@sundaypeak.com
+}
+
+api.sundaypeak.com {
+	request_body {
+		max_size 15MB
+	}
+	encode gzip
+
+	# GitHub push webhook -> deploy (signature checked by webhook, see /etc/webhook.conf)
+	handle /hooks/* {
+		reverse_proxy 127.0.0.1:9000
+	}
+
+	# HTTP API and websocket upgrades both go to avys on localhost
+	handle {
+		reverse_proxy 127.0.0.1:5000
+	}
+}
