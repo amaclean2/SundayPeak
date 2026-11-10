@@ -26,8 +26,7 @@ export const TokenStateProvider = ({ children }: { children: ReactNode }): JSX.E
 					type: 'setTokens',
 					payload: {
 						mapboxToken: data.mapbox_token,
-						mapboxStyleKey: data.map_style,
-						githubIssueToken: data.github_token
+						mapboxStyleKey: data.map_style
 					}
 				})
 			})

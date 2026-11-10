@@ -21,7 +21,6 @@ import AppContent from 'Router/AppContent'
 import MetaPageContent from 'MetaPages'
 import HomePage from 'MetaPages/FirstPage'
 import PrivacyPolicy from 'MetaPages/Privacy'
-import SupportPage from 'MetaPages/Support'
 import MessagingContianer from 'Components/Chat/MessagingContainer'
 import AdventureTypeSelector from 'Components/Adventures/Editor/AdventureTypeSelector'
 import ZoneForm from 'Components/Adventures/Editor/ZoneForm'
@@ -52,14 +51,6 @@ export const router = createBrowserRouter(
 				element={
 					<MetaPageContent>
 						<PrivacyPolicy />
-					</MetaPageContent>
-				}
-			/>
-			<Route
-				path={'support'}
-				element={
-					<MetaPageContent>
-						<SupportPage />
 					</MetaPageContent>
 				}
 			/>

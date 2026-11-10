@@ -35,14 +35,6 @@ const Nav = ({ navOpen, setNavOpen }) => {
 							Privacy Policy
 						</Link>
 					</li>
-					<li>
-						<Link
-							to={'/support'}
-							onClick={() => setNavOpen(false)}
-						>
-							Support
-						</Link>
-					</li>
 				</ul>
 			</div>
 		</div>
