@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const router = require('./Routing')
 const { corsHandler } = require('./Config/cors')
 const { returnError, NOT_ACCEPTABLE } = require('./ResponseHandling')
-const ValidUrls = require('./Validators/ValidUrls')
+const { isPublicRoute } = require('./Validators/ValidUrls')
 const logger = require('./Config/logger')
 
 config()
@@ -31,11 +31,14 @@ app.use(
 app.use(async (req, res, next) => {
   try {
     const bearerToken = req.headers?.authorization?.split(' ').pop()
-    const url = req.originalUrl
     const method = req.method.toUpperCase()
-    const searchUrl = `${method}:${url}`
+    const searchUrl = `${method}:${req.path}`
 
-    const noAuthRequired = ValidUrls.some((url) => searchUrl.includes(url))
+    if (req.body) {
+      delete req.body.id_from_token
+    }
+
+    const noAuthRequired = isPublicRoute(method, req.path)
 
     let validation
 

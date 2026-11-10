@@ -12,8 +12,7 @@ router.get('/initial', (req, res) => {
     res,
     data: {
       mapbox_token: process.env.MAPBOX_ACCESS_TOKEN,
-      map_style: 'mapbox://styles/mapbox/outdoors-v12',
-      github_token: process.env.GITHUB_ISSUE_TOKEN ?? ''
+      map_style: 'mapbox://styles/mapbox/outdoors-v12'
     },
     status: SUCCESS
   })
