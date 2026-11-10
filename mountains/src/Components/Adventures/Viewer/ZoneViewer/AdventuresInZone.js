@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import { useGetAdventures, useZoneStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useGetAdventures, useZoneStateContext } from 'State'
 
 import { Field } from 'Components/Reusable'
 import { LargeActivityIcon } from 'Images'

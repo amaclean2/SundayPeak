@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { useEditUser, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useEditUser, useUserStateContext } from 'State'
 
 import StatTemplate from './StatTemplate'
 

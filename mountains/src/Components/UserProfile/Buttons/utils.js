@@ -5,7 +5,7 @@ import {
 	useGetUser,
 	useMessages,
 	useUserStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import getContent from 'TextContent'
 

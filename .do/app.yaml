@@ -14,15 +14,8 @@ static_sites:
     output_dir: build
     # Single-page app: serve index.html for client-side routes (react-router).
     catchall_document: index.html
-    envs:
-      # GitHub token with read:packages, used by mountains/.npmrc to install
-      # @amaclean2/sundaypeak-treewells from GitHub Packages. Set the value in the DO dashboard.
-      - key: NPM_TOKEN
-        scope: BUILD_TIME
-        type: SECRET
-# Add once the app is verified on its .ondigitalocean.app URL:
-# domains:
-#   - domain: sundaypeak.com
-#     type: PRIMARY
-#   - domain: www.sundaypeak.com
-#     type: ALIAS
+domains:
+  - domain: sundaypeak.com
+    type: PRIMARY
+  - domain: www.sundaypeak.com
+    type: ALIAS

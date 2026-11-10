@@ -5,7 +5,7 @@ import {
 	useDeleteAdventure,
 	useGetZones,
 	useZoneStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import { Button, DisplayCard, FlexSpacer, FooterButtons } from 'Components/Reusable'
 

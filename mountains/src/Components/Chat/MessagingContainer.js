@@ -5,7 +5,7 @@ import {
 	useMessages,
 	useMessagingStateContext,
 	useUserStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import { DisplayCard } from 'Components/Reusable'
 import MessageBody from './MessageBody'

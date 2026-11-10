@@ -5,7 +5,7 @@ import {
 	useSaveAdventure,
 	useTokenStateContext,
 	useZoneStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 import * as turf from '@turf/turf'
 import mapboxgl from '!mapbox-gl' // eslint-disable-line import/no-webpack-loader-syntax
 import { useEffect, useRef, useState } from 'react'

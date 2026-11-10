@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"baseUrl": "src",
+		"target": "es2016",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"jsx": "react-jsx",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"allowJs": true,
+		"checkJs": false,
+		"strict": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"skipLibCheck": true,
+		"noEmit": true
+	},
+	"include": ["src"],
+	"exclude": ["src/**/*.test.*"]
+}

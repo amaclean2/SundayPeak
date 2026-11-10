@@ -5,7 +5,7 @@ import {
 	useGetAdventures,
 	useGetZones,
 	useUserStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import { Button, DisplayCard } from 'Components/Reusable'
 

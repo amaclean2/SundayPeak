@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useGetUser, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useGetUser, useUserStateContext } from 'State'
 
 import { DisplayCard, FlexSpacer } from 'Components/Reusable'
 import ActivityPanel from './ActivityPanel'

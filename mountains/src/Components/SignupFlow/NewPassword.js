@@ -4,7 +4,7 @@ import {
 	useEditUser,
 	useGetUser,
 	useUserStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import { Button, DisplayCard, ErrorField, FooterButtons, FormField } from 'Components/Reusable'
 

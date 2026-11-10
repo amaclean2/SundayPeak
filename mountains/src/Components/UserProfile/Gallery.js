@@ -2,7 +2,7 @@ import {
 	useUserStateContext,
 	useManipulateFlows,
 	usePictures
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 const UserProfileGallery = () => {
 	const { setImageList } = useManipulateFlows()

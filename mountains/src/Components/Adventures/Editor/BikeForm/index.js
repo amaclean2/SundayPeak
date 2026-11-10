@@ -4,7 +4,7 @@ import {
 	useCardStateContext,
 	useDeleteAdventure,
 	useSaveAdventure
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import { Button, DisplayCard, FooterButtons } from 'Components/Reusable'
 import AddPath from 'Components/Reusable/AddPath'

@@ -1,4 +1,4 @@
-import { useFollowUser, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useFollowUser, useUserStateContext } from 'State'
 import { Button } from 'Components/Reusable'
 
 import { Pin } from 'Images'

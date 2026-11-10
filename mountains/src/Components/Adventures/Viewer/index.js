@@ -4,7 +4,7 @@ import {
 	useAdventureStateContext,
 	useGetAdventures,
 	useSaveCompletedAdventure
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 import { useAdventureMenu } from '../Buttons/utils'
 import ClimbViewer from './ClimbViewer'
 import HikeViewer from './HikeViewer'

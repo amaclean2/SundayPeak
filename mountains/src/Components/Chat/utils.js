@@ -2,7 +2,7 @@ import {
 	useMessages,
 	useMessagingStateContext,
 	useUserStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 export const useChatEditorMenu = () => {
 	const { loggedInUser } = useUserStateContext()

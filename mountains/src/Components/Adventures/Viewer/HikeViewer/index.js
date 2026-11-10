@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useAdventureStateContext, useManipulateFlows } from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useManipulateFlows } from 'State'
 
 import { DisplayCard, FieldProps } from 'Components/Reusable'
 

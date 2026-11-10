@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 
 import './styles.css'
-import { useAdventureStateContext, useZoneStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useZoneStateContext } from 'State'
 
 const NearbyCards = ({ adventures }) => {
 	const { currentAdventure } = useAdventureStateContext()

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../Privacy/styles.css'
-import { fetcher, useTokenStateContext } from '@amaclean2/sundaypeak-treewells'
+import { fetcher, useTokenStateContext } from 'State'
 
 const SupportPage = () => {
 	const { githubIssueToken } = useTokenStateContext()

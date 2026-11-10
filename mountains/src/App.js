@@ -1,5 +1,5 @@
 import { RouterProvider } from 'react-router-dom'
-import { Connections, SundayPeakProviders } from '@amaclean2/sundaypeak-treewells'
+import { Connections, SundayPeakProviders } from 'State'
 
 const { router } = require('Router')
 

@@ -1,4 +1,4 @@
-import { useAdventureStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext } from 'State'
 import React from 'react'
 import { LargeSkierIcon } from './LargeSkierIcon'
 import { LargeBikerIcon } from './LargeBikerIcon'

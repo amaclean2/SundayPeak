@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import mapboxgl from '!mapbox-gl' // eslint-disable-line import/no-webpack-loader-syntax
-import { useTokenStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useTokenStateContext } from 'State'
 import { useMapboxHooks } from './MapboxHooks'
 
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'

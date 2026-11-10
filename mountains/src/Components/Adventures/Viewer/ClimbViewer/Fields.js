@@ -4,7 +4,7 @@ import {
 	gradeConverter,
 	useAdventureStateContext,
 	useUserStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import AdventureTickPanel from 'Components/Adventures/TickPanel'
 import { formatSeasons, pitchClimbs } from 'Components/Adventures/utils'

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Linkify from 'linkify-react'
 
 import { Pin } from 'Images'
-import { useGetAdventures, useGetZones, useZoneStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useGetAdventures, useGetZones, useZoneStateContext } from 'State'
 import {
 	Button,
 	DisplayCard,

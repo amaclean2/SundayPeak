@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAdventureStateContext, useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useAdventureStateContext, useUserStateContext } from 'State'
 import { ParentSize } from '@visx/responsive'
 import Linkify from 'linkify-react'
 

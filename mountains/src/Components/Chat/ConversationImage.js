@@ -1,4 +1,4 @@
-import { useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useUserStateContext } from 'State'
 import React from 'react'
 
 import { buildUserImageLocation } from './utils'

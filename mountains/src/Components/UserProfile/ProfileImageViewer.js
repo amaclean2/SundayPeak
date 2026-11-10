@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { useUserStateContext } from '@amaclean2/sundaypeak-treewells'
+import { useUserStateContext } from 'State'
 
 const ProfileImageViewer = () => {
 	const { workingUser } = useUserStateContext()

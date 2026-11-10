@@ -3,7 +3,7 @@ import {
 	useDeleteAdventure,
 	useDeleteZone,
 	useZoneStateContext
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import { Button, FieldHeader, FooterButtons } from 'Components/Reusable'
 import ClickWrapper from 'Components/Reusable/ClickWrapper'

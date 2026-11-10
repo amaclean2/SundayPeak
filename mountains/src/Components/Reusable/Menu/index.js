@@ -5,7 +5,7 @@ import {
 	useAdventureStateContext,
 	useCardStateContext,
 	useManipulateFlows
-} from '@amaclean2/sundaypeak-treewells'
+} from 'State'
 
 import { Meatball } from 'Images/UIGlyphs/Meatball'
 import { Button } from '../Button'
