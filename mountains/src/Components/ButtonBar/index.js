@@ -3,6 +3,7 @@ import { useUserStateContext } from 'State'
 import { Button, FlexSpacer } from 'Components/Reusable'
 import getContent from 'TextContent'
 import LogoInline from 'Images/Logos/LogoInline'
+import { featureFlags } from 'featureFlags'
 
 import './styles.css'
 
@@ -68,7 +69,7 @@ const ButtonBar = () => {
 					{!isLoggedIn && <LoginButton />}
 					<AdventuresButton />
 					{isLoggedIn && <UserProfileButton />}
-					{isLoggedIn && <ChatButton />}
+					{isLoggedIn && featureFlags.conversations && <ChatButton />}
 				</div>
 				<FlexSpacer />
 				<Button

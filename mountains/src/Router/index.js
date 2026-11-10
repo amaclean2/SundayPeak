@@ -4,8 +4,10 @@ import {
 	Route,
 	createBrowserRouter,
 	createRoutesFromElements,
-	Outlet
+	Outlet,
+	Navigate
 } from 'react-router-dom'
+import { featureFlags } from 'featureFlags'
 
 // import Discover from './Discover'
 // import About from './About'
@@ -143,7 +145,16 @@ export const router = createBrowserRouter(
 				</Route>
 				<Route
 					path={'conversations'}
-					element={<MessagingContianer />}
+					element={
+						featureFlags.conversations ? (
+							<MessagingContianer />
+						) : (
+							<Navigate
+								to={'/discover'}
+								replace
+							/>
+						)
+					}
 				/>
 			</Route>
 		</Route>

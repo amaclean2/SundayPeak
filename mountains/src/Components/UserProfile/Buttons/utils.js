@@ -8,6 +8,7 @@ import {
 } from 'State'
 
 import getContent from 'TextContent'
+import { featureFlags } from 'featureFlags'
 
 export const useUserEditorMenu = () => {
 	const { workingUser, loggedInUser } = useUserStateContext()
@@ -34,11 +35,13 @@ export const useUserEditorMenu = () => {
 				text: getContent('buttonText.editUser')
 			})
 
-			menuFields.push({
-				action: () => navigate('/conversations'),
-				text: 'View Conversations',
-				id: 'view-conversations-button'
-			})
+			if (featureFlags.conversations) {
+				menuFields.push({
+					action: () => navigate('/conversations'),
+					text: 'View Conversations',
+					id: 'view-conversations-button'
+				})
+			}
 
 			menuFields.push({
 				action: () => navigate('/privacy'),
@@ -64,7 +67,7 @@ export const useUserEditorMenu = () => {
 					id: 'follow-user-button',
 					text: getContent('buttonText.follow', [workingUser.first_name])
 				})
-			} else {
+			} else if (featureFlags.conversations) {
 				menuFields.push({
 					action: () => {
 						navigate('/conversations')
