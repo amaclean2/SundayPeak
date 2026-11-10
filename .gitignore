@@ -16,3 +16,4 @@ avys/package-lock.json
 .dispatch.yaml.swp
 compose.yaml
 .env.dev
+avys/.env
