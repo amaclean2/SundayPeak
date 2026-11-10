@@ -47,7 +47,15 @@ deps_changed=0
 git diff --quiet "$prev" "$next" -- avys/package.json || deps_changed=1
 if [ $deps_changed = 1 ]; then
   log "package.json changed, installing dependencies"
-  install_deps || { log "npm install failed"; }
+  if ! install_deps; then
+    # don't restart on stale packages and call it a success; roll back so the next push retries
+    log "npm install FAILED for ${next:0:8}; rolling back to ${prev:0:8}"
+    git reset -q --hard "$prev"
+    install_deps
+    pm2 reload avys --update-env >/dev/null
+    healthy && log "rollback to ${prev:0:8} OK" || log "rollback ALSO FAILED - check: pm2 logs avys"
+    exit 1
+  fi
 fi
 
 pm2 reload avys --update-env >/dev/null
