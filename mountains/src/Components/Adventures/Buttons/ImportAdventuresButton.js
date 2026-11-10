@@ -22,11 +22,6 @@ export const ImportAdventuresButton = () => {
 			reader.onload = async ({ target }) => {
 				const newData = await processCsvAdventures({ csvString: target.result })
 
-				// if (newData.length > 5) {
-				// 	setAdventureError('Only 5 adventures can be created at once.')
-				// 	return
-				// }
-
 				setJsonAdventures(newData)
 			}
 

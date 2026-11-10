@@ -61,7 +61,7 @@ export const useAdventureMenu = () => {
 				text: 'Export Adventure'
 			})
 
-			if (currentAdventure.breadcrumb.length > 1) {
+			if (currentAdventure.breadcrumb?.length > 1) {
 				fields.push({
 					action: () =>
 						removeAdventureFromArea({
@@ -148,7 +148,7 @@ export const useAdventureMenu = () => {
 
 		if (!loggedInUser) return null
 
-		const canEdit = loggedInUser.id === currentZone.creator_id
+		const canEdit = loggedInUser.id === currentZone.creator?.user_id
 
 		if (currentZone) {
 			// yes, but not ready yet

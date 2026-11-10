@@ -39,6 +39,8 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 
 	const establishNewStartPosition = useDebounce((mapPosition) => updateStartPosition(mapPosition))
 
+	const hasSkippedFirst = useRef(false)
+
 	// handle securing the state of variables
 	useEffect(() => {
 		localMatch.current = matchPath
@@ -74,6 +76,11 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 
 	// new globalAdventureType
 	useEffect(() => {
+		if (!hasSkippedFirst.current) {
+			hasSkippedFirst.current = true
+			return
+		}
+
 		if (!mapRef.current || !globalAdventureType || !allZones || !styleLoaded) return
 
 		if (currentAdventure || currentZone) return
@@ -191,7 +198,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 				id: currentZone.id
 			})
 
-			if (mapZones.features.length > 1 || currentZone.adventures.length) {
+			if (mapZones.features.length || currentZone.adventures.length) {
 				addZonesLayer(mapRef.current, mapZones)
 				addLinesLayer(mapRef.current, lines)
 				addPointsLayer(mapRef.current, points)
@@ -203,7 +210,6 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 					bounds.extend([adventure.coordinates.lng, adventure.coordinates.lat])
 				)
 				bounds.extend([currentZone.coordinates.lng, currentZone.coordinates.lat])
-				console.log(currentZone.adventures)
 				mapRef.current.fitBounds(bounds, {
 					padding: { top: 100, bottom: 200, left: 34 * 16, right: 50 },
 					maxZoom: 19
@@ -220,8 +226,23 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 				mapRef.current,
 				allZones?.[globalAdventureType] ?? { type: 'FeatureCollection', features: [] }
 			)
-			addLinesLayer(mapRef.current, allAdventures?.[globalAdventureType]?.lines)
-			addPointsLayer(mapRef.current, allAdventures?.[globalAdventureType]?.points)
+
+			if (['ski', 'skiApproach'].includes(globalAdventureType)) {
+				const bothLines = allAdventures?.ski?.lines
+				bothLines.features = [...bothLines.features, ...allAdventures?.skiApproach?.lines?.features]
+				const bothPoints = allAdventures?.ski?.points
+				bothPoints.features = [
+					...bothPoints.features,
+					...allAdventures?.skiApproach?.points?.features
+				]
+
+				addLinesLayer(mapRef.current, bothLines)
+				addPointsLayer(mapRef.current, bothPoints)
+			} else {
+				addLinesLayer(mapRef.current, allAdventures?.[globalAdventureType]?.lines)
+				addPointsLayer(mapRef.current, allAdventures?.[globalAdventureType]?.points)
+			}
+
 			addParentIconLayer(mapRef.current, null)
 			addPathLayer(mapRef.current, [])
 		}
@@ -286,7 +307,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		}
 	}
 
-	const addZonesLayer = (map, data, reset) => {
+	const addZonesLayer = (map, data, reset = false) => {
 		const previousSource = map.getSource('zones')
 		try {
 			if (!previousSource || reset) {
@@ -318,7 +339,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		}
 	}
 
-	const addPathLayer = (map, pathPoints, reset) => {
+	const addPathLayer = (map, pathPoints, reset = false) => {
 		const previousSource = map.getSource('adventure-path')
 		try {
 			if (!previousSource || reset) {
@@ -367,7 +388,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		}
 	}
 
-	const addLinesLayer = (map, data, reset) => {
+	const addLinesLayer = (map, data, reset = false) => {
 		const previousSource = map.getSource('lines')
 
 		try {
@@ -418,7 +439,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		}
 	}
 
-	const addParentIconLayer = (map, data, reset) => {
+	const addParentIconLayer = (map, data, reset = false) => {
 		const previousSource = map.getSource('parent')
 		try {
 			if (!previousSource || reset) {
@@ -460,7 +481,7 @@ export const useMapboxHooks = (mapRef, mapContainerRef) => {
 		}
 	}
 
-	const addPointsLayer = (map, data, reset) => {
+	const addPointsLayer = (map, data, reset = false) => {
 		const previousSource = map.getSource('points')
 		try {
 			if (!previousSource || reset) {

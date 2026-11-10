@@ -30,7 +30,7 @@ const AdventureTypeSelector = () => {
 
 	const buildSelectOptions = () => {
 		if (zoneAdd === null) {
-			return [
+			const options = [
 				{
 					id: 'adventure-ski',
 					text: 'Ski',
@@ -50,14 +50,19 @@ const AdventureTypeSelector = () => {
 					id: 'adventure-bike',
 					text: 'Bike',
 					value: 'bike'
-				},
-				{
+				}
+			]
+			if (type === 'zone') {
+				return options
+			} else {
+				options.push({
 					id: 'adventure-ski-approach',
 					text: 'Ski Approach',
 					value: 'skiApproach'
-				}
-			]
-		} else if (zoneAdd && globalAdventureType === 'ski') {
+				})
+				return options
+			}
+		} else if (zoneAdd && globalAdventureType === 'ski' && type === 'adventure') {
 			return [
 				{
 					id: 'adventure-ski',
@@ -90,26 +95,26 @@ const AdventureTypeSelector = () => {
 					: type === 'adventure'
 					? `Select an adventure type below then  click a point on the map to add a new adventure
 					starting at that point.`
-					: `Select an adventure type below then click a point on the map to add a new zone at that point.`}
+					: `Select an adventure type below then click a point on the map to add a new area at that point.`}
 			</p>
 			<ErrorField form='adventure' />
 			{type === 'adventure' && <ImportAdventuresButton />}
-			{zoneAdd === null ||
-				(globalAdventureType === 'ski' && (
-					<FormField
-						type='select'
-						name='adventure_type_selector'
-						isEditable
-						fullWidth
-						testId={'adventure-type-selector'}
-						placeholder={'Adventure Type'}
-						options={{
-							selectOptions: buildSelectOptions()
-						}}
-						value={hasChanged ? globalAdventureType : null}
-						onChange={handleChange}
-					/>
-				))}
+			{(zoneAdd === null ||
+				(['ski', 'skiApproach'].includes(globalAdventureType) && type === 'adventure')) && (
+				<FormField
+					type='select'
+					name='adventure_type_selector'
+					isEditable
+					fullWidth
+					testId={'adventure-type-selector'}
+					placeholder={'Adventure Type'}
+					options={{
+						selectOptions: buildSelectOptions()
+					}}
+					value={hasChanged ? globalAdventureType : null}
+					onChange={handleChange}
+				/>
+			)}
 		</DisplayCard>
 	)
 }

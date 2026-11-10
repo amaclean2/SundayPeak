@@ -150,19 +150,21 @@ const ZoneViewer = () => {
 					</Field>
 				</FieldRow>
 
-				<FieldRow>
-					<Field noPadding>
-						<FieldHeader text='Created By' />
-						<FieldValue>
-							<Button
-								direction={`/user/${currentZone.creator_id}`}
-								type='link'
-							>
-								{currentZone.creator_name}
-							</Button>
-						</FieldValue>
-					</Field>
-				</FieldRow>
+				{currentZone.creator && (
+					<FieldRow>
+						<Field noPadding>
+							<FieldHeader text='Created By' />
+							<FieldValue>
+								<Button
+									direction={`/user/${currentZone.creator.user_id}`}
+									type='link'
+								>
+									{currentZone.creator.display_name}
+								</Button>
+							</FieldValue>
+						</Field>
+					</FieldRow>
+				)}
 			</FieldPage>
 		</DisplayCard>
 	)

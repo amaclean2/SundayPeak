@@ -1,8 +1,8 @@
 {
 	"name": "mountains",
-	"version": "1.9.1",
+	"version": "1.9.4",
 	"dependencies": {
-		"@amaclean2/sundaypeak-treewells": "^1.6.41",
+		"@amaclean2/sundaypeak-treewells": "^1.6.50",
 		"@babel/core": "^7.16.0",
 		"@mapbox/mapbox-gl-draw": "^1.4.2",
 		"@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -103,5 +103,8 @@
 	"devDependencies": {
 		"cypress": "^12.10.0",
 		"eslint-plugin-cypress": "^2.13.2"
+	},
+	"engines": {
+		"node": "22.x"
 	}
 }
