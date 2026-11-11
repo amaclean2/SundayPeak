@@ -48,17 +48,21 @@ h1 {
 }
 
 .stats.flex-box {
+	position: sticky;
+	top: 0.5rem;
+	z-index: 1;
 	align-items: stretch;
-	margin: 1rem;
-	gap: 0;
-	padding: 0;
+	--stat-gap: 0.3rem;
+	margin: 1rem 1rem 0;
+	padding: 0.5rem;
 	background-color: var(--main-light);
-	border-radius: 0.5rem;
+	border-radius: 1rem;
 	overflow: hidden;
+	gap: var(--stat-gap);
 }
 
 .stat-field {
-	font-size: 2rem;
+	font-size: 1.8rem;
 	font-weight: 500;
 	color: var(--primary-accent-color);
 }
@@ -69,20 +73,38 @@ h1 {
 	min-width: 0;
 	cursor: pointer;
 	padding: 0.8rem;
-	border-radius: 0;
+	border-radius: 0.5rem;
 	transition: all 0.3s ease-in-out;
 	margin: 0;
+}
+
+.stat-template.flex-box.selected {
+	background-color: var(--primary-accent-color);
+}
+
+.stat-template.flex-box.selected .stat-field {
+	color: var(--main-light);
+}
+.stat-template.flex-box.selected .field-header {
+	color: var(--main-dark);
 }
 
 /* Short vertical divider between sections */
 .stat-template + .stat-template::before {
 	content: '';
 	position: absolute;
-	left: 0;
+	left: calc(var(--stat-gap) / -2 - 0.5px);
 	top: 25%;
 	bottom: 25%;
 	width: 1px;
 	background-color: #c8c8c8;
+	transition: opacity 0.3s ease-in-out;
+}
+
+/* hide dividers touching the highlighted stat */
+.stat-template.selected::before,
+.stat-template.selected + .stat-template::before {
+	opacity: 0;
 }
 
 .stat-template.flex-box:hover {
@@ -111,16 +133,16 @@ h1 {
 .user-adventure-viewer.flex-box {
 	align-items: flex-start;
 	gap: 1rem;
+	width: 100%;
 }
 
 .friend-list-container.flex-box,
 .tick-list-container.flex-box {
-	padding: 0;
+	padding: 0.8rem;
 	flex-direction: column;
 	align-items: flex-start;
 	flex: 1;
 	width: 100%;
-	min-width: 18rem;
 	gap: 0.5rem;
 }
 
@@ -149,7 +171,7 @@ h1 {
 	height: 8rem;
 	background-color: var(--border-color);
 	border-radius: 100%;
-	border: 0.2rem solid #fff;
+	border: 0.3rem solid var(--main-off-white);
 	cursor: pointer;
 	margin: 0;
 	min-width: 0;
@@ -198,7 +220,8 @@ h1 {
 	display: grid;
 	grid-template-columns: auto 1fr;
 	align-items: center;
-	gap: 0.5rem;
+	gap: 0.3rem;
+	font-size: 0.95rem;
 }
 
 .user-bio {

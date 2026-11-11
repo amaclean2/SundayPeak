@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useGetUser, useUserStateContext } from 'State'
 
-import { DisplayCard, FlexSpacer } from 'Components/Reusable'
+import { DisplayCard } from 'Components/Reusable'
 import ActivityPanel from './ActivityPanel'
 import UserTodoPanel from './TickPanel'
 import { useUserEditorMenu } from './Buttons/utils'
@@ -52,12 +52,7 @@ const UserViewer = () => {
 			</div>
 			<Stats />
 			<div className='user-adventure-viewer flex-box'>
-				{statView === 'friends' && (
-					<>
-						<FriendsViewer />
-						<FlexSpacer />
-					</>
-				)}
+				{statView === 'friends' && <FriendsViewer />}
 				{statView === 'completed' &&
 					workingUser.completed_adventures?.length > 0 && <ActivityPanel />}
 				{statView === 'todo' && workingUser.todo_adventures?.length > 0 && (

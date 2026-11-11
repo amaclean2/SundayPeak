@@ -4,7 +4,8 @@
 	align-items: stretch;
 	overflow: hidden;
 	overflow-y: auto;
-	gap: 1rem;
+	gap: 0rem;
+	padding: 0.5rem;
 }
 
 .results-container {
@@ -49,6 +50,8 @@
 
 .adventure-pill-selector {
 	gap: 0.5rem;
+	margin-top: 4rem;
+	padding: 0.5rem;
 }
 
 .adventure-search-spacer {

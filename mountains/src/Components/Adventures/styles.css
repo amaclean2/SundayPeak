@@ -67,8 +67,8 @@
 	line-height: 1.5rem;
 }
 
-.adventure-display-grid {
-	min-width: 30rem;
+.adventure-display-grid.flex-box {
+	width: 30rem;
 }
 
 .import-adventures-button input {

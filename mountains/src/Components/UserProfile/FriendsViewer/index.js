@@ -31,7 +31,6 @@ const FriendsViewer = ({ className }) => {
 
 	return (
 		<div className={cx(className, 'tick-list-container friend-list-container flex-box')}>
-			<FieldHeader largeHeader>Friends</FieldHeader>
 			<FormField
 				name='friends_search'
 				value={searchText}

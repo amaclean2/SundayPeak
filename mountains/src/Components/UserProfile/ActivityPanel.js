@@ -35,7 +35,6 @@ const ActivityPanel = ({ className }) => {
 
 	return (
 		<div className={cx(className, 'tick-list-container flex-box')}>
-			<FieldHeader largeHeader>Completed Adventures</FieldHeader>
 			<ul className='tick-list flex-box'>
 				{workingUser.completed_adventures?.map((activity, key) => (
 					<CompletedAdventure

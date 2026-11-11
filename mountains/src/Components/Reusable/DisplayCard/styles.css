@@ -1,7 +1,7 @@
 .display-card {
 	margin: 10px;
 	min-width: 28rem;
-	border-radius: 0.5rem;
+	border-radius: 1rem;
 	box-shadow: 0 0 10px var(--box-shadow-opacity);
 	flex-direction: column;
 	overflow: hidden;
@@ -88,7 +88,7 @@
 	display: grid;
 	overflow-y: auto;
 	transition: all 0.3s ease-in-out;
-	max-height: 89vh;
+	max-height: 94vh;
 	padding: 0;
 	gap: 1rem;
 	background-color: var(--main-off-white);
@@ -130,6 +130,8 @@
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
+	background-color: var(--main-light);
+	border-radius: 0.8rem;
 }
 
 .tick-list.flex-box {
@@ -137,8 +139,6 @@
 	font-size: 1rem;
 	align-items: flex-start;
 	justify-content: flex-start;
-	max-height: 14rem;
-	overflow-y: auto;
 }
 
 .tick-list-header {
@@ -148,7 +148,7 @@
 }
 
 .tick.flex-box {
-	padding: 0.3rem 0.5rem;
+	padding: 0.8rem;
 	cursor: pointer;
 	transition: all 0.3s ease-in-out;
 	width: 100%;

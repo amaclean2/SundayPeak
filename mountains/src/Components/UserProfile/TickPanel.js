@@ -35,7 +35,6 @@ const UserTodoPanel = ({ className }) => {
 
 	return (
 		<div className={cx(className, 'tick-list-container flex-box')}>
-			<FieldHeader largeHeader>Todo List</FieldHeader>
 			<ul className='tick-list flex-box'>
 				{workingUser.todo_adventures?.map((adventure, key) => (
 					<TodoAdventure
