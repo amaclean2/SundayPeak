@@ -1,57 +1,19 @@
-import { useState } from 'react'
-import {
-	useAdventureStateContext,
-	useDebounce,
-	useSearch,
-	useZoneStateContext
-} from 'State'
+import PropTypes from 'prop-types'
+import { useAdventureStateContext, useZoneStateContext } from 'State'
 import { useNavigate } from 'react-router'
 
-import { Field, FieldHeader, FieldPage, FieldRow, FlexSpacer, FormField } from 'Components/Reusable'
+import { Field, FieldHeader, FieldPage, FieldRow, FlexSpacer } from 'Components/Reusable'
 
 import './styles.css'
 import { LargeActivityIcon } from 'Images'
 
-const AdventureSearch = () => {
-	const { searchAdventures, searchZones } = useSearch()
+const AdventureSearch = ({ searchResults }) => {
 	const { closeAdventures } = useAdventureStateContext()
 	const { closeZones } = useZoneStateContext()
-	const [searchResults, setSearchResults] = useState(null)
-	const [adventureText, setAdventureText] = useState('')
 	const navigate = useNavigate()
-
-	const handleSendSearchText = useDebounce((text) => {
-		text.length
-			? searchAdventures({ searchText: text }).then((adventureResults) => {
-					searchZones({ searchText: text }).then((zoneResults) => {
-						console.log({ adventures: adventureResults, zones: zoneResults })
-						setSearchResults({
-							adventures: adventureResults,
-							zones: zoneResults
-						})
-					})
-			  })
-			: setSearchResults(null)
-	})
-
-	const handleChange = (event) => {
-		setAdventureText(event.target.value)
-		handleSendSearchText(event.target.value)
-	}
 
 	return (
 		<FieldPage className='adventure-search flex-box'>
-			<FormField
-				type='text'
-				name={'adventure_search'}
-				className={'adventure-search-field'}
-				value={adventureText}
-				isEditable
-				testId={'adventure-search-field'}
-				fullWidth
-				placeholder={'Find an adventure'}
-				onChange={handleChange}
-			/>
 			{searchResults?.adventures.length || searchResults?.zones.length ? (
 				<>
 					<FieldRow>
@@ -173,6 +135,13 @@ const AdventureSearch = () => {
 			)}
 		</FieldPage>
 	)
+}
+
+AdventureSearch.propTypes = {
+	searchResults: PropTypes.shape({
+		adventures: PropTypes.array,
+		zones: PropTypes.array
+	})
 }
 
 export default AdventureSearch

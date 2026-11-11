@@ -117,27 +117,6 @@ a {
 	margin: 0;
 }
 
-.adventure-pill-selector .button {
-	background-color: var(--main-light);
-	color: var(--main-dark);
-	gap: 0.8rem;
-	height: 3rem;
-	padding-left: 1rem;
-}
-
-.adventure-pill-selector .button:hover {
-	background-color: var(--main-off-white);
-}
-
-.adventure-pill-selector .button.current-adventure-type {
-	background-color: var(--primary-accent-color);
-	color: var(--main-light);
-}
-
-.adventure-pill-selector .button.current-adventure-type:hover {
-	background-color: var(--primary-accent-color-hover);
-}
-
 .select-many-button.flex-box {
 	padding: 0.5rem;
 	border: 0.1rem solid var(--border-color);

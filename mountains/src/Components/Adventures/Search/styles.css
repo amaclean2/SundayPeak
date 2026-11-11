@@ -1,3 +1,12 @@
+.display-card.main-adventure-card {
+	width: 28rem;
+	max-width: calc(100vw - 20px);
+}
+
+.main-adventure-card .display-content {
+	grid-template-columns: minmax(0, 1fr);
+}
+
 .adventure-search.flex-box {
 	flex-direction: column;
 	width: 100%;
@@ -49,9 +58,29 @@
 }
 
 .adventure-pill-selector {
+	justify-content: space-between;
+	margin: 4rem 0.5rem 0.5rem;
+	padding: 0.3rem;
+	border-radius: 0.8rem;
+	background-color: var(--main-light);
+}
+
+.adventure-pill-button {
+	border-radius: 0.5rem;
+	background-color: var(--main-light);
+	color: var(--main-dark);
 	gap: 0.5rem;
-	margin-top: 4rem;
-	padding: 0.5rem;
+	height: 3rem;
+	padding: 0 1.2rem 0 0.8rem;
+}
+
+.adventure-pill-button:hover {
+	background-color: var(--main-off-white);
+}
+
+.adventure-pill-button.current-adventure-type {
+	background-color: var(--primary-accent-color);
+	color: var(--main-light);
 }
 
 .adventure-search-spacer {

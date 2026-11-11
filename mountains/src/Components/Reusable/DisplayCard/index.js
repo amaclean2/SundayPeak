@@ -16,7 +16,8 @@ export const DisplayCard = ({
 	menu,
 	id,
 	hasClose = true,
-	blockBackground = false
+	blockBackground = false,
+	search
 }) => {
 	const displayCardRef = useRef(null)
 
@@ -49,6 +50,7 @@ export const DisplayCard = ({
 						onClose={onClose}
 						menu={Boolean(menu)}
 						hasClose={hasClose}
+						search={search}
 					/>
 				)}
 				<div className='display-content'>{children}</div>
@@ -66,5 +68,6 @@ DisplayCard.propTypes = {
 	menu: PropTypes.shape({
 		fields: FieldProps
 	}),
-	hasClose: PropTypes.bool
+	hasClose: PropTypes.bool,
+	search: DisplayHeader.propTypes.search
 }

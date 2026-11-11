@@ -8,13 +8,16 @@ const MainAdventureSelector = () => {
 	const { globalAdventureType } = useAdventureStateContext()
 	const { changeAdventureType } = useGetAdventures()
 
-	const svgSize = 30
+	const svgSize = 20
 
 	return (
-		<div className='adventure-pill-selector full-width flex-box'>
+		<div className='adventure-pill-selector flex-box'>
 			<Button
 				id='set-ski-adventure-type'
-				className={cx(globalAdventureType === 'ski' && 'current-adventure-type')}
+				className={cx(
+					'adventure-pill-button',
+					globalAdventureType === 'ski' && 'current-adventure-type'
+				)}
 				onClick={() => changeAdventureType({ type: 'ski' })}
 			>
 				<LargeActivityIcon
@@ -26,7 +29,10 @@ const MainAdventureSelector = () => {
 			</Button>
 			<Button
 				id='set-bike-adventure-type'
-				className={cx(globalAdventureType === 'bike' && 'current-adventure-type')}
+				className={cx(
+					'adventure-pill-button',
+					globalAdventureType === 'bike' && 'current-adventure-type'
+				)}
 				onClick={() => changeAdventureType({ type: 'bike' })}
 			>
 				<LargeActivityIcon
@@ -38,7 +44,10 @@ const MainAdventureSelector = () => {
 			</Button>
 			<Button
 				id='set-climb-adventure-type'
-				className={cx(globalAdventureType === 'climb' && 'current-adventure-type')}
+				className={cx(
+					'adventure-pill-button',
+					globalAdventureType === 'climb' && 'current-adventure-type'
+				)}
 				onClick={() => changeAdventureType({ type: 'climb' })}
 			>
 				<LargeActivityIcon
@@ -50,7 +59,10 @@ const MainAdventureSelector = () => {
 			</Button>
 			<Button
 				id='set-hike-adventure-type'
-				className={cx(globalAdventureType === 'hike' && 'current-adventure-type')}
+				className={cx(
+					'adventure-pill-button',
+					globalAdventureType === 'hike' && 'current-adventure-type'
+				)}
 				onClick={() => changeAdventureType({ type: 'hike' })}
 			>
 				<LargeActivityIcon
