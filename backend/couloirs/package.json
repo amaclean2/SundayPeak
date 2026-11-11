@@ -1,0 +1,27 @@
+{
+  "name": "@amaclean2/sundaypeak-couloirs",
+  "version": "1.2.31",
+  "description": "The websocket layer of Sunday Peak",
+  "scripts": {
+    "test": "echo \"no tests have been written yet\""
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "keywords": [],
+  "author": "Andrew Maclean",
+  "license": "ISC",
+  "dependencies": {
+    "@amaclean2/sundaypeak-water": "^1.9.112",
+    "apn": "^2.2.0",
+    "dotenv": "^16.0.3",
+    "env-cmd": "^10.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "winston": "^3.10.0",
+    "winston-mongodb": "^5.1.1",
+    "ws": "^8.12.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
