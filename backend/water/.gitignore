@@ -1,0 +1,7 @@
+.env.dev
+/node_modules
+/coverage
+package-lock.json
+SundayProd.session.sql
+SundayTest.session.sql
+SundayPeak Local.session.sql

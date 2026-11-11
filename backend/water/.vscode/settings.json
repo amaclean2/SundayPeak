@@ -1,0 +1,55 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "128.199.3.44",
+      "port": 3300,
+      "driver": "MySQL",
+      "name": "SundayProd",
+      "database": "friends",
+      "username": "byf",
+      "askForPassword": true
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3310,
+      "driver": "MySQL",
+      "name": "SundayTest",
+      "username": "root",
+      "database": "mysql",
+      "askForPassword": true
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 100,
+      "server": "localhost",
+      "port": 3300,
+      "driver": "MySQL",
+      "name": "SundayPeak Local",
+      "database": "friends",
+      "username": "byf",
+      "askForPassword": true
+    }
+  ],
+  "eslint.alwaysShowStatus": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.run": "onSave",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true
+}
