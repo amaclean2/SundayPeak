@@ -14,7 +14,10 @@ config()
 
 const app = express()
 
-app.use(express.static('/home/app/public'))
+// Uploaded pictures are saved to FILE_STORAGE_PATH and served at /images/...
+if (process.env.FILE_STORAGE_PATH) {
+  app.use('/images', express.static(process.env.FILE_STORAGE_PATH))
+}
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
