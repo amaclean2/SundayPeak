@@ -36,6 +36,8 @@
 	font-size: 0.8rem;
 	margin: 0;
 	font-weight: 500;
+	color: var(--main-off-dark);
+	line-height: 0.8rem;
 }
 
 .field-image {

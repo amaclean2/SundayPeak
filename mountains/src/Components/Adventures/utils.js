@@ -153,9 +153,26 @@ export const rangeValues = {
 	step: 1
 }
 
-export const formatSeasons = ({ seasonArray }) => {
+const parseSeasonArray = (season) => {
+	let parsed = season
+	try {
+		while (typeof parsed === 'string') {
+			parsed = JSON.parse(parsed)
+		}
+	} catch (error) {
+		return []
+	}
+	return Array.isArray(parsed) ? parsed : []
+}
+
+export const formatSeasons = ({ seasonArray: rawSeason }) => {
 	// seasonArray is a list of 12 true/false values representing whether
 	// the adventure is in for that month
+	const seasonArray = parseSeasonArray(rawSeason)
+
+	if (!seasonArray.length) {
+		return ''
+	}
 
 	if (seasonArray.every((month) => month)) {
 		return 'All year'

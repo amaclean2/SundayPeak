@@ -59,6 +59,7 @@ h1 {
 
 .stat-field {
 	font-size: 2rem;
+	font-weight: 500;
 	color: var(--primary-accent-color);
 }
 
