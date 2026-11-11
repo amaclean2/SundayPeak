@@ -11,13 +11,18 @@ const UserBio = () => {
 
 	return (
 		<div className='flex-box user-bio-text'>
-			{workingUser.city && (
-				<div className={'view-location flex-box'}>
-					<Pin size={20} />
-					{workingUser.city}
+			<div className='user-bio-name'>{`${workingUser.first_name} ${workingUser.last_name}`}</div>
+			<div className='user-bio-details'>
+				{workingUser.city && (
+					<>
+						<Pin size={16} />
+						<div>{workingUser.city}</div>
+					</>
+				)}
+				<div className='user-bio'>
+					{workingUser.bio}
 				</div>
-			)}
-			<div className='user-bio'>{workingUser.bio}</div>
+			</div>
 			{workingUser !== loggedInUser && !alreadyFollowed && (
 				<Button
 					small

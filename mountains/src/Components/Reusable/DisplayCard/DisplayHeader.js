@@ -6,7 +6,7 @@ import { Button } from '../Button'
 import { MenuButton } from '../Menu'
 import { useManipulateFlows } from 'State'
 
-const DisplayHeader = ({ className, onClose, title, menu, hasClose = true }) => {
+const DisplayHeader = ({ className, onClose, menu, hasClose = true }) => {
 	const navigate = useNavigate()
 	const { clearErrors } = useManipulateFlows()
 
@@ -23,10 +23,12 @@ const DisplayHeader = ({ className, onClose, title, menu, hasClose = true }) => 
 					className='display-back-button'
 					onClick={localOnClose}
 				>
-					<CarretIcon color={'#FFFFFF'} />
+					<CarretIcon
+						color={'#FFFFFF'}
+						size={10}
+					/>
 				</Button>
 			)}
-			<div className={'display-card-header-contents full-width'}>{title || ''}</div>
 			<div className='display-header-spacer' />
 			{menu && <MenuButton />}
 		</div>
@@ -36,7 +38,6 @@ const DisplayHeader = ({ className, onClose, title, menu, hasClose = true }) => 
 DisplayHeader.propTypes = {
 	className: PropTypes.string,
 	onClose: PropTypes.func,
-	title: PropTypes.node,
 	menu: PropTypes.bool,
 	hasClose: PropTypes.bool
 }

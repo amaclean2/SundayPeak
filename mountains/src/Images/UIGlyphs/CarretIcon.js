@@ -1,9 +1,10 @@
 import React from 'react'
 
-export const CarretIcon = ({ color = '#000000', size = '14.142', className }) => (
+export const CarretIcon = ({ color = '#000000', size = 14.142, className }) => (
 	<svg
 		width={size}
-		height={size * (3 / 2)}
+		height={size * 1.5}
+		viewBox='0 0 14.142 21.213'
 		fill={color}
 		className={className}
 	>

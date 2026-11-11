@@ -61,7 +61,7 @@ export const FieldHeader = ({
 		onClick={onClick}
 		className={cx(
 			className,
-			'field-header flex-box',
+			'field-header',
 			largeHeader && 'large-header',
 			leftHeader && 'left-header'
 		)}

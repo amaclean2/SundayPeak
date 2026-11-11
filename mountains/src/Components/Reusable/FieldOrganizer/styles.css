@@ -1,6 +1,5 @@
 .field {
 	font-size: 0.95rem;
-	line-height: 1.2rem;
 	white-space: nowrap;
 	max-width: 100%;
 }
@@ -16,7 +15,6 @@
 	align-items: flex-start;
 	flex: 1;
 	padding: 0 0.8rem;
-	gap: 0.5rem;
 }
 
 .field-row.flex-box {
@@ -35,7 +33,7 @@
 }
 
 .field-header {
-	font-size: 1.1rem;
+	font-size: 0.8rem;
 	margin: 0;
 	font-weight: 500;
 }

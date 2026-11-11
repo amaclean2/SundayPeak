@@ -10,7 +10,7 @@ export type ShortUser = {
 	profile_picture_url: string
 }
 
-export type UserStatType = 'friends' | 'completed'
+export type UserStatType = 'friends' | 'completed' | 'todo'
 
 export type UserType = {
 	bio?: string

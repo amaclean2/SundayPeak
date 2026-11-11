@@ -45,23 +45,23 @@ const UserViewer = () => {
 			className='user-profile-display-card'
 			onClose={() => navigate('/discover')}
 		>
+			<UserProfileGallery />
 			<div className='flex-box user-bio-content'>
 				<ProfileImageViewer />
 				<UserBio />
 			</div>
-			<UserProfileGallery />
 			<Stats />
 			<div className='user-adventure-viewer flex-box'>
-				{statView === 'friends' ? (
+				{statView === 'friends' && (
 					<>
 						<FriendsViewer />
 						<FlexSpacer />
 					</>
-				) : (
-					<>
-						{workingUser.completed_adventures?.length > 0 && <ActivityPanel />}
-						{workingUser.todo_adventures?.length > 0 && <UserTodoPanel />}
-					</>
+				)}
+				{statView === 'completed' &&
+					workingUser.completed_adventures?.length > 0 && <ActivityPanel />}
+				{statView === 'todo' && workingUser.todo_adventures?.length > 0 && (
+					<UserTodoPanel />
 				)}
 			</div>
 		</DisplayCard>

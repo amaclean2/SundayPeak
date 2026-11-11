@@ -11,17 +11,22 @@ const Stats = ({ className }) => {
 		<div className={cx('stats-container', 'stats', 'flex-box', className)}>
 			<StatTemplate
 				statLabel={'Completed'}
-				statValue={workingUser?.completed_adventures.length.toString()}
+				statValue={(workingUser?.completed_adventures?.length ?? 0).toString()}
 				selected={statView === 'completed'}
 				onClick={() => changeUserStatView('completed')}
 			/>
 			<StatTemplate
+				statLabel={'Todo'}
+				statValue={(workingUser?.todo_adventures?.length ?? 0).toString()}
+				selected={statView === 'todo'}
+				onClick={() => changeUserStatView('todo')}
+			/>
+			<StatTemplate
 				statLabel={'Friends'}
-				statValue={workingUser?.friends.length.toString()}
+				statValue={(workingUser?.friends?.length ?? 0).toString()}
 				selected={statView === 'friends'}
 				onClick={() => changeUserStatView('friends')}
 			/>
-			<div className='flex-spacer' />
 		</div>
 	)
 }

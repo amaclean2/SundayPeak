@@ -46,8 +46,11 @@
 }
 
 .menu-opener {
-	background-color: transparent;
-	height: auto;
+	background-color: #00000033;
 	margin: 0;
-	padding: 0 0.5rem;
+	padding: 0.5rem;
+	border-radius: 100%;
+	height: 3rem;
+	width: 3rem;
+	flex: none;
 }

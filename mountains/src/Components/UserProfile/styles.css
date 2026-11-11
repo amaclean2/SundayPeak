@@ -13,12 +13,13 @@ h1 {
 
 .scroller-container.flex-box {
 	height: 13rem;
-	gap: 0.8rem;
+	gap: 0.5rem;
 	width: 100%;
+	max-width: 28rem;
 	overflow-x: scroll;
 	overflow-y: hidden;
 	justify-content: flex-start;
-	padding-bottom: 1rem;
+	padding-bottom: 0;
 }
 
 .scroller-container img {
@@ -47,33 +48,44 @@ h1 {
 }
 
 .stats.flex-box {
-	align-items: flex-start;
-	margin: 0;
-	gap: 1rem;
+	align-items: stretch;
+	margin: 1rem;
+	gap: 0;
+	padding: 0;
+	background-color: var(--main-light);
+	border-radius: 0.5rem;
+	overflow: hidden;
 }
 
 .stat-field {
 	font-size: 2rem;
-	margin: 0;
 	color: var(--primary-accent-color);
 }
 
 .stat-template.flex-box {
-	flex: none;
-	min-width: 100px;
+	position: relative;
+	flex: 1;
+	min-width: 0;
 	cursor: pointer;
 	padding: 0.8rem;
-	border-radius: 0.5rem;
+	border-radius: 0;
 	transition: all 0.3s ease-in-out;
 	margin: 0;
 }
 
-.stat-template.selected {
-	background-color: var(--main-off-white);
+/* Short vertical divider between sections */
+.stat-template + .stat-template::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 25%;
+	bottom: 25%;
+	width: 1px;
+	background-color: #c8c8c8;
 }
 
 .stat-template.flex-box:hover {
-	background-color: var(--main-off-white);
+	background-color: #e2e2e2;
 }
 
 .profile-photo-handlers {
@@ -98,7 +110,6 @@ h1 {
 .user-adventure-viewer.flex-box {
 	align-items: flex-start;
 	gap: 1rem;
-	min-width: 30rem;
 }
 
 .friend-list-container.flex-box,
@@ -137,10 +148,10 @@ h1 {
 	height: 8rem;
 	background-color: var(--border-color);
 	border-radius: 100%;
+	border: 0.2rem solid #fff;
 	cursor: pointer;
 	margin: 0;
 	min-width: 0;
-	border: none;
 }
 
 .overlay-upload-button.flex-box {
@@ -168,19 +179,36 @@ h1 {
 }
 
 .user-bio-content {
-	gap: 2rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1rem;
 	justify-content: flex-start;
-	margin: 2rem 1rem 1rem;
+	margin: -4rem 1rem 0;
 }
 
 .user-bio-text {
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 1rem;
+	gap: 0.5rem;
+	color: var(--main-off-dark);
+}
+
+.user-bio-details {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: 0.5rem;
 }
 
 .user-bio {
-	color: var(--main-off-dark);
+	grid-column: 1 / -1;
+	color: var(--main-dark);
+}
+
+.user-bio-name {
+	color: var(--main-dark);
+	font-size: 1.8rem;
+	font-weight: 500;
 }
 
 .friend-image {
