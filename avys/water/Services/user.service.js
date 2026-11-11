@@ -13,6 +13,15 @@ const {
 const logger = require('../Config/logger')
 const { createAPNNotification } = require('./utils/notifications')
 
+/**
+ * @param {Object[]} adventures
+ * @returns {Object[]}
+ */
+const sortByAdventureType = (adventures) =>
+  [...adventures].sort((a, b) =>
+    (a.adventure_type ?? '').localeCompare(b.adventure_type ?? '')
+  )
+
 class UserService extends Water {
   constructor(sendQuery, jwtSecret) {
     super(sendQuery, jwtSecret)
@@ -79,14 +88,18 @@ class UserService extends Water {
       friends,
       images,
       email_opt_out: !!userObject.email_opt_out,
-      completed_adventures: completedAdventures.map((activity) => ({
-        ...activity,
-        user_id: activity.creator_id
-      })),
-      todo_adventures: todoAdventures.map((adventure) => ({
-        ...adventure,
-        user_id: adventure.creator_id
-      }))
+      completed_adventures: sortByAdventureType(
+        completedAdventures.map((activity) => ({
+          ...activity,
+          user_id: activity.creator_id
+        }))
+      ),
+      todo_adventures: sortByAdventureType(
+        todoAdventures.map((adventure) => ({
+          ...adventure,
+          user_id: adventure.creator_id
+        }))
+      )
     }
 
     return returnObj
