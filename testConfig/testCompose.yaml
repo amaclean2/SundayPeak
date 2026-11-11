@@ -10,7 +10,6 @@ services:
       - DB_USER=byf
       - DB_PASS=backyard
       - DB_NAME=friends
-      - MONGO_PASS=backyard
       - MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg
       - NODEMAILER_APP_PASSWORD=vtmrorarxqkhfcjc
       - JWT_SECRET=jB2MGh4dzN
@@ -32,7 +31,6 @@ services:
       - DB_USER=byf
       - DB_PASS=backyard
       - DB_NAME=friends
-      - MONGO_PASS=backyard
       - MAPBOX_ACCESS_TOKEN=pk.eyJ1IjoiYW1hY2xlYW4iLCJhIjoiY2wydzM2YjB2MGh4dzNqb2FpeTg2bmo4dSJ9.KSDbOciqbYDn5eA4SHNOZg
       - NODEMAILER_APP_PASSWORD=vtmrorarxqkhfcjc
       - JWT_SECRET=jB2MGh4dzN
@@ -52,7 +50,6 @@ services:
       - DB_USER=byf
       - DB_PASS=backyard
       - DB_NAME=friends
-      - MONGO_PASS=backyard
       - JWT_SECRET=jB2MGh4dzN
       - FILE_STORAGE_PATH=/home/app/public/images
     volumes:
