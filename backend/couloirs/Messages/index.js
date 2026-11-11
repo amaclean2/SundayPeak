@@ -9,23 +9,17 @@ const parseMessage = async ({ message, userId, logger }) => {
   let response = null
 
   switch (message.type) {
-    case 'getAllConversations':
-      response = await getUserConversations({ userId, logger })
-      break
-    case 'getConversation':
-      if (!message.conversation_id) {
-        response = await Promise.resolve({
-          error:
-            'A non-zero conversation_id needs to be included when requesting a conversation'
-        })
-        break
+    case 'subscribeUser':
+      if (!message.conversation_ids) {
+        response = {
+          error: 'Conversation_ids must be included to subscribe user'
+        }
+      } else {
+        logger.info(
+          JSON.stringify({ conversation_ids: message.conversation_ids })
+        )
+        response = { conversationIds: message.conversation_ids }
       }
-
-      response = await getConversation({
-        conversationId: message.conversation_id,
-        userId,
-        logger
-      })
       break
     case 'verifyUser':
       if (message.deviceToken) {
@@ -62,45 +56,47 @@ const parseMessage = async ({ message, userId, logger }) => {
         logger
       })
       break
-    case 'createNewConversation':
+    case 'subscribeUsersToNewConversation':
       if (
         !message.user_ids?.length ||
         message.user_ids.includes(null) ||
-        message.user_ids.includes(undefined) ||
-        message.user_ids.includes(userId)
+        message.user_ids.includes(undefined)
       ) {
-        response = await Promise.resolve({
+        response = {
           error:
-            "At least one additional user needs to be added to the conversation in the block user_ids: [number]. Don't add the current user."
-        })
+            'At least two user_ids need to be included in the message including the current user'
+        }
         break
       }
 
-      logger.info(JSON.stringify({ userIds: [...message.user_ids, userId] }))
+      if (!message.conversation_id) {
+        response = { error: 'A conversation_id is required in the message' }
+        break
+      }
 
-      response = await createNewConversation({
-        userIds: [...message.user_ids, userId],
-        logger
-      })
+      response = {
+        conversationId: message.conversation_id,
+        userIds: [...message.user_ids]
+      }
       break
     case 'addUserToConversation':
-      if (!message.user_id || !message.conversation_id) {
+      if (!message.new_user || !message.conversation_id) {
         logger.error(
-          'a user_id and a conversation_id need to be specified to add the user to the conversation'
+          'the new_user and a conversation_id need to be specified to add the user to the conversation'
         )
 
         response = await Promise.resolve({
           error:
-            'a user_id and a conversation_id need to be specified to add the user to the conversation'
+            'the new_user and a conversation_id need to be specified to add the user to the conversation'
         })
         break
       }
 
-      response = await addNewUserToConversation({
-        userId: message.user_id,
-        conversationId: message.conversation_id,
-        logger
-      })
+      response = {
+        newUser: message.new_user,
+        conversationId: message.conversation_id
+      }
+
       break
     default:
       response = await Promise.resolve({
@@ -109,79 +105,6 @@ const parseMessage = async ({ message, userId, logger }) => {
       break
   }
   return { ...response, request: message.type }
-}
-
-const getConversation = async ({ conversationId, userId, logger }) => {
-  try {
-    const messages = await serviceHandler.messagingService.getConversation({
-      conversationId,
-      userId
-    })
-    return { messages }
-  } catch (error) {
-    logger.error(error)
-    return Promise.resolve({
-      error: `No conversation found for id ${conversationId}`
-    })
-  }
-}
-
-const getUserConversations = async ({ userId, logger }) => {
-  try {
-    const conversations =
-      await serviceHandler.messagingService.getConversationsPerUser({ userId })
-    return { conversations }
-  } catch (error) {
-    logger.error(error)
-    return Promise.resolve({
-      error: `Conversations not found for user ${userId}`
-    })
-  }
-}
-
-const addNewUserToConversation = async ({ userId, conversationId, logger }) => {
-  try {
-    logger.info(`Adding new user to conversation ${conversationId}`)
-    const { newUserConversations, newUser } =
-      await serviceHandler.messagingService.expandConversation({
-        userId,
-        conversationId
-      })
-
-    logger.info(
-      JSON.stringify({
-        newUserToConversation: true,
-        userId,
-        conversationId
-      })
-    )
-
-    return {
-      user_added: true,
-      newUser,
-      conversationId,
-      newUserConversations
-    }
-  } catch (error) {
-    logger.error(error)
-    return { user_added: false, error: error.message ?? error }
-  }
-}
-
-const createNewConversation = async ({ userIds, logger }) => {
-  try {
-    const { conversation_exists, conversations } =
-      await serviceHandler.messagingService.createConversation({
-        userIds
-      })
-
-    logger.info(JSON.stringify({ conversation_exists, conversations }))
-
-    return { conversations, conversation_exists }
-  } catch (error) {
-    logger.eror(error)
-    return Promise.resolve({ error: 'could not create a new conversation' })
-  }
 }
 
 const sendMessage = async ({

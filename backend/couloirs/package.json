@@ -1,6 +1,6 @@
 {
   "name": "@amaclean2/sundaypeak-couloirs",
-  "version": "1.2.31",
+  "version": "1.2.41",
   "description": "The websocket layer of Sunday Peak",
   "scripts": {
     "test": "echo \"no tests have been written yet\""
