@@ -306,6 +306,7 @@ class AdventureService extends Water {
       const highest = Math.round(Math.max(...elevations.map((e) => e[0])))
       const lowest = Math.round(Math.min(...elevations.map((e) => e[0])))
 
+      JSON.parse(field.path)
       const [editPath, editPoints] = splitPath(field.path)
 
       // only bike and hike adventure types have total elevation gain and loss

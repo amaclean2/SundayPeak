@@ -49,6 +49,7 @@
 	font-weight: 500;
 	padding: 0.5rem;
 	position: absolute;
+	pointer-events: none;
 }
 
 .display-header-spacer {
@@ -68,6 +69,7 @@
 	transition: all 0.2s ease-in-out;
 	margin: 0;
 	flex: none;
+	pointer-events: all;
 }
 
 .display-back-button svg {
