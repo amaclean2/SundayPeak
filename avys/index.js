@@ -4,8 +4,8 @@ const fs = require('fs')
 const path = require('path')
 const WebSocket = require('ws')
 
-const app = require('@amaclean2/sundaypeak-rivers')
-const { onConnection } = require('@amaclean2/sundaypeak-couloirs')
+const app = require('./rivers')
+const { onConnection } = require('./couloirs')
 
 const PORT = process.env.PORT || 5000
 const HTTP_PORT = process.env.HTTP_PORT || 80

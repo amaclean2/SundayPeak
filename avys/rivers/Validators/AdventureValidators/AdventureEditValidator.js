@@ -1,6 +1,6 @@
 const { body } = require('express-validator')
 const { isDefined, numFields } = require('../utils')
-const logger = require('@amaclean2/sundaypeak-water/Config/logger')
+const logger = require('../../../water/Config/logger')
 
 const adventureEditValidator = () => {
   return [
