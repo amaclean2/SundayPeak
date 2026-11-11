@@ -19,7 +19,7 @@
     "supertest": "^6.3.3"
   },
   "dependencies": {
-    "@amaclean2/sundaypeak-water": "^1.9.75",
+    "@amaclean2/sundaypeak-water": "^1.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "env-cmd": "^10.1.0",

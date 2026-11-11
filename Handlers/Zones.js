@@ -46,6 +46,7 @@ const getZonesByDistance = async (req, res) => {
     }
     const count = req.query?.count ?? 10
     const parentZoneId = req.query?.parent ?? null
+    const excludeId = req.query?.exclude_id
 
     if (!adventureType) {
       throw returnError({
@@ -70,7 +71,8 @@ const getZonesByDistance = async (req, res) => {
       adventureType,
       coordinates,
       count: Number(count),
-      parentZoneId
+      parentZoneId,
+      excludeId: excludeId ? Number(excludeId) : undefined
     })
 
     return sendResponse({ req, res, data: { zones }, status: SUCCESS })
