@@ -1,5 +1,5 @@
-const spdy = require('spdy')
 const http = require('http')
+const https = require('https')
 const fs = require('fs')
 const path = require('path')
 const WebSocket = require('ws')
@@ -32,7 +32,7 @@ const createServer = () => {
           cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
         }
 
-  return spdy.createServer(serverCerts, app)
+  return https.createServer(serverCerts, app)
 }
 
 const server = createServer()
