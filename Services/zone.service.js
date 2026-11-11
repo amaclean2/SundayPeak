@@ -114,13 +114,15 @@ class ZoneService extends Water {
    * @param {number} params.coordinates.lng
    * @param {number} params.parentZoneId
    * @param {number} params.count
+   * @param {number} [params.excludeId] | a zone id to leave out of the results
    * @returns {Promise<Object[]>} | a list of zones that are close to the specified coordinates lat and lng
    */
   async getZonesByDistance({
     adventureType,
     coordinates,
     parentZoneId,
-    count = 10
+    count = 10,
+    excludeId
   }) {
     try {
       if (!(adventureType && coordinates.lat && coordinates.lng)) {
@@ -133,14 +135,16 @@ class ZoneService extends Water {
           coordinatesLat: coordinates.lat,
           coordinatesLng: coordinates.lng,
           parentZoneId,
-          count
+          count,
+          excludeId
         })
       } else {
         return await this.zoneDB.getZonesByDistance({
           adventureType,
           coordinatesLat: coordinates.lat,
           coordinatesLng: coordinates.lng,
-          count
+          count,
+          excludeId
         })
       }
     } catch (error) {

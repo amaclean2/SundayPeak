@@ -180,13 +180,15 @@ class ZoneDataLayer extends DataLayer {
    * @param {number} params.coordinatesLat
    * @param {number} params.coordinatesLng
    * @param {number} params.count
+   * @param {number} [params.excludeId] | a zone id to leave out of the results
    * @returns {Promise<Object[]>} | a list of zones that are close to the specified coordinates lat and lng
    */
   async getZonesByDistance({
     adventureType,
     coordinatesLat,
     coordinatesLng,
-    count
+    count,
+    excludeId
   }) {
     try {
       logger.info(
@@ -195,6 +197,7 @@ class ZoneDataLayer extends DataLayer {
 
       const [results] = await this.sendQuery(getCloseZonesQuery, [
         adventureType,
+        excludeId ?? 0,
         coordinatesLat,
         coordinatesLng,
         count
@@ -222,6 +225,7 @@ class ZoneDataLayer extends DataLayer {
    * @param {number} params.coordinatesLng
    * @param {number} params.parentZoneId
    * @param {number} params.count
+   * @param {number} [params.excludeId] | a zone id to leave out of the results
    * @returns {Promise<Object[]>} | a list of zones that are close to the specified coordinates lat and lng
    */
   async getZonesExcludingParentByDistance({
@@ -229,7 +233,8 @@ class ZoneDataLayer extends DataLayer {
     coordinatesLat,
     coordinatesLng,
     parentZoneId,
-    count
+    count,
+    excludeId
   }) {
     try {
       logger.info(
@@ -240,6 +245,7 @@ class ZoneDataLayer extends DataLayer {
         adventureType,
         parentZoneId,
         parentZoneId,
+        excludeId ?? 0,
         coordinatesLat,
         coordinatesLng,
         count

@@ -194,9 +194,17 @@ class AdventureService extends Water {
    * @param {number} params.coordinates.lat
    * @param {number} params.coordinates.lng
    * @param {number} params.count
+   * @param {number} [params.zoneId]
+   * @param {number} [params.excludeId] | an adventure id to leave out of the results
    * @returns {Promise<Object[]>} a list of adventures ordered from closest to the given coordinates within the count limit provided
    */
-  getClosestAdventures({ adventureType, coordinates, count = 10, zoneId = 0 }) {
+  getClosestAdventures({
+    adventureType,
+    coordinates,
+    count = 10,
+    zoneId = 0,
+    excludeId
+  }) {
     if (!(adventureType && coordinates.lat && coordinates.lng)) {
       throw 'adventureType and coordinates are required'
     }
@@ -221,13 +229,15 @@ class AdventureService extends Water {
         adventureType,
         coordinates,
         count,
-        zoneId
+        zoneId,
+        excludeId
       })
     } else {
       return this.adventureDB.getClosestAdventuresFromDB({
         adventureType,
         coordinates,
-        count
+        count,
+        excludeId
       })
     }
   }

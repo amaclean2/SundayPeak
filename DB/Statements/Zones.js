@@ -77,7 +77,7 @@ const getCloseZonesQuery = `SELECT
   z.nearest_city,
   z.bio
   FROM zones AS z
-  WHERE public = 1 AND adventure_type = ?
+  WHERE public = 1 AND adventure_type = ? AND z.id != ?
   ORDER BY SQRT(POWER(coordinates_lat - ?, 2) + POWER(coordinates_lng - ?, 2)) LIMIT ?`
 
 // Get zones by distance, excuding child and current zone
@@ -92,7 +92,7 @@ SELECT
   z.bio
   FROM zones AS z
   LEFT JOIN zone_interactions AS zi ON zi.zone_child_id = z.id
-  WHERE public = 1 AND adventure_type = ? AND (zi.parent_id != ? OR zi.parent_id IS NULL) AND z.id != ?
+  WHERE public = 1 AND adventure_type = ? AND (zi.parent_id != ? OR zi.parent_id IS NULL) AND z.id != ? AND z.id != ?
   ORDER BY SQRT(POWER(coordinates_lat - ?, 2) + POWER(coordinates_lng - ?, 2)) LIMIT ?`
 
 // Get any parent of a zone

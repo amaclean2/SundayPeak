@@ -234,9 +234,15 @@ class AdventureDataLayer extends DataLayer {
    * @param {number} params.coordinates.lat
    * @param {number} params.coordinates.lng
    * @param {number} params.count
+   * @param {number} [params.excludeId] | an adventure id to leave out of the results
    * @returns {Promise<Object[]>} | returns a promise containing an array of adventure objects that are closest to the given coordinates
    */
-  async getClosestAdventuresFromDB({ adventureType, coordinates, count }) {
+  async getClosestAdventuresFromDB({
+    adventureType,
+    coordinates,
+    count,
+    excludeId
+  }) {
     try {
       logger.info(
         JSON.stringify({
@@ -246,6 +252,7 @@ class AdventureDataLayer extends DataLayer {
       )
       const [results] = await this.sendQuery(getCloseAdventures, [
         adventureType,
+        excludeId ?? 0,
         coordinates.lat,
         coordinates.lng,
         count
@@ -263,18 +270,21 @@ class AdventureDataLayer extends DataLayer {
    * @param {Object} params.coordinates
    * @param {number} params.coordiantes.lat
    * @param {number} params.coordiantes.lng
+   * @param {number} [params.excludeId] | an adventure id to leave out of the results
    * @returns {Promise<Object>} an array of adventures that match up to the given parameters
    */
   async getClosestZoneAdventures({
     adventureType,
     zoneId,
     coordinates,
-    count
+    count,
+    excludeId
   }) {
     try {
       const [results] = await this.sendQuery(getCloseAdventuresGivenZone, [
         adventureType,
         zoneId,
+        excludeId ?? 0,
         coordinates.lat,
         coordinates.lng,
         count
