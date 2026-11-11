@@ -20,7 +20,7 @@ GitHub push ──► Caddy :443 ──/hooks/*──► webhook 127.0.0.1:9000 
 | `mysql-lowmem.cnf` | `/etc/mysql/mysql.conf.d/zz-lowmem.cnf` | MySQL tuned for a 1 GB droplet, localhost only |
 | `../../avys/ecosystem.config.js` | `/srv/sundaypeak/avys/` | pm2 process definition |
 
-Not in git (server only): `/srv/sundaypeak/avys/.env` (app secrets, `NPM_TOKEN`), `/root/.secrets/` (DB password, webhook secret),
+Not in git (server only): `/srv/sundaypeak/avys/.env` (app secrets), `/root/.secrets/` (DB password, webhook secret),
 `/home/images` (user uploads), `/home/keys` (APNS key), `/home/text`.
 
 ## Day to day
@@ -38,7 +38,7 @@ Not in git (server only): `/srv/sundaypeak/avys/.env` (app secrets, `NPM_TOKEN`)
 2. Install Node 22 (NodeSource), `npm i -g pm2`, Caddy (official apt repo), `mysql-server`, `webhook`.
 3. Copy the files above into place; create the `friends` DB and `byf@localhost` user; restore the latest dump.
 4. `git clone https://github.com/amaclean2/SundayPeak.git /srv/sundaypeak`, write `avys/.env`, then
-   `NPM_TOKEN=... npm --prefix /srv/sundaypeak/avys install --omit=dev`.
+   `npm --prefix /srv/sundaypeak/avys install --omit=dev`.
 5. `pm2 start /srv/sundaypeak/avys/ecosystem.config.js && pm2 save && pm2 startup systemd`.
 6. `systemctl enable --now caddy webhook`; add the GitHub webhook
    (`https://api.sundaypeak.com/hooks/deploy`, `application/json`, push events, same secret).
