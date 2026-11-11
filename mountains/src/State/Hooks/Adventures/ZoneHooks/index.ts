@@ -26,21 +26,24 @@ export const useGetZones = (): {
 		type,
 		coordinates,
 		count = 10,
-		parentId
+		parentId,
+		excludeId
 	}: {
 		type: AdventureChoiceType
 		coordinates: { lat: number; lng: number }
 		count?: number
 		parentId?: number
+		excludeId?: number
 	}): Promise<void> => {
 		try {
 			const parentZoneBlock = parentId !== undefined ? `&parent=${parentId}` : ''
+			const excludeBlock = excludeId !== undefined ? `&exclude_id=${excludeId}` : ''
 			const {
 				data: { zones: closeZones }
 			} = await fetcher(
-				`${zonesApi.getZonesByDistance.url}?type=${type ?? globalAdventureType}&lat=${
+				`${zonesApi.getZonesByDistance.url}?adventure_type=${type ?? globalAdventureType}&coordinates_lat=${
 					coordinates.lat
-				}&lng=${coordinates.lng}&count=${count}${parentZoneBlock}`,
+				}&coordinates_lng=${coordinates.lng}&count=${count}${parentZoneBlock}${excludeBlock}`,
 				{ method: zonesApi.getZonesByDistance.method }
 			)
 

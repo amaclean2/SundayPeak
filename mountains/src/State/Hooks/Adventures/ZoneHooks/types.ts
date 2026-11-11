@@ -6,12 +6,14 @@ export type GetNearbyZones = ({
 	type,
 	coordinates,
 	count,
-	parentId
+	parentId,
+	excludeId
 }: {
 	type: AdventureChoiceType
 	coordinates: { lat: number; lng: number }
-	count: number
+	count?: number
 	parentId?: number
+	excludeId?: number
 }) => Promise<void>
 
 export type GetZone = ({ id }: { id: number }) => Promise<void>

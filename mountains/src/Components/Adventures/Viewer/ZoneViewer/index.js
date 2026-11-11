@@ -38,7 +38,11 @@ const ZoneViewer = () => {
 		}
 
 		if (currentZone?.id) {
-			getNearbyZones({ type: currentZone.adventure_type, coordinates: currentZone.coordinates })
+			getNearbyZones({
+				type: currentZone.adventure_type,
+				coordinates: currentZone.coordinates,
+				excludeId: currentZone.id
+			})
 		}
 	}, [zoneId, currentZone?.id])
 

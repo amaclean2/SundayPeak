@@ -19,12 +19,14 @@ export const useGetAdventures = (): {
 		type,
 		coordinates,
 		count,
-		zoneId
+		zoneId,
+		excludeId
 	}: {
 		type: AdventureChoiceType
 		coordinates: { lat: number; lng: number }
 		count?: number
 		zoneId?: number
+		excludeId?: number
 	}) => Promise<void>
 	changeAdventureType: ({ type }: { type: AdventureChoiceType }) => void
 	enableNewAdventureClick: ({
@@ -91,18 +93,21 @@ export const useGetAdventures = (): {
 		type,
 		coordinates,
 		count = 10,
-		zoneId
+		zoneId,
+		excludeId
 	}: {
 		type: AdventureChoiceType
 		coordinates: { lat: number; lng: number }
 		count?: number
 		zoneId?: number
+		excludeId?: number
 	}): Promise<void> => {
 		try {
 			const zoneBlock = zoneId !== undefined ? `&zone_id=${zoneId}` : ''
-			const assembledUrl = `${adventuresApi.getAdventuresByDistance.url}?type=${
+			const excludeBlock = excludeId !== undefined ? `&exclude_id=${excludeId}` : ''
+			const assembledUrl = `${adventuresApi.getAdventuresByDistance.url}?adventure_type=${
 				type ?? globalAdventureType
-			}&lat=${coordinates.lat}&lng=${coordinates.lng}&count=${count}${zoneBlock}`
+			}&coordinates_lat=${coordinates.lat}&coordinates_lng=${coordinates.lng}&count=${count}${zoneBlock}${excludeBlock}`
 
 			const {
 				data: { adventures: closeAdventures }
