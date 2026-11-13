@@ -147,10 +147,7 @@ const ZoneViewer = () => {
 
 				<FieldRow className={'card-row'}>
 					<Field cardField>
-						<FieldHeader
-							text={'Nearby Areas'}
-							className={'nearby-header'}
-						/>
+						<FieldHeader text={'Nearby Areas'} />
 						<NearbyZoneCards zones={closeZones} />
 					</Field>
 				</FieldRow>

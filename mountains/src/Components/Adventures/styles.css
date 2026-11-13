@@ -131,6 +131,10 @@
 	width: calc(100% - 1.6rem);
 }
 
-.nearby-header.field-header {
+.adventure-display-grid .field-header {
 	margin-bottom: 0.8rem;
+}
+
+.adventure-display-grid .stat-template .field-header {
+	margin-bottom: 0;
 }
