@@ -67,7 +67,7 @@
 		"react-refresh": "^0.11.0",
 		"react-router-dom": "^6.3.0",
 		"resolve": "^1.20.0",
-		"resolve-url-loader": "^4.0.0",
+		"resolve-url-loader": "^5.0.0",
 		"sass-loader": "^13.2.2",
 		"semver": "^7.3.5",
 		"serve": "^14.1.2",
@@ -109,5 +109,11 @@
 	},
 	"engines": {
 		"node": "22.x"
+	},
+	"overrides": {
+		"@cypress/request": "^4.0.1",
+		"compression": "^1.8.2",
+		"nth-check": "^2.1.1",
+		"serialize-javascript": "^7.1.4"
 	}
 }
