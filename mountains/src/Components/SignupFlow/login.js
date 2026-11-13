@@ -3,6 +3,7 @@ import { useEditUser, useGetUser, useUserStateContext } from 'State'
 import { useEffect } from 'react'
 
 import { title } from 'Router/AppContent'
+import AdventureTitle from 'Components/Adventures/Viewer/AdventureTitle'
 import { ErrorField, DisplayCard, FormField, Button, FooterButtons } from '../Reusable'
 
 import './styles.css'
@@ -30,6 +31,7 @@ export const LoginFlow = () => {
 			onClose={() => navigate('/discover')}
 			className='login-card'
 		>
+			<AdventureTitle title={`Login to ${title}`} />
 			<ErrorField form='login' />
 			<FormField
 				name='email'

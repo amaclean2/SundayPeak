@@ -51,18 +51,12 @@ const Fields = ({ menuContents }) => {
 				</Field>
 			</FieldRow>
 
-			<FieldRow>
-				<Field noPadding>
-					<AdventureGallery />
-				</Field>
-			</FieldRow>
-
 			<FieldRow className={'adventure-page-action-items'}>
 				{menuContents?.fields
 					?.filter((item) => item.viewerItem)
 					?.map((item) => (
 						<Button
-							small
+							className={item.borderButton ? 'border-button' : undefined}
 							id={item.id}
 							key={item.id}
 							onClick={item.action}
@@ -70,6 +64,12 @@ const Fields = ({ menuContents }) => {
 							{item.text}
 						</Button>
 					))}
+			</FieldRow>
+
+			<FieldRow>
+				<Field noPadding>
+					<AdventureGallery />
+				</Field>
 			</FieldRow>
 
 			<FieldRow className={'descriptor-row'}>

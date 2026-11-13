@@ -1,9 +1,10 @@
 .adventure-title-row.flex-box {
-	padding: 0;
+	padding: 10px 0.8rem;
 }
 
 .adventure-title {
 	margin: 0;
+	padding: 0;
 	font-size: 1.8rem;
 	line-height: 1.2;
 	color: var(--main-dark);

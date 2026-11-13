@@ -21,6 +21,7 @@ export const PasswordResetCapture = () => {
 	return (
 		<DisplayCard
 			configuration='center'
+			className={'signup-flow-card'}
 			title={'Reset Your Password'}
 		>
 			<ErrorField form='password-reset' />

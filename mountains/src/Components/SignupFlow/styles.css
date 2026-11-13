@@ -76,3 +76,19 @@
 .login-card {
 	max-width: 12rem;
 }
+
+.login-card .form-field-container,
+.login-card .action-buttons,
+.signup-flow-card .form-field-container,
+.signup-flow-card .action-buttons {
+	padding: 0 0.8rem;
+}
+
+.login-card .adventure-title-row.field-row.flex-box {
+	padding: 3rem 0.8rem 0;
+}
+
+.login-card .error-field.collapsed,
+.signup-flow-card .error-field.collapsed {
+	display: none;
+}

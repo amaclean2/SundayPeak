@@ -32,6 +32,7 @@ export const NewPassword = () => {
 	return (
 		<DisplayCard
 			configuration='center'
+			className={'signup-flow-card'}
 			title={'Reset Your Password'}
 			onClose={() => navigate('/discover')}
 			hasClose={!isMobile}

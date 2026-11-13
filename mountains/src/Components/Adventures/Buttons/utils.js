@@ -97,6 +97,7 @@ export const useAdventureMenu = () => {
 					// 	adventureType: currentAdventure.adventure_type
 					// }),
 					viewerItem: true,
+					borderButton: true,
 					id: 'adventure-complete-button',
 					text: getContent('buttonText.completeActivity')
 				})

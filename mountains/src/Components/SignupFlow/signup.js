@@ -8,6 +8,7 @@ import {
 import { useEffect } from 'react'
 
 import { title } from 'Router/AppContent'
+import AdventureTitle from 'Components/Adventures/Viewer/AdventureTitle'
 
 import { FormField, DisplayCard, ErrorField, Button, FooterButtons } from 'Components/Reusable'
 
@@ -36,6 +37,7 @@ export const SignupFlow = () => {
 			className={'login-card'}
 			onClose={() => navigate('/discover')}
 		>
+			<AdventureTitle title={`Sign up with ${title}`} />
 			<ErrorField
 				form='login'
 				testId='signup-error-field'
