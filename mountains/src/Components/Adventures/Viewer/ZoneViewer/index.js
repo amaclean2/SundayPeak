@@ -17,6 +17,8 @@ import StatTemplate from 'Components/UserProfile/StatTemplate'
 import { NearbyZoneCards } from 'Components/Reusable/NearbyCard'
 import { useAdventureMenu } from 'Components/Adventures/Buttons/utils'
 import Breadcrumb from 'Components/Reusable/Breadcrumb'
+import AdventureTitle from '../AdventureTitle'
+import AdventureTypeTag from '../AdventureTypeTag'
 
 import AdventureGallery from '../../Gallery'
 import AdventuresInZone from './AdventuresInZone'
@@ -88,21 +90,23 @@ const ZoneViewer = () => {
 			menu={buildZoneMenu()}
 		>
 			<FieldPage className={'adventure-display-grid'}>
-				<FieldRow className={'zone-type-field narrow-field'}>
-					<Field>
-						<FieldHeader>{renderAdventureTypeText()}</FieldHeader>
-					</Field>
-				</FieldRow>
-
 				<FieldRow className={'narrow-field'}>
 					<Field noPadding>
 						<Breadcrumb />
 					</Field>
 				</FieldRow>
 
+				<AdventureTitle title={currentZone.zone_name ?? ''} />
+
 				<FieldRow className={'location-row'}>
+					<Field noPadding>
+						<AdventureTypeTag
+							type={currentZone.adventure_type ?? 'ski'}
+							label={renderAdventureTypeText()}
+						/>
+					</Field>
 					<Field className={'view-location'}>
-						<Pin size={20} />
+						<Pin size={12} />
 						{currentZone.nearest_city}
 					</Field>
 				</FieldRow>
@@ -112,19 +116,13 @@ const ZoneViewer = () => {
 				</FieldRow>
 
 				<FieldRow>
-					<Field
-						longText
-						noPadding
-					>
+					<Field longText>
 						<Linkify options={{ defaultProtocol: 'https' }}>{currentZone.bio}</Linkify>
 					</Field>
 				</FieldRow>
 
 				<FieldRow>
-					<Field
-						longText
-						noPadding
-					>
+					<Field longText>
 						<FieldHeader>Approach</FieldHeader>
 						<Linkify options={{ defaultProtocol: 'https' }}>{currentZone.approach}</Linkify>
 					</Field>
@@ -147,16 +145,19 @@ const ZoneViewer = () => {
 
 				<FieldRow>{childrenType === 'zones' ? <ZonesInZone /> : <AdventuresInZone />}</FieldRow>
 
-				<FieldRow>
+				<FieldRow className={'card-row'}>
 					<Field cardField>
-						<FieldHeader text={'Nearby Areas'} />
+						<FieldHeader
+							text={'Nearby Areas'}
+							className={'nearby-header'}
+						/>
 						<NearbyZoneCards zones={closeZones} />
 					</Field>
 				</FieldRow>
 
 				{currentZone.creator && (
 					<FieldRow>
-						<Field noPadding>
+						<Field>
 							<FieldHeader text='Created By' />
 							<FieldValue>
 								<Button

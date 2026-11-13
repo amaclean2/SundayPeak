@@ -1,10 +1,10 @@
 import React from 'react'
 
-export const RatingFull = () => {
+export const RatingFull = ({ size = 20 }) => {
 	return (
 		<svg
-			width='28'
-			height='27'
+			width={size}
+			height={(size * 27) / 28}
 			viewBox='0 0 28 27'
 		>
 			<g
@@ -26,12 +26,12 @@ export const RatingFull = () => {
 	)
 }
 
-export const RatingHalf = () => {
+export const RatingHalf = ({ size = 20 }) => {
 	return (
 		<svg
 			id='Component_29_1'
-			width='28'
-			height='27'
+			width={size}
+			height={(size * 27) / 28}
 			viewBox='0 0 28 27'
 		>
 			<g
@@ -69,11 +69,11 @@ export const RatingHalf = () => {
 	)
 }
 
-export const RatingEmpty = () => {
+export const RatingEmpty = ({ size = 20 }) => {
 	return (
 		<svg
-			width='28'
-			height='27'
+			width={size}
+			height={(size * 27) / 28}
 			viewBox='0 0 28 27'
 		>
 			<g
@@ -95,12 +95,12 @@ export const RatingEmpty = () => {
 	)
 }
 
-export const RatingQuarter = () => {
+export const RatingQuarter = ({ size = 20 }) => {
 	return (
 		<svg
 			id='Component_30_1'
-			width='28'
-			height='27'
+			width={size}
+			height={(size * 27) / 28}
 			viewBox='0 0 28 27'
 		>
 			<g
@@ -138,12 +138,12 @@ export const RatingQuarter = () => {
 	)
 }
 
-export const RatingThreeQuarter = () => {
+export const RatingThreeQuarter = ({ size = 20 }) => {
 	return (
 		<svg
 			id='Component_31_1'
-			width='28'
-			height='27'
+			width={size}
+			height={(size * 27) / 28}
 			viewBox='0 0 28 27'
 		>
 			<g

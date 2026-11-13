@@ -16,6 +16,8 @@ import getContent from 'TextContent'
 
 import AdventureGallery from '../../Gallery'
 import Breadcrumb from 'Components/Reusable/Breadcrumb'
+import AdventureTitle from '../AdventureTitle'
+import AdventureTypeTag from '../AdventureTypeTag'
 
 const ClimbFields = ({ menuContents }) => {
 	const { currentAdventure, closeAdventures } = useAdventureStateContext()
@@ -29,16 +31,24 @@ const ClimbFields = ({ menuContents }) => {
 				</Field>
 			</FieldRow>
 
+			<AdventureTitle />
+
 			<FieldRow className={'location-row'}>
+				<Field noPadding>
+					<AdventureTypeTag />
+				</Field>
 				<Field className={'view-location'}>
-					<Pin size={20} />
+					<Pin size={12} />
 					{currentAdventure.nearest_city}
 				</Field>
-			</FieldRow>
-
-			<FieldRow className={'narrow-field'}>
-				<Field noPadding>
-					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+				<Field
+					noPadding
+					className={'location-rating'}
+				>
+					<RatingView
+						ratingCount={Number(currentAdventure?.rating.split(':')[0])}
+						size={16}
+					/>
 				</Field>
 			</FieldRow>
 
@@ -63,21 +73,12 @@ const ClimbFields = ({ menuContents }) => {
 					))}
 			</FieldRow>
 
-			<FieldRow className='adventure-bio'>
-				<Field
-					longText
-					noPadding
-				>
-					<Linkify options={{ defaultProtocol: 'https' }}>{currentAdventure.bio}</Linkify>
-				</Field>
-			</FieldRow>
-
-			<FieldRow borderBottom>
-				<Field borderRight>
+			<FieldRow className={'descriptor-row'}>
+				<Field>
 					<FieldHeader text={'Type'} />
 					<FieldValue>{currentAdventure.climb_type}</FieldValue>
 				</Field>
-				<Field borderRight>
+				<Field>
 					<FieldHeader text={'Grade'} />
 					<FieldValue>
 						{gradeConverter(currentAdventure?.difficulty, currentAdventure?.climb_type)}
@@ -90,7 +91,7 @@ const ClimbFields = ({ menuContents }) => {
 			</FieldRow>
 
 			{pitchClimbs.includes(currentAdventure.climb_type) && (
-				<FieldRow borderBottom>
+				<FieldRow className={'descriptor-row'}>
 					<Field>
 						<FieldHeader text={'Protection'} />
 						<FieldValue>{currentAdventure.protection}</FieldValue>
@@ -98,14 +99,14 @@ const ClimbFields = ({ menuContents }) => {
 				</FieldRow>
 			)}
 
-			<FieldRow borderBottom>
+			<FieldRow className={'descriptor-row'}>
 				<Field>
 					<FieldHeader text={'Approach'} />
 					<FieldValue>{currentAdventure.approach}</FieldValue>
 				</Field>
 			</FieldRow>
 
-			<FieldRow borderBottom>
+			<FieldRow className={'descriptor-row'}>
 				<Field>
 					<FieldHeader text={getContent('adventurePanel.fields.bestSeason')} />
 					<FieldValue>
@@ -115,6 +116,15 @@ const ClimbFields = ({ menuContents }) => {
 							  })
 							: ''}
 					</FieldValue>
+				</Field>
+			</FieldRow>
+
+			<FieldRow className='adventure-bio'>
+				<Field
+					longText
+					noPadding
+				>
+					<Linkify options={{ defaultProtocol: 'https' }}>{currentAdventure.bio}</Linkify>
 				</Field>
 			</FieldRow>
 
@@ -134,7 +144,7 @@ const ClimbFields = ({ menuContents }) => {
 				</FieldRow>
 			)}
 
-			<FieldRow>
+			<FieldRow className={'card-row'}>
 				<Field cardField>
 					<FieldHeader
 						text={'Nearby Climbs'}

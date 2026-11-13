@@ -10,6 +10,8 @@ import NearbyCards from 'Components/Reusable/NearbyCard'
 import { Button, Field, FieldHeader, FieldPage, FieldRow, FieldValue } from 'Components/Reusable'
 import RatingView from 'Components/Reusable/RatingView'
 import Breadcrumb from 'Components/Reusable/Breadcrumb'
+import AdventureTitle from '../AdventureTitle'
+import AdventureTypeTag from '../AdventureTypeTag'
 import getContent from 'TextContent'
 import { DistanceIcon, ElevationIcon, Pin } from 'Images'
 
@@ -28,21 +30,29 @@ const Fields = ({ menuContents }) => {
 				</Field>
 			</FieldRow>
 
+			<AdventureTitle />
+
 			<FieldRow className={'location-row'}>
+				<Field noPadding>
+					<AdventureTypeTag />
+				</Field>
 				<Field className={'view-location'}>
-					<Pin size={20} />
+					<Pin size={12} />
 					{currentAdventure.nearest_city}
 				</Field>
-			</FieldRow>
-
-			<FieldRow className={'narrow-field'}>
-				<Field noPadding>
-					<RatingView ratingCount={Number(currentAdventure?.rating.split(':')[0])} />
+				<Field
+					noPadding
+					className={'location-rating'}
+				>
+					<RatingView
+						ratingCount={Number(currentAdventure?.rating.split(':')[0])}
+						size={16}
+					/>
 				</Field>
 			</FieldRow>
 
 			<FieldRow>
-				<Field>
+				<Field noPadding>
 					<AdventureGallery />
 				</Field>
 			</FieldRow>
@@ -62,17 +72,8 @@ const Fields = ({ menuContents }) => {
 					))}
 			</FieldRow>
 
-			<FieldRow className='adventure-bio'>
-				<Field
-					longText
-					noPadding
-				>
-					<Linkify options={{ defaultProtocol: 'https' }}>{currentAdventure.bio}</Linkify>
-				</Field>
-			</FieldRow>
-
-			<FieldRow borderBottom>
-				<Field borderRight>
+			<FieldRow className={'descriptor-row'}>
+				<Field>
 					<FieldHeader text={'Distance'} />
 					<FieldValue className={'flex-box'}>
 						<DistanceIcon />
@@ -97,14 +98,14 @@ const Fields = ({ menuContents }) => {
 				</Field>
 			</FieldRow>
 
-			<FieldRow borderBottom>
-				<Field borderRight>
+			<FieldRow className={'descriptor-row'}>
+				<Field>
 					<FieldHeader text={getContent('adventurePanel.fields.difficulty')} />
 					<FieldValue>
 						<DifficultyViewer difficulty={currentAdventure.difficulty} />
 					</FieldValue>
 				</Field>
-				<Field borderRight>
+				<Field>
 					<FieldHeader text={'Climb'} />
 					<FieldValue>{currentAdventure.climb} ft</FieldValue>
 				</Field>
@@ -114,7 +115,7 @@ const Fields = ({ menuContents }) => {
 				</Field>
 			</FieldRow>
 
-			<FieldRow borderBottom>
+			<FieldRow className={'descriptor-row'}>
 				<Field>
 					<FieldHeader text={getContent('adventurePanel.fields.bestSeason')} />
 					<FieldValue>
@@ -124,6 +125,15 @@ const Fields = ({ menuContents }) => {
 							  })
 							: ''}
 					</FieldValue>
+				</Field>
+			</FieldRow>
+
+			<FieldRow className='adventure-bio'>
+				<Field
+					longText
+					noPadding
+				>
+					<Linkify options={{ defaultProtocol: 'https' }}>{currentAdventure.bio}</Linkify>
 				</Field>
 			</FieldRow>
 
@@ -143,7 +153,7 @@ const Fields = ({ menuContents }) => {
 				</FieldRow>
 			)}
 
-			<FieldRow>
+			<FieldRow className={'card-row'}>
 				<Field cardField>
 					<FieldHeader
 						text={'Elevation Chart'}
@@ -163,7 +173,7 @@ const Fields = ({ menuContents }) => {
 				</Field>
 			</FieldRow>
 
-			<FieldRow>
+			<FieldRow className={'card-row'}>
 				<Field cardField>
 					<FieldHeader
 						text={'Nearby'}

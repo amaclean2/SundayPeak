@@ -77,11 +77,18 @@
 }
 
 .location-row.flex-box {
-	padding: 0.5rem 0;
+	padding: 0 0.8rem;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 1rem;
+}
+
+.location-row .field.flex-box {
+	flex: 0 0 auto;
 }
 
 .narrow-field.flex-box {
-	padding: 0.5rem 0;
+	padding: 0;
 }
 
 .large-header.field-header {

@@ -7,7 +7,7 @@ import {
 } from 'Images/Symbols/RatingStars'
 import React from 'react'
 
-const RatingView = ({ ratingCount = 5 }) => {
+const RatingView = ({ ratingCount = 5, size }) => {
 	const fullStars = Math.floor(ratingCount)
 	const remainingStars = ratingCount - fullStars
 
@@ -16,16 +16,16 @@ const RatingView = ({ ratingCount = 5 }) => {
 			{Array(fullStars)
 				.fill(1)
 				.map((_, key) => (
-					<RatingFull key={`rating_${key}`} />
+					<RatingFull key={`rating_${key}`} size={size} />
 				))}
-			{remainingStars <= 0.25 && remainingStars > 0 && <RatingQuarter />}
-			{remainingStars <= 0.5 && remainingStars > 0.25 && <RatingHalf />}
-			{remainingStars <= 0.75 && remainingStars > 0.5 && <RatingThreeQuarter />}
-			{remainingStars < 1 && remainingStars > 0.75 && <RatingFull />}
+			{remainingStars <= 0.25 && remainingStars > 0 && <RatingQuarter size={size} />}
+			{remainingStars <= 0.5 && remainingStars > 0.25 && <RatingHalf size={size} />}
+			{remainingStars <= 0.75 && remainingStars > 0.5 && <RatingThreeQuarter size={size} />}
+			{remainingStars < 1 && remainingStars > 0.75 && <RatingFull size={size} />}
 			{Array(Math.floor(5 - ratingCount))
 				.fill(1)
 				.map((_, idx) => (
-					<RatingEmpty key={`half_rating_${idx}`} />
+					<RatingEmpty key={`half_rating_${idx}`} size={size} />
 				))}
 		</div>
 	)
