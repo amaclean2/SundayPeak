@@ -8,7 +8,7 @@ const MainAdventureSelector = () => {
 	const { globalAdventureType } = useAdventureStateContext()
 	const { changeAdventureType } = useGetAdventures()
 
-	const svgSize = 20
+	const svgSize = 16
 
 	return (
 		<div className='adventure-pill-selector flex-box'>

@@ -22,6 +22,10 @@
 	padding: 0;
 	list-style-type: none;
 	width: 100%;
+	background-color: var(--main-light);
+	padding: 0.5rem;
+	margin-top: 0.5rem;
+	border-radius: 1rem;
 }
 
 .results-container li {
@@ -42,6 +46,7 @@
 
 .result-title {
 	font-weight: 500;
+	font-size: 1rem;
 	overflow: hidden;
 	max-width: 15rem;
 	white-space: nowrap;
@@ -58,11 +63,13 @@
 }
 
 .adventure-pill-selector {
-	justify-content: space-between;
-	margin: 4rem 0.5rem 0.5rem;
+	justify-content: center;
+	gap: 0.3rem;
+	margin: 4rem auto 0.5rem;
 	padding: 0.3rem;
 	border-radius: 0.8rem;
 	background-color: var(--main-light);
+	width: fit-content;
 }
 
 .adventure-pill-button {
@@ -71,7 +78,7 @@
 	color: var(--main-dark);
 	gap: 0.5rem;
 	height: 3rem;
-	padding: 0 1.2rem 0 0.8rem;
+	padding: 0 1rem 0 0.6rem;
 }
 
 .adventure-pill-button:hover {
@@ -101,4 +108,37 @@
 
 .delete-page .action-buttons {
 	margin-bottom: 0;
+}
+
+.section-header.flex-box {
+	justify-content: space-between;
+	align-items: center;
+	align-self: stretch;
+	gap: 1rem;
+}
+
+.area-pill-list.flex-box {
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	gap: 0.3rem;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.area-pill {
+	padding: 0.3rem 0.8rem;
+	border-radius: 0.5rem;
+	border: 0.1rem solid var(--border-color);
+	background-color: var(--main-light);
+	color: var(--main-dark);
+	font-size: 1rem;
+	font-weight: 500;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+}
+
+.area-pill:hover {
+	background-color: var(--main-off-white);
 }

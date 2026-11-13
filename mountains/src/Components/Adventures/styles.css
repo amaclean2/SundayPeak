@@ -98,8 +98,3 @@
 	justify-content: flex-start;
 	gap: 0.5rem;
 }
-
-.create-new-button {
-	gap: 1rem;
-	justify-content: flex-end;
-}

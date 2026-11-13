@@ -9,7 +9,7 @@ import {
 	useUserStateContext
 } from 'State'
 
-import { Button, DisplayCard } from 'Components/Reusable'
+import { DisplayCard } from 'Components/Reusable'
 
 import AdventureSearch from './Search'
 import MainAdventureSelector from './Search/MainAdventureSelector'
@@ -70,25 +70,10 @@ const DefaultAdventureView = () => {
 			}}
 		>
 			<MainAdventureSelector />
-			<AdventureSearch searchResults={searchResults} />
-			{loggedInUser?.id && (
-				<div className={'flex-box create-new-button'}>
-					<Button
-						secondaryButton
-						id={'open-new-adventure-menu'}
-						direction={'/adventure/new/adventure'}
-					>
-						Add a New Adventure
-					</Button>
-					<Button
-						secondaryButton
-						id={'open-new-adventure-menu'}
-						direction={'/adventure/new/zone'}
-					>
-						Add a New Area
-					</Button>
-				</div>
-			)}
+			<AdventureSearch
+				searchResults={searchResults}
+				canCreate={!!loggedInUser?.id}
+			/>
 		</DisplayCard>
 	)
 }

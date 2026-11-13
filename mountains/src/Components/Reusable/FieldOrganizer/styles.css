@@ -90,7 +90,6 @@
 }
 
 .left-header.field-header {
-	align-self: flex-start;
 	color: var(--main-off-dark);
 }
 

@@ -26,6 +26,7 @@
 
 .drop-list-secondary {
 	font-size: 0.9rem;
+	color: var(--main-off-dark);
 }
 
 .menu-button.flex-box {
