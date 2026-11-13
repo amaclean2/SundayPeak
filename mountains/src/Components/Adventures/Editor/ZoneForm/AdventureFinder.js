@@ -132,7 +132,7 @@ const AdventureChildFinder = () => {
 											onClick={() => {
 												addAdventureToZone({
 													parentId: currentZone.id,
-													adventureId: result.adventure_id
+													adventureId: result.id
 												})
 												navigate(-1)
 											}}
