@@ -63,6 +63,15 @@ const ZoneViewer = () => {
 
 	if (!currentZone) return null
 
+	const hasZones = currentZone.zones?.length > 0
+	const hasAdventures = currentZone.adventures?.length > 0
+	const showChildrenToggle = hasZones && hasAdventures
+	const visibleChildrenType = showChildrenToggle
+		? childrenType
+		: hasZones
+		? 'zones'
+		: 'adventures'
+
 	let childrenText = null
 	switch (currentZone.adventure_type) {
 		case 'climb':
@@ -128,22 +137,26 @@ const ZoneViewer = () => {
 					</Field>
 				</FieldRow>
 
-				<FieldRow className={'stats-container stats'}>
-					<StatTemplate
-						statLabel={'Areas'}
-						statValue={currentZone.zones.length}
-						selected={childrenType === 'zones'}
-						onClick={() => setChildrenType('zones')}
-					/>
-					<StatTemplate
-						statLabel={childrenText}
-						statValue={currentZone.adventures.length}
-						selected={childrenType === 'adventures'}
-						onClick={() => setChildrenType('adventures')}
-					/>
-				</FieldRow>
+				{showChildrenToggle && (
+					<FieldRow className={'stats-container stats'}>
+						<StatTemplate
+							statLabel={'Areas'}
+							statValue={currentZone.zones.length}
+							selected={childrenType === 'zones'}
+							onClick={() => setChildrenType('zones')}
+						/>
+						<StatTemplate
+							statLabel={childrenText}
+							statValue={currentZone.adventures.length}
+							selected={childrenType === 'adventures'}
+							onClick={() => setChildrenType('adventures')}
+						/>
+					</FieldRow>
+				)}
 
-				<FieldRow>{childrenType === 'zones' ? <ZonesInZone /> : <AdventuresInZone />}</FieldRow>
+				<FieldRow>
+					{visibleChildrenType === 'zones' ? <ZonesInZone /> : <AdventuresInZone />}
+				</FieldRow>
 
 				<FieldRow className={'card-row'}>
 					<Field cardField>

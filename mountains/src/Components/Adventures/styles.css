@@ -148,7 +148,7 @@
 .adventure-display-grid .tick.flex-box {
 	position: relative;
 	border-bottom: none;
-	border-radius: 0.8rem;
+	border-radius: 0.4rem;
 }
 
 .adventure-display-grid .tick.flex-box:not(:last-child)::after {
@@ -159,4 +159,8 @@
 	bottom: 0;
 	height: 1px;
 	background-color: var(--border-color);
+}
+
+.adventure-display-grid .tick-list.flex-box {
+	padding: 0.4rem;
 }

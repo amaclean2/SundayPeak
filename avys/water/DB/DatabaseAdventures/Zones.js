@@ -17,6 +17,7 @@ const {
   getZoneParentQuery,
   deleteZoneInteractionsQuery,
   getCloseZonesQuery,
+  getCloseSiblingZonesQuery,
   buildBreadcrumbQuery,
   editZoneFieldQuery,
   getCloseSubzonesQuery
@@ -195,13 +196,22 @@ class ZoneDataLayer extends DataLayer {
         `fetching zones close to {cLa: ${coordinatesLat}, cLo: ${coordinatesLng}} for adventure type: ${adventureType}`
       )
 
-      const [results] = await this.sendQuery(getCloseZonesQuery, [
-        adventureType,
-        excludeId ?? 0,
-        coordinatesLat,
-        coordinatesLng,
-        count
-      ])
+      const [results] = excludeId
+        ? await this.sendQuery(getCloseSiblingZonesQuery, [
+            adventureType,
+            excludeId,
+            excludeId,
+            coordinatesLat,
+            coordinatesLng,
+            count
+          ])
+        : await this.sendQuery(getCloseZonesQuery, [
+            adventureType,
+            0,
+            coordinatesLat,
+            coordinatesLng,
+            count
+          ])
 
       return results.map((result) => {
         const { coordinates_lat, coordinates_lng, ...newResult } = result
